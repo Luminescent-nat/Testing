@@ -1,0 +1,2 @@
+# shell 脚本强制 LF，避免 Windows 检出为 CRLF 后无法执行
+*.sh text eol=lf

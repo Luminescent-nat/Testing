@@ -1,0 +1,328 @@
+{
+  "task": {
+    "id": 2,
+    "name": "EMMC自动化测试_20260713_170921",
+    "device_serial": "f5e7b2d19cd9d548",
+    "status": "completed",
+    "progress_percent": 100,
+    "started_at": "2026-07-13T09:09:21.525443",
+    "completed_at": "2026-07-13T09:11:36.299249",
+    "created_at": "2026-07-13T09:09:21",
+    "selected_items": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "custom_parameters": {},
+    "error_message": null
+  },
+  "records": [
+    {
+      "id": 7,
+      "task_id": 2,
+      "item_id": 3,
+      "item_name": null,
+      "module_name": null,
+      "status": "pass",
+      "fail_reason": "",
+      "extracted_data": {},
+      "execution_time": 0,
+      "started_at": "2026-07-13T09:09:21.545694",
+      "completed_at": "2026-07-13T09:09:21.621387",
+      "output": "mmcblk2\r\nmmcblk2boot0\r\nmmcblk2boot1\r\n\n"
+    },
+    {
+      "id": 8,
+      "task_id": 2,
+      "item_id": 4,
+      "item_name": null,
+      "module_name": null,
+      "status": "error",
+      "fail_reason": "",
+      "extracted_data": {},
+      "execution_time": 2,
+      "started_at": "2026-07-13T09:09:21.645980",
+      "completed_at": "2026-07-13T09:09:24.330296",
+      "output": "2026-07-13 17:09:23 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:24 [INFO] eMMC ڵ: /dev/block/mmcblk2\r\n2026-07-13 17:09:24 [INFO] ȡ extcsd...\r\n\nTraceback (most recent call last):\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 128, in <module>\r\n    main()\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 124, in main\r\n    run_extcsd(adb, args)\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 113, in run_extcsd\r\n    print(json.dumps(data, ensure_ascii=False, indent=2))\r\nUnicodeEncodeError: 'gbk' codec can't encode character '\\ufffd' in position 826: illegal multibyte sequence\r\n"
+    },
+    {
+      "id": 9,
+      "task_id": 2,
+      "item_id": 5,
+      "item_name": null,
+      "module_name": null,
+      "status": "pass",
+      "fail_reason": "",
+      "extracted_data": {
+        "bw_mbps": 124.0,
+        "judgement": {
+          "status": "pass",
+          "confidence": 1.0,
+          "score": 2,
+          "metrics": {
+            "bw_mbps": 124.0
+          },
+          "evidence": [
+            "bw_mbps: 124.0 -> 得分 2"
+          ],
+          "fail_reason": "",
+          "suggestions": "",
+          "judgement_type": "rubric"
+        }
+      },
+      "execution_time": 32,
+      "started_at": "2026-07-13T09:09:24.354922",
+      "completed_at": "2026-07-13T09:09:57.299642",
+      "output": "2026-07-13 17:09:26 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:26 [INFO] ʼִ Seq_Read  (runtime=30s)\r\n2026-07-13 17:09:57 [INFO] Seq_Read : BW=124.00 MB/s, IOPS=947.00, util=94.37%\r\n{\r\n  \"bw_mbps\": 124.0,\r\n  \"iops\": 947.0,\r\n  \"max_iops\": 1008,\r\n  \"lat_p999_us\": 107.0,\r\n  \"cpu_sys\": 41.6,\r\n  \"cpu_usr\": 4.75,\r\n  \"emmc_util\": 94.37,\r\n  \"scenario\": \"Seq_Read\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.48\r\n}\r\n\n"
+    },
+    {
+      "id": 10,
+      "task_id": 2,
+      "item_id": 6,
+      "item_name": null,
+      "module_name": null,
+      "status": "fail",
+      "fail_reason": "Rubrics 评分低于及格线",
+      "extracted_data": {
+        "bw_mbps": 27.2,
+        "judgement": {
+          "status": "fail",
+          "confidence": 1.0,
+          "score": 1,
+          "metrics": {
+            "bw_mbps": 27.2
+          },
+          "evidence": [
+            "bw_mbps: 27.2 -> 得分 1"
+          ],
+          "fail_reason": "Rubrics 评分低于及格线",
+          "suggestions": "",
+          "judgement_type": "rubric"
+        }
+      },
+      "execution_time": 32,
+      "started_at": "2026-07-13T09:09:57.324974",
+      "completed_at": "2026-07-13T09:10:30.286845",
+      "output": "2026-07-13 17:09:59 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:59 [INFO] ʼִ Seq_Write  (runtime=30s)\r\n2026-07-13 17:10:30 [INFO] Seq_Write : BW=27.20 MB/s, IOPS=207.00, util=56.07%\r\n{\r\n  \"bw_mbps\": 27.2,\r\n  \"iops\": 207.0,\r\n  \"max_iops\": 316,\r\n  \"lat_p999_us\": 376.0,\r\n  \"cpu_sys\": 48.58,\r\n  \"cpu_usr\": 1.86,\r\n  \"emmc_util\": 56.07,\r\n  \"scenario\": \"Seq_Write\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.47\r\n}\r\n\n"
+    },
+    {
+      "id": 11,
+      "task_id": 2,
+      "item_id": 7,
+      "item_name": null,
+      "module_name": null,
+      "status": "fail",
+      "fail_reason": "Rubrics 评分低于及格线",
+      "extracted_data": {
+        "iops": 1631.0,
+        "judgement": {
+          "status": "fail",
+          "confidence": 1.0,
+          "score": 1,
+          "metrics": {
+            "iops": 1631.0
+          },
+          "evidence": [
+            "iops: 1631.0 -> 得分 1"
+          ],
+          "fail_reason": "Rubrics 评分低于及格线",
+          "suggestions": "",
+          "judgement_type": "rubric"
+        }
+      },
+      "execution_time": 32,
+      "started_at": "2026-07-13T09:10:30.310147",
+      "completed_at": "2026-07-13T09:11:03.314762",
+      "output": "2026-07-13 17:10:32 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:10:32 [INFO] ʼִ Rand_Read  (runtime=30s)\r\n2026-07-13 17:11:03 [INFO] Rand_Read : BW=6.68 MB/s, IOPS=1631.00, util=60.92%\r\n{\r\n  \"bw_mbps\": 6.68,\r\n  \"iops\": 1631.0,\r\n  \"max_iops\": 2231,\r\n  \"lat_p999_us\": 76022.0,\r\n  \"cpu_sys\": 23.96,\r\n  \"cpu_usr\": 5.99,\r\n  \"emmc_util\": 60.92,\r\n  \"scenario\": \"Rand_Read\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.47\r\n}\r\n\n"
+    },
+    {
+      "id": 12,
+      "task_id": 2,
+      "item_id": 8,
+      "item_name": null,
+      "module_name": null,
+      "status": "pass",
+      "fail_reason": "",
+      "extracted_data": {
+        "iops": 1313.0,
+        "judgement": {
+          "status": "pass",
+          "confidence": 1.0,
+          "score": 2,
+          "metrics": {
+            "iops": 1313.0
+          },
+          "evidence": [
+            "iops: 1313.0 -> 得分 2"
+          ],
+          "fail_reason": "",
+          "suggestions": "",
+          "judgement_type": "rubric"
+        }
+      },
+      "execution_time": 32,
+      "started_at": "2026-07-13T09:11:03.335884",
+      "completed_at": "2026-07-13T09:11:36.278421",
+      "output": "2026-07-13 17:11:05 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:11:05 [INFO] ʼִ Rand_Write  (runtime=30s)\r\n2026-07-13 17:11:36 [INFO] Rand_Write : BW=5.38 MB/s, IOPS=1313.00, util=70.97%\r\n{\r\n  \"bw_mbps\": 5.38,\r\n  \"iops\": 1313.0,\r\n  \"max_iops\": 1794,\r\n  \"lat_p999_us\": 68682.0,\r\n  \"cpu_sys\": 33.07,\r\n  \"cpu_usr\": 4.68,\r\n  \"emmc_util\": 70.97,\r\n  \"scenario\": \"Rand_Write\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.46\r\n}\r\n\n"
+    }
+  ],
+  "report": {
+    "report_version": "1.0",
+    "report_type": "single",
+    "report_id": "RPT-20260713-002",
+    "task_id": 2,
+    "task_name": "EMMC自动化测试_20260713_170921",
+    "created_at": "2026-07-13T09:09:21",
+    "completed_at": "2026-07-13T09:11:36.299249",
+    "total_duration": "2分14秒",
+    "executor": {
+      "user_id": 1,
+      "username": "admin",
+      "role": "admin"
+    },
+    "device": {
+      "serial_number": "f5e7b2d19cd9d548",
+      "model": "rk356x",
+      "brand": "hzmct",
+      "android_version": "12",
+      "cpu_abi": "arm64-v8a"
+    },
+    "summary": {
+      "total_items": 6,
+      "passed": 3,
+      "failed": 2,
+      "skipped": 0,
+      "error": 1,
+      "pass_rate": "50.0%"
+    },
+    "results": [
+      {
+        "item_id": 3,
+        "item_name": "节点检测",
+        "module_name": "EMMC",
+        "status": "pass",
+        "execution_time": 0,
+        "fail_reason": "",
+        "extracted_data": {},
+        "output_summary": "mmcblk2\r\nmmcblk2boot0\r\nmmcblk2boot1\r\n\n"
+      },
+      {
+        "item_id": 4,
+        "item_name": "EXT_CSD 寄存器读取",
+        "module_name": "EMMC",
+        "status": "error",
+        "execution_time": 2,
+        "fail_reason": "",
+        "extracted_data": {},
+        "output_summary": "2026-07-13 17:09:23 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:24 [INFO] eMMC ڵ: /dev/block/mmcblk2\r\n2026-07-13 17:09:24 [INFO] ȡ extcsd...\r\n\nTraceback (most recent call last):\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 128, in <module>\r\n    main()\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 124, in main\r\n    run_extcsd(adb, args)\r\n  File \"D:\\MCTEST\\test-platform\\test-tools\\emmc\\host\\emmc_extcsd_runner.py\", line 113, in r"
+      },
+      {
+        "item_id": 5,
+        "item_name": "顺序读性能",
+        "module_name": "EMMC",
+        "status": "pass",
+        "execution_time": 32,
+        "fail_reason": "",
+        "extracted_data": {
+          "bw_mbps": 124.0,
+          "judgement": {
+            "status": "pass",
+            "confidence": 1.0,
+            "score": 2,
+            "metrics": {
+              "bw_mbps": 124.0
+            },
+            "evidence": [
+              "bw_mbps: 124.0 -> 得分 2"
+            ],
+            "fail_reason": "",
+            "suggestions": "",
+            "judgement_type": "rubric"
+          }
+        },
+        "output_summary": "2026-07-13 17:09:26 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:26 [INFO] ʼִ Seq_Read  (runtime=30s)\r\n2026-07-13 17:09:57 [INFO] Seq_Read : BW=124.00 MB/s, IOPS=947.00, util=94.37%\r\n{\r\n  \"bw_mbps\": 124.0,\r\n  \"iops\": 947.0,\r\n  \"max_iops\": 1008,\r\n  \"lat_p999_us\": 107.0,\r\n  \"cpu_sys\": 41.6,\r\n  \"cpu_usr\": 4.75,\r\n  \"emmc_util\": 94.37,\r\n  \"scenario\": \"Seq_Read\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.48\r\n}\r\n\n"
+      },
+      {
+        "item_id": 6,
+        "item_name": "顺序写性能",
+        "module_name": "EMMC",
+        "status": "fail",
+        "execution_time": 32,
+        "fail_reason": "Rubrics 评分低于及格线",
+        "extracted_data": {
+          "bw_mbps": 27.2,
+          "judgement": {
+            "status": "fail",
+            "confidence": 1.0,
+            "score": 1,
+            "metrics": {
+              "bw_mbps": 27.2
+            },
+            "evidence": [
+              "bw_mbps: 27.2 -> 得分 1"
+            ],
+            "fail_reason": "Rubrics 评分低于及格线",
+            "suggestions": "",
+            "judgement_type": "rubric"
+          }
+        },
+        "output_summary": "2026-07-13 17:09:59 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:09:59 [INFO] ʼִ Seq_Write  (runtime=30s)\r\n2026-07-13 17:10:30 [INFO] Seq_Write : BW=27.20 MB/s, IOPS=207.00, util=56.07%\r\n{\r\n  \"bw_mbps\": 27.2,\r\n  \"iops\": 207.0,\r\n  \"max_iops\": 316,\r\n  \"lat_p999_us\": 376.0,\r\n  \"cpu_sys\": 48.58,\r\n  \"cpu_usr\": 1.86,\r\n  \"emmc_util\": 56.07,\r\n  \"scenario\": \"Seq_Write\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.47\r\n}\r\n\n"
+      },
+      {
+        "item_id": 7,
+        "item_name": "随机读性能",
+        "module_name": "EMMC",
+        "status": "fail",
+        "execution_time": 32,
+        "fail_reason": "Rubrics 评分低于及格线",
+        "extracted_data": {
+          "iops": 1631.0,
+          "judgement": {
+            "status": "fail",
+            "confidence": 1.0,
+            "score": 1,
+            "metrics": {
+              "iops": 1631.0
+            },
+            "evidence": [
+              "iops: 1631.0 -> 得分 1"
+            ],
+            "fail_reason": "Rubrics 评分低于及格线",
+            "suggestions": "",
+            "judgement_type": "rubric"
+          }
+        },
+        "output_summary": "2026-07-13 17:10:32 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:10:32 [INFO] ʼִ Rand_Read  (runtime=30s)\r\n2026-07-13 17:11:03 [INFO] Rand_Read : BW=6.68 MB/s, IOPS=1631.00, util=60.92%\r\n{\r\n  \"bw_mbps\": 6.68,\r\n  \"iops\": 1631.0,\r\n  \"max_iops\": 2231,\r\n  \"lat_p999_us\": 76022.0,\r\n  \"cpu_sys\": 23.96,\r\n  \"cpu_usr\": 5.99,\r\n  \"emmc_util\": 60.92,\r\n  \"scenario\": \"Rand_Read\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.47\r\n}\r\n\n"
+      },
+      {
+        "item_id": 8,
+        "item_name": "随机写性能",
+        "module_name": "EMMC",
+        "status": "pass",
+        "execution_time": 32,
+        "fail_reason": "",
+        "extracted_data": {
+          "iops": 1313.0,
+          "judgement": {
+            "status": "pass",
+            "confidence": 1.0,
+            "score": 2,
+            "metrics": {
+              "iops": 1313.0
+            },
+            "evidence": [
+              "iops: 1313.0 -> 得分 2"
+            ],
+            "fail_reason": "",
+            "suggestions": "",
+            "judgement_type": "rubric"
+          }
+        },
+        "output_summary": "2026-07-13 17:11:05 [INFO] 豸ܹ: arm64-v8a\r\n2026-07-13 17:11:05 [INFO] ʼִ Rand_Write  (runtime=30s)\r\n2026-07-13 17:11:36 [INFO] Rand_Write : BW=5.38 MB/s, IOPS=1313.00, util=70.97%\r\n{\r\n  \"bw_mbps\": 5.38,\r\n  \"iops\": 1313.0,\r\n  \"max_iops\": 1794,\r\n  \"lat_p999_us\": 68682.0,\r\n  \"cpu_sys\": 33.07,\r\n  \"cpu_usr\": 4.68,\r\n  \"emmc_util\": 70.97,\r\n  \"scenario\": \"Rand_Write\",\r\n  \"runtime\": 30,\r\n  \"cost_seconds\": 30.46\r\n}\r\n\n"
+      }
+    ]
+  }
+}

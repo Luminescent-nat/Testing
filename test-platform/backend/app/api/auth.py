@@ -1,0 +1,195 @@
+from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.ext.asyncio import AsyncSession
+from pydantic import BaseModel, Field
+from typing import Optional
+import uuid
+import socket
+import hashlib
+
+from app.database import get_db
+from app.services.auth import (
+    authenticate_user, create_access_token, decode_token,
+    get_password_hash, get_user_by_username, update_last_login, verify_password
+)
+from app.models import User
+from app.schemas import (
+    UserCreate, UserLogin, Token, UserResponse, ResponseModel,
+    UserUpdate, PaginationParams
+)
+
+
+class PasswordChangeRequest(BaseModel):
+    old_password: str = Field(..., min_length=6, max_length=32)
+    new_password: str = Field(..., min_length=6, max_length=32)
+
+router = APIRouter(prefix="/auth", tags=["认证"])
+security = HTTPBearer()
+
+
+def get_pc_identifier(request: Request) -> str:
+    """获取PC唯一标识"""
+    # 使用IP + MAC地址的组合
+    try:
+        hostname = socket.gethostname()
+        ip = socket.gethostbyname(hostname)
+        # 简化实现，实际应该获取MAC地址
+        return f"{ip}-{uuid.getnode()}"
+    except:
+        return str(uuid.uuid4())
+
+
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: AsyncSession = Depends(get_db)
+) -> User:
+    """获取当前登录用户"""
+    token = credentials.credentials
+    payload = decode_token(token)
+    
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="无效的认证凭据",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    username = payload.get("sub")
+    if not username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="无效的认证凭据",
+        )
+    
+    user = await get_user_by_username(db, username)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户不存在",
+        )
+    
+    if user.status != "active":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="用户已被禁用",
+        )
+    
+    return user
+
+
+async def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
+    """检查是否为管理员"""
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="需要管理员权限",
+        )
+    return current_user
+
+
+@router.post("/register", response_model=ResponseModel)
+async def register(
+    user_data: UserCreate,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+    """用户注册。第一个注册用户自动设为 admin，后续用户为普通用户。"""
+    from sqlalchemy import select as sa_select
+
+    # 检查用户名是否已存在
+    existing_user = await get_user_by_username(db, user_data.username)
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="用户名已存在"
+        )
+
+    # 判断是否为第一个用户
+    user_count_result = await db.execute(sa_select(User))
+    is_first_user = user_count_result.scalars().first() is None
+
+    # 创建新用户
+    pc_identifier = get_pc_identifier(request)
+    new_user = User(
+        username=user_data.username,
+        password_hash=get_password_hash(user_data.password),
+        role="admin" if is_first_user else "user",
+        status="active",
+        pc_identifier=pc_identifier
+    )
+
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+
+    return ResponseModel(
+        code=200,
+        message="注册成功",
+        data={
+            "user_id": new_user.id,
+            "username": new_user.username,
+            "role": new_user.role
+        }
+    )
+
+
+@router.post("/login", response_model=ResponseModel)
+async def login(
+    login_data: UserLogin,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+    """用户登录"""
+    user = await authenticate_user(db, login_data.username, login_data.password)
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名或密码错误"
+        )
+    
+    # 更新登录信息
+    pc_identifier = get_pc_identifier(request)
+    await update_last_login(db, user, pc_identifier)
+    
+    # 创建Token
+    access_token, expire = create_access_token(data={"sub": user.username})
+    
+    return ResponseModel(
+        code=200,
+        message="登录成功",
+        data=Token(
+            access_token=access_token,
+            expires_in=3600 * 24,  # 24小时
+            user=UserResponse.model_validate(user)
+        )
+    )
+
+
+@router.get("/me", response_model=ResponseModel)
+async def get_me(current_user: User = Depends(get_current_user)):
+    """获取当前用户信息"""
+    return ResponseModel(
+        code=200,
+        data=UserResponse.model_validate(current_user)
+    )
+
+
+@router.post("/change-password", response_model=ResponseModel)
+async def change_password(
+    data: PasswordChangeRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """修改当前用户密码"""
+    if not verify_password(data.old_password, current_user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="原密码错误"
+        )
+
+    current_user.password_hash = get_password_hash(data.new_password)
+    await db.commit()
+    await db.refresh(current_user)
+
+    return ResponseModel(code=200, message="密码修改成功")

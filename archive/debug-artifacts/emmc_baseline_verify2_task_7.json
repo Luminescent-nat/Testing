@@ -1,0 +1,86 @@
+{
+  "records": [
+    {
+      "id": 17,
+      "task_id": 7,
+      "item_id": 5,
+      "item_name": "顺序读性能",
+      "module_name": "EMMC",
+      "status": "pass",
+      "fail_reason": "",
+      "extracted_data": {
+        "bw_mbps": 174.0,
+        "judgement": {
+          "status": "pass",
+          "confidence": 1.0,
+          "score": 4,
+          "metrics": {
+            "bw_mbps": 174.0
+          },
+          "evidence": [
+            "bw_mbps: 174.0 gte 基线 133.0 (174.0 gte 133.0 -> 满足) -> 得分 4"
+          ],
+          "fail_reason": "",
+          "suggestions": "",
+          "judgement_type": "rubric"
+        },
+        "status": "ok",
+        "scenario": "Seq_Read",
+        "mode": "seq_read",
+        "runtime": 60,
+        "rounds": 3,
+        "iops": 1326.67,
+        "max_iops": 1348.33,
+        "lat_p999_us": 58458.67,
+        "cpu_sys": 19.17,
+        "cpu_usr": 4.83,
+        "emmc_util": 99.57,
+        "round_details": [
+          {
+            "bw_mbps": 174.0,
+            "iops": 1324.0,
+            "max_iops": 1344,
+            "lat_p999_us": 65799.0,
+            "cpu_sys": 19.34,
+            "cpu_usr": 4.64,
+            "emmc_util": 99.55,
+            "scenario": "Seq_Read",
+            "round": 1,
+            "runtime": 60,
+            "cost_seconds": 60.47
+          },
+          {
+            "bw_mbps": 174.0,
+            "iops": 1327.0,
+            "max_iops": 1344,
+            "lat_p999_us": 53740.0,
+            "cpu_sys": 19.36,
+            "cpu_usr": 4.73,
+            "emmc_util": 99.75,
+            "scenario": "Seq_Read",
+            "round": 2,
+            "runtime": 60,
+            "cost_seconds": 60.46
+          },
+          {
+            "bw_mbps": 174.0,
+            "iops": 1329.0,
+            "max_iops": 1357,
+            "lat_p999_us": 55837.0,
+            "cpu_sys": 18.81,
+            "cpu_usr": 5.13,
+            "emmc_util": 99.42,
+            "scenario": "Seq_Read",
+            "round": 3,
+            "runtime": 60,
+            "cost_seconds": 60.71
+          }
+        ]
+      },
+      "execution_time": 184,
+      "started_at": "2026-07-14T00:44:22.929053",
+      "completed_at": "2026-07-14T00:47:27.064985",
+      "output": "2026-07-14 08:44:25 [INFO] 设备架构: arm64-v8a\r\n2026-07-14 08:44:25 [INFO] 执行 Seq_Read 第 1/3 轮 (runtime=60s)...\r\n2026-07-14 08:45:25 [INFO]   第 1 轮: BW=174.00 MB/s, IOPS=1324.00\r\n2026-07-14 08:45:25 [INFO] 执行 Seq_Read 第 2/3 轮 (runtime=60s)...\r\n2026-07-14 08:46:26 [INFO]   第 2 轮: BW=174.00 MB/s, IOPS=1327.00\r\n2026-07-14 08:46:26 [INFO] 执行 Seq_Read 第 3/3 轮 (runtime=60s)...\r\n2026-07-14 08:47:27 [INFO]   第 3 轮: BW=174.00 MB/s, IOPS=1329.00\r\n2026-07-14 08:47:27 [INFO] Seq_Read 聚合完成: BW=174.00 MB/s, IOPS=1326.67, util=99.57%\r\n{\r\n  \"status\": \"ok\",\r\n  \"scenario\": \"Seq_Read\",\r\n  \"mode\": \"seq_read\",\r\n  \"runtime\": 60,\r\n  \"rounds\": 3,\r\n  \"bw_mbps\": 174.0,\r\n  \"iops\": 1326.67,\r\n  \"max_iops\": 1348.33,\r\n  \"lat_p999_us\": 58458.67,\r\n  \"cpu_sys\": 19.17,\r\n  \"cpu_usr\": 4.83,\r\n  \"emmc_util\": 99.57,\r\n  \"round_details\": [\r\n    {\r\n      \"bw_mbps\": 174.0,\r\n      \"iops\": 1324.0,\r\n      \"max_iops\": 1344,\r\n      \"lat_p999_us\": 65799.0,\r\n      \"cpu_sys\": 19.34,\r\n      \"cpu_usr\": 4.64,\r\n      \"emmc_util\": 99.55,\r\n      \"scenario\": \"Seq_Read\",\r\n      \"round\": 1,\r\n      \"runtime\": 60,\r\n      \"cost_seconds\": 60.47\r\n    },\r\n    {\r\n      \"bw_mbps\": 174.0,\r\n      \"iops\": 1327.0,\r\n      \"max_iops\": 1344,\r\n      \"lat_p999_us\": 53740.0,\r\n      \"cpu_sys\": 19.36,\r\n      \"cpu_usr\": 4.73,\r\n      \"emmc_util\": 99.75,\r\n      \"scenario\": \"Seq_Read\",\r\n      \"round\": 2,\r\n      \"runtime\": 60,\r\n      \"cost_seconds\": 60.46\r\n    },\r\n    {\r\n      \"bw_mbps\": 174.0,\r\n      \"iops\": 1329.0,\r\n      \"max_iops\": 1357,\r\n      \"lat_p999_us\": 55837.0,\r\n      \"cpu_sys\": 18.81,\r\n      \"cpu_usr\": 5.13,\r\n      \"emmc_util\": 99.42,\r\n      \"scenario\": \"Seq_Read\",\r\n      \"round\": 3,\r\n      \"runtime\": 60,\r\n      \"cost_seconds\": 60.71\r\n    }\r\n  ]\r\n}\r\n\n"
+    }
+  ]
+}

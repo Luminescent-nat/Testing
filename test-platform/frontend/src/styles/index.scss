@@ -1,0 +1,189 @@
+// 通用样式
+
+// 页面容器
+.page-container {
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+  background-color: var(--tp-bg-page);
+}
+
+// 卡片样式
+.app-card {
+  background-color: var(--tp-bg-elevated);
+  border-radius: 12px;
+  border: 1px solid var(--tp-border);
+  box-shadow: var(--tp-shadow-sm);
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: var(--tp-shadow);
+  }
+}
+
+// 数据卡片
+.stat-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--tp-primary) 0%, var(--tp-primary-light) 100%);
+  color: white;
+  box-shadow: var(--tp-shadow);
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+}
+
+// 表格样式
+.app-table {
+  background-color: var(--tp-bg-elevated);
+
+  .el-table__header {
+    background-color: var(--tp-bg-page);
+  }
+
+  th {
+    background-color: var(--tp-bg-page) !important;
+    color: var(--tp-text);
+    font-weight: 600;
+  }
+
+  td {
+    color: var(--tp-text-secondary);
+  }
+}
+
+// 表单样式
+.app-form {
+  .el-form-item__label {
+    color: var(--tp-text);
+  }
+}
+
+// 按钮组
+.app-button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+// 搜索栏
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: var(--tp-bg-elevated);
+  border-radius: 12px;
+  border: 1px solid var(--tp-border);
+}
+
+// 状态标签
+.status-tag {
+  &.online {
+    color: var(--tp-success);
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  &.offline {
+    color: var(--tp-text-tertiary);
+    background-color: rgba(148, 163, 184, 0.1);
+  }
+
+  &.testing {
+    color: var(--tp-warning);
+    background-color: rgba(245, 158, 11, 0.1);
+  }
+
+  &.pass {
+    color: var(--tp-success);
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  &.fail {
+    color: var(--tp-danger);
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+}
+
+// 布局样式
+.layout-container {
+  min-height: 100vh;
+
+  .el-header {
+    background-color: var(--tp-bg-elevated);
+    border-bottom: 1px solid var(--tp-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .el-aside {
+    background-color: var(--tp-bg-elevated);
+    border-right: 1px solid var(--tp-border);
+  }
+
+  .el-main {
+    background-color: var(--tp-bg-page);
+    padding: 0;
+  }
+}
+
+// 导航菜单
+.app-menu {
+  border-right: none;
+  background-color: transparent;
+
+  .el-menu-item,
+  .el-sub-menu__title {
+    color: var(--tp-text-secondary);
+
+    &:hover {
+      background-color: var(--tp-bg-page);
+    }
+
+    &.is-active {
+      color: var(--tp-primary);
+      background-color: var(--tp-primary-soft);
+    }
+  }
+}
+
+// 分页样式
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding: 15px 0;
+}
+
+// 动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(-20px);
+}
+
+.slide-leave-to {
+  transform: translateX(20px);
+}

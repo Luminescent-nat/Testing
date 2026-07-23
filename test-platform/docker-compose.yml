@@ -1,0 +1,27 @@
+# Docker Compose v2（使用 `docker compose` 命令，无需 version 字段）
+# 用法：
+#   docker compose up -d --build      # 构建并启动
+#   docker compose logs -f app        # 查看日志
+#   docker compose down               # 停止
+#
+# 首次部署若需迁移现有数据（详见 DEPLOYMENT.md）：
+#   mkdir -p data/storage
+#   cp backend/test_platform.db data/
+#   cp -r backend/storage/* data/storage/
+
+services:
+  app:
+    build: .
+    container_name: test-platform
+    ports:
+      - "8000:8000"
+    volumes:
+      # SQLite 数据库 + 上传文件/报告/测试日志，持久化到宿主机 ./data
+      # 容器内路径由 Dockerfile 中的 DATABASE_URL / STORAGE_PATH 等环境变量固定为 /data
+      - ./data:/data
+    environment:
+      # 生产环境务必修改（也可放入 .env 文件，compose 会自动读取）
+      - SECRET_KEY=${SECRET_KEY:-please-change-me-in-production}
+    restart: unless-stopped
+    # 若被测 Android 设备通过 USB 直挂服务器（非常规做法，推荐网络 adb），取消下行注释：
+    # privileged: true   # 并确认宿主机 /dev/bus/usb 可被容器访问

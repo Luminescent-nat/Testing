@@ -1,0 +1,118 @@
+// ==================== 主题变量定义 ====================
+
+:root,
+.light {
+  // 品牌色
+  --tp-primary: #2563eb;
+  --tp-primary-light: #3b82f6;
+  --tp-primary-dark: #1d4ed8;
+  --tp-primary-soft: rgba(37, 99, 235, 0.1);
+
+  // Element Plus 主色覆盖
+  --el-color-primary: #2563eb;
+
+  // 背景色
+  --tp-bg: #f8fafc;
+  --tp-bg-page: #f1f5f9;
+  --tp-bg-elevated: #ffffff;
+  --tp-bg-overlay: rgba(255, 255, 255, 0.85);
+
+  // 文字色
+  --tp-text: #0f172a;
+  --tp-text-secondary: #475569;
+  --tp-text-tertiary: #94a3b8;
+  --tp-text-inverse: #ffffff;
+
+  // 边框与分割线
+  --tp-border: #e2e8f0;
+  --tp-border-light: #f1f5f9;
+  --tp-divider: #e2e8f0;
+
+  // 阴影
+  --tp-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --tp-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+  --tp-shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
+  --tp-shadow-glow: 0 0 40px rgba(37, 99, 235, 0.15);
+
+  // 状态色
+  --tp-success: #10b981;
+  --tp-warning: #f59e0b;
+  --tp-danger: #ef4444;
+  --tp-info: #0ea5e9;
+}
+
+.dark {
+  // 品牌色
+  --tp-primary: #3b82f6;
+  --tp-primary-light: #60a5fa;
+  --tp-primary-dark: #2563eb;
+  --tp-primary-soft: rgba(59, 130, 246, 0.15);
+
+  // Element Plus 主色覆盖
+  --el-color-primary: #3b82f6;
+
+  // 背景色
+  --tp-bg: #0f172a;
+  --tp-bg-page: #020617;
+  --tp-bg-elevated: #1e293b;
+  --tp-bg-overlay: rgba(15, 23, 42, 0.85);
+
+  // 文字色
+  --tp-text: #f8fafc;
+  --tp-text-secondary: #cbd5e1;
+  --tp-text-tertiary: #64748b;
+  --tp-text-inverse: #0f172a;
+
+  // 边框与分割线
+  --tp-border: #1e293b;
+  --tp-border-light: #0f172a;
+  --tp-divider: #1e293b;
+
+  // 阴影
+  --tp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --tp-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --tp-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --tp-shadow-glow: 0 0 60px rgba(59, 130, 246, 0.25);
+
+  // 状态色
+  --tp-success: #34d399;
+  --tp-warning: #fbbf24;
+  --tp-danger: #f87171;
+  --tp-info: #38bdf8;
+}
+
+// ==================== 全局基础样式 ====================
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: var(--tp-bg-page);
+  color: var(--tp-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tp-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tp-text-tertiary);
+}
