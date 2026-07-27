@@ -11,9 +11,10 @@ UPFM 模块 T1 自动化测试项幂等导入脚本。
 - WiFi/蓝牙开关倒数，飞行模式最后（会断网，执行后恢复关闭并重新打开 WiFi/蓝牙）。
 
 用法（在 backend 目录下执行）:
-    python scripts/import_upfm_items.py
+    python scripts/import_upfm_items.py [--module-id 7]
 """
 
+import argparse
 import asyncio
 import sys
 
@@ -24,12 +25,12 @@ from sqlalchemy import select
 from app.database import AsyncSessionLocal
 from app.models import TestItem, TestModule, User
 
-MODULE_ID = 7
-HOST_TOOL_DIR = "D:/MCTEST/test-platform/test-tools"
+# host_tool_dir 不在此硬编码：执行引擎会自动将 {host_tool_dir} 解析为
+# 配置项 TEST_TOOLS_PATH（默认 ../test-tools）的绝对路径。
 
 # host_exec 项统一判定：runner 输出 RESULT: PASS / RESULT: FAIL 标记
 HOST_RESULT_PARSE = {"pass_pattern": "RESULT: PASS", "fail_pattern": "RESULT: FAIL"}
-HOST_PARAMS = {"host_tool_dir": HOST_TOOL_DIR}
+HOST_PARAMS = {}
 
 # 板级默认值（rk3568 FE7G28V8TEST 实机实测，换板时在任务创建页改参数）
 CPU_FREQS = "408000 600000 816000 1104000 1416000 1608000 1800000 1992000"
@@ -569,11 +570,11 @@ UPSERT_FIELDS = [
 ]
 
 
-async def main():
+async def main(module_id: int):
     async with AsyncSessionLocal() as db:
-        module = await db.get(TestModule, MODULE_ID)
+        module = await db.get(TestModule, module_id)
         if not module:
-            print(f"错误: 测试模块 id={MODULE_ID} 不存在")
+            print(f"错误: 测试模块 id={module_id} 不存在")
             sys.exit(1)
         print(f"目标模块: id={module.id} name={module.name}")
 
@@ -588,7 +589,7 @@ async def main():
         for idx, data in enumerate(items, start=1):
             result = await db.execute(
                 select(TestItem).where(
-                    TestItem.module_id == MODULE_ID, TestItem.name == data["name"]
+                    TestItem.module_id == module_id, TestItem.name == data["name"]
                 )
             )
             item = result.scalar_one_or_none()
@@ -606,7 +607,7 @@ async def main():
                         setattr(item, field, row[field])
                 updated += 1
             else:
-                item = TestItem(module_id=MODULE_ID, created_by=created_by, **row)
+                item = TestItem(module_id=module_id, created_by=created_by, **row)
                 db.add(item)
                 created += 1
             await db.flush()
@@ -620,4 +621,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(description="UPFM 模块 T1 测试项幂等导入")
+    parser.add_argument("--module-id", type=int, default=7,
+                        help="目标测试模块 ID（默认 7，可在平台模块管理页查看）")
+    args = parser.parse_args()
+    asyncio.run(main(args.module_id))

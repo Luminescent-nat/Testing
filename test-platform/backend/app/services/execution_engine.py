@@ -19,6 +19,20 @@ from app.config import get_settings
 
 settings = get_settings()
 
+# 自定义参数值中禁止出现的 shell 元字符（防命令注入）。
+# 用户在创建任务时提交的 custom_parameters 会被原样拼入 shell 命令串，
+# 允许字母数字与常见路径/URL字符，拒绝可改变命令结构的元字符。
+FORBIDDEN_PARAM_CHARS = set('`$&|;<>"\'\n\r')
+
+
+def validate_custom_param_value(value: Any) -> Optional[str]:
+    """校验用户提交的自定义参数值，含有 shell 元字符时返回错误信息，合法返回 None。"""
+    text = str(value)
+    bad = sorted(FORBIDDEN_PARAM_CHARS & set(text))
+    if bad:
+        return f"参数值包含非法字符 {' '.join(bad)}（为防止命令注入，禁止 shell 元字符）"
+    return None
+
 
 async def _emit_output(on_output: Optional[Callable[[str], Any]], text: str):
     """调用实时输出回调（同步/异步均可），on_output 为 None 时跳过。"""
@@ -109,6 +123,9 @@ class ExecutionEngine(ABC):
         """渲染设备画像参数与自定义参数，替换命令中的 {placeholder} 占位符。
 
         合并顺序：设备画像渲染参数 < custom_params < extra_params（后者覆盖前者）。
+        - {host_tool_dir} 未显式提供时，默认解析为配置 TEST_TOOLS_PATH 的绝对路径，
+          测试项无需再硬编码绝对路径；
+        - custom_params 来自用户任务创建请求，做 shell 元字符校验，防止命令注入。
         返回替换后的命令（可能仍含未替换占位符，由 _check_placeholders 检查）。
         """
         command = item.exec_command
@@ -116,6 +133,15 @@ class ExecutionEngine(ABC):
         params = {**rendered_params, **(custom_params or {})}
         if extra_params:
             params.update(extra_params)
+
+        if "host_tool_dir" not in params:
+            params["host_tool_dir"] = os.path.abspath(settings.TEST_TOOLS_PATH)
+
+        if custom_params:
+            for key, value in custom_params.items():
+                error = validate_custom_param_value(value)
+                if error:
+                    raise ValueError(f"自定义参数 {key} 校验失败: {error}")
 
         for key, value in params.items():
             command = command.replace(f"{{{key}}}", str(value))

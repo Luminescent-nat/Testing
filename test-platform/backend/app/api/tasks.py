@@ -13,7 +13,7 @@ from app.schemas import (
     TestRecordResponse, TestRecordDetail, ResponseModel, TaskStatus
 )
 from app.services.device import DeviceService
-from app.services.execution_engine import EngineFactory
+from app.services.execution_engine import EngineFactory, validate_custom_param_value
 from app.services.task_executor import TaskExecutor
 from app.services.scheduler import compute_next_run, SCHEDULE_IMMEDIATE, SCHEDULE_ONCE
 
@@ -48,6 +48,12 @@ async def create_task(
         item = result.scalar_one_or_none()
         if not item:
             raise HTTPException(status_code=404, detail=f"测试项不存在: {item_id}")
+
+    # 自定义参数安全校验：值会拼入 shell 命令，拒绝 shell 元字符（防命令注入）
+    for key, value in (task_data.custom_parameters or {}).items():
+        error = validate_custom_param_value(value)
+        if error:
+            raise HTTPException(status_code=400, detail=f"参数 {key} 不合法: {error}")
     
     # 调度配置：immediate 创建后立即启动；once/daily 计算下次触发时间，
     # 任务保持 pending，由后台调度器到期启动

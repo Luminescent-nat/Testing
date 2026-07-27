@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.database import init_db, close_db, AsyncSessionLocal
-from app.api import auth, users, devices, modules, tasks, reports, ai_tasks, memory, tools, knowledge, records
+from app.api import auth, users, devices, modules, tasks, reports, ai_tasks, memory, tools, knowledge, records, dashboard
 from app import websocket
 from app.models import Device, TestRecord, TestTask
 from app.seed_data import seed_default_data
@@ -98,6 +98,11 @@ async def device_heartbeat_loop():
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     # 启动时执行
+    if not settings.SECRET_KEY:
+        raise RuntimeError(
+            "SECRET_KEY 未配置，应用拒绝启动。请在 backend/.env 中设置随机密钥，例如：\n"
+            "  python -c \"import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))\" >> .env"
+        )
     await init_db()
     print("数据库初始化完成")
 
@@ -133,11 +138,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS配置
+# CORS配置：前后端同源部署时无需放开跨域；ALLOWED_ORIGINS 为空则仅同源可访问。
+# 注意 allow_origins=["*"] 与 allow_credentials=True 是危险且无效的组合，禁止使用。
+_allowed_origins = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=_allowed_origins,
+    allow_credentials=bool(_allowed_origins),
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -169,6 +176,7 @@ app.include_router(ai_tasks.router, prefix="/api/v1")
 app.include_router(memory.router, prefix="/api/v1")
 app.include_router(tools.router, prefix="/api/v1")
 app.include_router(knowledge.router, prefix="/api/v1")
+app.include_router(dashboard.router, prefix="/api/v1")
 app.include_router(websocket.router)
 
 

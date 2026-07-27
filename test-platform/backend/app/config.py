@@ -13,9 +13,20 @@ class Settings(BaseSettings):
     PORT: int = 8000
     
     # 安全配置
-    SECRET_KEY: str = "your-secret-key-here-change-in-production"
+    # SECRET_KEY 无默认值：必须通过环境变量或 .env 配置，否则应用拒绝启动
+    # （start_windows.bat 首次运行会自动生成随机密钥写入 backend/.env）。
+    SECRET_KEY: str = ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24小时
+
+    # 开放注册开关：关闭时仅允许首个用户注册（自动成为 admin），
+    # 后续账号由 admin 在用户管理中创建；开启后任何人可注册普通账号。
+    REGISTRATION_ENABLED: bool = False
+
+    # CORS 允许源（逗号分隔）。平台前后端同源部署，默认为空即不放开跨域；
+    # 仅在前后端分离部署（如独立前端服务器）时才需要配置，例如：
+    # ALLOWED_ORIGINS=http://192.168.1.10:3000,http://192.168.1.10:8080
+    ALLOWED_ORIGINS: str = ""
     
     # 数据库配置（默认 SQLite，生产环境可切换为 PostgreSQL）
     DATABASE_URL: str = "sqlite+aiosqlite:///./test_platform.db"
@@ -34,6 +45,9 @@ class Settings(BaseSettings):
     REPORTS_PATH: str = "./storage/reports"
     LOGS_PATH: str = "./storage/logs"  # 测试记录实时日志文件根目录
     MAX_UPLOAD_SIZE: int = 100 * 1024 * 1024  # 100MB
+
+    # 测试工具根目录（host_exec 类测试项的 {host_tool_dir} 默认解析为该目录的绝对路径）
+    TEST_TOOLS_PATH: str = "../test-tools"
 
     # 前端静态文件目录：裸机默认相对 backend 工作目录指向 frontend/dist；
     # Docker 镜像内产物在 /app/static，通过环境变量 STATIC_PATH=static 覆盖。

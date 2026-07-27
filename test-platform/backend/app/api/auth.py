@@ -3,10 +3,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel, Field
 from typing import Optional
-import uuid
-import socket
-import hashlib
 
+from app.config import get_settings
 from app.database import get_db
 from app.services.auth import (
     authenticate_user, create_access_token, decode_token,
@@ -28,15 +26,18 @@ security = HTTPBearer()
 
 
 def get_pc_identifier(request: Request) -> str:
-    """获取PC唯一标识"""
-    # 使用IP + MAC地址的组合
-    try:
-        hostname = socket.gethostname()
-        ip = socket.gethostbyname(hostname)
-        # 简化实现，实际应该获取MAC地址
-        return f"{ip}-{uuid.getnode()}"
-    except:
-        return str(uuid.uuid4())
+    """获取客户端 PC 唯一标识。
+
+    前端首次访问时生成 UUID 存入 localStorage，之后所有请求通过
+    X-PC-Identifier 请求头上报；设备按该标识归属到具体操作人员的电脑。
+    缺失时退化为客户端 IP（兜底，不能保证严格隔离）。
+    """
+    identifier = request.headers.get("X-PC-Identifier")
+    if identifier:
+        return identifier.strip()[:255]
+    if request.client:
+        return f"ip-{request.client.host}"
+    return "unknown"
 
 
 async def get_current_user(
@@ -107,6 +108,14 @@ async def register(
     # 判断是否为第一个用户
     user_count_result = await db.execute(sa_select(User))
     is_first_user = user_count_result.scalars().first() is None
+
+    # 注册开关：首个用户（自动成为 admin）始终允许注册；
+    # 之后仅当 REGISTRATION_ENABLED=true 才开放自助注册，否则由 admin 创建账号。
+    if not is_first_user and not get_settings().REGISTRATION_ENABLED:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="注册已关闭，请联系管理员创建账号"
+        )
 
     # 创建新用户
     pc_identifier = get_pc_identifier(request)

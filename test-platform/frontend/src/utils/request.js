@@ -57,6 +57,19 @@ const getFriendlyError = (rawMessage) => {
   return rawMessage
 }
 
+// 客户端 PC 唯一标识：首次访问生成 UUID 持久化，所有请求通过
+// X-PC-Identifier 上报，后端据此做设备归属隔离（普通用户只见本机设备）。
+const PC_IDENTIFIER_KEY = 'pc_identifier'
+export const getPcIdentifier = () => {
+  let id = localStorage.getItem(PC_IDENTIFIER_KEY)
+  if (!id) {
+    id = (crypto.randomUUID && crypto.randomUUID()) ||
+      `pc-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`
+    localStorage.setItem(PC_IDENTIFIER_KEY, id)
+  }
+  return id
+}
+
 // 创建axios实例
 const request = axios.create({
   baseURL: '/api/v1',
@@ -73,6 +86,7 @@ request.interceptors.request.use(
     if (userStore.token) {
       config.headers.Authorization = `Bearer ${userStore.token}`
     }
+    config.headers['X-PC-Identifier'] = getPcIdentifier()
     return config
   },
   (error) => {

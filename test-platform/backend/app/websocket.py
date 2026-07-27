@@ -159,6 +159,25 @@ async def task_progress_websocket(
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="token 无效")
         return
 
+    # 任务归属校验：仅任务创建者或管理员可订阅该任务的进度与日志
+    username = payload.get("sub")
+    async with AsyncSessionLocal() as db:
+        from app.models import User
+        user_result = await db.execute(select(User).where(User.username == username))
+        user = user_result.scalar_one_or_none()
+        task_result = await db.execute(select(TestTask).where(TestTask.id == task_id))
+        task = task_result.scalar_one_or_none()
+
+    if not user:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="用户不存在")
+        return
+    if not task:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="任务不存在")
+        return
+    if user.role != "admin" and task.user_id != user.id:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="无权访问该任务")
+        return
+
     await progress_manager.connect(task_id, websocket)
 
     try:

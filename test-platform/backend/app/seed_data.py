@@ -23,9 +23,45 @@ async def seed_default_data(db: AsyncSession):
     # 不再自动创建示例设备，避免产生虚构测试数据。
     # 真实设备通过 /api/v1/devices/refresh 接口发现并同步。
     # await _seed_sample_device(db, user)
-    await _seed_default_tools(db, user_id)
+    await _cleanup_legacy_fake_data(db)
     await _seed_default_modules_and_items(db, user_id)
     await FailurePatternService.seed_default_patterns(db, user_id)
+
+
+async def _cleanup_legacy_fake_data(db: AsyncSession):
+    """清理历史版本遗留的虚假/硬编码数据（幂等，失败只记日志不影响启动）。
+
+    - 删除占位 memtester 工具及其"DDR 压力测试"用例：该工具内容只是 echo "ok"，
+      不真测内存也永远 PASS，会产生虚假测试结论；
+    - 剥离测试项 parameters 中硬编码的 host_tool_dir 绝对路径：
+      引擎现在会自动将 {host_tool_dir} 解析为 TEST_TOOLS_PATH 配置目录。
+    """
+    try:
+        result = await db.execute(
+            select(TestItem).where(TestItem.name == "DDR 压力测试")
+        )
+        for item in result.scalars().all():
+            await db.delete(item)
+            logger.info("删除虚假测试项: DDR 压力测试 (id=%s)", item.id)
+
+        result = await db.execute(select(TestTool).where(TestTool.name == "memtester"))
+        for tool in result.scalars().all():
+            await db.delete(tool)
+            logger.info("删除占位测试工具: memtester (id=%s)", tool.id)
+
+        result = await db.execute(select(TestItem))
+        for item in result.scalars().all():
+            params = item.parameters or {}
+            host_dir = params.get("host_tool_dir")
+            if host_dir and os.path.isabs(str(host_dir)):
+                params = {k: v for k, v in params.items() if k != "host_tool_dir"}
+                item.parameters = params
+                logger.info("剥离测试项硬编码 host_tool_dir: %s (id=%s)", item.name, item.id)
+
+        await db.commit()
+    except Exception:
+        logger.exception("历史数据清理失败（不影响启动）")
+        await db.rollback()
 
 
 async def _seed_sample_device(db: AsyncSession, user: User):
@@ -66,49 +102,6 @@ async def _seed_sample_device(db: AsyncSession, user: User):
     await db.commit()
 
 
-async def _seed_default_tools(db: AsyncSession, user_id: int):
-    """初始化默认测试工具（占位文件），供 push_exec 用例使用。"""
-    tools_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "storage", "tools")
-    os.makedirs(tools_dir, exist_ok=True)
-
-    tools = [
-        {
-            "name": "memtester",
-            "filename": "memtester",
-            "description": "DDR 压力测试工具占位文件（真实环境请替换为对应架构二进制）",
-            "file_path": os.path.join(tools_dir, "memtester"),
-            "architecture": "arm64-v8a"
-        }
-    ]
-
-    for tool_data in tools:
-        result = await db.execute(select(TestTool).where(TestTool.name == tool_data["name"]))
-        existing = result.scalar_one_or_none()
-
-        # 确保占位文件存在（使用 LF 换行，避免 adb shell 解析 shebang 失败）
-        if not os.path.exists(tool_data["file_path"]):
-            with open(tool_data["file_path"], "wb") as f:
-                # 占位脚本：模拟 memtester 通过输出，后续请替换为对应架构真实二进制
-                f.write(b"#!/system/bin/sh\necho \"ok\"\n")
-
-        if existing:
-            continue
-
-        tool = TestTool(
-            name=tool_data["name"],
-            description=tool_data["description"],
-            filename=tool_data["filename"],
-            version="1.0",
-            architecture=tool_data.get("architecture"),
-            file_size=os.path.getsize(tool_data["file_path"]),
-            file_path=tool_data["file_path"],
-            created_by=user_id
-        )
-        db.add(tool)
-        logger.info("创建测试工具: %s", tool.name)
-    await db.commit()
-
-
 async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
     """初始化默认测试模块与用例模板。"""
 
@@ -126,17 +119,6 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "tags": ["functional"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "MemTotal"}
-                },
-                {
-                    "name": "DDR 压力测试",
-                    "description": "使用 memtester 进行内存压力测试",
-                    "exec_type": "push_exec",
-                    "exec_command": "{tool} {size} 1",
-                    "parameters": {"size": "{device.ddr_info.total_mb // 4}M"},
-                    "tool_name": "memtester",
-                    "tags": ["stress", "stability"],
-                    "judgement_type": "assertion",
-                    "result_parse": {"pass_pattern": "ok", "fail_pattern": "failure|error"}
                 }
             ]
         },
@@ -159,7 +141,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "通过 mmc_utils 读取 eMMC 扩展寄存器信息",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_extcsd_runner.py\" --serial {serial}",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["functional"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "mmc_node"},
@@ -170,7 +152,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio --rw=read --bs=128k --iodepth=64 --runtime=60 --rounds=3",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_fio_runner.py\" --serial {serial} --mode seq_read --runtime 60 --rounds 3",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["performance"],
                     "judgement_type": "rubric",
                     "rubric_criteria": {
@@ -196,7 +178,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio --rw=write --bs=128k --iodepth=64 --runtime=60 --rounds=3",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_fio_runner.py\" --serial {serial} --mode seq_write --runtime 60 --rounds 3",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["performance"],
                     "judgement_type": "rubric",
                     "rubric_criteria": {
@@ -222,7 +204,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio --rw=randread --bs=4k --iodepth=64 --runtime=60 --rounds=3",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_fio_runner.py\" --serial {serial} --mode rand_read --runtime 60 --rounds 3",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["performance"],
                     "judgement_type": "rubric",
                     "rubric_criteria": {
@@ -248,7 +230,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio --rw=randwrite --bs=4k --iodepth=64 --runtime=60 --rounds=3",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_fio_runner.py\" --serial {serial} --mode rand_write --runtime 60 --rounds 3",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["performance"],
                     "judgement_type": "rubric",
                     "rubric_criteria": {
@@ -274,7 +256,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio stability --rw=read --bs=128k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_stability_runner.py\" --serial {serial} --mode seq_read --runtime 300 --rounds 1",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["stability", "curve"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "status"},
@@ -285,7 +267,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio stability --rw=write --bs=128k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_stability_runner.py\" --serial {serial} --mode seq_write --runtime 300 --rounds 1",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["stability", "curve"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "status"},
@@ -296,7 +278,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio stability --rw=randread --bs=4k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_stability_runner.py\" --serial {serial} --mode rand_read --runtime 300 --rounds 1",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["stability", "curve"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "status"},
@@ -307,7 +289,7 @@ async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
                     "description": "fio stability --rw=randwrite --bs=4k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定",
                     "exec_type": "host_exec",
                     "exec_command": "python \"{host_tool_dir}/emmc/host/emmc_stability_runner.py\" --serial {serial} --mode rand_write --runtime 300 --rounds 1",
-                    "parameters": {"host_tool_dir": "D:/MCTEST/test-platform/test-tools"},
+                    "parameters": {},
                     "tags": ["stability", "curve"],
                     "judgement_type": "assertion",
                     "result_parse": {"pass_pattern": "status"},

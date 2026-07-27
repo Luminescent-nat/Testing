@@ -25,7 +25,7 @@
           <div class="stat-icon"><el-icon :size="28"><TrendCharts /></el-icon></div>
           <div class="stat-content">
             <div class="stat-label">通过率</div>
-            <div class="stat-value">{{ stats.passRate }}%</div>
+            <div class="stat-value">{{ stats.passRate === null ? '--' : stats.passRate + '%' }}</div>
           </div>
         </div>
       </el-col>
@@ -187,6 +187,7 @@ import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/compon
 import { CanvasRenderer } from 'echarts/renderers'
 import { getDevices, getTasks, refreshDevices as refreshDevicesApi } from '@/api'
 import { getStatsTrend, getStatsByModule } from '@/api/report'
+import { getDashboardStats } from '@/api/dashboard'
 import { formatDateTime } from '@/utils/datetime'
 
 use([LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
@@ -194,7 +195,7 @@ use([LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, Canv
 const stats = ref({
   onlineDevices: 0,
   todayTasks: 0,
-  passRate: 0,
+  passRate: null,
   failedTasks: 0
 })
 
@@ -301,17 +302,27 @@ const refreshDevices = async () => {
   }
 }
 
+// 头部统计卡片：服务端按真实口径聚合（普通用户仅统计自己的任务与设备）
+const fetchStats = async () => {
+  try {
+    const res = await getDashboardStats()
+    if (res.code === 200) {
+      stats.value.todayTasks = res.data.today.tasks
+      stats.value.passRate = res.data.today.pass_rate
+      stats.value.failedTasks = res.data.today.failed
+      stats.value.onlineDevices = res.data.devices.online
+    }
+  } catch (error) {
+    console.error('获取仪表盘统计失败:', error)
+  }
+}
+
 const fetchTasks = async () => {
   try {
     const res = await getTasks({ page_size: 5 })
     if (res.code === 200) {
+      // 仅用于"最近测试"列表展示，头部统计数字由 fetchStats 提供
       recentTasks.value = res.data.items || []
-      stats.value.todayTasks = recentTasks.value.length
-      const total = recentTasks.value.length
-      const passed = recentTasks.value.filter(t => t.status === 'completed').length
-      const failed = recentTasks.value.filter(t => t.status === 'failed').length
-      stats.value.passRate = total ? Math.round((passed / total) * 100) : 0
-      stats.value.failedTasks = failed
     }
   } catch (error) {
     console.error('获取任务失败:', error)
@@ -345,6 +356,7 @@ const formatTime = (time) => {
 onMounted(() => {
   refreshDevices()
   fetchTasks()
+  fetchStats()
   fetchTrend()
   fetchModuleStats()
 })

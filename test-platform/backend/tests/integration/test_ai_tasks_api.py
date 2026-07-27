@@ -19,7 +19,7 @@ async def test_ai_task_natural_ddr(
     response = await client.post(
         "/api/v1/ai/tasks/natural",
         headers={"Authorization": f"Bearer {admin_token}"},
-        json={"text": "对 rk3568 设备做 DDR 稳定性测试"},
+        json={"text": "对 rk3568 设备做 DDR 功能测试"},
     )
     if response.status_code != 200:
         print("AI TASK RESPONSE:", response.status_code, response.text)
