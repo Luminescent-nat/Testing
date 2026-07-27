@@ -28,4 +28,9 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
   },
+  // vitest 单元测试（npm test）：node 环境，浏览器全局按需在各用例中 mock
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.js'],
+  },
 })

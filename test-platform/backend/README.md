@@ -50,7 +50,9 @@ backend/
 │   ├── websocket.py         # WebSocket 进度推送
 │   ├── seed_data.py         # 默认数据初始化
 │   └── main.py              # 应用入口
-├── scripts/                 # 维护脚本（迁移/E2E 管理员）
+├── scripts/                 # 维护脚本（E2E 管理员）
+├── alembic/                 # alembic 迁移环境（env.py + versions/ 基线迁移）
+├── alembic.ini              # alembic 配置（URL 从 DATABASE_URL 环境变量读取）
 ├── storage/                 # 文件存储
 │   ├── tools/               # push_exec 使用的工具文件
 │   ├── logs/                # 测试执行日志（task_{id}/record_{id}.log）
@@ -173,13 +175,20 @@ python scripts/ensure_e2e_admin.py
 
 该脚本会创建/更新 `e2e-admin / e2e-admin-pass` 管理员账号。
 
-对已有老库升级表结构（新增任务调度字段 schedule_type / scheduled_time / next_run_at），执行迁移脚本：
+对已有老库升级表结构，统一走 alembic 迁移（`alembic/` 目录，`alembic.ini` 为配置）：
 
 ```bash
-python scripts/migrate_add_schedule_fields.py
+# 存量库升级到最新结构（URL 从环境变量 DATABASE_URL 读取，未设置时用 app 默认）
+alembic upgrade head
+
+# 全新库由 create_all 建表后，标记为最新基线，避免 upgrade 重复建表
+alembic stamp head
+
+# models 变更后生成新迁移脚本
+alembic revision --autogenerate -m "描述变更"
 ```
 
-`scripts/` 下另有知识库、测试项标准字段等历史迁移脚本，按需执行。
+历史的手写 `migrate_*.py` 迁移脚本已移除，统一由 alembic 基线（`alembic/versions/`）接管。
 
 ### 3. 启动服务
 

@@ -30,10 +30,6 @@ ENV PYTHONUNBUFFERED=1 \
 # 系统依赖：
 # - adb：后端通过 subprocess 直接调用 adb CLI（backend/app/services/device.py），必须安装。
 #   容器内 adb 连接设备的方式（网络 adb / 宿主机 adb server）见 DEPLOYMENT.md。
-# - weasyprint（requirements.txt 中声明但代码未使用）：pip 包本身为纯 Python，通常能装上；
-#   若个别环境下安装失败，可直接从 requirements.txt 移除（无代码引用）。
-#   如将来真正启用 weasyprint 生成 PDF，需追加系统库：
-#   apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b
 RUN apt-get update && apt-get install -y --no-install-recommends \
         adb \
     && rm -rf /var/lib/apt/lists/*

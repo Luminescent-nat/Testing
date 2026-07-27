@@ -5,6 +5,10 @@
         <el-icon><Plus /></el-icon>
         创建模块
       </el-button>
+      <el-button :loading="scanning" @click="scanTools">
+        <el-icon><Refresh /></el-icon>
+        扫描注册测试工具
+      </el-button>
     </div>
     
     <el-row :gutter="20">
@@ -428,7 +432,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Grid, Edit, Delete, ArrowRight, QuestionFilled } from '@element-plus/icons-vue'
+import { Plus, Grid, Edit, Delete, ArrowRight, QuestionFilled, Refresh } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import {
   getModules,
@@ -440,7 +444,7 @@ import {
   updateItem,
   deleteItem as deleteItemApi
 } from '@/api/module'
-import { getTools } from '@/api/tool'
+import { getTools, scanToolModules } from '@/api/tool'
 
 const userStore = useUserStore()
 const isAdmin = computed(() => userStore.isAdmin)
@@ -456,6 +460,36 @@ const editingItem = ref(null)
 const currentModule = ref(null)
 const saving = ref(false)
 const savingItem = ref(false)
+const scanning = ref(false)
+
+// 扫描 test-tools 下 manifest.yaml，幂等注册测试模块/测试项
+const scanTools = async () => {
+  scanning.value = true
+  try {
+    const res = await scanToolModules()
+    const data = res.data || {}
+    const modules = data.modules || []
+    const errors = data.errors || []
+    if (modules.length === 0 && errors.length === 0) {
+      ElMessage.info('未发现任何 manifest.yaml')
+    } else {
+      const summary = modules
+        .map(m => `${m.name}：新建 ${m.created_items}，更新 ${m.updated_items}`)
+        .join('；')
+      if (errors.length > 0) {
+        ElMessage.warning(`扫描完成（${errors.length} 个错误）：${summary || '无成功模块'}`)
+        console.error('扫描注册错误:', errors)
+      } else {
+        ElMessage.success(`扫描注册完成：${summary}`)
+      }
+    }
+    fetchModules()
+  } catch (error) {
+    console.error('扫描注册失败:', error)
+  } finally {
+    scanning.value = false
+  }
+}
 
 const form = ref({
   name: '',

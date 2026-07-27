@@ -1,0 +1,224 @@
+# test-tools 模块清单：由后端 POST /api/v1/tools/scan-modules 扫描注册到平台数据库。
+# 字段名对齐 TestItem 模型列；host_exec 命令使用 {host_tool_dir} 占位（执行引擎自动解析为
+# 配置项 TEST_TOOLS_PATH 的绝对路径），{serial} 为设备序列号占位。
+module:
+  name: EMMC
+  category: storage
+  description: EMMC 存储性能与信息采集（对齐 emmc_tools.py 流程）
+items:
+- name: 节点检测
+  description: 自动识别设备主存储 eMMC 节点
+  exec_type: adb_shell
+  exec_command: ls /sys/block/ | grep mmcblk | head -5
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: mmcblk
+  retry_count: 0
+  on_failure: continue
+  sort_order: 1
+  enabled: true
+  tags:
+  - functional
+- name: EXT_CSD 寄存器读取
+  description: 通过 mmc_utils 读取 eMMC 扩展寄存器信息
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_extcsd_runner.py" --serial {serial}
+  parameters: {}
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: mmc_node
+  timeout: 120
+  retry_count: 0
+  on_failure: continue
+  sort_order: 2
+  enabled: true
+  tags:
+  - functional
+- name: 顺序读性能
+  description: fio --rw=read --bs=128k --iodepth=64 --runtime=60 --rounds=3
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_fio_runner.py" --serial {serial} --mode seq_read --runtime 60 --rounds
+    3
+  parameters: {}
+  judgement_type: rubric
+  rubric_criteria:
+    bw_mbps:
+      extract_pattern: '"bw_mbps"\s*:\s*([\d.]+)'
+      source: baseline
+      metric: bw_mbps
+      operator: '>='
+      baseline_field: avg_value
+      tolerance: 0%
+      fallback_levels:
+      - score: 4
+        threshold: 200
+      - score: 3
+        threshold: 150
+      - score: 2
+        threshold: 100
+      - score: 1
+  timeout: 300
+  retry_count: 0
+  on_failure: continue
+  sort_order: 3
+  enabled: true
+  tags:
+  - performance
+- name: 顺序写性能
+  description: fio --rw=write --bs=128k --iodepth=64 --runtime=60 --rounds=3
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_fio_runner.py" --serial {serial} --mode seq_write --runtime 60 --rounds
+    3
+  parameters: {}
+  judgement_type: rubric
+  rubric_criteria:
+    bw_mbps:
+      extract_pattern: '"bw_mbps"\s*:\s*([\d.]+)'
+      source: baseline
+      metric: bw_mbps
+      operator: '>='
+      baseline_field: avg_value
+      tolerance: 0%
+      fallback_levels:
+      - score: 4
+        threshold: 150
+      - score: 3
+        threshold: 100
+      - score: 2
+        threshold: 50
+      - score: 1
+  timeout: 300
+  retry_count: 0
+  on_failure: continue
+  sort_order: 4
+  enabled: true
+  tags:
+  - performance
+- name: 随机读性能
+  description: fio --rw=randread --bs=4k --iodepth=64 --runtime=60 --rounds=3
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_fio_runner.py" --serial {serial} --mode rand_read --runtime 60 --rounds
+    3
+  parameters: {}
+  judgement_type: rubric
+  rubric_criteria:
+    iops:
+      extract_pattern: '"iops"\s*:\s*([\d.]+)'
+      source: baseline
+      metric: iops
+      operator: '>='
+      baseline_field: avg_value
+      tolerance: 0%
+      fallback_levels:
+      - score: 4
+        threshold: 8000
+      - score: 3
+        threshold: 5000
+      - score: 2
+        threshold: 2000
+      - score: 1
+  timeout: 300
+  retry_count: 0
+  on_failure: continue
+  sort_order: 5
+  enabled: true
+  tags:
+  - performance
+- name: 随机写性能
+  description: fio --rw=randwrite --bs=4k --iodepth=64 --runtime=60 --rounds=3
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_fio_runner.py" --serial {serial} --mode rand_write --runtime 60 --rounds
+    3
+  parameters: {}
+  judgement_type: rubric
+  rubric_criteria:
+    iops:
+      extract_pattern: '"iops"\s*:\s*([\d.]+)'
+      source: baseline
+      metric: iops
+      operator: '>='
+      baseline_field: avg_value
+      tolerance: 0%
+      fallback_levels:
+      - score: 4
+        threshold: 5000
+      - score: 3
+        threshold: 3000
+      - score: 2
+        threshold: 1000
+      - score: 1
+  timeout: 300
+  retry_count: 0
+  on_failure: continue
+  sort_order: 6
+  enabled: true
+  tags:
+  - performance
+- name: 顺序读稳定性（BW/IOPS 曲线）
+  description: fio stability --rw=read --bs=128k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_stability_runner.py" --serial {serial} --mode seq_read --runtime 300
+    --rounds 1
+  parameters: {}
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: status
+  timeout: 600
+  retry_count: 0
+  on_failure: continue
+  sort_order: 7
+  enabled: true
+  tags:
+  - stability
+  - curve
+- name: 顺序写稳定性（BW/IOPS 曲线）
+  description: fio stability --rw=write --bs=128k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_stability_runner.py" --serial {serial} --mode seq_write --runtime 300
+    --rounds 1
+  parameters: {}
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: status
+  timeout: 600
+  retry_count: 0
+  on_failure: continue
+  sort_order: 8
+  enabled: true
+  tags:
+  - stability
+  - curve
+- name: 随机读稳定性（BW/IOPS 曲线）
+  description: fio stability --rw=randread --bs=4k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_stability_runner.py" --serial {serial} --mode rand_read --runtime 300
+    --rounds 1
+  parameters: {}
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: status
+  timeout: 600
+  retry_count: 0
+  on_failure: continue
+  sort_order: 9
+  enabled: true
+  tags:
+  - stability
+  - curve
+- name: 随机写稳定性（BW/IOPS 曲线）
+  description: fio stability --rw=randwrite --bs=4k --runtime=300 --rounds=1，生成 BW/IOPS 曲线图，人工判定
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/emmc/host/emmc_stability_runner.py" --serial {serial} --mode rand_write --runtime
+    300 --rounds 1
+  parameters: {}
+  judgement_type: assertion
+  result_parse:
+    pass_pattern: status
+  timeout: 600
+  retry_count: 0
+  on_failure: continue
+  sort_order: 10
+  enabled: true
+  tags:
+  - stability
+  - curve

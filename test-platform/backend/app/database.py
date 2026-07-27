@@ -58,7 +58,13 @@ async def get_db():
 
 
 async def init_db():
-    """初始化数据库表"""
+    """初始化数据库表（create_all，幂等）。
+
+    仅负责全新部署的零命令开箱：表不存在才创建，不做结构升级。
+    - 全新部署：create_all 建表后执行 `alembic stamp head` 标记基线（可选，
+      不标记也不影响运行，只是首次 `alembic upgrade head` 会因表已存在而报错）；
+    - 存量库结构升级：走 alembic 迁移，在 backend 目录执行 `alembic upgrade head`。
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

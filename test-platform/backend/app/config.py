@@ -31,14 +31,7 @@ class Settings(BaseSettings):
     # 数据库配置（默认 SQLite，生产环境可切换为 PostgreSQL）
     DATABASE_URL: str = "sqlite+aiosqlite:///./test_platform.db"
     DATABASE_POOL_SIZE: int = 20
-    
-    # Redis配置
-    REDIS_URL: str = "redis://localhost:6379/0"
-    
-    # Celery配置
-    CELERY_BROKER_URL: str = "redis://localhost:6379/1"
-    CELERY_RESULT_BACKEND: str = "redis://localhost:6379/2"
-    
+
     # 文件存储配置
     STORAGE_PATH: str = "./storage"
     TOOLS_PATH: str = "./storage/tools"

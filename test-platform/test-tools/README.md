@@ -67,6 +67,38 @@ python emmc/host/emmc_fio_runner.py --serial <adb_serial> --mode seq_read --runt
 2. 创建 `wifi_bt/binaries/<arch>/` 存放设备端二进制。
 3. 创建 `wifi_bt/host/` 存放 PC 端执行脚本。
 4. 脚本中优先复用 `common.adb_runner`、`common.device_info`。
+5. 编写 `wifi_bt/manifest.yaml` 声明模块与其测试项（见下节），
+   然后在平台“测试模块”页点“扫描注册测试工具”（或调用
+   `POST /api/v1/tools/scan-modules`）将其幂等注册进平台数据库。
+
+## manifest.yaml（模块自描述清单）
+
+每个模块目录可提供一份 `manifest.yaml`，后端扫描服务（`app/services/tool_registry.py`）
+按 **模块名** upsert 测试模块、按 **(模块, 测试项名)** upsert 测试项（存在则更新字段，幂等可重复执行）：
+
+```yaml
+module:
+  name: UPFM
+  category: system
+  description: UPFM T1 自动化测试
+items:
+  - name: T1-01 网络连通性（ping）
+    description: ...
+    exec_type: adb_shell        # adb_shell / push_exec / host_exec
+    exec_command: "ping -c 4 -W 2 {host}"
+    parameters: {host: www.baidu.com}
+    judgement_type: assertion
+    result_parse: {pass_pattern: "0% packet loss"}
+    timeout: 60
+    tags: [functional]
+    sort_order: 1
+```
+
+- 字段名与平台 `TestItem` 模型列一一对应，未提供的字段按默认值落库
+  （`judgement_type=assertion`、`timeout=300`、`on_failure=continue`、`enabled=true` 等）；
+- `host_exec` 命令统一用 `{host_tool_dir}` 占位（执行引擎自动解析为配置
+  `TEST_TOOLS_PATH` 的绝对路径）与 `{serial}` 占位，禁止写绝对路径；
+- 参考样例：`emmc/manifest.yaml`（10 项）、`upfm/manifest.yaml`（27 项 T1 测试项）。
 
 ## 与测试平台集成
 

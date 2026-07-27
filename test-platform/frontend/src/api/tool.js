@@ -23,3 +23,8 @@ export const uploadTool = (data) => {
 export const deleteTool = (id) => {
   return request.delete(`/tools/${id}`)
 }
+
+// 扫描 test-tools 下 manifest.yaml 并注册测试模块/测试项（管理员）
+export const scanToolModules = () => {
+  return request.post('/tools/scan-modules')
+}

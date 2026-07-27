@@ -328,7 +328,7 @@ npm run test:e2e                  # 运行全部 E2E 测试
   - `daily`：按 `scheduled_time`（`HH:MM`，服务器本地时间）每日定时触发。
 - 创建任务时由调度器计算 `next_run_at`（UTC），后台调度循环（`SCHEDULER_INTERVAL`，默认 30 秒）扫描到期任务并启动。
 - **失败重跑**：`POST /api/v1/tasks/{id}/rerun-failed` 基于原任务创建仅含失败测试项的新任务。
-- 老库升级执行迁移脚本：`python scripts/migrate_add_schedule_fields.py`。
+- 老库结构升级统一走 alembic 迁移：在 `backend/` 目录执行 `alembic upgrade head`（全新库 create_all 后 `alembic stamp head`）。
 
 ### 5.10 执行日志
 

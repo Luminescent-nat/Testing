@@ -48,4 +48,4 @@
 ## 未归档
 
 - `.venv_xmind/`：mindmap 脚本专用虚拟环境，体积大。未移动，**建议用户确认后自行删除**（对应脚本已归档至 legacy-scripts/）。
-- `test-platform/backend/migrate_*.py`：仍是有效的迁移机制，保留。
+- `test-platform/backend/migrate_*.py`：手写迁移脚本，后被 alembic（`backend/alembic/`）取代并删除。

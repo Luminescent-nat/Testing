@@ -10,10 +10,22 @@ from app.api.auth import get_current_user, get_current_admin
 from app.models import User, TestTool
 from app.schemas import TestToolResponse, ResponseModel
 from app.config import get_settings
+from app.services import tool_registry
 
 router = APIRouter(prefix="/tools", tags=["测试工具"])
 
 settings = get_settings()
+
+
+@router.post("/scan-modules", response_model=ResponseModel)
+async def scan_modules(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    """扫描 TEST_TOOLS_PATH 下各模块目录的 manifest.yaml，
+    幂等注册/更新测试模块与测试项（管理员）。返回每模块新建/更新数量与解析错误。"""
+    result = await tool_registry.scan_and_register(db)
+    return ResponseModel(code=200, message="扫描注册完成", data=result)
 
 
 def _ensure_tools_dir():
