@@ -148,8 +148,7 @@ D:/MCTEST/
 │   │   │   └── reports/               # 生成报告
 │   │   ├── app/storage/knowledge/     # 知识库上传的原始文档
 │   │   ├── requirements.txt
-│   │   ├── init_db.py
-│   │   ├── run_server.py
+│   │   ├── start.py                     # 启动脚本
 │   │   └── README.md
 │   │
 │   ├── frontend/                      # 前端项目
@@ -203,8 +202,8 @@ D:/MCTEST/
 cd test-platform/backend
 pip install -r requirements.txt
 
-# 启动服务
-python run_server.py
+# 首次运行需配置 SECRET_KEY（参考 .env.example），然后启动服务
+python start.py
 ```
 
 服务启动后：
@@ -563,13 +562,13 @@ curl "http://localhost:8000/api/v1/reports/summary/all" \
 ```bash
 cd test-platform/backend
 pip install -r requirements.txt
-python run_server.py
+python start.py
 ```
 
 或使用 nohup 常驻运行：
 
 ```bash
-nohup python run_server.py > server.log 2>&1 &
+nohup python start.py > server.log 2>&1 &
 ```
 
 ### 10.2 Docker 部署

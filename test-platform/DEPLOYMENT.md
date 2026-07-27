@@ -35,41 +35,31 @@ docker compose logs -f app
 - 数据库与上传文件/报告/测试日志持久化在宿主机 `./data`（容器内 `/data`），
   由 Dockerfile 中的 `DATABASE_URL` / `STORAGE_PATH` 等环境变量指定，**不改动代码**。
 - 升级：`docker compose up -d --build` 重建即可，`./data` 不受影响。
-- 数据库迁移/建表由应用 lifespan 自动完成，无需手动执行。
-
-### 前端静态文件接线（当前未接，需一次小改动）
-
-`backend/app/main.py` 目前没有挂载前端静态文件（本任务未改动该文件），
-因此容器默认**只提供 API**。前端产物已打在镜像 `/app/static` 下，接线只需在
-`main.py` 注册路由之后加两行：
-
-```python
-from fastapi.staticfiles import StaticFiles
-
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
-```
-
-- 容器内 `directory="static"` 即 `/app/static`；裸机部署时改为
-  `directory="../frontend/dist"`（相对于 backend 工作目录）。
-- 若前端使用 vue-router history 模式，直接刷新子路径会 404，届时需把
-  静态挂载换成带 SPA fallback 的自定义路由（接线时处理）。
+- 数据库建表由应用 lifespan 自动完成（`create_all`）；**存量库结构升级**走 alembic：
+  `docker exec test-platform alembic upgrade head`。
+- 前端产物打在镜像 `/app/static`，经 `STATIC_PATH=/app/static` 由后端挂载到 `/`，
+  浏览器直接访问 `http://<host>:8000` 即是平台页面（含 vue-router history fallback），
+  API 在 `/api/v1` 下，WebSocket 在同源 `/ws` 下。
 
 ---
 
 ## 2. 裸机部署（无 Docker）
 
-现有脚本仍然有效：
+一键脚本（自动建 venv、装依赖、首次运行生成随机 `SECRET_KEY` 写入 `backend/.env`、启动服务）：
 
-- Linux：`bash start_server.sh`（清缓存 → init_db → uvicorn 起 8000 端口）
-- Windows：`bash start_windows.sh`
+- Windows：双击或命令行执行 `start_windows.bat`
+- Linux：`bash start_server.sh`
 
 要点：
 
-1. Python 3.12，先在 `backend/` 下建虚拟环境并 `pip install -r requirements.txt`。
-2. 前端 `cd frontend && npm ci && npm run build`，产物在 `frontend/dist`；
-   未做第 1 节的静态接线前，前端需用 `npm run preview` 或任意静态服务器单独托管。
+1. Python 3.10+（脚本自动创建 `test-platform/.venv` 并安装 `backend/requirements.txt`）。
+2. 前端产物在 `frontend/dist`（脚本检测到缺失且本机有 npm 时会自动构建），
+   由后端同源挂载，浏览器访问 `http://localhost:8000` 即可，无需单独托管。
 3. 数据库为 `backend/test_platform.db`（相对工作目录），无需单独安装。
-4. 日志目前为裸重定向 `> server.log`，接入日志轮转（第 4 节）后不再需要重定向。
+4. `SECRET_KEY` 必须非空（应用启动时校验，未配置拒绝启动）；
+   一键脚本首次运行会自动生成随机密钥，也可手动在 `backend/.env` 配置（参考 `backend/.env.example`）。
+5. 日志由 `backend/app/logging_config.py` 滚动输出到 `backend/logs/server.log`（10MB × 5），无需重定向。
+6. 存量库结构升级：`cd backend && alembic upgrade head`。
 
 ---
 
@@ -108,24 +98,12 @@ schtasks /create /tn "TestPlatformBackup" ^
 
 ---
 
-## 4. 日志轮转接线
+## 4. 日志
 
-新文件 `backend/app/logging_config.py` 提供 `setup_logging()`：
-滚动文件（10MB × 5 份，默认 `logs/server.log`）+ 控制台输出，
+`backend/app/logging_config.py` 的 `setup_logging()` 已在 `main.py` 顶部接线：
+滚动文件（10MB × 5 份，默认 `logs/server.log`，相对后端工作目录）+ 控制台输出，
 并接管 `uvicorn` / `uvicorn.error` / `uvicorn.access` 三个 logger。
-
-**尚未接线**（本任务未改 main.py）。接线二选一：
-
-```python
-# 方式一（推荐）：main.py 顶部、app = FastAPI(...) 之前
-from app.logging_config import setup_logging
-setup_logging()
-
-# 方式二：lifespan 启动段第一行
-setup_logging()
-```
-
-接线后启动命令去掉 `> server.log` 重定向。函数幂等，重复调用不会叠加 handler。
+启动命令无需再做 `> server.log` 重定向；函数幂等，重复调用不会叠加 handler。
 
 ---
 
@@ -153,13 +131,14 @@ setup_logging()
 
 ## 6. 内网部署检查清单
 
-- [ ] `SECRET_KEY` 已改（`.env` 或 compose environment），不使用默认值
+- [ ] `SECRET_KEY` 已设置（`.env` 或 compose environment），应用未配置会拒绝启动
 - [ ] `curl http://<host>:8000/health` 返回 healthy
 - [ ] `./data` 已挂载且宿主机可读写，`data/test_platform.db` 存在
-- [ ] 前端静态文件已接线（第 1 节），浏览器可访问首页
+- [ ] 浏览器可访问首页（前端由后端同源挂载，无需单独接线）
+- [ ] 首个管理员账号已注册（首个注册用户自动成为 admin；后续账号由 admin 在用户管理中创建）
 - [ ] 备份脚本已挂定时任务，手动执行一次确认 `backups/` 有产物
 - [ ] 备份有异地拷贝（共享目录/另一台机器）
-- [ ] 日志轮转已接线，确认 `logs/server.log` 正常写入
+- [ ] 确认 `logs/server.log` 正常写入
 - [ ] adb 连通：`docker exec test-platform adb devices` 能看到被测设备
 - [ ] LLM 相关配置（`LLM_API_KEY` 等）按内网可用服务配置；不配置时 AI 功能降级但不影响主流程
 - [ ] 防火墙/端口：内网只需开放 8000

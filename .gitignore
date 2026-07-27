@@ -28,6 +28,8 @@ test-platform/backend/storage/tools/
 
 # ---- 敏感信息 / 本地状态 ----
 .env
+.aiconsole/
+.coverage*
 test-platform/frontend/tests/e2e/.auth/
 
 # ---- IDE / 系统 ----

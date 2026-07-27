@@ -16,8 +16,18 @@
 
 ```
 src/
-├── api/                    # API接口封装
-│   └── index.js
+├── api/                    # API接口封装（按领域模块化）
+│   ├── auth.js             # 认证
+│   ├── device.js           # 设备
+│   ├── module.js           # 测试模块/测试项
+│   ├── task.js             # 测试任务
+│   ├── report.js           # 报告与统计
+│   ├── dashboard.js        # 仪表盘统计卡片
+│   ├── ai.js               # AI 自然语言任务
+│   ├── memory.js           # 基线知识库
+│   ├── knowledge.js        # 测试知识库
+│   ├── tool.js             # 测试工具
+│   └── user.js             # 用户管理
 ├── components/             # 公共组件
 │   └── Breadcrumb.vue      # 面包屑组件
 ├── layouts/                # 布局组件
@@ -31,7 +41,9 @@ src/
 │   ├── theme.scss          # 主题变量
 │   └── index.scss          # 通用样式
 ├── utils/                  # 工具函数
-│   └── request.js          # HTTP请求封装
+│   ├── request.js          # HTTP请求封装（含 X-PC-Identifier 客户端标识）
+│   ├── datetime.js         # 日期时间格式化
+│   └── __tests__/          # vitest 单元测试
 ├── views/                  # 页面视图
 │   ├── login/              # 登录页
 │   │   └── index.vue
@@ -41,12 +53,21 @@ src/
 │   │   └── index.vue
 │   ├── tasks/              # 测试任务
 │   │   ├── create.vue      # 创建任务
-│   │   ├── monitor.vue     # 任务监控
+│   │   ├── monitor.vue     # 任务监控（WebSocket 实时日志）
 │   │   └── index.vue       # 任务列表
-│   ├── modules/            # 测试模块
+│   ├── modules/            # 测试模块（含扫描注册测试工具）
 │   │   └── index.vue
-│   ├── reports/            # 测试报告
+│   ├── reports/            # 测试报告（图表/对比/导出）
 │   │   └── index.vue
+│   ├── ai-test/            # AI 自然语言测试
+│   │   └── index.vue
+│   ├── memory/             # 基线知识库（设备画像/基线/失败模式/黄金案例）
+│   │   └── index.vue
+│   ├── knowledge/          # 测试知识库
+│   │   └── index.vue
+│   ├── profile/            # 个人信息/修改密码
+│   │   └── index.vue
+│   ├── error/              # 404 等错误页
 │   └── admin/              # 管理员功能
 │       └── users.vue       # 用户管理
 ├── App.vue

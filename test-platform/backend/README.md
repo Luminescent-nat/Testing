@@ -61,8 +61,7 @@ backend/
 │   ├── ddr/                 # DDR 测试工具
 │   └── emmc/                # EMMC 测试工具与 PC 端运行器
 ├── requirements.txt         # 依赖列表
-├── init_db.py               # 数据库初始化脚本
-├── run_server.py            # 启动脚本
+├── start.py                 # 启动脚本（等价于 uvicorn app.main:app）
 └── .env.example             # 环境变量示例
 ```
 
@@ -160,9 +159,11 @@ backend/
 # 安装 Python 依赖
 pip install -r requirements.txt
 
-# 配置环境变量（可选）
+# 配置环境变量（SECRET_KEY 必填，未配置应用拒绝启动）
 cp .env.example .env
-# 编辑 .env 配置 LLM_API_KEY、数据库路径等
+# 生成随机密钥并写入 .env：
+python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))" >> .env
+# 按需编辑 .env 配置 LLM_API_KEY 等
 ```
 
 ### 2. 数据库初始化
@@ -193,10 +194,10 @@ alembic revision --autogenerate -m "描述变更"
 ### 3. 启动服务
 
 ```bash
-# 开发模式
-python run_server.py
+# 直接启动（建表/种子数据在应用 lifespan 中自动完成）
+python start.py
 
-# 或直接使用 uvicorn
+# 或使用 uvicorn（开发可加 --reload）
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
@@ -297,6 +298,9 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 复制 `.env.example` 为 `.env`，可配置：
 
 ```env
+# 必填：JWT 签名密钥（未配置应用拒绝启动）
+SECRET_KEY=请用随机字符串替换
+
 # LLM 配置（可选，未配置时 AI 相关功能降级为规则判定）
 LLM_API_KEY=your_api_key
 LLM_BASE_URL=https://api.openai.com/v1
@@ -304,13 +308,12 @@ LLM_MODEL=gpt-4o-mini
 
 # 应用配置
 APP_NAME=Android测试平台
-DEBUG=true
-SECRET_KEY=your-secret-key
+DEBUG=false
 ```
 
 ## 测试
 
-项目已建立完整的 pytest 测试套件（当前 166 个用例全部通过），位于 `tests/` 目录：
+项目已建立完整的 pytest 测试套件（当前 185 个用例全部通过），位于 `tests/` 目录：
 
 ```
 tests/
