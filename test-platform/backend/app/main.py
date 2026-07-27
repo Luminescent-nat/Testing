@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
+from starlette.exceptions import HTTPException  # StaticFiles 抛的是 starlette 的 HTTPException（fastapi 的为其子类，捕获必须用父类）
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -171,9 +172,9 @@ app.include_router(knowledge.router, prefix="/api/v1")
 app.include_router(websocket.router)
 
 
-@app.get("/")
+@app.get("/api")
 async def root():
-    """根路径"""
+    """API 信息（根路径 / 由前端 SPA 静态挂载接管）"""
     return {
         "name": settings.APP_NAME,
         "version": settings.APP_VERSION,
