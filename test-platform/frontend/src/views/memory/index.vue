@@ -373,7 +373,7 @@ import {
   updateGoldenCase,
   deleteGoldenCase
 } from '@/api/memory'
-import { getDevices } from '@/api'
+import { getDevices } from '@/api/device'
 import { formatDateTime } from '@/utils/datetime'
 
 const userStore = useUserStore()

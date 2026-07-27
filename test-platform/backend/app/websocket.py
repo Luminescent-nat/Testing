@@ -1,8 +1,9 @@
+import asyncio
 import json
 import logging
 from typing import Dict, List
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, status
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, status
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
@@ -13,6 +14,9 @@ from app.services.auth import decode_token
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+# 首条消息认证等待超时（秒），超时未收到合法认证消息则关闭连接
+AUTH_TIMEOUT = 10
+
 
 class TaskProgressManager:
     """管理任务进度 WebSocket 连接。"""
@@ -22,7 +26,7 @@ class TaskProgressManager:
         self._connections: Dict[int, List[WebSocket]] = {}
 
     async def connect(self, task_id: int, websocket: WebSocket):
-        await websocket.accept()
+        """登记连接（websocket 须已完成 accept，认证由端点负责）。"""
         self._connections.setdefault(task_id, []).append(websocket)
         logger.info("WebSocket 连接到任务 %s，当前连接数 %s", task_id, len(self._connections[task_id]))
 
@@ -143,12 +147,31 @@ async def push_log(task_id: int, record_id: int, line: str):
 
 
 @router.websocket("/ws/tasks/{task_id}")
-async def task_progress_websocket(
-    websocket: WebSocket,
-    task_id: int,
-    token: str = Query(None, description="JWT 访问令牌")
-):
-    """任务进度 WebSocket 端点。"""
+async def task_progress_websocket(websocket: WebSocket, task_id: int):
+    """任务进度 WebSocket 端点。
+
+    认证方式：accept 后等待客户端首条消息 {"token": "..."}（AUTH_TIMEOUT 秒超时），
+    校验 token 有效性与任务归属，全部通过才进入进度推送，否则以 1008 关闭，
+    避免 token 出现在 URL 与访问日志中。
+    """
+    await websocket.accept()
+
+    # 首条消息认证：超时或连接断开直接关闭
+    try:
+        auth_data = await asyncio.wait_for(websocket.receive_text(), timeout=AUTH_TIMEOUT)
+    except asyncio.TimeoutError:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="认证超时")
+        return
+    except WebSocketDisconnect:
+        logger.info("任务 %s WebSocket 在认证前断开连接", task_id)
+        return
+
+    token = None
+    try:
+        token = json.loads(auth_data).get("token")
+    except json.JSONDecodeError:
+        pass
+
     # 简单鉴权：校验 token 是否有效
     if not token:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="缺少 token")

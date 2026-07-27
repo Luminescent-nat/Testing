@@ -135,7 +135,7 @@ class ADBService:
         return devices
     
     async def get_device_info(self, serial: str) -> Dict[str, Any]:
-        """获取设备详细信息"""
+        """获取设备详细信息（各 adb 命令相互独立，并行执行缩短采集耗时）"""
         info = {
             "serial_number": serial,
             "model": None,
@@ -146,46 +146,53 @@ class ADBService:
             "resolution": None,
             "battery_level": None
         }
-        
-        # 获取型号
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.model"])
-        if stdout:
-            info["model"] = stdout.strip()
-        
-        # 获取品牌
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.brand"])
-        if stdout:
-            info["brand"] = stdout.strip()
-        
-        # 获取Android版本
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "getprop", "ro.build.version.release"])
-        if stdout:
-            info["android_version"] = stdout.strip()
-        
-        # 获取SDK版本
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "getprop", "ro.build.version.sdk"])
-        if stdout:
-            info["sdk_version"] = stdout.strip()
-        
-        # 获取CPU架构
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.cpu.abi"])
-        if stdout:
-            info["cpu_abi"] = stdout.strip()
-        
-        # 获取分辨率
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "wm", "size"])
-        if stdout:
-            match = re.search(r'(\d+x\d+)', stdout)
+
+        results = await asyncio.gather(
+            self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.model"]),
+            self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.brand"]),
+            self._run_adb_command(["-s", serial, "shell", "getprop", "ro.build.version.release"]),
+            self._run_adb_command(["-s", serial, "shell", "getprop", "ro.build.version.sdk"]),
+            self._run_adb_command(["-s", serial, "shell", "getprop", "ro.product.cpu.abi"]),
+            self._run_adb_command(["-s", serial, "shell", "wm", "size"]),
+            self._run_adb_command(["-s", serial, "shell", "dumpsys", "battery"]),
+        )
+        # 每项结果为 (stdout, stderr, returncode)，这里只取 stdout 逐项解析
+        model_out, brand_out, android_out, sdk_out, abi_out, size_out, battery_out = [
+            r[0] for r in results
+        ]
+
+        # 型号
+        if model_out:
+            info["model"] = model_out.strip()
+
+        # 品牌
+        if brand_out:
+            info["brand"] = brand_out.strip()
+
+        # Android版本
+        if android_out:
+            info["android_version"] = android_out.strip()
+
+        # SDK版本
+        if sdk_out:
+            info["sdk_version"] = sdk_out.strip()
+
+        # CPU架构
+        if abi_out:
+            info["cpu_abi"] = abi_out.strip()
+
+        # 分辨率
+        if size_out:
+            match = re.search(r'(\d+x\d+)', size_out)
             if match:
                 info["resolution"] = match.group(1)
-        
-        # 获取电量
-        stdout, _, _ = await self._run_adb_command(["-s", serial, "shell", "dumpsys", "battery"])
-        if stdout:
-            match = re.search(r'level:\s*(\d+)', stdout)
+
+        # 电量
+        if battery_out:
+            match = re.search(r'level:\s*(\d+)', battery_out)
             if match:
                 info["battery_level"] = int(match.group(1))
-        
+
         return info
     
     async def is_device_online(self, serial: str, timeout: Optional[int] = None) -> bool:
@@ -202,16 +209,19 @@ class ADBService:
         - 库里有但 adb 列表没有、且非 maintenance 的设备 → offline（含 testing，
           只改设备状态，不动其正在运行的任务）；
         - 库里 offline 但 adb 列表里有 → online；
-        - adb 列表里新出现的设备不自动入库（入库仍由手动 refresh 完成）。
-        返回 {"offline": n, "online": n} 状态变更计数。
+        - adb 列表里新出现的设备自动登记入库：status="online"、pc_identifier=""
+          表示未分配（普通用户不可见，由 admin 分配），并顺带采集一次基本信息。
+        返回 {"offline": n, "online": n, "registered": n} 状态变更计数。
         """
         adb_devices = await self.get_devices(timeout=10)
         online_serials = {d["serial"] for d in adb_devices if d.get("state") == "device"}
 
         result = await db.execute(select(Device))
-        changed = {"offline": 0, "online": 0}
+        devices = result.scalars().all()
+        known_serials = {device.serial_number for device in devices}
+        changed = {"offline": 0, "online": 0, "registered": 0}
         now = datetime.now(timezone.utc)
-        for device in result.scalars().all():
+        for device in devices:
             if device.status == "maintenance":
                 continue
             if device.serial_number in online_serials:
@@ -227,7 +237,30 @@ class ADBService:
                 device.status = "offline"
                 changed["offline"] += 1
 
-        if changed["offline"] or changed["online"]:
+        # adb 在线但库中不存在的设备自动登记为未分配设备
+        for serial in sorted(online_serials - known_serials):
+            device_info: Dict[str, Any] = {}
+            try:
+                device_info = await self.get_device_info(serial)
+            except Exception as exc:
+                logger.warning("心跳登记：采集新设备 %s 基本信息失败: %s", serial, exc)
+            db.add(Device(
+                serial_number=serial,
+                model=device_info.get("model"),
+                brand=device_info.get("brand"),
+                android_version=device_info.get("android_version"),
+                sdk_version=device_info.get("sdk_version"),
+                cpu_abi=device_info.get("cpu_abi"),
+                resolution=device_info.get("resolution"),
+                battery_level=device_info.get("battery_level"),
+                status="online",
+                pc_identifier="",
+                last_seen_at=now,
+            ))
+            changed["registered"] += 1
+            logger.info("心跳登记：新设备 %s 已自动入库（未分配）", serial)
+
+        if changed["offline"] or changed["online"] or changed["registered"]:
             await db.commit()
         return changed
     

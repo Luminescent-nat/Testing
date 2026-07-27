@@ -5,9 +5,11 @@ export const getModules = (params) => {
   return request.get('/modules', { params })
 }
 
-// 获取模块详情
-export const getModuleDetail = (id) => {
-  return request.get(`/modules/${id}`)
+// 获取模块详情（includeItems 为 true 时附带测试项列表，即 ?include_items=true）
+export const getModuleDetail = (id, includeItems = false) => {
+  return request.get(`/modules/${id}`, {
+    params: includeItems ? { include_items: true } : {}
+  })
 }
 
 // 创建模块

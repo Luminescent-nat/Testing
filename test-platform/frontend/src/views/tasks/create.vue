@@ -169,7 +169,9 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { getModules, getModuleDetail, getDevices, createTask } from '@/api'
+import { getModules, getModuleDetail } from '@/api/module'
+import { getDevices } from '@/api/device'
+import { createTask } from '@/api/task'
 
 const router = useRouter()
 const route = useRoute()
@@ -331,7 +333,7 @@ const fetchData = async () => {
       const modulesWithItems = await Promise.all(
         moduleList.map(async (m) => {
           try {
-            const detailRes = await getModuleDetail(m.id)
+            const detailRes = await getModuleDetail(m.id, true)
             return {
               ...m,
               items: detailRes.code === 200 ? (detailRes.data.items || []) : [],

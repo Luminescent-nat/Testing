@@ -93,7 +93,7 @@
       :title="currentDevice?.model || '设备详情'"
       size="500px"
     >
-      <div v-if="currentDevice" class="device-detail">
+      <div v-if="currentDevice" v-loading="detailLoading" class="device-detail">
         <el-descriptions :column="1" border>
           <el-descriptions-item label="序列号">{{ currentDevice.serial_number }}</el-descriptions-item>
           <el-descriptions-item label="型号">{{ currentDevice.model || '-' }}</el-descriptions-item>
@@ -148,22 +148,28 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
   Search, Refresh, CircleCheckFilled, CircleCloseFilled,
   Loading, MoreFilled, Phone, Cpu, Lightning
 } from '@element-plus/icons-vue'
-import { getDevices, refreshDevices as refreshDevicesApi } from '@/api'
+import { getDevices, getDeviceDetail, refreshDevices as refreshDevicesApi } from '@/api/device'
 import { formatDateTime } from '@/utils/datetime'
 
+const route = useRoute()
 const router = useRouter()
 const devices = ref([])
 const searchKeyword = ref('')
 const filterStatus = ref('')
 const detailDrawerVisible = ref(false)
 const currentDevice = ref(null)
+const detailLoading = ref(false)
+
+// 设备列表轮询间隔（毫秒）
+const POLL_INTERVAL = 15000
+let pollTimer = null
 
 const filteredDevices = computed(() => {
   return devices.value.filter(device => {
@@ -189,6 +195,40 @@ const refreshDevices = async () => {
   }
 }
 
+// 静默拉取设备列表（轮询用，不触发 adb 全量发现、不弹提示）
+const fetchDevices = async () => {
+  try {
+    const res = await getDevices()
+    if (res.code === 200) {
+      devices.value = res.data.items || []
+    }
+  } catch (error) {
+    console.error('获取设备列表失败:', error)
+  }
+}
+
+// 页面隐藏时停止轮询，重新可见时立即刷新一次并恢复轮询
+const stopPolling = () => {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
+  }
+}
+
+const startPolling = () => {
+  stopPolling()
+  pollTimer = setInterval(fetchDevices, POLL_INTERVAL)
+}
+
+const handleVisibilityChange = () => {
+  if (document.hidden) {
+    stopPolling()
+  } else {
+    fetchDevices()
+    startPolling()
+  }
+}
+
 const getStatusType = (status) => {
   const types = {
     'online': 'success',
@@ -211,11 +251,23 @@ const formatTime = (time) => {
   return formatDateTime(time, 'MM-DD HH:mm')
 }
 
-const handleCommand = (command, device) => {
+const handleCommand = async (command, device) => {
   switch (command) {
     case 'detail':
+      // 先用列表数据打开抽屉，再拉取完整详情（DDR/EMMC 等画像字段）覆盖
       currentDevice.value = device
       detailDrawerVisible.value = true
+      detailLoading.value = true
+      try {
+        const res = await getDeviceDetail(device.serial_number)
+        if (res.code === 200) {
+          currentDevice.value = res.data
+        }
+      } catch (error) {
+        console.error('获取设备详情失败:', error)
+      } finally {
+        detailLoading.value = false
+      }
       break
     case 'test':
       router.push({
@@ -227,7 +279,19 @@ const handleCommand = (command, device) => {
 }
 
 onMounted(() => {
+  // 支持带 ?serial= 跳转（如仪表盘）时自动搜索定位目标设备
+  const serial = route.query.serial
+  if (serial) {
+    searchKeyword.value = String(serial)
+  }
   refreshDevices()
+  startPolling()
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+})
+
+onUnmounted(() => {
+  stopPolling()
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 </script>
 

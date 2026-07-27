@@ -305,8 +305,7 @@ import {
   WarningFilled, Timer, Delete
 } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
-import { getTaskDetail, getTaskRecords, cancelTask } from '@/api'
-import { downloadRecordLog } from '@/api/task'
+import { getTaskDetail, getTaskRecords, cancelTask, downloadRecordLog } from '@/api/task'
 import { getItemLog } from '@/api/report'
 
 const route = useRoute()
@@ -522,13 +521,16 @@ const fetchTaskData = async () => {
 const connectWebSocket = () => {
   if (!userStore.token) return
 
+  // 按当前页面地址推导同源 WS 地址：开发环境经 vite 代理 /ws 转发到后端，
+  // 生产环境前后端同源部署；token 不再放 URL，改为连接建立后首条消息认证
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  const host = window.location.host.replace(/:\d+$/, '') || 'localhost'
-  const wsUrl = `${protocol}//${host}:8000/ws/tasks/${taskId}?token=${userStore.token}`
+  const wsUrl = `${protocol}//${window.location.host}/ws/tasks/${taskId}`
 
   ws.value = new WebSocket(wsUrl)
 
   ws.value.onopen = () => {
+    // 首条消息发送 token 完成认证
+    ws.value.send(JSON.stringify({ token: userStore.token }))
     appendLog('WebSocket 已连接')
   }
 

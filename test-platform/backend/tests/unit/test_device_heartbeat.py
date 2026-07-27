@@ -50,14 +50,15 @@ async def test_heartbeat_marks_missing_devices_offline(test_db, admin_user):
     await test_db.refresh(device_testing)
     assert device_testing.status == "offline"
 
-    # adb 列表中新出现的设备不自动入库
+    # adb 列表中新出现的设备自动登记为未分配设备
     adb2 = make_adb_service(["hb-online", "hb-brand-new"])
+    adb2.get_device_info = AsyncMock(return_value={"serial_number": "hb-brand-new"})
     await adb2.heartbeat_check(test_db)
     from sqlalchemy import select
     result = await test_db.execute(
         select(Device).where(Device.serial_number == "hb-brand-new")
     )
-    assert result.scalar_one_or_none() is None
+    assert result.scalar_one_or_none() is not None
 
 
 @pytest.mark.asyncio
@@ -82,9 +83,43 @@ async def test_heartbeat_ignores_maintenance_devices(test_db, admin_user):
     adb = make_adb_service([])  # adb 列表为空也不动 maintenance
     changed = await adb.heartbeat_check(test_db)
 
-    assert changed == {"offline": 0, "online": 0}
+    assert changed == {"offline": 0, "online": 0, "registered": 0}
     await test_db.refresh(device_maint)
     assert device_maint.status == "maintenance"
+
+
+@pytest.mark.asyncio
+async def test_heartbeat_registers_new_devices(test_db, admin_user):
+    """TC-HEARTBEAT-005: adb 列表中新出现的设备自动登记为未分配在线设备。"""
+    await add_device(test_db, admin_user, "hb-known", "online")
+
+    adb = make_adb_service(["hb-known", "hb-new-1"])
+    adb.get_device_info = AsyncMock(return_value={
+        "serial_number": "hb-new-1",
+        "model": "rk3568",
+        "brand": "rockchip",
+        "android_version": "11",
+        "sdk_version": "30",
+        "cpu_abi": "arm64-v8a",
+        "resolution": "1920x1080",
+        "battery_level": 100,
+    })
+    changed = await adb.heartbeat_check(test_db)
+
+    assert changed["registered"] == 1
+    from sqlalchemy import select
+    result = await test_db.execute(
+        select(Device).where(Device.serial_number == "hb-new-1")
+    )
+    device = result.scalar_one_or_none()
+    assert device is not None
+    assert device.status == "online"
+    # 未分配设备：pc_identifier 为空，普通用户不可见，等待 admin 分配
+    assert device.pc_identifier == ""
+    assert device.owner_id is None
+    assert device.model == "rk3568"
+    assert device.brand == "rockchip"
+    assert device.last_seen_at is not None
 
 
 @pytest.mark.asyncio

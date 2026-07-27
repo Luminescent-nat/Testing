@@ -27,7 +27,7 @@
     </div>
     
     <el-card class="app-card">
-      <el-table :data="filteredTasks" class="app-table" v-loading="loading">
+      <el-table :data="tasks" class="app-table" v-loading="loading">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="任务名称" min-width="200">
           <template #default="{ row }">
@@ -124,7 +124,7 @@
           :total="total"
           :page-sizes="[10, 20, 50, 100]"
           layout="total, sizes, prev, pager, next"
-          @change="fetchTasks"
+          @change="fetchTasks()"
         />
       </div>
     </el-card>
@@ -132,11 +132,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus } from '@element-plus/icons-vue'
-import { getTasks, cancelTask as cancelTaskApi, rerunFailedTasks } from '@/api'
+import { getTasks, cancelTask as cancelTaskApi, rerunFailedTasks } from '@/api/task'
 import { formatDateTime } from '@/utils/datetime'
 
 const router = useRouter()
@@ -148,22 +148,42 @@ const page = ref(1)
 const pageSize = ref(20)
 const total = ref(0)
 
-const filteredTasks = computed(() => {
-  return tasks.value.filter(task => {
-    const matchKeyword = !searchKeyword.value ||
-      task.name?.toLowerCase().includes(searchKeyword.value.toLowerCase())
-    const matchStatus = !filterStatus.value || task.status === filterStatus.value
-    return matchKeyword && matchStatus
-  })
+// 有运行中/排队中任务时的轮询间隔（毫秒）
+const POLL_INTERVAL = 10000
+let pollTimer = null
+
+const hasActiveTasks = computed(() =>
+  tasks.value.some(task => task.status === 'running' || task.status === 'pending')
+)
+
+// 状态筛选变化：回到第一页重新按服务端条件查询
+watch(filterStatus, () => {
+  page.value = 1
+  fetchTasks()
 })
 
-const fetchTasks = async () => {
-  loading.value = true
+// 搜索输入防抖，避免每个字符都发请求
+let searchTimer = null
+watch(searchKeyword, () => {
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(() => {
+    page.value = 1
+    fetchTasks()
+  }, 300)
+})
+
+const fetchTasks = async (silent = false) => {
+  if (!silent) loading.value = true
   try {
-    const res = await getTasks({
+    const params = {
       page: page.value,
       page_size: pageSize.value
-    })
+    }
+    // 状态与搜索均交给服务端过滤（分页前生效）
+    if (filterStatus.value) params.status = filterStatus.value
+    if (searchKeyword.value.trim()) params.search = searchKeyword.value.trim()
+
+    const res = await getTasks(params)
     if (res.code === 200) {
       tasks.value = res.data.items || []
       total.value = res.data.total || 0
@@ -171,7 +191,31 @@ const fetchTasks = async () => {
   } catch (error) {
     console.error('获取任务失败:', error)
   } finally {
-    loading.value = false
+    if (!silent) loading.value = false
+  }
+}
+
+// 有运行中任务时每 10 秒静默刷新一次；页面隐藏时停止，可见时恢复并立即刷新
+const stopPolling = () => {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
+  }
+}
+
+const startPolling = () => {
+  stopPolling()
+  pollTimer = setInterval(() => {
+    if (hasActiveTasks.value) fetchTasks(true)
+  }, POLL_INTERVAL)
+}
+
+const handleVisibilityChange = () => {
+  if (document.hidden) {
+    stopPolling()
+  } else {
+    if (hasActiveTasks.value) fetchTasks(true)
+    startPolling()
   }
 }
 
@@ -260,6 +304,14 @@ const cancelTask = async (task) => {
 
 onMounted(() => {
   fetchTasks()
+  startPolling()
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+})
+
+onUnmounted(() => {
+  stopPolling()
+  clearTimeout(searchTimer)
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 </script>
 

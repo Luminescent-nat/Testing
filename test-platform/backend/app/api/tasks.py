@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func
 from sqlalchemy.orm import joinedload, selectinload
 from typing import Optional, List
 from datetime import datetime, timezone
@@ -114,37 +114,47 @@ async def create_task(
 @router.get("", response_model=ResponseModel)
 async def list_tasks(
     status: Optional[TaskStatus] = None,
+    search: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """获取任务列表"""
-    query = select(TestTask).options(selectinload(TestTask.records))
-    
+    """获取任务列表（status 精确匹配、search 任务名模糊匹配，均在分页前生效）"""
+    filters = []
+
     # 权限控制
     if current_user.role != "admin":
-        query = query.where(TestTask.user_id == current_user.id)
-    
+        filters.append(TestTask.user_id == current_user.id)
+
     if status:
-        query = query.where(TestTask.status == status)
-    
-    query = query.order_by(desc(TestTask.created_at))
-    
-    # 获取总数
-    count_result = await db.execute(query)
-    total = len(count_result.scalars().all())
-    
+        filters.append(TestTask.status == status)
+
+    if search and search.strip():
+        filters.append(TestTask.name.contains(search.strip()))
+
+    query = (
+        select(TestTask)
+        .options(selectinload(TestTask.records))
+        .where(*filters)
+        .order_by(desc(TestTask.created_at))
+    )
+
+    # 获取总数（与筛选结果一致）
+    total = await db.scalar(
+        select(func.count()).select_from(TestTask).where(*filters)
+    )
+
     # 分页
     query = query.offset((page - 1) * page_size).limit(page_size)
     result = await db.execute(query)
     tasks = result.scalars().all()
-    
+
     return ResponseModel(
         code=200,
         data={
             "items": [TestTaskResponse.model_validate(t) for t in tasks],
-            "total": total,
+            "total": total or 0,
             "page": page,
             "page_size": page_size
         }

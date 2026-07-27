@@ -18,6 +18,10 @@ from sqlalchemy.pool import NullPool
 # 将 backend 根目录加入 Python 路径
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+# 测试环境自包含配置：应用要求 SECRET_KEY 非空（lifespan 校验），
+# 测试统一使用固定测试密钥，与生产密钥无关。
+os.environ.setdefault("SECRET_KEY", "test-only-secret-key-not-for-production")
+
 from app.database import AsyncSessionLocal, Base, engine, get_db  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models import Device, TestItem, TestModule, TestTool, User  # noqa: E402

@@ -41,6 +41,11 @@
             <span>测试任务</span>
           </el-menu-item>
 
+          <el-menu-item index="/ai-test">
+            <el-icon><MagicStick /></el-icon>
+            <span>AI 测试</span>
+          </el-menu-item>
+
           <el-menu-item index="/reports">
             <el-icon><Document /></el-icon>
             <span>测试报告</span>
@@ -131,7 +136,7 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   Monitor, Odometer, Cellphone, Grid, List, Document,
   Collection, Notebook, Setting, User, UserFilled, ArrowDown, SwitchButton,
-  Moon, Sunny, FullScreen
+  Moon, Sunny, FullScreen, MagicStick
 } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { useThemeStore } from '@/store/theme'

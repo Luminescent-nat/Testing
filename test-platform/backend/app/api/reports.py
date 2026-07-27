@@ -198,6 +198,12 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
 
     if task.completed_at and task.started_at:
         duration_seconds = int((task.completed_at - task.started_at).total_seconds())
+    else:
+        # 任务起止时间缺失时退化为各测试记录执行耗时求和（秒）
+        durations = [row[0].execution_time for row in record_rows if row[0].execution_time]
+        duration_seconds = int(sum(durations)) if durations else None
+
+    if duration_seconds is not None:
         minutes, seconds = divmod(duration_seconds, 60)
         total_duration = f"{minutes}分{seconds}秒" if minutes > 0 else f"{seconds}秒"
     else:
@@ -273,6 +279,8 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
         "created_at": task.created_at,
         "completed_at": task.completed_at,
         "total_duration": total_duration,
+        # 秒级总耗时（数值型，便于前端自行格式化）；无可用耗时数据时为 None
+        "total_duration_seconds": duration_seconds,
         "executor": {
             "user_id": task.user_id,
             "username": current_user.username,
@@ -381,7 +389,9 @@ async def _build_multi_task_report(
                 "device_serial": r["device"]["serial_number"],
                 "pass_rate": r["summary"]["pass_rate"],
                 "total_items": r["summary"]["total_items"],
-                "created_at": r["created_at"]
+                "created_at": r["created_at"],
+                "total_duration": r["total_duration"],
+                "total_duration_seconds": r["total_duration_seconds"]
             }
             for r in reports
         ],

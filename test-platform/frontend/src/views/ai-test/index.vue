@@ -76,7 +76,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { MagicStick } from '@element-plus/icons-vue'
-import request from '@/utils/request'
+import { createNaturalTask } from '@/api/ai'
 
 const router = useRouter()
 const inputText = ref('')
@@ -91,7 +91,7 @@ const handleSubmit = async () => {
   planResult.value = null
 
   try {
-    const res = await request.post('/ai/tasks/natural', { text })
+    const res = await createNaturalTask(text)
     if (res.code === 200) {
       ElMessage.success('AI 任务已创建')
       planResult.value = res.data

@@ -26,6 +26,10 @@
         <el-icon><Refresh /></el-icon>
         刷新
       </el-button>
+      <el-button @click="openCompare">
+        <el-icon><DataAnalysis /></el-icon>
+        报告对比
+      </el-button>
     </div>
     
     <el-row :gutter="20">
@@ -117,6 +121,7 @@
               <span>报告ID: {{ currentReport.report_id }}</span>
               <span>设备: {{ currentReport.device?.model || currentReport.device?.serial_number || '-' }}</span>
               <span>执行时间: {{ formatTime(currentReport.created_at) }}</span>
+              <span>总耗时: {{ reportDuration(currentReport) }}</span>
             </div>
           </div>
           <el-button type="primary" size="small" @click="exportCurrentReport">
@@ -147,6 +152,20 @@
           <div class="stat-box error">
             <div class="stat-title">错误</div>
             <div class="stat-number">{{ currentReport.summary?.error || 0 }}</div>
+          </div>
+        </div>
+
+        <el-divider />
+
+        <!-- 结果分布与耗时图表 -->
+        <div class="detail-charts">
+          <div class="chart-box">
+            <h4>测试项结果分布</h4>
+            <v-chart class="chart" :option="statusChartOption" autoresize />
+          </div>
+          <div class="chart-box">
+            <h4>各测试项耗时（秒）</h4>
+            <v-chart class="chart" :option="timeChartOption" autoresize />
           </div>
         </div>
 
@@ -248,6 +267,95 @@
       </div>
     </el-dialog>
 
+    <!-- 报告对比对话框 -->
+    <el-dialog
+      v-model="showCompareDialog"
+      title="报告对比"
+      width="900px"
+    >
+      <div class="compare-picker">
+        <el-select
+          v-model="compareLeftId"
+          placeholder="选择报告 A"
+          filterable
+          style="width: 300px"
+        >
+          <el-option
+            v-for="r in reports"
+            :key="r.task_id"
+            :label="`#${r.task_id} ${r.task_name || '未命名任务'}`"
+            :value="r.task_id"
+          />
+        </el-select>
+        <span class="compare-vs">VS</span>
+        <el-select
+          v-model="compareRightId"
+          placeholder="选择报告 B"
+          filterable
+          style="width: 300px"
+        >
+          <el-option
+            v-for="r in reports"
+            :key="r.task_id"
+            :label="`#${r.task_id} ${r.task_name || '未命名任务'}`"
+            :value="r.task_id"
+          />
+        </el-select>
+        <el-button type="primary" :loading="compareLoading" @click="runCompare">
+          开始对比
+        </el-button>
+      </div>
+
+      <div v-if="compareResult" class="compare-result">
+        <div class="compare-summary">
+          <el-tag size="small" effect="dark">
+            一致 {{ compareResult.rows.filter(r => r.same).length }} 项
+          </el-tag>
+          <el-tag size="small" type="danger" effect="dark">
+            结果不一致 {{ compareResult.rows.filter(r => !r.same && !r.only_left && !r.only_right).length }} 项
+          </el-tag>
+          <el-tag size="small" type="info">
+            仅一方存在 {{ compareResult.rows.filter(r => r.only_left || r.only_right).length }} 项
+          </el-tag>
+        </div>
+        <el-table :data="compareResult.rows" size="small" class="app-table" max-height="420">
+          <el-table-column prop="module_name" label="模块" width="110" />
+          <el-table-column prop="item_name" label="测试项" min-width="160" />
+          <el-table-column :label="`报告 A (#${compareResult.left.task_id})`" width="150">
+            <template #default="{ row }">
+              <template v-if="row.left_status">
+                <el-tag :type="getResultType(row.left_status)" size="small" effect="dark">
+                  {{ getResultText(row.left_status) }}
+                </el-tag>
+                <span class="compare-time">{{ row.left_time || 0 }}秒</span>
+              </template>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="`报告 B (#${compareResult.right.task_id})`" width="150">
+            <template #default="{ row }">
+              <template v-if="row.right_status">
+                <el-tag :type="getResultType(row.right_status)" size="small" effect="dark">
+                  {{ getResultText(row.right_status) }}
+                </el-tag>
+                <span class="compare-time">{{ row.right_time || 0 }}秒</span>
+              </template>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="差异" width="110">
+            <template #default="{ row }">
+              <el-tag v-if="row.same" type="success" size="small">一致</el-tag>
+              <el-tag v-else-if="row.only_left" type="info" size="small">仅 A 有</el-tag>
+              <el-tag v-else-if="row.only_right" type="info" size="small">仅 B 有</el-tag>
+              <el-tag v-else type="danger" size="small">不一致</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <el-empty v-else-if="!compareLoading" description="请选择两个任务报告进行对比" />
+    </el-dialog>
+
     <!-- 日志详情对话框 -->
     <el-dialog
       v-model="showLogDialog"
@@ -273,11 +381,22 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Search, Cellphone, Clock, Timer, Download, Refresh } from '@element-plus/icons-vue'
+import { Search, Cellphone, Clock, Timer, Download, Refresh, DataAnalysis } from '@element-plus/icons-vue'
+import VChart from 'vue-echarts'
+import { use } from 'echarts/core'
+import { PieChart, BarChart } from 'echarts/charts'
+import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
 import { getReport, getSummaryReport, exportReport, exportBatchReport, getItemLog } from '@/api/report'
 import dayjs from 'dayjs'
 import { formatDateTime } from '@/utils/datetime'
+
+// 按需注册 echarts 组件（与仪表盘一致）
+use([PieChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
+
+const route = useRoute()
 
 const reports = ref([])
 const loading = ref(false)
@@ -289,6 +408,74 @@ const detailLoading = ref(false)
 const showLogDialog = ref(false)
 const logLoading = ref(false)
 const currentLog = ref(null)
+
+// 报告对比状态
+const showCompareDialog = ref(false)
+const compareLeftId = ref(null)
+const compareRightId = ref(null)
+const compareLoading = ref(false)
+const compareResult = ref(null)
+
+// 秒级耗时格式化为可读时长（如 2分35秒），超过 1 小时带小时位
+const formatDuration = (seconds) => {
+  if (seconds == null) return '-'
+  const total = Math.max(0, Math.floor(seconds))
+  const hours = Math.floor(total / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  const secs = total % 60
+  if (hours > 0) return `${hours}小时${minutes}分${secs}秒`
+  if (minutes > 0) return `${minutes}分${secs}秒`
+  return `${secs}秒`
+}
+
+// 报告总耗时：优先用秒级字段自行格式化，缺失时回退到后端格式化好的字符串
+const reportDuration = (report) => {
+  if (report?.total_duration_seconds != null) return formatDuration(report.total_duration_seconds)
+  return report?.total_duration || '-'
+}
+
+// 测试项结果分布（环形图）
+const statusChartOption = computed(() => {
+  const s = currentReport.value?.summary || {}
+  const data = [
+    { name: '通过', value: s.passed || 0, itemStyle: { color: '#67c23a' } },
+    { name: '失败', value: s.failed || 0, itemStyle: { color: '#f56c6c' } },
+    { name: '跳过', value: s.skipped || 0, itemStyle: { color: '#909399' } },
+    { name: '错误', value: s.error || 0, itemStyle: { color: '#e6a23c' } }
+  ].filter(d => d.value > 0)
+  return {
+    tooltip: { trigger: 'item' },
+    legend: { bottom: 0, textStyle: { color: 'var(--tp-text-secondary)' } },
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      center: ['50%', '45%'],
+      label: { formatter: '{b}: {c}' },
+      data
+    }]
+  }
+})
+
+// 各测试项耗时（横向条形图）
+const timeChartOption = computed(() => {
+  const results = currentReport.value?.results || []
+  return {
+    tooltip: { trigger: 'axis' },
+    grid: { left: 10, right: 30, top: 10, bottom: 10, containLabel: true },
+    xAxis: { type: 'value' },
+    yAxis: {
+      type: 'category',
+      data: results.map(r => r.item_name),
+      axisLabel: { width: 110, overflow: 'truncate' }
+    },
+    series: [{
+      type: 'bar',
+      barMaxWidth: 16,
+      data: results.map(r => r.execution_time || 0),
+      itemStyle: { color: '#2563eb' }
+    }]
+  }
+})
 
 const filteredReports = computed(() => {
   return reports.value.filter(report => {
@@ -323,7 +510,8 @@ const fetchReports = async () => {
           task_name: task.task_name,
           device: { model: task.device_model, serial_number: task.device_serial },
           created_at: task.created_at,
-          total_duration: '-',
+          total_duration: task.total_duration || '-',
+          total_duration_seconds: task.total_duration_seconds ?? null,
           summary: {
             total_items: task.total_items,
             passed: taskReport.filter(r => r.status === 'pass').length,
@@ -496,8 +684,80 @@ const updateSelection = () => {
   // 触发 computed 更新
 }
 
-onMounted(() => {
-  fetchReports()
+const openCompare = () => {
+  compareResult.value = null
+  showCompareDialog.value = true
+}
+
+// 拉取两份报告并按测试项名称对齐，标注结果差异
+const runCompare = async () => {
+  if (!compareLeftId.value || !compareRightId.value) {
+    ElMessage.warning('请选择两个任务报告')
+    return
+  }
+  if (compareLeftId.value === compareRightId.value) {
+    ElMessage.warning('请选择两个不同的任务报告')
+    return
+  }
+  compareLoading.value = true
+  compareResult.value = null
+  try {
+    const [leftRes, rightRes] = await Promise.all([
+      getReport(compareLeftId.value),
+      getReport(compareRightId.value)
+    ])
+    if (leftRes.code === 200 && rightRes.code === 200) {
+      compareResult.value = buildCompareRows(leftRes.data, rightRes.data)
+    }
+  } catch (error) {
+    console.error('报告对比失败:', error)
+    ElMessage.error('报告对比失败')
+  } finally {
+    compareLoading.value = false
+  }
+}
+
+const buildCompareRows = (left, right) => {
+  const rightMap = new Map((right.results || []).map(r => [r.item_name, r]))
+  const rows = (left.results || []).map(lr => {
+    const rr = rightMap.get(lr.item_name)
+    rightMap.delete(lr.item_name)
+    return {
+      item_name: lr.item_name,
+      module_name: lr.module_name,
+      left_status: lr.status,
+      left_time: lr.execution_time,
+      right_status: rr?.status || null,
+      right_time: rr?.execution_time ?? null,
+      same: !!rr && lr.status === rr.status,
+      only_left: !rr,
+      only_right: false
+    }
+  })
+  // 仅报告 B 中存在的测试项
+  for (const rr of rightMap.values()) {
+    rows.push({
+      item_name: rr.item_name,
+      module_name: rr.module_name,
+      left_status: null,
+      left_time: null,
+      right_status: rr.status,
+      right_time: rr.execution_time,
+      same: false,
+      only_left: false,
+      only_right: true
+    })
+  }
+  return { left, right, rows }
+}
+
+onMounted(async () => {
+  await fetchReports()
+  // 支持带 ?task_id= 跳转（如任务监控页）时自动打开对应报告详情
+  const taskId = Number(route.query.task_id)
+  if (taskId) {
+    viewReport({ task_id: taskId })
+  }
 })
 </script>
 
@@ -703,6 +963,51 @@ onMounted(() => {
   
   .detail-actions {
     margin-top: 15px;
+  }
+}
+
+.detail-charts {
+  display: flex;
+  gap: 20px;
+
+  .chart-box {
+    flex: 1;
+    min-width: 0;
+
+    h4 {
+      margin: 0 0 10px 0;
+      color: var(--tp-text);
+    }
+
+    .chart {
+      height: 260px;
+    }
+  }
+}
+
+.compare-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+
+  .compare-vs {
+    color: var(--tp-text-tertiary);
+    font-weight: 600;
+  }
+}
+
+.compare-result {
+  .compare-summary {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .compare-time {
+    margin-left: 6px;
+    font-size: 12px;
+    color: var(--tp-text-secondary);
   }
 }
 

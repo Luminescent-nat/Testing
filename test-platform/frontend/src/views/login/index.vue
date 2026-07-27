@@ -147,7 +147,7 @@ import {
 } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { useThemeStore } from '@/store/theme'
-import { login, register } from '@/api'
+import { login, register } from '@/api/auth'
 
 const router = useRouter()
 const userStore = useUserStore()
