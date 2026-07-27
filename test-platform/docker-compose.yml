@@ -22,6 +22,14 @@ services:
     environment:
       # 生产环境务必修改（也可放入 .env 文件，compose 会自动读取）
       - SECRET_KEY=${SECRET_KEY:-please-change-me-in-production}
+      # 前端产物在镜像 /app/static，挂载到 / 提供浏览器访问
+      - STATIC_PATH=/app/static
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
     # 若被测 Android 设备通过 USB 直挂服务器（非常规做法，推荐网络 adb），取消下行注释：
     # privileged: true   # 并确认宿主机 /dev/bus/usb 可被容器访问

@@ -3,8 +3,8 @@
 # 构建上下文为 test-platform/ 根目录：
 #   docker build -t test-platform .
 #
-# 注意：当前 backend/app/main.py 未挂载前端静态文件，容器默认只提供 API（:8000）。
-# 前端产物已打在镜像 /app/static 下，接线方法见 DEPLOYMENT.md「前端静态文件接线」。
+# 前端产物打在镜像 /app/static，并通过 STATIC_PATH 环境变量挂载到 /，
+# 容器启动后浏览器直接访问 :8000 即可看到前端页面（API 在 /api/v1 下）。
 
 # ---------- 阶段 1：构建前端 ----------
 FROM node:20-alpine AS frontend-build
@@ -46,7 +46,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 后端代码（.dockerignore 已排除 __pycache__ / *.db / *.log / tests / storage）
 COPY backend/ ./
 
-# 前端构建产物，供后续静态文件挂载接线使用（当前未被 serve）
+# 前端构建产物，由 STATIC_PATH 指向并在 main.py 中挂载到 /
 COPY --from=frontend-build /build/dist ./static
 
 # 数据目录：SQLite 数据库 + 上传文件/报告/测试日志，由 compose 挂载到宿主机 ./data 持久化。
@@ -56,7 +56,8 @@ ENV DATABASE_URL="sqlite+aiosqlite:////data/test_platform.db" \
     STORAGE_PATH="/data/storage" \
     TOOLS_PATH="/data/storage/tools" \
     REPORTS_PATH="/data/storage/reports" \
-    LOGS_PATH="/data/storage/logs"
+    LOGS_PATH="/data/storage/logs" \
+    STATIC_PATH="/app/static"
 
 EXPOSE 8000
 
