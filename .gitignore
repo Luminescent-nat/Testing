@@ -20,7 +20,7 @@ playwright-report/
 *.db-journal
 *.db-wal
 *.db-shm
-*.db.bak
+*.db.bak*
 *.log
 test-platform/backend/storage/logs/
 test-platform/backend/storage/reports/
@@ -37,3 +37,4 @@ test-platform/frontend/tests/e2e/.auth/
 .vscode/
 .DS_Store
 Thumbs.db
+*.log.*

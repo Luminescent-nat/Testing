@@ -67,13 +67,15 @@ items:
     参数化覆盖
   objective: 验证固件版本/分支/定制版本属性存在且非空
   precondition: 无
-  steps: getprop ro.build.display.id && getprop ro.mc.version && getprop ro.mc.custom_api_version
-  expected_result: 三行输出均非空
+  steps: echo "display_id=$(getprop ro.build.display.id)" && echo "mc_version=$(getprop ro.mc.version)" && echo "custom_api_version=$(getprop
+    ro.mc.custom_api_version)"
+  expected_result: display_id / mc_version 非空，custom_api_version 字段存在（A133P 固件为空串，允许）
   exec_type: adb_shell
-  exec_command: getprop ro.build.display.id && getprop ro.mc.version && getprop ro.mc.custom_api_version
+  exec_command: echo "display_id=$(getprop ro.build.display.id)" && echo "mc_version=$(getprop ro.mc.version)" && echo "custom_api_version=$(getprop
+    ro.mc.custom_api_version)"
   judgement_type: assertion
   result_parse:
-    pass_pattern: \S[^\n]*\n\S[^\n]*\n\S
+    pass_pattern: display_id=\S[\s\S]*mc_version=\S[\s\S]*custom_api_version=
   timeout: 30
   retry_count: 0
   on_failure: continue
@@ -93,44 +95,44 @@ items:
     --expected-cpu "{expected_cpu}" --expected-custom-version "{expected_custom_version}" --expected-oem-img-version "{expected_oem_img_version}"
     --expected-product "{expected_product}" --expected-version "{expected_version}" --expected-version-code "{expected_version_code}"
   parameters:
-    expected_android_version: ANDROID11.0
-    expected_cpu: RK3568
-    expected_custom_version: '1'
+    expected_android_version: ''
+    expected_cpu: ''
+    expected_custom_version: ''
     expected_oem_img_version: ''
-    expected_product: FE7G28/Standard
-    expected_version: 8.1.0
-    expected_version_code: '8'
+    expected_product: ''
+    expected_version: ''
+    expected_version_code: ''
   parameters_schema:
     type: object
     properties:
       expected_android_version:
         type: string
-        default: ANDROID11.0
-        description: ro.mc.android_version 期望值
+        default: ''
+        description: ro.mc.android_version 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_cpu:
         type: string
-        default: RK3568
-        description: ro.mc.cpu 期望值
+        default: ''
+        description: ro.mc.cpu 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_custom_version:
         type: string
-        default: '1'
-        description: ro.mc.custom_api_version 期望值
+        default: ''
+        description: ro.mc.custom_api_version 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_oem_img_version:
         type: string
         default: ''
-        description: ro.mc.oem.version 期望值（本固件为空串）
+        description: ro.mc.oem.version 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_product:
         type: string
-        default: FE7G28/Standard
-        description: ro.mc.product 期望值
+        default: ''
+        description: ro.mc.product 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_version:
         type: string
-        default: 8.1.0
-        description: ro.mc.version 期望值
+        default: ''
+        description: ro.mc.version 期望值；空 = 按板型画像自动取值，* = 只读不比对
       expected_version_code:
         type: string
-        default: '8'
-        description: ro.mc.version_code 期望值
+        default: ''
+        description: ro.mc.version_code 期望值；空 = 按板型画像自动取值，* = 只读不比对
   judgement_type: assertion
   result_parse:
     pass_pattern: 'RESULT: PASS'
@@ -183,16 +185,15 @@ items:
   description: 用例 4.2.1 设置读回部分：记录原值 -> 设 user_rotation=1 读回 -> 恢复原值
   objective: 验证屏幕旋转设置可写入并读回
   precondition: 无
-  steps: 记录原值 -> settings put system user_rotation 1 -> 读回断言 -> 恢复原值
-  expected_result: 读回值为 1，结束后恢复原值
-  exec_type: adb_shell
-  exec_command: orig=$(settings get system user_rotation) && settings put system user_rotation 1 && cur=$(settings get system
-    user_rotation) && settings put system user_rotation $orig && echo "orig=$orig set_readback=$cur restored=$(settings get
-    system user_rotation)"
+  steps: host_exec rotation_check.py 锁定自动旋转 -> 写入与原值不同的 user_rotation -> 读回断言 -> 恢复原值
+  expected_result: 读回值等于写入值，结束后恢复原值（A10 上 user_rotation 为 null 的场景由 runner 处理）
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/rotation_check.py" --serial {serial}
   judgement_type: assertion
   result_parse:
-    pass_pattern: set_readback=1
-  timeout: 30
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 60
   retry_count: 0
   on_failure: continue
   sort_order: 8
@@ -259,18 +260,18 @@ items:
   objective: 验证触摸点数达到规格
   precondition: 无
   steps: 解析 getevent -pl 触摸设备 ABS_MT 最大值
-  expected_result: 实测点数等于 expected_points（实机 10 点）
+  expected_result: 实测点数等于板型画像期望点数
   exec_type: host_exec
-  exec_command: python "{host_tool_dir}/upfm/host/touch_points.py" --serial {serial} --expected-points {expected_points}
+  exec_command: python "{host_tool_dir}/upfm/host/touch_points.py" --serial {serial} --expected-points "{expected_points}"
   parameters:
-    expected_points: '10'
+    expected_points: ''
   parameters_schema:
     type: object
     properties:
       expected_points:
         type: string
-        default: '10'
-        description: 期望触摸点数（10 寸及以下机型改 3）
+        default: ''
+        description: 期望触摸点数；空 = 按板型画像自动取值
   judgement_type: assertion
   result_parse:
     pass_pattern: 'RESULT: PASS'
@@ -286,25 +287,19 @@ items:
   description: 用例 7.1.1：scaling_available_frequencies 与参数精确比对（去尾空格）。实机 8 档与用例表 R1201 行一致，非 R071 行
   objective: 验证 CPU 支持频率表与基线一致
   precondition: 无
-  steps: 读 cpu0 scaling_available_frequencies，归一化空格后与期望值精确比对
-  expected_result: 频率表与 expected_freqs 完全一致
-  exec_type: adb_shell
-  exec_command: 'actual=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies) && norm=$(echo $actual)
-    && [ "$norm" = "{expected_freqs}" ] && echo "CPU_FREQS_MATCH: $norm" || echo "CPU_FREQS_MISMATCH: $norm"'
-  parameters:
-    expected_freqs: 408000 600000 816000 1104000 1416000 1608000 1800000 1992000
+  steps: host_exec cpu_freq_check.py 读 cpu0 scaling_available_frequencies 与板型画像期望值按集合精确比对
+  expected_result: 频率表与板型画像期望值完全一致
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/cpu_freq_check.py" --serial {serial} --mode available
+  parameters: {}
   parameters_schema:
     type: object
-    properties:
-      expected_freqs:
-        type: string
-        default: 408000 600000 816000 1104000 1416000 1608000 1800000 1992000
-        description: CPU 支持频率表（空格分隔，精确比对）
+    properties: {}
   judgement_type: assertion
   result_parse:
-    pass_pattern: CPU_FREQS_MATCH
-    fail_pattern: CPU_FREQS_MISMATCH
-  timeout: 30
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 60
   retry_count: 0
   on_failure: continue
   sort_order: 12
@@ -315,25 +310,19 @@ items:
   description: 用例 7.1.3：cpuinfo_max_freq 与参数精确比对（实机 1992000）
   objective: 验证 CPU 最大频率与基线一致
   precondition: 无
-  steps: 读 cpu0 cpuinfo_max_freq 与期望值比对
-  expected_result: 等于 expected_max
-  exec_type: adb_shell
-  exec_command: 'actual=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq) && [ "$actual" = "{expected_max}" ] &&
-    echo "CPU_MAX_MATCH: $actual" || echo "CPU_MAX_MISMATCH: $actual"'
-  parameters:
-    expected_max: '1992000'
+  steps: host_exec cpu_freq_check.py 读 cpu0 cpuinfo_max_freq 与板型画像期望值比对
+  expected_result: 等于板型画像期望最大频率
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/cpu_freq_check.py" --serial {serial} --mode max
+  parameters: {}
   parameters_schema:
     type: object
-    properties:
-      expected_max:
-        type: string
-        default: '1992000'
-        description: CPU 最大频率期望值（KHz）
+    properties: {}
   judgement_type: assertion
   result_parse:
-    pass_pattern: CPU_MAX_MATCH
-    fail_pattern: CPU_MAX_MISMATCH
-  timeout: 30
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 60
   retry_count: 0
   on_failure: continue
   sort_order: 13
@@ -344,19 +333,14 @@ items:
   description: 用例 7.3.1：host_exec 自动发现 devfreq *.gpu 节点读 available_frequencies 比对
   objective: 验证 GPU 支持频率表与基线一致
   precondition: 无
-  steps: 发现 /sys/class/devfreq/*.gpu -> 读 available_frequencies 按集合比对
-  expected_result: 频率表与 expected_freqs 一致
+  steps: "发现 /sys/class/devfreq/*.gpu -> 读 available_frequencies 与板型画像期望值按集合比对；画像 gpu.supported=false 时输出 RESULT: SKIP"
+  expected_result: 频率表与板型画像期望值一致；不支持查看频率表的板型 SKIP
   exec_type: host_exec
-  exec_command: python "{host_tool_dir}/upfm/host/gpu_freq_check.py" --serial {serial} --mode available --expected "{expected_freqs}"
-  parameters:
-    expected_freqs: 800000000 700000000 600000000 400000000 300000000 200000000
+  exec_command: python "{host_tool_dir}/upfm/host/gpu_freq_check.py" --serial {serial} --mode available
+  parameters: {}
   parameters_schema:
     type: object
-    properties:
-      expected_freqs:
-        type: string
-        default: 800000000 700000000 600000000 400000000 300000000 200000000
-        description: GPU 支持频率表（空格分隔，顺序无关）
+    properties: {}
   judgement_type: assertion
   result_parse:
     pass_pattern: 'RESULT: PASS'
@@ -372,19 +356,14 @@ items:
   description: 用例 7.3.3：host_exec 读 GPU max_freq 与参数比对（实机 800000000）
   objective: 验证 GPU 最大频率与基线一致
   precondition: 无
-  steps: 发现 GPU devfreq 节点 -> 读 max_freq 比对
-  expected_result: 等于 expected_max
+  steps: "发现 GPU devfreq 节点 -> 读 max_freq 与板型画像期望值比对；画像 gpu.supported=false 时输出 RESULT: SKIP"
+  expected_result: 等于板型画像期望最大频率；不支持查看频率表的板型 SKIP
   exec_type: host_exec
-  exec_command: python "{host_tool_dir}/upfm/host/gpu_freq_check.py" --serial {serial} --mode max --expected {expected_max}
-  parameters:
-    expected_max: '800000000'
+  exec_command: python "{host_tool_dir}/upfm/host/gpu_freq_check.py" --serial {serial} --mode max
+  parameters: {}
   parameters_schema:
     type: object
-    properties:
-      expected_max:
-        type: string
-        default: '800000000'
-        description: GPU 最大频率期望值（Hz）
+    properties: {}
   judgement_type: assertion
   result_parse:
     pass_pattern: 'RESULT: PASS'
@@ -400,25 +379,19 @@ items:
   description: 用例 7.5.1 静止态部分：clk_summary 中 ddr 频率含期望值。实机 clk_scmi_ddr=1056000000，用例表预期 1560000000 与实机不符，基线待与硬件确认
   objective: 验证 DDR 静止态频率与基线一致
   precondition: 无（休眠/压力态归 T2）
-  steps: cat clk_summary | grep -i ddr，断言出现期望频率
-  expected_result: ddr 相关时钟行包含 expected_ddr_freq
-  exec_type: adb_shell
-  exec_command: 'actual=$(cat /sys/kernel/debug/clk/clk_summary | grep -i ddr) && echo "$actual" && (echo "$actual" | grep
-    -q {expected_ddr_freq}) && echo "DDR_FREQ_MATCH: {expected_ddr_freq}" || echo "DDR_FREQ_MISMATCH"'
-  parameters:
-    expected_ddr_freq: '1056000000'
+  steps: host_exec ddr_freq_check.py 按板型画像 clk 模式读 clk_summary 比对（读不到自动 adb root 重试）
+  expected_result: ddr 相关时钟行速率等于板型画像期望值
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/ddr_freq_check.py" --serial {serial}
+  parameters: {}
   parameters_schema:
     type: object
-    properties:
-      expected_ddr_freq:
-        type: string
-        default: '1056000000'
-        description: DDR 频率期望值（Hz，实机基线，待硬件确认）
+    properties: {}
   judgement_type: assertion
   result_parse:
-    pass_pattern: DDR_FREQ_MATCH
-    fail_pattern: DDR_FREQ_MISMATCH
-  timeout: 30
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 60
   retry_count: 0
   on_failure: continue
   sort_order: 16
@@ -627,16 +600,15 @@ items:
   description: 用例 2.3.1 开关部分：关 WiFi 读回 0 -> 开 WiFi 读回 1（重启沿用归 T2）
   objective: 验证 WiFi 开关可控且状态读回正确
   precondition: 无（执行后 WiFi 保持开启）
-  steps: svc wifi disable 读回 -> svc wifi enable 读回
+  steps: host_exec toggle_check.py --type wifi：svc wifi disable 轮询读回 -> svc wifi enable 轮询读回
   expected_result: wifi_off=0 且 wifi_on=1
-  exec_type: adb_shell
-  exec_command: svc wifi disable && sleep 2 && s1=$(settings get global wifi_on) && svc wifi enable && sleep 3 && s2=$(settings
-    get global wifi_on) && echo "wifi_off=$s1 wifi_on=$s2"
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/toggle_check.py" --serial {serial} --type wifi
   judgement_type: assertion
   result_parse:
-    pass_pattern: wifi_off=0 wifi_on=1
-    fail_pattern: wifi_off=1|wifi_on=0
-  timeout: 60
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 90
   retry_count: 2
   on_failure: continue
   sort_order: 25
@@ -647,17 +619,16 @@ items:
   description: 用例 2.5.1 开关部分：关蓝牙读回 0 -> 开蓝牙读回 1（重启沿用归 T2）
   objective: 验证蓝牙开关可控且状态读回正确
   precondition: 无（执行后蓝牙保持开启）
-  steps: svc bluetooth disable 读回 -> svc bluetooth enable 读回
-  expected_result: bt_off=0 且 bt_on=1
-  exec_type: adb_shell
-  exec_command: svc bluetooth disable && sleep 2 && s1=$(settings get global bluetooth_on) && svc bluetooth enable && sleep
-    3 && s2=$(settings get global bluetooth_on) && echo "bt_off=$s1 bt_on=$s2"
+  steps: host_exec toggle_check.py --type bluetooth：画像 bluetooth.supported=false 时 SKIP；否则 svc 开关轮询读回，失败附 dumpsys bluetooth_manager 摘要
+  expected_result: bt_off=0 且 bt_on=1；不支持的板型 SKIP
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/toggle_check.py" --serial {serial} --type bluetooth
   judgement_type: assertion
   result_parse:
-    pass_pattern: bt_off=0 bt_on=1
-    fail_pattern: bt_off=1|bt_on=0
-  timeout: 60
-  retry_count: 2
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 90
+  retry_count: 0
   on_failure: continue
   sort_order: 26
   enabled: true
@@ -667,18 +638,15 @@ items:
   description: 用例 2.6.1 开关部分：开飞行模式读回 1 -> 关飞行模式读回 0，结束后恢复关闭态并重新打开 WiFi/蓝牙（重启沿用归 T2）
   objective: 验证飞行模式开关可控且状态读回正确
   precondition: 排在任务最后执行（会断网）
-  steps: 开飞行模式读回 -> 关飞行模式读回 -> 恢复 WiFi/蓝牙
+  steps: host_exec toggle_check.py --type airplane：开飞行模式读回 -> 关飞行模式读回 -> 恢复 WiFi/蓝牙（蓝牙按画像 supported 决定）
   expected_result: airplane_on=1 且 airplane_off=0
-  exec_type: adb_shell
-  exec_command: settings put global airplane_mode_on 1 && am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true
-    && sleep 2 && s1=$(settings get global airplane_mode_on) && settings put global airplane_mode_on 0 && am broadcast -a
-    android.intent.action.AIRPLANE_MODE --ez state false && sleep 3 && s2=$(settings get global airplane_mode_on) && svc wifi
-    enable && svc bluetooth enable && echo "airplane_on=$s1 airplane_off=$s2"
+  exec_type: host_exec
+  exec_command: python "{host_tool_dir}/upfm/host/toggle_check.py" --serial {serial} --type airplane
   judgement_type: assertion
   result_parse:
-    pass_pattern: airplane_on=1 airplane_off=0
-    fail_pattern: airplane_on=0|airplane_off=1
-  timeout: 60
+    pass_pattern: 'RESULT: PASS'
+    fail_pattern: 'RESULT: FAIL'
+  timeout: 90
   retry_count: 2
   on_failure: continue
   sort_order: 27

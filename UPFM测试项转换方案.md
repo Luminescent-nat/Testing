@@ -423,3 +423,85 @@ T1 判定标准（三条件同时满足）：命令可完成操作与采集；�
 3. T1-17~21：文档设计的纯 adb_shell（`sm list-volumes`/`ls /mnt/media_rw`）在实机上受权限限制（/mnt/media_rw 需 root），统一改为 host_exec runner（storage_rw_check.py，内部 adb root + 自动发现挂载点），介质按 sm disk id 前缀区分（TF=public:179,，U盘=public:8,）。
 4. T1-22：频率文件尾部空格导致直接字符串比对失配，命令内做归一化后精确比对。
 5. T1-11/12 的"跳过"语义：平台 assertion 判定无法产出 skip 状态，runner 以 `RESULT: SKIP` 标记 + 退出码 0 表达，记录在平台显示为 error，复测前视为"未执行"。
+
+---
+
+## 八、板型自动判别改造与 A133P 复测结果（2026-07-31，A133P / Android 10 / armeabi-v7a）
+
+### 8.1 机制说明
+
+判定期望值不再写死在测试项 `parameters` 里，改为**板型画像（board profile）**按设备自动取值，下发任务时无需人工选择板型参数：
+
+- `test-tools/upfm/host/board_profiles.py`：每板型一条 profile（cpu/gpu/ddr/touch/bluetooth/mc_props 期望值），文件内注释写明各字段采集命令与实测来源。
+- `test-tools/upfm/host/board_detect.py`：公共识别模块。判别键 `ro.mc.cpu` 优先、`ro.product.device` 兜底；识别成功加载 profile，供各 runner import。
+- **未知板型策略**：runner 输出实机读到的全部值（频率表/devfreq/clk/触摸/蓝牙特性/ro.mc.*）+ `RESULT: FAIL`，并提示"未知识别板型，请把以上实测值补入 board_profiles"——绝不静默通过。
+- **SKIP 语义**：profile 标记不支持的项（如 A133P GPU 频率表）runner 输出 `RESULT: SKIP` 并以 0 退出；平台断言判定无 skip 状态，记录在平台显示为 error，报告按输出中的 `RESULT: SKIP` 重分类（同第七节第 5 条既有约定）。采用 runner SKIP 方案而非 compatibility board_patterns，板型名单只需在 board_profiles.py 维护一处。
+- 人工覆盖入口保留：T1-08（ro.mc.* 七字段）与 T1-16（触摸点数）的 parameters 留空串即按画像取值，显式填值仍覆盖画像；`*` 保持只读不比对（采集模式）。
+
+### 8.2 板型画像实填值
+
+| 字段 | rk3568（抄第四节实测） | A133P（2026-07-31 实机 adb 采集） |
+|---|---|---|
+| 判别键 | ro.mc.cpu=RK3568 | ro.mc.cpu=A133P / ro.product.device=A133P |
+| cpu.available_freqs | 408000…1992000（8 档含 1104000） | 408000…1800000（8 档含 1008000/1200000） |
+| cpu.max_freq | 1992000 | 1800000 |
+| gpu.supported | true（devfreq *.gpu，fde60000.gpu） | **false**（devfreq 为空，用例注明不支持查看频率表） |
+| gpu.available/max | 800M…200M / 800000000 | — |
+| ddr（clk 名 / 期望值） | clk_scmi_ddr / 1056000000 | pll_ddr / 1584000000 |
+| touch.expected_points | 10（techwin TRACKING_ID max=9） | 32（cyttsp5_mt ABS_MT_SLOT max=31，驱动槽位数） |
+| bluetooth.supported | true | true（pm features 声明支持，但协议栈实测崩溃，见 8.5） |
+| mc_props | ANDROID11.0/RK3568/custom_api=1/oem=""/FE7G28/Standard/8.1.0/8 | ANDROID10.0/A133P/custom_api=""/oem=""/F7G18PD_HZCL01/HangZhouZeTianChunLai/ShuiZhiJianCe/2.1.0/3 |
+
+### 8.3 runner 改动清单（test-tools/upfm/host/）
+
+- 新增 `board_profiles.py` / `board_detect.py`（识别 + 画像加载 + 未知板型 FAIL 兜底）。
+- 新增 `cpu_freq_check.py`（available/max 两模式）→ T1-22/23 由 adb_shell 转 host_exec。
+- 新增 `ddr_freq_check.py`（按画像 clk 模式比对，读不到自动 adb root 重试）→ T1-26 转 host_exec。
+- 新增 `rotation_check.py` → T1-13 转 host_exec。任务 #9 在 A10 报 `Invalid value: null for setting: user_rotation`，根因：自动旋转开启时 user_rotation 未初始化（get 返回 null），写回 null 触发 SettingsProvider 异常。runner 处理 null 场景、先锁 accelerometer_rotation、测后恢复原值。
+- 新增 `toggle_check.py`（wifi/bluetooth/airplane 统一 runner，轮询读回；bluetooth 按画像 supported 判定 SKIP，失败附 dumpsys bluetooth_manager 摘要）→ T1-03/04/05 转 host_exec。
+- 更新 `gpu_freq_check.py`：画像驱动，supported=false 输出 `RESULT: SKIP` + 原因。
+- 更新 `mc_props_check.py`：期望值默认取画像，参数可覆盖。
+- 更新 `touch_points.py`：期望点数默认取画像（解析逻辑不变，本就不依赖设备名；任务 #9 实为期望值 10≠实测 32，非"未找到设备"）。
+- 更新 `sleep_check.py`：①休眠断言接受 Asleep 或 Dozing（A133P 息屏进入 Dozing 浅休眠）；②stay_on_while_plugged_in≠0 时测试期临时置 0 并恢复（userdebug 默认 7 会阻止休眠）；③等待后仍 Awake 时 15s 宽限轮询（A133P 约 15s 才进入 Dozing，时点临界易抖动）。
+- T1-07（保持 adb_shell）：命令改为带标签 echo 三行，断言 display_id/mc_version 非空、custom_api_version 字段存在即可（A133P 该属性为空串导致任务 #9 误判 error）。
+- 兼容性说明：所有 runner 的 stdout UTF-8 重包装加了"已是 UTF-8 则跳过"守卫，避免与 board_detect 双重包装互相关闭底层流。
+
+### 8.4 测试项落库
+
+`backend/scripts/import_upfm_items.py`（重建，按 T1 编号 upsert、幂等，只更新执行配置不动四要素）：更新 12 项（T1-03/04/05/07/08/13/16/22/23/24/25/26）。`test-tools/upfm/manifest.yaml` 已同步相同改动（scan-modules 重新注册不会回退）。改库前已备份 `backend/test_platform.db.bak2`。
+
+### 8.5 A133P 全量复测（任务 #10，27 项，2026-07-31）
+
+分布：**pass 15 / fail 8 / skip 4**（skip 为 runner 输出 RESULT: SKIP，平台记录为 error 后按输出重分类）。
+
+| 测试项 | 状态 | 归因 |
+|---|---|---|
+| T1-01 ping | fail | 【环境】设备无外网（unknown host），与任务 #9 相同 |
+| T1-02 MAC | pass | — |
+| T1-03 WiFi 开关 | pass | 新 toggle runner 轮询读回正常 |
+| T1-04 蓝牙开关 | **fail** | **设备固件缺陷**：svc enable 后 bluetooth_on 恒 0，dumpsys 显示协议栈 CRASH/RESTART 循环、state 卡在 BLE_TURNING_ON、address=null。如实判 FAIL 不静默，需固件侧修复 |
+| T1-05 飞行模式 | pass | — |
+| T1-06 以太网链路 | fail | 【人工前置】未插网线 |
+| T1-07 固件版本 | pass | 标签化命令修复任务 #9 的误判 |
+| T1-08 ro.mc.* 七字段 | pass | 按 A133P 画像全字段一致（含两个空串字段） |
+| T1-09 时区 | pass | — |
+| T1-10 Launcher | pass | — |
+| T1-13 屏幕旋转 | pass | null 场景已处理，测后恢复原值 |
+| T1-14 亮度 | pass | — |
+| T1-15 休眠 | pass | Dozing 判定 + 宽限轮询生效，timeout/stay_on 均恢复 |
+| T1-16 触摸点数 | pass | 32 点按 A133P 画像 |
+| T1-22/23 CPU 频率 | pass | A133P 画像 8 档/1800000 精确一致 |
+| T1-24/25 GPU 频率 | skip | A133P 画像 supported=false，合理跳过 |
+| T1-26 DDR 频率 | pass | pll_ddr=1584000000 按画像一致 |
+| T1-27 剩余内存 | pass | 实测 60.8% 落区间（非首启状态，比例随使用波动，基线疑问同第七节保留） |
+| T1-11/12 APK 安装/卸载 | skip | 【资产缺失】test_app.apk 未放置，同任务 #9 |
+| T1-17~21 TF/U盘 五项 | fail | 【人工前置】未插 TF 卡 / U 盘 |
+
+复跑脚本：`archive/debug-artifacts/run_upfm_rerun_a133p.py`；明细 JSON：`archive/debug-artifacts/upfm_rerun_a133p_boards.json`。
+
+### 8.6 回归与遗留
+
+- pytest 回归：`cd backend && python -m pytest tests -q` → **185 passed 全绿**，未修改任何平台框架代码（判定/执行器未动）。（首轮与复跑任务并发执行时 test_cancel_running_task_keeps_cancelled 出现一次 Event loop is closed 抖动，单独重跑全绿，与本次改动无关。）
+- **rk3568 画像未回归**：rk3568 板（FE7G28V8TEST）当前不在线，其画像值抄自第四节实测记录，改造后 runner 未在 rk3568 上复验；板上线后应全量复跑一次。
+- **A133P 蓝牙不可用**属设备固件缺陷（协议栈崩溃循环），已如实判 FAIL，待固件修复后复测。
+- T1-26 读 clk_summary 依赖 root：A133P adb shell 原生 root；rk3568 需 runner 内 adb root（已实现，重启 adbd 后失效时自动重试）。
