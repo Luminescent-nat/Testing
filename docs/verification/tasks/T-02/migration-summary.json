@@ -1,0 +1,379 @@
+{
+  "started": "2026-11-12T11:53:15+0800",
+  "finished": "2026-11-12T11:53:20+0800",
+  "backend_dir": "D:\\MCTEST\\test-platform\\backend",
+  "source": "D:\\MCTEST\\test-platform\\backend\\test_platform.db",
+  "source_size": 1060864,
+  "source_sha256_before": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789",
+  "source_sha256_after": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789",
+  "source_sidecars_before": {
+    "test_platform.db-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "test_platform.db-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "test_platform.db-journal": null
+  },
+  "source_sidecars_after": {
+    "test_platform.db-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "test_platform.db-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "test_platform.db-journal": null
+  },
+  "pragma_applier": "app.database.configure_sqlite_connection",
+  "checks": [
+    {
+      "name": "empty/upgrade:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:table-set-equals-expected",
+      "ok": true,
+      "detail": "['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']"
+    },
+    {
+      "name": "empty:alembic-version-present",
+      "ok": true,
+      "detail": "0817df993d8b"
+    },
+    {
+      "name": "empty:integrity-ok",
+      "ok": true,
+      "detail": "['ok']"
+    },
+    {
+      "name": "empty:no-fk-violations",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "empty/offline-sql:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:offline-sql-creates-all-tables",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "empty/downgrade-base:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:tables-dropped-after-downgrade",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "empty/upgrade-again:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:reupgrade-table-set",
+      "ok": true,
+      "detail": "['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']"
+    },
+    {
+      "name": "empty:reupgrade-integrity",
+      "ok": true,
+      "detail": "['ok']"
+    },
+    {
+      "name": "empty/current:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:foreign_keys_pragma_on",
+      "ok": true,
+      "detail": "got=1"
+    },
+    {
+      "name": "empty:duplicate_username_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:duplicate_serial_number_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:legal_foreign_key_accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:illegal_foreign_key_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:avoid-db-already-migrated",
+      "ok": true,
+      "detail": "None"
+    },
+    {
+      "name": "legacy:pre-schema-matches-head",
+      "ok": true,
+      "detail": "pre=['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'] expected=['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']"
+    },
+    {
+      "name": "legacy/offline-sql:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:offline-sql-creates-all-tables",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "legacy/stamp-head:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy/upgrade-head:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:integrity-after-upgrade",
+      "ok": true,
+      "detail": "['ok']"
+    },
+    {
+      "name": "legacy/downgrade-base:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy/upgrade-again:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:reupgrade-table-set",
+      "ok": true,
+      "detail": "['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']"
+    },
+    {
+      "name": "legacy:reupgrade-integrity",
+      "ok": true,
+      "detail": "['ok']"
+    },
+    {
+      "name": "legacy/current:exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:foreign_keys_pragma_on",
+      "ok": true,
+      "detail": "got=1"
+    },
+    {
+      "name": "legacy:duplicate_username_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:duplicate_serial_number_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:legal_foreign_key_accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:illegal_foreign_key_rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "source:sha256-unchanged",
+      "ok": true,
+      "detail": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 -> 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789"
+    },
+    {
+      "name": "source:sidecars-unchanged",
+      "ok": true,
+      "detail": "{'test_platform.db-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'test_platform.db-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb', 'test_platform.db-journal': None} -> {'test_platform.db-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'test_platform.db-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb', 'test_platform.db-journal': None}"
+    }
+  ],
+  "known_limitations": [
+    {
+      "name": "legacy:rollback-preserves-original-data (KNOWN DEFECT, NOT A GATE)",
+      "met": false,
+      "detail": "before={'test_tasks': 10, 'test_records': 98} after_downgrade={} after_reupgrade={'test_tasks': 0, 'test_records': 0}"
+    }
+  ],
+  "failed": 0,
+  "empty": {
+    "after_upgrade": {
+      "label": "empty/after-upgrade",
+      "tables": [
+        "baselines",
+        "devices",
+        "failure_patterns",
+        "golden_cases",
+        "knowledge_entries",
+        "test_items",
+        "test_modules",
+        "test_records",
+        "test_tasks",
+        "test_tools",
+        "users"
+      ],
+      "alembic_version": "0817df993d8b",
+      "counts": {
+        "test_tasks": 0,
+        "test_records": 0
+      },
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "after_downgrade": {
+      "label": "empty/after-downgrade",
+      "tables": [],
+      "alembic_version": null,
+      "counts": {},
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "after_reupgrade": {
+      "label": "empty/after-reupgrade",
+      "tables": [
+        "baselines",
+        "devices",
+        "failure_patterns",
+        "golden_cases",
+        "knowledge_entries",
+        "test_items",
+        "test_modules",
+        "test_records",
+        "test_tasks",
+        "test_tools",
+        "users"
+      ],
+      "alembic_version": "0817df993d8b",
+      "counts": {
+        "test_tasks": 0,
+        "test_records": 0
+      },
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "constraints": {
+      "foreign_keys_pragma": 1,
+      "duplicate_username_rejected": true,
+      "duplicate_serial_number_rejected": true,
+      "legal_foreign_key_accepted": true,
+      "illegal_foreign_key_rejected": true
+    }
+  },
+  "legacy": {
+    "before": {
+      "label": "legacy/before",
+      "tables": [
+        "baselines",
+        "devices",
+        "failure_patterns",
+        "golden_cases",
+        "knowledge_entries",
+        "test_items",
+        "test_modules",
+        "test_records",
+        "test_tasks",
+        "test_tools",
+        "users"
+      ],
+      "alembic_version": null,
+      "counts": {
+        "test_tasks": 10,
+        "test_records": 98
+      },
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "after_upgrade": {
+      "label": "legacy/after-upgrade",
+      "tables": [
+        "baselines",
+        "devices",
+        "failure_patterns",
+        "golden_cases",
+        "knowledge_entries",
+        "test_items",
+        "test_modules",
+        "test_records",
+        "test_tasks",
+        "test_tools",
+        "users"
+      ],
+      "alembic_version": "0817df993d8b",
+      "counts": {
+        "test_tasks": 10,
+        "test_records": 98
+      },
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "after_downgrade": {
+      "label": "legacy/after-downgrade",
+      "tables": [],
+      "alembic_version": null,
+      "counts": {},
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "after_reupgrade": {
+      "label": "legacy/after-reupgrade",
+      "tables": [
+        "baselines",
+        "devices",
+        "failure_patterns",
+        "golden_cases",
+        "knowledge_entries",
+        "test_items",
+        "test_modules",
+        "test_records",
+        "test_tasks",
+        "test_tools",
+        "users"
+      ],
+      "alembic_version": "0817df993d8b",
+      "counts": {
+        "test_tasks": 0,
+        "test_records": 0
+      },
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": []
+    },
+    "constraints": {
+      "foreign_keys_pragma": 1,
+      "duplicate_username_rejected": true,
+      "duplicate_serial_number_rejected": true,
+      "legal_foreign_key_accepted": true,
+      "illegal_foreign_key_rejected": true
+    },
+    "data_preserved_on_rollback": false
+  }
+}

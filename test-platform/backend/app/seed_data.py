@@ -1,5 +1,7 @@
 import logging
 import os
+from typing import Optional
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,10 +17,11 @@ async def seed_default_data(db: AsyncSession):
     # 第一个通过 /auth/register 注册的用户会自动分配 admin 角色。
     # 如需系统初始化账号，请注册后使用 admin 创建其他用户。
 
-    # 使用一个虚拟 created_by=1 初始化模板数据；若已有真实用户则优先使用第一个用户
+    # T-02 修复：空库首次启动无任何用户时用 None（created_by 可空），
+    # 不再用虚构 created_by=1 —— PRAGMA foreign_keys=ON 下虚构外键会拒绝启动。
     result = await db.execute(select(User).order_by(User.id))
     user = result.scalars().first()
-    user_id = user.id if user else 1
+    user_id = user.id if user else None
 
     # 不再自动创建示例设备，避免产生虚构测试数据。
     # 真实设备通过 /api/v1/devices/refresh 接口发现并同步。
@@ -102,7 +105,7 @@ async def _seed_sample_device(db: AsyncSession, user: User):
     await db.commit()
 
 
-async def _seed_default_modules_and_items(db: AsyncSession, user_id: int):
+async def _seed_default_modules_and_items(db: AsyncSession, user_id: Optional[int]):
     """初始化默认测试模块与用例模板。"""
 
     modules = [

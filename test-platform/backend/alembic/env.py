@@ -13,7 +13,7 @@ import sys
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, event, pool
 
 # 让 alembic 在 backend 目录下能找到 app 包
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -75,6 +75,17 @@ def run_migrations_online() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
+
+    if connectable.dialect.name == "sqlite":
+        # 迁移连接也启用与运行时一致的 SQLite PRAGMA（foreign_keys=ON / WAL /
+        # busy_timeout），使迁移期间的外键与表重建行为可验证。
+        # 注意：SQLite 要求 foreign_keys 只在连接建立（事务外）时设置；本迁移的
+        # batch 操作仅涉及索引，不触发影子表重建。若未来新增需要重建被引用表的
+        # batch 迁移，必须在事务外显式关闭外键、完成重建后再恢复（见设计第 5 节
+        # “迁移事务中按 SQLite 要求管理外键与表重建”）。
+        from app.database import configure_sqlite_connection
+
+        event.listen(connectable, "connect", configure_sqlite_connection)
 
     with connectable.connect() as connection:
         context.configure(
