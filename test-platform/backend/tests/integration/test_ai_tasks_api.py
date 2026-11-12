@@ -51,7 +51,9 @@ async def test_ai_task_no_device(
         json={"text": "对不存在的设备做 DDR 测试"},
     )
     assert response.status_code == 400
-    assert "无法" in response.json()["detail"] or "未找到" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "无法" in err["message"] or "未找到" in err["message"]
 
 
 @pytest.mark.asyncio
@@ -78,4 +80,6 @@ async def test_ai_task_no_matching_items(
         json={"text": "对 rk3568 做 nfc 测试"},
     )
     assert response.status_code == 400
-    assert "未找到" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "未找到" in err["message"]

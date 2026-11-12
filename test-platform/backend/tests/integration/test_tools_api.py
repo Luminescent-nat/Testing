@@ -79,7 +79,7 @@ async def test_upload_empty_file_rejected(client: AsyncClient, admin_token: str)
         files={"file": ("empty_tool", b"", "application/octet-stream")},
     )
     assert response.status_code == 400
-    assert "为空" in response.json().get("detail", "")
+    assert "为空" in response.json()["message"]
 
 
 @pytest.mark.asyncio

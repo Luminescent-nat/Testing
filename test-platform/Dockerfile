@@ -42,17 +42,24 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 后端代码（.dockerignore 已排除 __pycache__ / *.db / *.log / tests / storage）
 COPY backend/ ./
 
+# test-tools：manifest + runner + 各架构二进制（T-17）。
+# 干净镜像必须包含 manifest 声明的全部工具；启动时由 app/services/tool_manifest.py
+# 做只读校验，缺失必需工具直接拒绝启动（范围内 APK 等可选资源缺失记 skip）。
+COPY test-tools/ ./test-tools/
+
 # 前端构建产物，由 STATIC_PATH 指向并在 main.py 中挂载到 /
 COPY --from=frontend-build /build/dist ./static
 
 # 数据目录：SQLite 数据库 + 上传文件/报告/测试日志，由 compose 挂载到宿主机 ./data 持久化。
 # 通过环境变量覆盖 app/config.py 中的相对路径默认值，不改代码。
+# TEST_TOOLS_PATH/STATIC_PATH 与镜像内工作目录 /app 对齐（host_exec 的 {host_tool_dir} 解析用）。
 RUN mkdir -p /data/storage/tools /data/storage/reports /data/storage/logs
 ENV DATABASE_URL="sqlite+aiosqlite:////data/test_platform.db" \
     STORAGE_PATH="/data/storage" \
     TOOLS_PATH="/data/storage/tools" \
     REPORTS_PATH="/data/storage/reports" \
     LOGS_PATH="/data/storage/logs" \
+    TEST_TOOLS_PATH="/app/test-tools" \
     STATIC_PATH="/app/static"
 
 EXPOSE 8000

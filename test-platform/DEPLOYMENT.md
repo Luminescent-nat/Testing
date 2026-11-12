@@ -21,7 +21,9 @@ mkdir -p data/storage
 cp backend/test_platform.db data/
 cp -r backend/storage/* data/storage/
 
-# 生产环境务必设置 SECRET_KEY（写入 .env 文件，compose 自动读取）
+# 生产环境必须显式提供 SECRET_KEY（写入 .env，compose 自动读取）。
+# compose 使用 ${SECRET_KEY:?...} 强制校验：未设置会直接报错，不再提供默认占位值；
+# 应用启动还会做强度校验（≥32 字符、非示例占位值、非单字符重复），弱密钥拒绝启动。
 echo "SECRET_KEY=$(openssl rand -hex 32)" > .env
 
 docker compose up -d --build
@@ -56,7 +58,9 @@ docker compose logs -f app
 2. 前端产物在 `frontend/dist`（脚本检测到缺失且本机有 npm 时会自动构建），
    由后端同源挂载，浏览器访问 `http://localhost:8000` 即可，无需单独托管。
 3. 数据库为 `backend/test_platform.db`（相对工作目录），无需单独安装。
-4. `SECRET_KEY` 必须非空（应用启动时校验，未配置拒绝启动）；
+4. `SECRET_KEY` 必须显式配置且通过启动强度校验（≥32 字符、非空、非
+   `secret`/`change-me`/`your-secret-key`/`please-change-me-in-production` 等示例占位值、
+   非单字符重复；弱密钥应用拒绝启动，错误日志只报配置项不打印密钥值）；
    一键脚本首次运行会自动生成随机密钥，也可手动在 `backend/.env` 配置（参考 `backend/.env.example`）。
 5. 日志由 `backend/app/logging_config.py` 滚动输出到 `backend/logs/server.log`（10MB × 5），无需重定向。
 6. 存量库结构升级：`cd backend && alembic upgrade head`。
@@ -131,7 +135,8 @@ schtasks /create /tn "TestPlatformBackup" ^
 
 ## 6. 内网部署检查清单
 
-- [ ] `SECRET_KEY` 已设置（`.env` 或 compose environment），应用未配置会拒绝启动
+- [ ] `SECRET_KEY` 已显式设置（`.env` 或 compose environment）并通过强度校验：≥32 字符、
+      非示例占位值、非单字符重复；弱密钥/占位值应用拒绝启动，`docker compose up` 未设置时直接报错
 - [ ] `curl http://<host>:8000/health` 返回 healthy
 - [ ] `./data` 已挂载且宿主机可读写，`data/test_platform.db` 存在
 - [ ] 浏览器可访问首页（前端由后端同源挂载，无需单独接线）

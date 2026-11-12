@@ -24,7 +24,9 @@ data/
 backups/
 storage/
 backend/storage/
-test-tools/
+
+# test-tools 必须进镜像（T-17：manifest + runner + 各架构二进制）；
+# 仅排除其 __pycache__/*.pyc（上面的全局规则已覆盖）。
 
 # 部署相关文件本身无需进镜像
 Dockerfile

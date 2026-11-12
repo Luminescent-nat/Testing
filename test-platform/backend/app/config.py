@@ -1,5 +1,56 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
+from typing import Optional
+
+# T-18：SECRET_KEY 强度规则（docs/design/scheduler-and-data.md 第 6 节）
+SECRET_KEY_MIN_LENGTH = 32
+# Compose / 文档示例中出现过的占位值，一律拒绝（比较时忽略大小写、下划线/连字符）
+SECRET_KEY_PLACEHOLDERS = frozenset(
+    {
+        "secret",
+        "change-me",
+        "changeme",
+        "change-me-in-production",
+        "your-secret-key",
+        "your-secret-key-here",
+        "please-change-me",
+        "please-change-me-in-production",
+        "pleasechangemeinproduction",
+        "default-secret",
+        "insecure-secret",
+    }
+)
+
+
+class WeakSecretKeyError(ValueError):
+    """SECRET_KEY 强度校验失败（错误信息只指出配置项，绝不回显密钥值）。"""
+
+
+def secret_key_problem(secret_key: Optional[str]) -> Optional[str]:
+    """返回 SECRET_KEY 不合规的原因；合规返回 None。返回值绝不包含密钥值本身。"""
+    if secret_key is None or not secret_key.strip():
+        return "SECRET_KEY 未配置（空值），应用拒绝启动"
+    if len(secret_key) < SECRET_KEY_MIN_LENGTH:
+        return f"SECRET_KEY 强度不足：长度必须至少 {SECRET_KEY_MIN_LENGTH} 字符"
+    normalized = secret_key.strip().lower().replace("_", "-")
+    # 精确占位值，或以占位值开头的「改了一下但仍是示例」变体，一律拒绝
+    if normalized in SECRET_KEY_PLACEHOLDERS or any(
+        normalized.startswith(placeholder + "-") for placeholder in SECRET_KEY_PLACEHOLDERS
+    ):
+        return "SECRET_KEY 是已知的示例/占位值，禁止用于开发或生产"
+    if len(set(secret_key.strip())) == 1:
+        return "SECRET_KEY 为单字符重复，熵不足"
+    return None
+
+
+def assert_secret_key_strength(secret_key: Optional[str]) -> None:
+    """校验 SECRET_KEY 强度；不合规抛 WeakSecretKeyError（信息不含密钥值）。"""
+    problem = secret_key_problem(secret_key)
+    if problem is not None:
+        raise WeakSecretKeyError(
+            f"{problem}。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），"
+            '例如：python -c "import secrets; print(\'SECRET_KEY=\' + secrets.token_urlsafe(48))"'
+        )
 
 
 class Settings(BaseSettings):

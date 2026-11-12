@@ -26,7 +26,9 @@ async def test_registration_forbidden_when_disabled(client: AsyncClient, admin_u
         json={"username": "second", "password": "second123", "email": "second@test.com"},
     )
     assert response.status_code == 403
-    assert "注册已关闭" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "FORBIDDEN"
+    assert "注册已关闭" in err["message"]
 
 
 @pytest.mark.asyncio
@@ -61,7 +63,9 @@ async def test_custom_parameter_injection_rejected(
         },
     )
     assert response.status_code == 400
-    assert "非法字符" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "非法字符" in err["message"]
 
 
 @pytest.mark.asyncio

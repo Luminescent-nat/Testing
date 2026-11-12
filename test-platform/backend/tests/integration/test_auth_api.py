@@ -32,17 +32,22 @@ async def test_register_duplicate_username(client: AsyncClient):
         json={"username": "dupuser", "password": "newpass123", "role": "user"},
     )
     assert response.status_code == 400
-    assert "已存在" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "已存在" in err["message"]
 
 
 @pytest.mark.asyncio
 async def test_register_weak_password(client: AsyncClient):
-    """TC-AUTH-003: 密码过短应被 Pydantic 校验拒绝。"""
+    """TC-AUTH-003: 密码过短应被 Pydantic 校验拒绝（422 归并为 400 VALIDATION_ERROR）。"""
     response = await client.post(
         "/api/v1/auth/register",
         json={"username": "weakuser", "password": "123", "role": "user"},
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert err["details"]["field"] == "password"
 
 
 @pytest.mark.asyncio
@@ -104,9 +109,10 @@ async def test_get_me(client: AsyncClient, admin_token: str):
 
 @pytest.mark.asyncio
 async def test_get_me_without_token(client: AsyncClient):
-    """TC-AUTH-008: 未认证访问受保护接口应 401。"""
+    """TC-AUTH-008: 未认证访问受保护接口应 401（契约：未认证为 401 UNAUTHENTICATED）。"""
     response = await client.get("/api/v1/auth/me")
-    assert response.status_code == 403
+    assert response.status_code == 401
+    assert response.json()["code"] == "UNAUTHENTICATED"
 
 
 @pytest.mark.asyncio

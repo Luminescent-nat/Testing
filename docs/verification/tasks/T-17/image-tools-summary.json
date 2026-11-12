@@ -1,0 +1,365 @@
+{
+  "checks": [
+    {
+      "name": "Dockerfile 存在",
+      "ok": true,
+      "detail": "D:\\MCTEST\\test-platform\\Dockerfile"
+    },
+    {
+      "name": "COPY test-tools/ 进镜像",
+      "ok": true,
+      "detail": "COPY test-tools/"
+    },
+    {
+      "name": "TEST_TOOLS_PATH=/app/test-tools",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "STATIC_PATH=/app/static",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "WORKDIR /app（与 TEST_TOOLS_PATH/STATIC_PATH 对齐）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": ".dockerignore 不排除 test-tools/",
+      "ok": true,
+      "detail": "bad=[]"
+    },
+    {
+      "name": "TEST_TOOLS_PATH 存在",
+      "ok": true,
+      "detail": "D:\\MCTEST\\test-platform\\test-tools"
+    },
+    {
+      "name": "发现 manifest",
+      "ok": true,
+      "detail": "['D:\\\\MCTEST\\\\test-platform\\\\test-tools\\\\emmc\\\\manifest.yaml', 'D:\\\\MCTEST\\\\test-platform\\\\test-tools\\\\upfm\\\\manifest.yaml']"
+    },
+    {
+      "name": "必需工具齐备",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "skip（不伪造）: upfm/assets/test_app.apk",
+      "ok": true,
+      "detail": "可选测试资源缺失，按 R3 记 skip（不伪造已就绪）"
+    }
+  ],
+  "failed": 0,
+  "tool_manifest": {
+    "root": "D:\\MCTEST\\test-platform\\test-tools",
+    "manifest_paths": [
+      "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+      "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+    ],
+    "requirements": [
+      {
+        "name": "ddr/binaries/armeabi-v7a/memtester",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "ddr/（无 manifest，按 binaries/<arch> 目录约定声明）"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "ddr/binaries/armeabi-v7a/stress-ng",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "ddr/（无 manifest，按 binaries/<arch> 目录约定声明）"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "ddr/binaries/armeabi-v7a/stressapptest",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "ddr/（无 manifest，按 binaries/<arch> 目录约定声明）"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/binaries/arm64-v8a/fio",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/binaries/arm64-v8a/mmc_utils",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/binaries/armeabi-v7a/fio",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/binaries/armeabi-v7a/mmc_utils",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "binaries/<arch> 目录约定"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/host/emmc_extcsd_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "EXT_CSD 寄存器读取"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/host/emmc_fio_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "顺序读性能",
+          "顺序写性能",
+          "随机读性能",
+          "随机写性能"
+        ],
+        "exists": true
+      },
+      {
+        "name": "emmc/host/emmc_stability_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "顺序读稳定性（BW/IOPS 曲线）",
+          "顺序写稳定性（BW/IOPS 曲线）",
+          "随机读稳定性（BW/IOPS 曲线）",
+          "随机写稳定性（BW/IOPS 曲线）"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/assets/test_app.apk",
+        "kind": "asset",
+        "required": false,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-11 APK 安装",
+          "T1-12 APK 卸载"
+        ],
+        "exists": false,
+        "reason": "可选测试资源缺失，按 R3 记 skip（不伪造已就绪）"
+      },
+      {
+        "name": "upfm/host/apk_install_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-11 APK 安装",
+          "T1-12 APK 卸载"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/cpu_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-22 CPU 支持频率",
+          "T1-23 CPU 最大频率"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/ddr_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-26 DDR 频率（静止态）"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/gpu_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-24 GPU 支持频率",
+          "T1-25 GPU 最大频率"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/mc_props_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-08 系统配置 ro.mc.* 七字段"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/mem_ratio_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-27 剩余内存比例"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/rotation_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-13 屏幕旋转设置"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/sleep_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-15 休眠时间"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/storage_rw_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-17 TF卡识别",
+          "T1-18 TF卡读写",
+          "T1-19 U盘识别",
+          "T1-20 U盘读写",
+          "T1-21 U盘不复制系统目录"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/toggle_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-03 WiFi 开关",
+          "T1-04 蓝牙开关",
+          "T1-05 飞行模式开关"
+        ],
+        "exists": true
+      },
+      {
+        "name": "upfm/host/touch_points.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-16 触摸点数"
+        ],
+        "exists": true
+      }
+    ],
+    "missing_required": [],
+    "skipped": [
+      {
+        "name": "upfm/assets/test_app.apk",
+        "kind": "asset",
+        "required": false,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "T1-11 APK 安装",
+          "T1-12 APK 卸载"
+        ],
+        "exists": false,
+        "reason": "可选测试资源缺失，按 R3 记 skip（不伪造已就绪）"
+      }
+    ],
+    "ok": true
+  },
+  "docker_available": false,
+  "docker_note": "无法核验：当前主机无 docker 命令（Get-Command docker 为空），干净镜像构建（docker build）、容器启动与镜像内工具发现未执行；本脚本仅完成 Dockerfile/.dockerignore 静态核对与 host 侧 manifest 工具发现。"
+}

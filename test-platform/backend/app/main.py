@@ -1,7 +1,6 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from starlette.exceptions import HTTPException  # StaticFiles 抛的是 starlette 的 HTTPException（fastapi 的为其子类，捕获必须用父类）
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager, suppress
 from datetime import datetime, timezone
@@ -14,7 +13,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
+from app.config import WeakSecretKeyError, assert_secret_key_strength
 from app.database import init_db, close_db, AsyncSessionLocal
+from app.errors import register_error_handlers
+from app.services.tool_manifest import ToolManifestError, assert_required_tools
 from app.api import auth, users, devices, modules, tasks, reports, ai_tasks, memory, tools, knowledge, records, dashboard
 from app import websocket
 from app.models import Device, TestRecord, TestTask
@@ -94,15 +96,28 @@ async def device_heartbeat_loop():
         await asyncio.sleep(settings.HEARTBEAT_INTERVAL)
 
 
+def validate_startup_config() -> None:
+    """启动前配置与部署物校验（T-17/T-18），失败抛异常拒绝启动。
+
+    - SECRET_KEY 强度：至少 32 字符、非空、非 Compose 示例占位、非单字符重复
+      （config.assert_secret_key_strength；错误只指出配置项，不打印密钥值）；
+    - 工具清单：TEST_TOOLS_PATH 下 manifest 声明的必需工具缺失时失败并指出
+      manifest 路径（tool_manifest.assert_required_tools；范围内 APK 等可选资源
+      缺失记 skip，不阻断）。
+    """
+    assert_secret_key_strength(settings.SECRET_KEY)
+    assert_required_tools()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
-    # 启动时执行
-    if not settings.SECRET_KEY:
-        raise RuntimeError(
-            "SECRET_KEY 未配置，应用拒绝启动。请在 backend/.env 中设置随机密钥，例如：\n"
-            "  python -c \"import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))\" >> .env"
-        )
+    # 启动时执行：配置与部署物校验（弱密钥/缺失必需工具一律拒绝启动）
+    try:
+        validate_startup_config()
+    except (WeakSecretKeyError, ToolManifestError) as exc:
+        logger.error("启动配置校验失败：%s", exc)
+        raise
     await init_db()
     print("数据库初始化完成")
 
@@ -150,18 +165,10 @@ app.add_middleware(
 )
 
 
-# 全局异常处理
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    """全局异常处理"""
-    return JSONResponse(
-        status_code=500,
-        content={
-            "code": 500,
-            "message": "服务器内部错误",
-            "detail": str(exc) if settings.DEBUG else None
-        }
-    )
+# 全局异常处理：统一契约错误外层 {"code","message","details"}（详见 app/errors.py）。
+# HTTPException/RequestValidationError(422→400 VALIDATION_ERROR)/未预期异常(INTERNAL_ERROR)
+# 均不回显异常文本、堆栈、SQL、绝对路径或密钥；成功外层 ResponseModel 保持不变。
+register_error_handlers(app)
 
 
 # 注册路由

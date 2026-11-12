@@ -57,7 +57,9 @@ async def test_create_task_device_offline(
         },
     )
     assert response.status_code == 400
-    assert "离线" in response.json()["detail"]
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "离线" in err["message"]
 
 
 @pytest.mark.asyncio

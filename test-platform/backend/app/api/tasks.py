@@ -201,7 +201,11 @@ async def cancel_task(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """取消任务"""
+    """取消任务
+
+    Deprecated: legacy 路径 POST /tasks/{task_id}/cancel（契约 v1.0 第 4 节），
+    仅作短期适配；目标路径为 POST /tasks/{task_id}/cancellations，两者委托同一业务函数。
+    """
     result = await db.execute(
         select(TestTask).where(TestTask.id == task_id)
     )
@@ -239,7 +243,11 @@ async def rerun_failed_items(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """重跑失败项：取该任务中失败/错误/超时的测试项创建新任务执行"""
+    """重跑失败项：取该任务中失败/错误/超时的测试项创建新任务执行
+
+    Deprecated: legacy 路径 POST /tasks/{task_id}/rerun-failed（契约 v1.0 第 4 节），
+    仅作短期适配；目标路径为 POST /tasks/{task_id}/reruns，两者委托同一业务函数。
+    """
     result = await db.execute(
         select(TestTask)
         .options(joinedload(TestTask.device))
@@ -307,6 +315,35 @@ async def rerun_failed_items(
         message="已创建重跑任务",
         data=response_data
     )
+
+
+# ---- 目标契约路由（POST 创建对应名词子资源，契约 v1.0 通用传输约定第 2 节）----
+# 两个别名直接委托既有业务函数，不复制逻辑：同一鉴权（get_current_user）与
+# 同一服务/权限语义；幂等（Idempotency-Key）语义由 T-10 统一实现，此处不做。
+@router.post("/{task_id}/cancellations", response_model=ResponseModel)
+async def create_task_cancellation(
+    task_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """目标路径：创建任务取消动作（POST /tasks/{task_id}/cancellations）。
+
+    委托 legacy cancel_task 处理函数，鉴权与业务语义完全一致（无第二套权限语义）。
+    """
+    return await cancel_task(task_id=task_id, db=db, current_user=current_user)
+
+
+@router.post("/{task_id}/reruns", response_model=ResponseModel)
+async def create_task_rerun(
+    task_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """目标路径：创建失败项重跑子资源（POST /tasks/{task_id}/reruns）。
+
+    委托 legacy rerun_failed_items 处理函数，鉴权与业务语义完全一致（无第二套权限语义）。
+    """
+    return await rerun_failed_items(task_id=task_id, db=db, current_user=current_user)
 
 
 @router.get("/{task_id}/records", response_model=ResponseModel)

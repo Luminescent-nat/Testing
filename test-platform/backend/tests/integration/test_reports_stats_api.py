@@ -160,7 +160,8 @@ async def test_stats_by_module(
 
 @pytest.mark.asyncio
 async def test_stats_endpoints_require_auth(client: AsyncClient):
-    """TC-RPT-STATS-005: 未登录访问统计接口返回 403。"""
+    """TC-RPT-STATS-005: 未登录访问统计接口返回 401（契约：未认证为 401 UNAUTHENTICATED）。"""
     for path in ("/api/v1/reports/stats/trend", "/api/v1/reports/stats/by-module"):
         response = await client.get(path)
-        assert response.status_code == 403
+        assert response.status_code == 401
+        assert response.json()["code"] == "UNAUTHENTICATED"
