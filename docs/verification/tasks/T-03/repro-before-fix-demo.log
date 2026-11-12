@@ -1,0 +1,15 @@
+﻿=== 演示：移除授权守卫后 V1-01 复现用例返回 200（修复前行为），证明用例由 fail→pass 由新授权逻辑决定 ===
+TIME: 2026-11-12 16:49:10 +08:00
+CMD: pytest tests/integration/test_tmp_repro_before_demo.py -q --tb=short
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 1 item
+
+tests\integration\test_tmp_repro_before_demo.py .                        [100%]
+
+============================== 1 passed in 0.99s ==============================
+EXIT_CODE: 0

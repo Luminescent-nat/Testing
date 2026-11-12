@@ -1,0 +1,73 @@
+=== 成功判定静态检查（V1-10） ===
+扫描范围：src/**/*.{js,vue}（排除 src/api/client.js、src/mocks/generated/）
+
+[统一判定 isSuccessResponse 使用点] 共 62 处
+  src/store/user.js:30
+  src/store/user.js:47
+  src/utils/__tests__/v1-10-success.test.js:60
+  src/utils/__tests__/v1-10-success.test.js:61
+  src/utils/__tests__/v1-10-success.test.js:62
+  src/utils/__tests__/v1-10-success.test.js:66
+  src/utils/__tests__/v1-10-success.test.js:67
+  src/utils/__tests__/v1-10-success.test.js:68
+  src/utils/__tests__/v1-10-success.test.js:69
+  src/utils/__tests__/v1-10-success.test.js:73
+  src/utils/__tests__/v1-10-success.test.js:74
+  src/utils/__tests__/v1-10-success.test.js:75
+  src/utils/__tests__/v1-10-success.test.js:76
+  src/utils/__tests__/v1-10-success.test.js:88
+  src/utils/__tests__/v1-10-success.test.js:98
+  src/views/admin/users.vue:155
+  src/views/admin/users.vue:206
+  src/views/admin/users.vue:221
+  src/views/ai-test/index.vue:96
+  src/views/dashboard/index.vue:292
+  src/views/dashboard/index.vue:303
+  src/views/dashboard/index.vue:314
+  src/views/dashboard/index.vue:328
+  src/views/dashboard/index.vue:339
+  src/views/devices/index.vue:190
+  src/views/devices/index.vue:203
+  src/views/devices/index.vue:264
+  src/views/knowledge/index.vue:803
+  src/views/knowledge/index.vue:841
+  src/views/knowledge/index.vue:860
+  src/views/knowledge/index.vue:876
+  src/views/knowledge/index.vue:968
+  src/views/knowledge/index.vue:982
+  src/views/knowledge/index.vue:1008
+  src/views/knowledge/index.vue:1011
+  src/views/knowledge/index.vue:1058
+  src/views/knowledge/index.vue:1094
+  src/views/login/index.vue:206
+  src/views/login/index.vue:217
+  src/views/memory/index.vue:519
+  src/views/memory/index.vue:532
+  src/views/memory/index.vue:547
+  src/views/memory/index.vue:562
+  src/views/modules/index.vue:530
+  src/views/modules/index.vue:601
+  src/views/modules/index.vue:804
+  src/views/profile/index.vue:135
+  src/views/profile/index.vue:163
+  src/views/reports/index.vue:519
+  src/views/reports/index.vue:624
+  src/views/reports/index.vue:648
+  src/views/reports/index.vue:720
+  src/views/tasks/create.vue:308
+  src/views/tasks/create.vue:331
+  src/views/tasks/create.vue:340
+  src/views/tasks/create.vue:352
+  src/views/tasks/index.vue:188
+  src/views/tasks/index.vue:274
+  src/views/tasks/index.vue:292
+  src/views/tasks/monitor.vue:429
+  src/views/tasks/monitor.vue:498
+  src/views/tasks/monitor.vue:502
+
+[残留散落判定（code ===/== 200 等）] 共 0 处
+  无残留：所有成功判定均走 isSuccessResponse
+
+[结论] 残留计数 0；统一判定使用 62 处
+
+EXIT_CODE=0

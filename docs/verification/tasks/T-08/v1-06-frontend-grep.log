@@ -1,0 +1,21 @@
+﻿=== V1-06 前端静态 grep 证明（自算通过率移除） ===
+扫描：src/views/reports/index.vue、src/views/dashboard/index.vue
+
+[自算通过率公式（passed/total*100）] 命中 0 处
+
+[旧 summary 字段 passed/failed/skipped 读取] 命中 0 处
+
+[getPassRate 残留] 命中 0 处
+
+[耗时 0 转缺失（execution_time ||）] 命中 0 处
+
+[新统一口径调用点] 共 9 处
+  index.vue:47: {{ formatPassRate(report.summary?.pass_rate) }}
+  index.vue:119: {{ formatPassRate(currentReport.summary?.pass_rate) }}
+  index.vue:445: const normalized = normalizeSummary(currentReport.value?.summary)
+  index.vue:493: const rate = toPassRate(report.summary?.pass_rate)
+  index.vue:523: const derived = deriveTaskSummary(task, taskResults)
+  index.vue:556: const rate = toPassRate(summary?.pass_rate)
+  index.vue:721: compareResult.value = buildCompareRows(leftRes.data, rightRes.data)
+  index.vue:222: { key: 'pass_rate', label: '通过率', value: formatPassRate(stats.value.passRate), type: 'warning', icon: markRaw(TrendCharts), text: true }
+  index.vue:270: const rate = formatPassRate(item.pass_rate)

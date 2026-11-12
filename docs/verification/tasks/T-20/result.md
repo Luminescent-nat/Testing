@@ -71,3 +71,35 @@
 ## 10. 证据文件
 - `npm-test.log`、`npm-lint.log`、`npm-build.log`、`mock-generate.log`
 - `eslint-baseline.json`、`eslint-after.json`、`lint-diff-summary.txt`
+
+## 11. V1-10 修订记录：统一 2xx 成功判定 + 登录/注册 pc_identifier（2026-11-12）
+
+### 11.1 任务与改动
+- **① 统一成功判定**：`src/api/client.js` 新增 `isSuccessResponse(body)`（2xx 整数 `code` 的成功外层，200/201/204 均成功；字符串码/非 2xx/无 code 为失败；不改动 `data` 取值，`0/false/""/null` 语义保持）。全部散落的 `res.code === 200`（49 处）替换为 `isSuccessResponse(res)`，涉及文件：
+  - `src/store/user.js`（2）、`src/views/login/index.vue`（2）、`src/views/tasks/monitor.vue`（3）、`src/views/tasks/create.vue`（4）、`src/views/tasks/index.vue`（3）、`src/views/dashboard/index.vue`（5）、`src/views/devices/index.vue`（3）、`src/views/modules/index.vue`（3）、`src/views/knowledge/index.vue`（11）、`src/views/reports/index.vue`（4）、`src/views/memory/index.vue`（4）、`src/views/admin/users.vue`（3）、`src/views/profile/index.vue`（2）、`src/views/ai-test/index.vue`（1）。
+  - 每个文件新增 `import { isSuccessResponse } from '@/api/client'`；未改动任何业务分支、跳转、提示语或数据取值。
+- **② 登录/注册契约字段**：`src/api/client.js` 新增 `withPcIdentifier(payload)`（读取 `getPcIdentifier()` 并附加 `pc_identifier`，不改入参）。`src/views/login/index.vue` 的注册与登录请求体、`src/store/user.js` 的 `loginAction` 均通过 `withPcIdentifier(...)` 注入 `pc_identifier`，符合 `docs/contracts/user-administration-v1.0.md`（登录/首管理员注册字段要求）。登录/注册成功码兼容 200/201（`isSuccessResponse` 接受 2xx）。
+- **③ 重复提交保护**：`src/api/client.js` 新增纯逻辑 `createSubmitGuard()`（进行中跳过重复调用，异常时复位）；视图既有按钮 `:disabled`/`:loading` 守卫（login `:disabled="loading"`、create `:disabled="!canStart"` + `:loading="starting"`）保持不变，未改视图提交逻辑。
+- **④ 静态检查**：新增 `scripts/check-success-codes.mjs`，扫描 `src/**/*.{js,vue}` 输出统一判定使用点与残留 `===200` 计数（退出码 0）。
+
+### 11.2 命令与退出码（2026-11-12 16:30 复跑）
+| 命令 | 开始 | 结束 | 退出码 | 原始日志 |
+|---|---|---|---|---|
+| `npm test` | 16:30:54.571 | 16:30:56.104 | 0 | `npm-test.log` |
+| `npm run lint` | 16:30:56.126 | 16:30:57.901 | 0 | `npm-lint.log` |
+| `npm run build` | 16:30:57.903 | 16:31:05.325 | 0 | `npm-build.log` |
+| `node scripts/check-success-codes.mjs` | 16:31:05.326 | 16:31:05.382 | 0 | `v1-10-success-codes.log` |
+
+### 11.3 DoD 证据
+- **200/201 成功**：新增 `src/utils/__tests__/v1-10-success.test.js`（10 用例）「200/201/204 成功外层均判定为成功」「201 成功响应保留 data 中的 0/false/\"\"/null」；全量 `npm test` 4 个测试文件 **43 用例全绿**（datetime 3 + client 27 + v1-10 10 + request 3）。
+- **0/false/空串保留**：201 与 200 两条用例分别断言 `zero=0`、`no=false`、`empty=''`、`nil=null` 原样保留。
+- **错误外层**：用例断言 400 `VALIDATION_ERROR` 带 `details.field` 被拒绝并归一化；字符串码/非 2xx/无 code 均判失败。
+- **重复提交按钮禁用不重复请求**：`createSubmitGuard` 用例断言并发 3 次触发仅发起 1 次请求、其余返回 undefined、结束后可再次提交、异常后不锁死。
+- **登录/注册 pc_identifier**：`withPcIdentifier` 用例断言请求体新增 `pc_identifier`（复用持久化标识，缺失时自动生成）且不修改原对象；登录/注册调用点（login/index.vue、store/user.js loginAction）均已接入。
+- **改动点与残留计数**：`v1-10-success-codes.log` 统一判定使用 62 处（含测试），**残留 `code ===/== 200` 计数 0**（`src/api/client.js` 与生成 mock 已排除/仅注释）。
+- **lint 不新增**：ESLint 基线 1037 warnings/0 errors → 修改 14 个视图/存储文件 + 新增 1 个测试文件后仍 **1037 warnings/0 errors**（46 文件，逐文件告警数无变化）；build 退出码 0，历史告警（Sass legacy-js-api 15 条 + chunk>500kB 1 条）不变。
+
+### 11.4 联调依据与遗留
+- 联调依据：契约 `user-administration-v1.0.md` 登录成功 201、首管理员注册成功 201；当前后端可能仍返回 200，前端 `isSuccessResponse` 同时接受 200/201，双码兼容待后端切换后核对（未与后端实测，环境无后端服务）。
+- 遗留：`createSubmitGuard` 为共享纯逻辑，视图仍用各自 `:disabled/:loading` 守卫（遵守“不得改视图业务逻辑”约束）；如需统一可后续在 T-23+ 接入。
+- `scripts/check-success-codes.mjs` 未注册 npm 脚本（`package.json` 不在本任务写范围），以 `node scripts/check-success-codes.mjs` 直接执行。

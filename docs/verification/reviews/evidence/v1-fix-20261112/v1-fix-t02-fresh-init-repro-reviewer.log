@@ -1,0 +1,23 @@
+﻿python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:10 字符: 1
++ & $py "$out\_review_fresh_init_repro.py" 2>&1 | Out-String | Set-Cont ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotenc
+y_records table
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+action1: init#1 done
+tables#1: ['alembic_version', 'baselines', 'devices', 'failure_patterns', 'golden_cases', 'idempotency_records', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']
+version#1: [('002_idempotency',)]
+tables#2: ['alembic_version', 'baselines', 'devices', 'failure_patterns', 'golden_cases', 'idempotency_records', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']
+version#2: [('002_idempotency',)]
+IDEMPOTENT: True
+HAS_ALEMBIC_VERSION: True
+HAS_IDEMPOTENCY_TABLE: True
+
+exit=0

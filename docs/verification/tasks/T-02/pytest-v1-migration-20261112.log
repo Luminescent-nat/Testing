@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0 -- D:\MCTEST\test-platform\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collecting ... collected 9 items
+
+tests/unit/test_v1_migration.py::test_fresh_install_upgrade_creates_head_schema_matching_models PASSED [ 11%]
+tests/unit/test_v1_migration.py::test_upgrade_head_is_idempotent_when_already_at_head PASSED [ 22%]
+tests/unit/test_v1_migration.py::test_idempotency_records_unique_constraint_enforced_by_db PASSED [ 33%]
+tests/unit/test_v1_migration.py::test_legacy_create_all_db_stamps_head_and_preserves_data PASSED [ 44%]
+tests/unit/test_v1_migration.py::test_legacy_initial_revision_db_stamps_initial_then_upgrades PASSED [ 55%]
+tests/unit/test_v1_migration.py::test_legacy_mismatched_schema_is_refused_without_stamp PASSED [ 66%]
+tests/unit/test_v1_migration.py::test_revision_rollback_preserves_data_and_drops_only_idempotency PASSED [ 77%]
+tests/unit/test_v1_migration.py::test_downgrade_base_refuses_to_drop_non_empty_database PASSED [ 88%]
+tests/unit/test_v1_migration.py::test_downgrade_base_allowed_on_truly_empty_database PASSED [100%]
+
+============================== 9 passed in 2.43s ==============================

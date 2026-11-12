@@ -1,0 +1,18 @@
+﻿COMMAND: python -m pytest tests/integration/test_v1_device_admin.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T17:20:05.1417602+08:00
+END: 2026-11-12T17:20:20.0926103+08:00
+EXITCODE: 0
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 14 items
+
+tests\integration\test_v1_device_admin.py ..............                 [100%]
+
+============================= 14 passed in 13.03s =============================
+

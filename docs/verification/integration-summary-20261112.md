@@ -31,7 +31,7 @@
 | ADB runner 真机只读 | AdbRunner（T-19） | version / getprop abi=armeabi-v7a / echo ok 7/7 | tasks/T-19 |
 | 启动矩阵 | uvicorn（T-18） | 8 类弱/占位/短密钥 exit=3 拒绝；合法密钥与 fresh 空库 /health=200 | tasks/T-18 |
 
-## 3. 变更文件（按任务，均为工作区改动，尚未 git commit）
+## 3. 变更文件（按任务；批次 G 范围已随提交 445b35c…06812bc 归档，本节保留作为任务↔文件映射；V1 readiness 修订轮变更见 [v1-remediation-summary-20261112](v1-remediation-summary-20261112.md)）
 
 | 任务 | 生产代码 | 测试/脚本 |
 |---|---|---|

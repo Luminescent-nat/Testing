@@ -1,0 +1,196 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 6 items
+
+tests\unit\test_v1_readiness_audit.py FFFFFF                             [100%]
+
+================================== FAILURES ===================================
+_______ test_audit_normal_user_cannot_start_task_on_other_users_device ________
+tests\unit\test_v1_readiness_audit.py:28: in test_audit_normal_user_cannot_start_task_on_other_users_device
+    assert response.status_code == 403, response.text
+E   AssertionError: {"code":200,"message":"任务创建成功","data":{"id":1,"name":"测试任务_20261112_153254","device_serial":"rk3568-test","status":"pending","progress_percent":0,"result":null,"schedule_type":"immediate","scheduled_time":null,"next_run_at":null,"started_at":null,"completed_at":null,"created_at":"2026-11-12T07:32:54"}}
+E   assert 200 == 403
+E    +  where 200 = <Response [200 OK]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 15:32:53,575 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 15:32:53,576 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 15:32:53,578 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 15:32:53,579 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 15:32:53,581 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 15:32:53,581 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 15:32:53,582 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 15:32:53,582 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 15:32:53,584 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 15:32:53,584 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:53,584 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:53,586 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:53,586 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:53,590 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 15:32:53,590 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 15:32:53,590 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 15:32:53,594 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 15:32:53,594 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 15:32:53,597 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 15:32:53,598 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 15:32:53,598 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 15:32:53,600 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 15:32:53,601 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 15:32:53,610 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 15:32:53,612 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 15:32:53,612 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 15:32:53,613 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 15:32:53,614 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 15:32:53,614 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 15:32:53,615 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 15:32:54,015 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 15:32:54,291 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+____________ test_audit_same_idempotency_key_creates_only_one_task ____________
+tests\unit\test_v1_readiness_audit.py:52: in test_audit_same_idempotency_key_creates_only_one_task
+    assert first.status_code == 201, first.text
+E   AssertionError: {"code":200,"message":"任务创建成功","data":{"id":1,"name":"测试任务_20261112_153255","device_serial":"rk3568-test","status":"pending","progress_percent":0,"result":null,"schedule_type":"immediate","scheduled_time":null,"next_run_at":null,"started_at":null,"completed_at":null,"created_at":"2026-11-12T07:32:55"}}
+E   assert 200 == 201
+E    +  where 200 = <Response [200 OK]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 15:32:54,632 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 15:32:54,634 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 15:32:54,636 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 15:32:54,636 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 15:32:54,637 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 15:32:54,637 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 15:32:54,639 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 15:32:54,640 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 15:32:54,640 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 15:32:54,641 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:54,641 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:54,642 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:54,643 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 15:32:54,648 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 15:32:54,649 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 15:32:54,649 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 15:32:54,652 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 15:32:54,653 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 15:32:54,654 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 15:32:54,654 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 15:32:54,654 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 15:32:54,654 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 15:32:54,658 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 15:32:54,667 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 15:32:54,669 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 15:32:54,669 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 15:32:54,670 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 15:32:54,671 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 15:32:54,672 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 15:32:54,673 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 15:32:55,082 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 15:32:55,160 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+2026-11-12 15:32:55,178 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+_________ test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern __________
+tests\unit\test_v1_readiness_audit.py:73: in test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+    assert result.status == "error", result.to_dict()
+E   AssertionError: {'confidence': 1.0, 'evidence': ['通过模式命中: ok'], 'fail_reason': '', 'judgement_type': 'pattern', ...}
+E   assert 'pass' == 'error'
+E     - error
+E     + pass
+_______________ test_audit_approx_ratio_zero_target_cannot_pass _______________
+tests\unit\test_v1_readiness_audit.py:79: in test_audit_approx_ratio_zero_target_cannot_pass
+    assert ok is False
+E   assert True is False
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+tests\unit\test_v1_readiness_audit.py:146: in test_audit_stop_on_failure_completes_remaining_items_as_skip
+    assert [record.status for record in records] == ["pass", "fail", "skip", "skip", "skip"]
+E   AssertionError: assert ['pass', 'fail'] == ['pass', 'fai...skip', 'skip']
+E     Right contains 3 more items, first extra item: 'skip'
+E     Use -v to get more diff
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 15:32:55,750 [INFO] app.services.task_executor: 任务 1 在测试项 2 处失败停止
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:207 任务 1 在测试项 2 处失败停止
+_____ test_audit_missing_device_binary_remains_a_required_manifest_entry ______
+tests\unit\test_v1_readiness_audit.py:164: in test_audit_missing_device_binary_remains_a_required_manifest_entry
+    assert "demo/binaries/arm64-v8a/tool" in after
+E   AssertionError: assert 'demo/binaries/arm64-v8a/tool' in {}
+=========================== short test summary info ===========================
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_normal_user_cannot_start_task_on_other_users_device
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_same_idempotency_key_creates_only_one_task
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_approx_ratio_zero_target_cannot_pass
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_missing_device_binary_remains_a_required_manifest_entry
+============================== 6 failed in 2.55s ==============================
+
+EXIT_CODE=1

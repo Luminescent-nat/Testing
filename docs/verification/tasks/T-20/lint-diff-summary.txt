@@ -1,5 +1,4 @@
 ﻿ESLint 基线（改动前，node 侧 .vue/.js）：42 files, 1037 warnings, 0 errors
-ESLint 之后（含评审修复 P-T20-2/P-T20-3 后）：45 files, 1037 warnings, 0 errors
-新增文件：src/api/client.js 0/0；src/mocks/generated/contract-mocks.js 0/0；src/utils/__tests__/client.test.js 0/0
-既有文件告警变化：无（request.js 仍 0/0；其余 .vue 历史告警数不变）
+ESLint 之后（V1-10 修改 14 个视图/存储文件并新增 1 个测试文件后）：46 files, 1037 warnings, 0 errors
+逐文件对比：无任何文件告警数变化；新增文件 src/api/client.js、src/mocks/generated/contract-mocks.js、src/utils/__tests__/client.test.js、src/utils/__tests__/v1-10-success.test.js 均 0/0
 结论：本次新增/修改文件未引入任何新 error 或新 warning；既有 1037 条警告均为 T-35 处理范围。

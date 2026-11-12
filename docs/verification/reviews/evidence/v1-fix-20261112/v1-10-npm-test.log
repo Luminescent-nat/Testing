@@ -1,0 +1,12 @@
+﻿=== REVIEWER: npm-test
+=== CMD: npm test
+=== TIME: 16:32:58 -> 16:33:00  exit=0
+--- TAIL ---
+ ✓ src/utils/__tests__/request.test.js (3 tests) 3ms
+
+ Test Files  4 passed (4)
+      Tests  43 passed (43)
+   Start at  16:32:59
+   Duration  855ms (transform 121ms, setup 0ms, import 982ms, tests 77ms, environment 1ms)
+
+

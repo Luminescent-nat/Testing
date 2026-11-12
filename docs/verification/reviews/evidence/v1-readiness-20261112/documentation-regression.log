@@ -1,0 +1,39 @@
+PASS Markdown/UTF-8/无emoji: 75个文件
+PASS JSON示例: 45块完成解析
+PASS 相对链接: 229个目标存在
+PASS ADR: 8篇accepted、五段及确认记录齐全
+PASS 六段规格: 6组件+15页面，九状态/三断点齐全
+PASS 前端四表契约: 6组件+15页面/布局，共84张表
+PASS 任务板: 38个任务字段/DoD/状态/依赖引用及无环检查完成
+PASS 追踪矩阵: R1～R31连续且各一行
+PASS 交接门禁: 后端/基础设施与T-20/T-21放行，组件/页面不放行
+PASS UI token状态: v1.0及扩展项确认状态一致
+SUMMARY files=75 json=45 links=229 adrs=8 components=6 pages=15 tasks=38 requirements=31 errors=26
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-01\result.md
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-02\result.md
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-06\result.md
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-17\result.md
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-18\result.md
+FAIL 存在emoji: D:\MCTEST\docs\verification\tasks\T-19\result.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> README.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/README.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/evidence/test-rerun-20261112/
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T01-unified-errors.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T02-migration-fk.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T06-failure-closed-skip.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T17-clean-image-tools.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T18-weak-secret.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T19-adb-runner.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T20-frontend-client-mock.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-T21-ui-tokens.md
+FAIL 相对链接不存在 verification\integration-summary-20261112.md -> ../reviews/RR-FINAL-batch-G.md
+FAIL T-01状态不是未开始
+FAIL T-02状态不是未开始
+FAIL T-06状态不是未开始
+FAIL T-17状态不是未开始
+FAIL T-18状态不是未开始
+FAIL T-19状态不是未开始
+FAIL T-20状态不是未开始
+FAIL T-21状态不是未开始
+
+EXIT_CODE=1

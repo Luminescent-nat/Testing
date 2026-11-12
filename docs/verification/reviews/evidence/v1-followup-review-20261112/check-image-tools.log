@@ -1,0 +1,25 @@
+工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+
+[docker] 状态=UNVERIFIABLE：当前主机无 docker 命令（Get-Command docker 为空），docker build / compose up / /health / 容器内工具发现均未执行
+[docker] 明确结论：镜像层核验 = 无法核验（不伪造 verified）
+
+================ 汇总 ================
+  [PASS] Dockerfile 存在  (D:\MCTEST\test-platform\Dockerfile)
+  [PASS] COPY test-tools/ 进镜像  (COPY test-tools/)
+  [PASS] TEST_TOOLS_PATH=/app/test-tools
+  [PASS] STATIC_PATH=/app/static
+  [PASS] WORKDIR /app（与 TEST_TOOLS_PATH/STATIC_PATH 对齐）
+  [PASS] .dockerignore 不排除 test-tools/  (bad=[])
+  [PASS] TEST_TOOLS_PATH 存在  (D:\MCTEST\test-platform\test-tools)
+  [PASS] 发现 manifest  (['D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml', 'D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml'])
+  [PASS] 显式声明无缺口  ([])
+  [PASS] 必需工具齐备  (missing=[])
+  [PASS] SHA-256 全部匹配  ([])
+  [PASS] 共享依赖闭包完整  ([])
+  [PASS] skip（不伪造）: upfm/assets/test_app.apk  (可选测试资源缺失，按 R3 记 skip（不伪造已就绪）)
+
+RESULT: UNVERIFIABLE (static 13/13, runtime=UNVERIFIABLE)
+docker runtime verification: UNVERIFIABLE
+[report] D:\MCTEST\docs\verification\reviews\evidence\v1-followup-review-20261112\image-tools-summary.json
+
+EXIT_CODE=2

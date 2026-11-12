@@ -1,0 +1,141 @@
+﻿python.exe : 2026-11-12 18:20:43,226 [INFO] app.logging_config: ��־ϵͳ��ʼ����ɣ��ļ�: D:\MCTEST\test-platform\backend\logs
+\server.log
+所在位置 行:5 字符: 1
++ & 'D:\MCTEST\test-platform\.venv\Scripts\python.exe' -m pytest '..\.. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-11-12 18:2...logs\server.log:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+.......                                                                  [100%]
+============================== warnings summary ===============================
+app\models\__init__.py:117
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:117: PytestCollectionWarning: cannot collect test class 'TestItem' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestItem(Base):
+
+app\models\__init__.py:95
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:95: PytestCollectionWarning: cannot collect test class 'TestModule' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestModule(Base):
+
+app\models\__init__.py:208
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:208: PytestCollectionWarning: cannot collect test class 'TestRecord' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestRecord(Base):
+
+app\models\__init__.py:173
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:173: PytestCollectionWarning: cannot collect test class 'TestTask' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestTask(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=================================== PASSES ====================================
+_______ test_audit_normal_user_cannot_start_task_on_other_users_device ________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 18:20:43,608 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: DDR\r\n2026-11-12 18:20:43,609 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: DDR / \ufffd\ufffd\ufffd\ufffd\u0423\ufffd\ufffd\r\n2026-11-12 18:20:43,611 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: EMMC\r\n2026-11-12 18:20:43,611 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\u06b5\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,612 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / EXT_CSD \ufffd\u0134\ufffd\ufffd\ufffd\ufffd\ufffd\u0221\r\n2026-11-12 18:20:43,612 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,613 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,613 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,614 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,615 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:43,615 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:43,616 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:43,616 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:43,620 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: WIFI\r\n2026-11-12 18:20:43,621 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 18:20:43,621 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\u017a\ufffd\u01ff\ufffd\ufffd\r\n2026-11-12 18:20:43,623 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,623 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 18:20:43,624 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd\r\n2026-11-12 18:20:43,625 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / \ufffd\ufffd\xb7\u05f4\u032c\r\n2026-11-12 18:20:43,625 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / Ping \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,627 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: CPU\r\n2026-11-12 18:20:43,627 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: CPU / CPU \ufffd\ufffd\u03e2\r\n2026-11-12 18:20:43,636 [INFO] app.seed_data: \u012c\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd\ufffd\u02bc\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,638 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\u03b4\ufffd\u04b5\ufffd\r\n2026-11-12 18:20:43,638 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,639 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\uecec\u02b1\r\n2026-11-12 18:20:43,640 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \u0228\ufffd\u07b2\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:43,640 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0231\u02a7\r\n2026-11-12 18:20:43,641 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\u0532\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,020 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"\r
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:20:44,248 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 403 Forbidden"
+
+2026-11-12 18:20:44,253 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks "HTTP/1.1 200 OK"
+
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 403 Forbidden"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks "HTTP/1.1 200 OK"
+____________ test_audit_same_idempotency_key_creates_only_one_task ____________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 18:20:44,505 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: DDR\r\n2026-11-12 18:20:44,506 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: DDR / \ufffd\ufffd\ufffd\ufffd\u0423\ufffd\ufffd\r\n2026-11-12 18:20:44,508 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: EMMC\r\n2026-11-12 18:20:44,509 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\u06b5\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,509 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / EXT_CSD \ufffd\u0134\ufffd\ufffd\ufffd\ufffd\ufffd\u0221\r\n2026-11-12 18:20:44,510 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,510 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,511 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,511 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,512 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:44,513 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:44,513 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:44,514 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 18:20:44,517 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: WIFI\r\n2026-11-12 18:20:44,518 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 18:20:44,518 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\u017a\ufffd\u01ff\ufffd\ufffd\r\n2026-11-12 18:20:44,520 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,520 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 18:20:44,521 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd\r\n2026-11-12 18:20:44,522 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / \ufffd\ufffd\xb7\u05f4\u032c\r\n2026-11-12 18:20:44,523 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / Ping \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,524 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: CPU\r\n2026-11-12 18:20:44,525 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: CPU / CPU \ufffd\ufffd\u03e2\r\n2026-11-12 18:20:44,532 [INFO] app.seed_data: \u012c\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd\ufffd\u02bc\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,534 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\u03b4\ufffd\u04b5\ufffd\r\n2026-11-12 18:20:44,535 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,536 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\uecec\u02b1\r\n2026-11-12 18:20:44,536 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \u0228\ufffd\u07b2\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,537 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0231\u02a7\r\n2026-11-12 18:20:44,537 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\u0532\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 18:20:44,911 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"\r
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:20:44,998 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+
+2026-11-12 18:20:45,002 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:20:45,647 [INFO] app.services.task_executor: \ufffd\ufffd\ufffd\ufffd 1 \ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\ufffd 2 \ufffd\ufffd\u02a7\ufffd\ufffd\u0363\u05b9\r
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+_ test_audit_missing_declared_device_binary_remains_required_and_blocks_startup _
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:20:45,751 [INFO] app.services.tool_manifest: \ufffd\ufffd\ufffd\ufffd\ufffd\u5d65\u0423\ufffd\ufffd(V1-08 \ufffd\ufffd\u02bd\ufffd\ufffd\ufffd\ufffd): root=C:\\Users\\MCTECH\\AppData\\Local\\Temp\\pytest-of-MCTECH\\pytest-177\\test_audit_missing_declared_de0 manifests=1 \ufffd\ufffd\ufffd\ufffd=1 \u0231\u02a7=1 \ufffd\ufffd\u03e3\ufffd\ufffd\ufffd\ufffd=0 \ufffd\u0570\ufffd\u0231\u02a7=0 \ufffd\ufffd\ufffd\ufffd\u0231\ufffd\ufffd=0 skip=0 ok=False\r
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-177\test_audit_missing_declared_de0 manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+________ test_audit_undeclared_module_with_binaries_is_declaration_gap ________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:20:45,761 [INFO] app.services.tool_manifest: \ufffd\ufffd\ufffd\ufffd\ufffd\u5d65\u0423\ufffd\ufffd(V1-08 \ufffd\ufffd\u02bd\ufffd\ufffd\ufffd\ufffd): root=C:\\Users\\MCTECH\\AppData\\Local\\Temp\\pytest-of-MCTECH\\pytest-177\\test_audit_undeclared_module_w0 manifests=1 \ufffd\ufffd\ufffd\ufffd=0 \u0231\u02a7=0 \ufffd\ufffd\u03e3\ufffd\ufffd\ufffd\ufffd=0 \ufffd\u0570\ufffd\u0231\u02a7=0 \ufffd\ufffd\ufffd\ufffd\u0231\ufffd\ufffd=1 skip=0 ok=False\r\n2026-11-12 18:20:45,764 [INFO] app.services.tool_manifest: \ufffd\ufffd\ufffd\ufffd\ufffd\u5d65\u0423\ufffd\ufffd(V1-08 \ufffd\ufffd\u02bd\ufffd\ufffd\ufffd\ufffd): root=C:\\Users\\MCTECH\\AppData\\Local\\Temp\\pytest-of-MCTECH\\pytest-177\\test_audit_undeclared_module_w0 manifests=1 \ufffd\ufffd\ufffd\ufffd=0 \u0231\u02a7=0 \ufffd\ufffd\u03e3\ufffd\ufffd\ufffd\ufffd=0 \ufffd\u0570\ufffd\u0231\u02a7=0 \ufffd\ufffd\ufffd\ufffd\u0231\ufffd\ufffd=1 skip=0 ok=False\r
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-177\test_audit_undeclared_module_w0 manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-177\test_audit_undeclared_module_w0 manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+=========================== short test summary info ===========================
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_normal_user_cannot_start_task_on_other_users_device
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_same_idempotency_key_creates_only_one_task
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_approx_ratio_zero_target_cannot_pass
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_missing_declared_device_binary_remains_required_and_blocks_startup
+PASSED ..\..\docs\verification\reviews\evidence\v1-fix-20261112\targeted-defect-repro-v2.py::test_audit_undeclared_module_with_binaries_is_declaration_gap
+7 passed, 4 warnings in 2.48s
+
+exit=0 18:20:42-> 18:20:46

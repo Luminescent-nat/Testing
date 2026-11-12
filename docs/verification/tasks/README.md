@@ -22,7 +22,7 @@
 |---|---|---|---|---|---|
 | T-01 | backend-errors | 完成 | 完成 | 通过 | 统一错误外层 + 目标路由别名；RR-T01 |
 | T-02 | infra-tools | 完成 | 完成 | **不通过** | R20 回滚数据保留未达成；seed FK 启动回归已修复；task-3 in_progress；RR-T02 |
-| T-06 | execution-engine | 完成 | 完成 | 通过 | 失败关闭 + 原生 SKIP；45 新用例；RR-T06 |
+| T-06 | execution-engine | 重开修复中 | - | 原“通过”已撤回 | V1-02 两条 fail-open 动态复现（[RR-V1-READINESS](../reviews/RR-V1-READINESS-20261112.md)）；修复与永久回归进行中 |
 | T-17 | infra-tools | 完成 | 完成 | 有条件通过 | 无 docker，干净构建/启动无法核验；RR-T17 |
 | T-18 | infra-tools | 完成 | 完成 | 通过 | 弱密钥拒绝启动矩阵通过；RR-T18 |
 | T-19 | infra-tools | 完成 | 完成 | 通过 | 参数数组 + A133P 真机只读 7/7；RR-T19 |
@@ -33,4 +33,8 @@
 
 - 最终严格全量：`python -m pytest tests -q -W error::pytest.PytestUnraisableExceptionWarning` → **310 passed / 0 failed / exit 0（135.09s）**，原始日志 [FULL-REGRESSION-final-20261112.log](FULL-REGRESSION-final-20261112.log)；评审方独立重跑 310 passed（133.47s）一致。
 - 前端：`npm test` 33 用例通过、`npm run lint` 0 error（既有 1037 warning 属 T-35）、`npm run build` exit 0。
-- 整体结论：**批次 G 验收不通过**，阻塞项为 T-02/R20 回滚数据保留与 T-17/R27 干净镜像运行时无法核验；详见 [RR-FINAL-batch-G](../reviews/RR-FINAL-batch-G.md) 与 [集成汇总](../integration-summary-20261112.md)。
+- 批次 G 整体结论：**验收不通过**，阻塞项为 T-02/R20 回滚数据保留与 T-17/R27 干净镜像运行时无法核验；详见 [RR-FINAL-batch-G](../reviews/RR-FINAL-batch-G.md) 与 [集成汇总](../integration-summary-20261112.md)。
+
+## V1 readiness 修订轮次（2026-11-12，已完成收口）
+
+依据 [RR-V1-READINESS](../reviews/RR-V1-READINESS-20261112.md) 与用户测试记录，第三轮修订已完成并由独立评审收口（[RR-V1-FINAL-20261112](../reviews/RR-V1-FINAL-20261112.md)、逐项 [RR-V1-FIX-*](../reviews/README.md)）：审计 6 项动态反例以 v2 永久基线 7/7 通过（R6 基线语义随 V1-08 契约更新，待用户确认）；后端严格全量 **448 passed / 0 failed**（[V1-FINAL-STRICT-3-20261112.log](V1-FINAL-STRICT-3-20261112.log)），前端 56 用例 / lint 0 error（994w，T-35 未清）/ build exit 0。修复明细、逐缺陷闭环与仍阻塞项（V1-05 真实库对账、V1-08/R27 Docker、V1-11 mock/lint/浏览器、V1-12 画像、V1-13 文档 26 errors、T-09/T-11～T-16/T-21～T-38 未实施）见 [v1-remediation-summary-20261112](../v1-remediation-summary-20261112.md)。

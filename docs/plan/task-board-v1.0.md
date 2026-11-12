@@ -24,7 +24,7 @@
   - [ ] 升级、回滚、异常路径保留行数/结构/完整性证据，不删历史记录。
 - 验证：在空库和备份副本执行 upgrade/downgrade/非法关联写入，结果符合 R20。
 - 回退：还原迁移基础设施并恢复演练副本，不触碰真实库。
-- 状态：进行中/未通过（2026-11-12；RR-T02 判定不通过：初始迁移 downgrade base 删表使存量副本回滚 10/98→0/0，DoD 第2条/R20 回滚数据保留未达成；新装/存量升级、外键/唯一约束、源库保护已通过；真实库严禁 downgrade base，待 T-11 可逆 additive 迁移或用户修订 design§5 后补做。证据 [T-02](../verification/tasks/T-02/)、[RR-T02](../verification/reviews/RR-T02-migration-fk.md)）
+- 状态：进行中/有条件（2026-11-12 V1 轮更新；V1-05 五项修复落地：新装仅走 alembic（无 create_all，fresh-init 冲突消除）、初始迁移 downgrade base 非空库保护、002_idempotency additive 可逆回滚数据保留（10/98 行全程保留）、verify_migrations DDL 指纹/WAL 一致性备份/74 checks PASS。[RR-V1-FIX-T02](../verification/reviews/RR-V1-FIX-T02.md) 判 R20 **revision 级可逆回滚通过**。**上线阻塞遗留**：真实 backend/test_platform.db 存在历史结构漂移（knowledge_entries 默认值/索引、test_tasks.plan/schedule_type），生产 init_db 将 fail-closed 拒绝 stamp；需用户选择对账方案 A（规范化副本重建基线）或 B（显式 reconciling revision）后方可真实库上线；真实库严禁 downgrade base。证据 [T-02](../verification/tasks/T-02/)）
 
 ## T-03 实现共享设备授权策略
 - 改动：在设备服务和设备 API 中统一 owner+PC 授权、发现不认领及管理员版本改派。
@@ -34,7 +34,7 @@
   - [ ] 版本条件更新、完全重放和旧版本冲突符合契约。
 - 验证：运行 `test_device_authorization.py`，覆盖他人/null/PC不一致、并发10改派及落库。
 - 回退：单独还原设备授权模块和对应 API。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；[RR-V1-FIX-T03T04T05](../verification/reviews/RR-V1-FIX-T03T04T05.md)、[RR-V1-FIX-T19V1-01](../verification/reviews/RR-V1-FIX-T19V1-01.md) 评审通过：authorization.py 统一策略接入手动/AI/重跑/设备列表详情/报告/WS，POST /device-discoveries、PATCH 版本条件改派、Device.version+003 迁移；审计反例 R1 fail→pass 且零写入，14+17 真值表用例。遗留：真机 discovery 端到端无法核验。证据 [T-03](../verification/tasks/T-03/)、[T-04](../verification/tasks/T-04/)、[T-05](../verification/tasks/T-05/)）
 
 ## T-04 手动与 AI 创建复用设备授权
 - 改动：将手动任务和 AI 任务创建统一接入 T-03 的设备授权后再进入任务服务。
@@ -44,7 +44,7 @@
   - [ ] 合法管理员和普通用户路径均使用同一校验结果。
 - 验证：运行 `test_task_device_authorization.py`，手动/AI各覆盖允许与拒绝路径。
 - 回退：单独还原两个创建入口的授权接入。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；与 T-03 同轮实现，AI 自然语言创建写前授权且 offline/maintenance→409（[RR-V1-FIX-T22](../verification/reviews/RR-V1-FIX-T22.md) 收口），他人设备 403 且零任务写入。证据 [T-04](../verification/tasks/T-04/)）
 
 ## T-05 报告与 WS 统一用户状态及归属
 - 改动：在报告读取/导出和 WS 首消息订阅中复用 active+创建者/管理员校验。
@@ -54,7 +54,7 @@
   - [ ] 缓存报告和批量导出不能绕过授权或静默跳过越权任务。
 - 验证：运行 `test_resource_authorization.py` 与 WS 测试，覆盖五类身份和缓存路径。
 - 回退：单独还原报告/WS授权适配。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；报告读取/导出/缓存与 WS 首消息统一 authorization 校验，disabled REST 403 / WS 1008，批量导出越权整体 403 不静默跳过。证据 [T-05](../verification/tasks/T-05/)、[RR-V1-FIX-T03T04T05](../verification/reviews/RR-V1-FIX-T03T04T05.md)）
 
 ## T-06 落地失败关闭与原生 SKIP 判定
 - 改动：统一执行/判定优先级，移除无配置默认pass和unknown落库，支持独立行原生SKIP。
@@ -64,7 +64,7 @@
   - [ ] SKIP原因保留，普通相似文本不误判，rc!=0优先fail。
 - 验证：运行 `test_execution_failure_closed.py` 的 EXEC-01～05/SKIP-01～02全真值表。
 - 回退：单独还原判定模块，不依赖统计任务回退。
-- 状态：已完成（2026-11-12；RR-T06 评审通过；45 新增用例，全量 310 passed；报告/WS 端到端贯通留 T-08/最终验收。证据 [T-06](../verification/tasks/T-06/)、[RR-T06](../verification/reviews/RR-T06-failure-closed-skip.md)）
+- 状态：已完成（2026-11-12 V1 轮；V1-02 两条 fail-open 关闭：`or {}` 前按原始类型校验（[]/标量/null→error）、approx_ratio 零目标/NaN/Inf/非数值→error；32 新增用例 + 审计反例 R3/R4 fail→pass。[RR-V1-FIX-T06T07](../verification/reviews/RR-V1-FIX-T06T07.md) 通过。遗留：写入侧 400 拒绝部分由 T-15 完成，执行期 error 兜底保留。证据 [T-06](../verification/tasks/T-06/)）
 
 ## T-07 补齐 stop 与任务终态聚合
 - 改动：在任务执行器中补停止项后的skip记录并统一status/result/进度收尾。
@@ -74,7 +74,7 @@
   - [ ] completed/running残留/取消/平台异常符合状态机。
 - 验证：运行 `test_stop_on_failure.py`，STOP-01/02及running残留场景全部通过。
 - 回退：单独还原执行器收尾改动。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；stop 后剩余项补 `stopped_by_item_id=<id>` skip、不执行/不重试/无输出；fail/error/timeout 三触发；审计反例 R5 fail→pass（pass,fail,skip,skip,skip / completed / 100%）；执行器启动失败→error（INTERNAL_ERROR_RC=-2）、平台异常仅存安全摘要。证据 [T-07](../verification/tasks/T-07/)、[RR-V1-FIX-T06T07](../verification/reviews/RR-V1-FIX-T06T07.md)）
 
 ## T-08 统一 WS、Dashboard 与报告统计
 - 改动：让所有读模型复用五类终态、result和统一通过率，报告改为number/null及稳定字段。
@@ -84,7 +84,7 @@
   - [ ] Dashboard、趋势、模块、报告和导出同一数据结果一致。
 - 验证：运行 `test_unified_statistics.py`，STAT/DASH/ZERO场景及报告导出核对。
 - 回退：单独还原读模型，不改变T-07落库语义。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；单一 [statistics.py](../../test-platform/backend/app/services/statistics.py) 聚合供详情/列表/WS/Dashboard/报告/导出复用：running/pending 不计完成、未完成 result=null、skip 不进分母、零分母 null、Dashboard today 10 键完整分列；前端 reports/dashboard 改用后端口径（自算通过率 0 残留）。[RR-V1-FIX-T08](../verification/reviews/RR-V1-FIX-T08.md)、[RR-V1-FIX-T08B](../verification/reviews/RR-V1-FIX-T08B.md) 通过。遗留：浏览器级页面走查与真实联调未做。证据 [T-08](../verification/tasks/T-08/)）
 
 ## T-09 修复任务参数写前校验与渲染
 - 改动：按item_id嵌套标量结构统一创建校验、保存和目标项参数渲染。
@@ -104,7 +104,7 @@
   - [ ] 并发10写无重复任务/执行，失败事务无部分落库。
 - 验证：运行 `test_task_idempotency.py`，重放对比和并发10写核对数据库。
 - 回退：还原幂等存储和入口接入，保留其他任务字段迁移。
-- 状态：未开始
+- 状态：已完成/有条件（2026-11-12 V1 轮；IdempotencyRecord+UNIQUE、POST /tasks、/tasks/{id}/reruns、legacy rerun-failed 均 201 且复用幂等；同键同体重放同 ID、不同体 409、并发 10 至多一次；审计反例 R2 fail→pass。[RR-V1-FIX-T10](../verification/reviews/RR-V1-FIX-T10.md) 有条件通过：**缺失 Idempotency-Key=不强幂等（待用户确认是否强制必填）**、TTL 清理未做；offline/maintenance 已按 D2 改 409。证据 [T-10](../verification/tasks/T-10/)）
 
 ## T-11 增加 daily 模板/实例数据模型
 - 改动：增量增加task_kind/template_id/scheduled_for/快照状态及计划时刻唯一约束。
@@ -144,7 +144,7 @@
   - [ ] 重启不动未到期pending，旧收尾不覆盖cancelled。
 - 验证：运行 `test_task_lifecycle.py` 各状态取消/删除/重启和越权路径。
 - 回退：单独还原生命周期逻辑，保留其他迁移。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；DELETE pending/running→409、终态软删除 deleted_at 幂等（引用 retained）、越权 403；创建与重跑 offline/maintenance 409；item_ids 空/非正/重复/不存在/禁用→400 details.field 精确；004_task_deleted_at 迁移含数据保护 downgrade。证据 [T-14](../verification/tasks/T-14/)、[RR-V1-FIX-T14](../verification/reviews/RR-V1-FIX-T14.md)）
 
 ## T-15 统一知识转换条件规则结构
 - 改动：预览/转换/执行共用conditional_rules对象schema并在写前拒绝非法规则。
@@ -154,7 +154,7 @@
   - [ ] list/标量/未知操作符/空规则/非法正则均400且无资产写入。
 - 验证：运行 `test_knowledge_rule_contract.py`，预览、转换、执行和重复规则幂等通过。
 - 回退：单独还原知识转换schema和校验。
-- 状态：未开始
+- 状态：已完成（2026-11-12 V1 轮；唯一 validate_conditional_rules：对象根+conditions 非空、非法正则/未知操作符/缺字段/零目标写前 400 零资产写入且 details.field 精确；“对象包成 list”已删除，执行期 error 兜底保留。[RR-V1-FIX-T15](../verification/reviews/RR-V1-FIX-T15.md) 通过。遗留：目标项不存在当前 400（契约 404 待收口）、规则 DB 唯一约束、test_item legacy list 透传。证据 [T-15](../verification/tasks/T-15/)）
 
 ## T-16 完成账号生命周期 API 闭环
 - 改动：实现首管理员、会话、管理员建号、角色/状态更新及最后管理员保护的目标契约。
@@ -174,7 +174,7 @@
   - [ ] 必需工具缺失明确失败，范围内APK/外设缺失如实skip。
 - 验证：干净构建/启动并导出工具清单和镜像内路径，保存完整日志。
 - 回退：单独还原Docker与发现校验改动。
-- 状态：进行中（2026-11-12；代码/静态核对 10/10、tool_manifest 7 单测通过；本机无 docker，干净构建/容器启动/多架构二进制容器可用性无法核验，R27 不得声称通过；RR-T17 有条件通过。证据 [T-17](../verification/tasks/T-17/)、[RR-T17](../verification/reviews/RR-T17-clean-image-tools.md)）
+- 状态：已完成/有条件（2026-11-12 V1 轮；manifest 显式 `tools:` 声明（host runner+共享依赖闭包+设备二进制 ABI/version/sha256），删除任何已声明文件→启动失败；无 tools 声明模块判 declaration_gaps 致命；check_image_tools 仅真实 docker build+compose up+/health+容器内发现才 verified，本机 UNVERIFIABLE；upfm/emmc manifest 哈希与 27 必需+1 skip 校验通过。[RR-V1-FIX-T17](../verification/reviews/RR-V1-FIX-T17.md)（含 V1-08 收口）。遗留：本机无 docker，干净构建/容器启动无法核验；ddr 无 manifest（arm64 是否属 V1 待确认）。证据 [T-17](../verification/tasks/T-17/)）
 
 ## T-18 拒绝弱默认密钥
 - 改动：启动校验拒绝空、短密钥和契约列出的占位值且不打印密钥。
@@ -204,7 +204,7 @@
   - [ ] mock明确标注且只用于隔离开发/测试，可切换真实API。
 - 验证：运行API client Vitest和mock契约样例，覆盖正常、错误、重放键。
 - 回退：单独还原客户端与生成mock，不影响页面业务。
-- 状态：进行中/有条件（2026-11-12；RR-T20 有条件通过：客户端/错误双解析/幂等键/33 前端用例均通过，P-T20-2/3 已修复复核；唯一未决为环境无 mock-api，改用仓库确定性脚本生成并如实标注，偏差 U1 待用户确认后方可用于隔离开发，不得用于真实联调。证据 [T-20](../verification/tasks/T-20/)、[RR-T20](../verification/reviews/RR-T20-frontend-client-mock.md)）
+- 状态：已完成/有条件（2026-11-12 V1 轮；V1-10 收口：49 处散落 `code===200` 全部改 `isSuccessResponse`（残留 0）、登录/注册注入 pc_identifier、200/201 双码兼容、重复提交守卫；RR-T20 有条件项剩 mock-api 偏差 U1 待用户确认；lint 994w/0e（T-35 前端门禁未清）。证据 [T-20](../verification/tasks/T-20/)、[RR-V1-FIX-T20](../verification/reviews/RR-V1-FIX-T20.md)）
 
 ## T-21 映射已确认 UI token
 - 改动：将双主题token v1.0映射到主题变量并移除共享样式中的冲突裸值。

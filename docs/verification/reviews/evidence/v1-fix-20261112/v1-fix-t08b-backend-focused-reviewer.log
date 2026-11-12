@@ -1,0 +1,1309 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 15 items
+
+tests\integration\test_v1_statistics.py .........                        [ 60%]
+tests\integration\test_security_hardening.py ......                      [100%]
+
+=================================== PASSES ====================================
+______________ test_stat01_pass2_fail1_timeout1_skip2_consistent ______________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:22,064 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:22,064 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:22,069 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:22,070 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:22,071 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:22,072 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:22,073 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:22,073 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:22,074 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:22,075 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,076 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,076 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,077 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,082 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:22,083 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:22,083 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:22,087 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:22,088 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:22,090 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:22,091 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:22,091 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:22,093 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:22,094 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:22,099 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:22,101 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:22,102 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:22,103 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:22,103 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:22,103 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:22,103 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:22,571 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:22,618 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+2026-11-12 17:31:22,635 [INFO] httpx: HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+_______________ test_stat02_all_skip_result_and_pass_rate_null ________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:22,915 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:22,916 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:22,919 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:22,922 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:22,923 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:22,923 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:22,924 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:22,924 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:22,925 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:22,925 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,926 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,926 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,927 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:22,931 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:22,932 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:22,932 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:22,934 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:22,934 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:22,937 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:22,938 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:22,939 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:22,942 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:22,943 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:22,951 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:22,954 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:22,955 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:22,956 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:22,956 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:22,957 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:22,958 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:23,355 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:23,398 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+2026-11-12 17:31:23,414 [INFO] httpx: HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+_____________ test_stat03_running_not_counted_task_not_completed ______________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:23,683 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:23,686 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:23,690 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:23,694 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:23,694 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:23,694 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:23,694 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:23,698 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:23,702 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:23,702 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:23,704 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:23,704 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:23,708 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:23,708 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:23,709 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:23,711 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:23,712 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:23,721 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:23,724 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:23,724 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:23,725 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:23,726 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:23,726 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:23,727 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:24,130 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:24,178 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+______ test_truth_table_skip_pass_zero_pending_cancelled_platform_failed ______
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:24,459 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:24,464 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:24,464 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:24,464 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:24,468 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:24,469 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:24,470 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:24,471 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:24,471 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:24,472 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:24,472 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:24,473 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:24,473 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:24,478 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:24,479 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:24,480 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:24,483 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:24,484 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:24,485 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:24,486 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:24,486 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:24,488 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:24,490 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:24,497 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:24,500 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:24,501 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:24,502 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:24,502 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:24,502 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:24,502 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:24,900 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:24,944 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+2026-11-12 17:31:24,961 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/2 "HTTP/1.1 200 OK"
+2026-11-12 17:31:24,975 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/3 "HTTP/1.1 200 OK"
+2026-11-12 17:31:24,991 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/4 "HTTP/1.1 200 OK"
+2026-11-12 17:31:25,006 [INFO] httpx: HTTP Request: GET http://test/api/v1/tasks/5 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/1 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/2 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/3 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/4 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/tasks/5 "HTTP/1.1 200 OK"
+___________ test_dash01_mixed_outcomes_only_valid_completed_in_rate ___________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:25,276 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:25,277 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:25,279 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:25,280 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:25,280 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:25,281 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:25,281 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:25,282 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:25,282 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:25,283 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:25,283 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:25,284 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:25,284 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:25,286 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:25,290 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:25,290 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:25,290 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:25,290 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:25,294 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:25,294 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:25,294 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:25,294 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:25,294 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:25,307 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:25,309 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:25,310 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:25,310 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:25,311 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:25,312 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:25,312 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:25,698 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:25,821 [INFO] httpx: HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+___________________ test_dash01_zero_records_pass_rate_null ___________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:26,085 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:26,087 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:26,089 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:26,089 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:26,090 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:26,090 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:26,091 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:26,091 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:26,093 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:26,093 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,093 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,093 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,094 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,097 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:26,098 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:26,098 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:26,100 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:26,101 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:26,103 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:26,103 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:26,104 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:26,105 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:26,106 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:26,113 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:26,115 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:26,116 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:26,116 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:26,117 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:26,117 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:26,119 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:26,519 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:26,535 [INFO] httpx: HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+________ test_zero01_zero_values_item_id_alignment_and_missing_metric _________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:26,799 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:26,800 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:26,804 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:26,805 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:26,809 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,810 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,810 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,810 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:26,815 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:26,815 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:26,815 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:26,815 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:26,818 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:26,820 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:26,821 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:26,822 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:26,825 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:26,826 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:26,833 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:26,837 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:26,838 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:26,839 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:26,840 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:26,841 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:26,841 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:27,250 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:27,302 [INFO] httpx: HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/reports/1 "HTTP/1.1 200 OK"
+____________________ test_device_response_includes_version ____________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:27,773 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:27,774 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:27,776 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:27,776 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:27,777 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:27,777 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:27,778 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:27,778 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:27,779 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:27,779 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:27,780 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:27,780 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:27,781 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:27,786 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:27,786 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:27,786 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:27,790 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:27,790 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:27,790 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:27,793 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:27,793 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:27,795 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:27,795 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:27,803 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:27,806 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:27,806 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:27,807 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:27,807 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:27,809 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:27,809 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:28,210 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:28,238 [INFO] httpx: HTTP Request: GET http://test/api/v1/devices "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/devices "HTTP/1.1 200 OK"
+_________________ test_first_user_registration_always_allowed _________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:28,528 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:28,528 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:28,532 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:28,535 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:28,536 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:28,537 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:28,537 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:28,538 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:28,543 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:28,543 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:28,544 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:28,545 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:28,546 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:28,547 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:28,548 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:28,549 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:28,550 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:28,551 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:28,560 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:28,562 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:28,563 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:28,564 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:28,564 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:28,565 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:28,565 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:28,778 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 200 OK"
+__________________ test_registration_forbidden_when_disabled __________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:29,075 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:29,076 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:29,078 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:29,079 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:29,079 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:29,080 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:29,080 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:29,081 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:29,081 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:29,082 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,082 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,083 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,083 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,090 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:29,091 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:29,091 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:29,091 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:29,095 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:29,095 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:29,095 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:29,095 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:29,099 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:29,099 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:29,108 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:29,111 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:29,112 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:29,112 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:29,113 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:29,113 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:29,114 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:29,326 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 403 Forbidden"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/register "HTTP/1.1 403 Forbidden"
+_________________ test_login_binds_pc_identifier_from_header __________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:29,621 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:29,623 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:29,625 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:29,626 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:29,626 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:29,627 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:29,627 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:29,628 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:29,629 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:29,629 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,630 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,631 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,631 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:29,637 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:29,638 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:29,639 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:29,641 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:29,642 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:29,644 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:29,644 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:29,645 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:29,647 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:29,648 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:29,657 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:29,657 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:29,661 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:29,662 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:29,663 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:29,664 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:29,664 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:30,067 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+__________________ test_custom_parameter_injection_rejected ___________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:30,360 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:30,361 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:30,363 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:30,363 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:30,364 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:30,364 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:30,365 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:30,365 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:30,366 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:30,366 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:30,367 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:30,367 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:30,368 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:30,374 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:30,375 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:30,375 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:30,377 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:30,378 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:30,379 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:30,380 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:30,381 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:30,383 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:30,383 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:30,390 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:30,395 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:30,397 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:30,397 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:30,397 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:30,399 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:30,399 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:30,798 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:30,854 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 400 Bad Request"
+____________________ test_custom_parameter_legit_accepted _____________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:31,143 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:31,144 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:31,147 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:31,148 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:31,148 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:31,149 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:31,150 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:31,150 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:31,151 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:31,152 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,153 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,154 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,155 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,161 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:31,162 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:31,162 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:31,164 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:31,165 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:31,167 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:31,167 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:31,168 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:31,172 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:31,172 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:31,182 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:31,185 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:31,186 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:31,187 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:31,188 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:31,189 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:31,190 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:31,593 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:31,673 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+-------------------------- Captured stderr teardown ---------------------------
+2026-11-12 17:31:31,677 [ERROR] app.services.task_executor: ���� 1 ִ��ʧ��: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 160, in _execute_with_db
+    await db.commit()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 1011, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 202, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1969, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1256, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1231, in _prepare_impl
+    self.session.flush()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4312, in flush
+    self._flush(objects)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4447, in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4408, in _flush
+    flush_context.execute()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 910, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2347, in _handle_dbapi_exception
+    raise exc_info[1].with_traceback(exc_info[2])
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 123, in execute
+    _cursor = self.await_(self._connection.cursor())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 130, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 195, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\aiosqlite\core.py", line 162, in cursor
+    return Cursor(self, await self._execute(self._conn.cursor))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\aiosqlite\core.py", line 133, in _execute
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 115, in _run_task
+    await cls._execute_with_db(task_id, db)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 229, in _execute_with_db
+    await cls._release_device(db, device, task_id)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 319, in _release_device
+    holder = DeviceLock.get_holder(device.serial_number)
+                                   ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state.py", line 798, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 1651, in load_scalar_attributes
+    result = load_on_ident(
+             ^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 507, in load_on_ident
+    return load_on_pk_identity(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 692, in load_on_pk_identity
+    session.execute(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2180, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2047, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 929, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-11-12 17:31:31,688 [ERROR] app.services.task_executor: ���� 1 ִ���쳣: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 87, in _on_done
+    t.result()
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 123, in _run_task
+    await cls._handle_failure(task_id, db, f"����ִ��ƽ̨�쳣��{type(exc).__name__}��")
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 497, in _handle_failure
+    result = await db.execute(
+             ^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 455, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 189, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2180, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2047, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 929, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+---------------------------- Captured log teardown ----------------------------
+ERROR    app.services.task_executor:task_executor.py:120 ���� 1 ִ��ʧ��: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 160, in _execute_with_db
+    await db.commit()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 1011, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 202, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1969, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1256, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1231, in _prepare_impl
+    self.session.flush()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4312, in flush
+    self._flush(objects)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4447, in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4408, in _flush
+    flush_context.execute()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 910, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2347, in _handle_dbapi_exception
+    raise exc_info[1].with_traceback(exc_info[2])
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 123, in execute
+    _cursor = self.await_(self._connection.cursor())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 130, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 195, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\aiosqlite\core.py", line 162, in cursor
+    return Cursor(self, await self._execute(self._conn.cursor))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\aiosqlite\core.py", line 133, in _execute
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 115, in _run_task
+    await cls._execute_with_db(task_id, db)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 229, in _execute_with_db
+    await cls._release_device(db, device, task_id)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 319, in _release_device
+    holder = DeviceLock.get_holder(device.serial_number)
+                                   ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state.py", line 798, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 1651, in load_scalar_attributes
+    result = load_on_ident(
+             ^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 507, in load_on_ident
+    return load_on_pk_identity(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\loading.py", line 692, in load_on_pk_identity
+    session.execute(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2180, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2047, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 929, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+ERROR    app.services.task_executor:task_executor.py:91 ���� 1 ִ���쳣: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 87, in _on_done
+    t.result()
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 123, in _run_task
+    await cls._handle_failure(task_id, db, f"����ִ��ƽ̨�쳣��{type(exc).__name__}��")
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 497, in _handle_failure
+    result = await db.execute(
+             ^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 455, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 189, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2180, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2047, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 929, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was:  (Background on this error at: https://sqlalche.me/e/20/7s2a)
+_____________________ test_dashboard_stats_response_shape _____________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:31:31,967 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:31:31,968 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:31:31,972 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:31:31,973 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:31:31,974 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:31:31,974 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:31:31,975 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:31:31,975 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:31:31,976 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:31:31,976 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,977 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,977 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,978 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:31:31,981 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:31:31,982 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:31:31,982 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:31:31,984 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:31:31,985 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:31:31,987 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:31:31,988 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:31:31,988 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:31:31,991 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:31:31,991 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:31:32,000 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:31:32,005 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:31:32,005 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:31:32,007 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:31:32,008 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:31:32,009 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:31:32,010 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:31:32,408 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:31:32,442 [INFO] httpx: HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/dashboard/stats "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+PASSED tests/integration/test_v1_statistics.py::test_stat01_pass2_fail1_timeout1_skip2_consistent
+PASSED tests/integration/test_v1_statistics.py::test_stat02_all_skip_result_and_pass_rate_null
+PASSED tests/integration/test_v1_statistics.py::test_stat03_running_not_counted_task_not_completed
+PASSED tests/integration/test_v1_statistics.py::test_truth_table_skip_pass_zero_pending_cancelled_platform_failed
+PASSED tests/integration/test_v1_statistics.py::test_dash01_mixed_outcomes_only_valid_completed_in_rate
+PASSED tests/integration/test_v1_statistics.py::test_dash01_zero_records_pass_rate_null
+PASSED tests/integration/test_v1_statistics.py::test_zero01_zero_values_item_id_alignment_and_missing_metric
+PASSED tests/integration/test_v1_statistics.py::test_device_response_includes_version
+PASSED tests/integration/test_v1_statistics.py::test_statistics_module_single_source_of_truth
+PASSED tests/integration/test_security_hardening.py::test_first_user_registration_always_allowed
+PASSED tests/integration/test_security_hardening.py::test_registration_forbidden_when_disabled
+PASSED tests/integration/test_security_hardening.py::test_login_binds_pc_identifier_from_header
+PASSED tests/integration/test_security_hardening.py::test_custom_parameter_injection_rejected
+PASSED tests/integration/test_security_hardening.py::test_custom_parameter_legit_accepted
+PASSED tests/integration/test_security_hardening.py::test_dashboard_stats_response_shape
+============================= 15 passed in 10.76s =============================
+
+exit=0 17:31:33

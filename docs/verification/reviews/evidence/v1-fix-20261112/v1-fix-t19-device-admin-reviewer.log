@@ -1,0 +1,1003 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 14 items
+
+tests\integration\test_v1_device_admin.py ..............                 [100%]
+
+=================================== PASSES ====================================
+_________________ test_discovery_success_201_owner_unchanged __________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:32,169 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:32,169 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:32,173 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:32,177 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:32,177 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,177 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,177 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,177 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,182 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:32,182 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:32,183 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:32,185 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:32,186 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:32,188 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:32,189 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:32,190 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:32,193 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:32,195 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:32,203 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:32,205 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:32,206 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:32,207 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:32,208 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:32,209 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:32,209 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:32,592 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:32,616 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+__________ test_discovery_does_not_change_existing_owner_pc_version ___________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:32,875 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:32,876 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:32,878 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:32,878 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:32,880 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:32,881 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:32,882 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:32,882 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:32,883 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:32,883 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,884 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,884 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,885 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:32,889 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:32,890 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:32,890 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:32,892 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:32,893 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:32,894 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:32,894 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:32,895 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:32,898 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:32,899 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:32,908 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:32,909 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:32,910 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:32,910 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:32,910 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:32,910 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:32,910 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:33,296 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:33,519 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+______________ test_normal_user_discovery_new_device_owner_null _______________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:33,793 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:33,793 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:33,797 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:33,797 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:33,797 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:33,801 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:33,803 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:33,804 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:33,805 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:33,806 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:33,807 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:33,807 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:33,808 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:33,812 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:33,813 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:33,814 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:33,816 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:33,817 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:33,819 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:33,820 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:33,820 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:33,822 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:33,823 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:33,834 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:33,837 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:33,838 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:33,838 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:33,838 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:33,840 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:33,840 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:34,349 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:34,382 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+______ test_discovery_adb_failure_503_does_not_offline_or_touch_testing _______
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:34,698 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:34,700 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:34,703 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:34,703 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:34,704 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:34,705 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:34,705 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:34,705 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:34,706 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:34,706 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:34,707 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:34,708 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:34,708 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:34,715 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:34,716 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:34,716 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:34,719 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:34,719 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:34,721 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:34,721 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:34,722 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:34,724 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:34,724 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:34,734 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:34,736 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:34,737 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:34,738 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:34,739 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:34,740 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:34,741 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:35,249 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:35,281 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 503 Service Unavailable"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 503 Service Unavailable"
+___________ test_discovery_empty_valid_scan_does_not_batch_offline ____________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:35,597 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:35,597 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:35,602 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:35,603 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:35,604 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:35,604 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:35,605 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:35,606 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:35,607 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:35,607 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:35,608 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:35,608 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:35,609 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:35,614 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:35,615 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:35,616 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:35,619 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:35,620 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:35,622 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:35,623 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:35,624 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:35,626 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:35,627 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:35,637 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:35,642 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:35,642 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:35,642 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:35,644 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:35,644 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:35,644 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:36,161 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:36,188 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+_________________ test_legacy_refresh_delegates_same_service __________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:36,505 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:36,506 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:36,510 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:36,511 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:36,512 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:36,513 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:36,514 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:36,515 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:36,515 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:36,517 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:36,518 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:36,519 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:36,520 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:36,526 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:36,527 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:36,527 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:36,529 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:36,529 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:36,531 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:36,532 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:36,532 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:36,535 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:36,535 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:36,543 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:36,547 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:36,547 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:36,547 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:36,547 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:36,547 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:36,552 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:36,985 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:37,020 [INFO] httpx: HTTP Request: POST http://test/api/v1/devices/refresh "HTTP/1.1 200 OK"
+2026-11-12 17:27:37,024 [INFO] httpx: HTTP Request: POST http://test/api/v1/devices/refresh "HTTP/1.1 503 Service Unavailable"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/devices/refresh "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/devices/refresh "HTTP/1.1 503 Service Unavailable"
+_____________ test_patch_admin_assign_success_version_increments ______________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:37,317 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:37,318 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:37,322 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:37,323 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:37,323 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:37,324 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:37,325 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:37,325 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:37,326 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:37,326 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:37,326 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:37,326 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:37,328 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:37,334 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:37,336 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:37,336 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:37,339 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:37,339 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:37,341 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:37,341 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:37,343 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:37,345 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:37,346 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:37,356 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:37,358 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:37,360 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:37,361 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:37,362 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:37,363 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:37,363 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:37,803 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:38,088 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-OK "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-OK "HTTP/1.1 200 OK"
+_______________________ test_patch_version_conflict_409 _______________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:38,498 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:38,500 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:38,502 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:38,502 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:38,502 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:38,502 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:38,502 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:38,506 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:38,514 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:38,514 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:38,516 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:38,518 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:38,519 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:38,522 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:38,522 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:38,523 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:38,525 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:38,526 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:38,538 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:38,541 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:38,542 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:38,542 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:38,543 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:38,544 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:38,545 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:39,029 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:39,263 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-CONFLICT "HTTP/1.1 409 Conflict"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-CONFLICT "HTTP/1.1 409 Conflict"
+____________ test_patch_full_replay_idempotent_even_stale_version _____________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:39,582 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:39,586 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:39,589 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:39,589 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:39,590 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:39,591 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:39,591 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:39,592 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:39,592 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:39,593 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:39,594 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:39,594 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:39,595 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:39,600 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:39,601 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:39,602 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:39,604 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:39,605 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:39,607 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:39,608 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:39,608 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:39,611 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:39,612 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:39,624 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:39,626 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:39,626 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:39,628 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:39,628 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:39,630 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:39,630 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:40,106 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:40,369 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-REPLAY "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-REPLAY "HTTP/1.1 200 OK"
+______________________ test_patch_normal_user_forbidden _______________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:40,674 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:40,676 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:40,678 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:40,679 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:40,680 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:40,681 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:40,681 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:40,682 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:40,683 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:40,684 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:40,685 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:40,685 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:40,686 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:40,692 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:40,693 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:40,693 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:40,695 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:40,696 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:40,698 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:40,698 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:40,698 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:40,702 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:40,703 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:40,712 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:40,715 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:40,716 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:40,717 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:40,717 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:40,718 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:40,719 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:41,172 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:41,198 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-BY-USER "HTTP/1.1 403 Forbidden"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-BY-USER "HTTP/1.1 403 Forbidden"
+_____________________ test_patch_disabled_user_forbidden ______________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:41,496 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:41,497 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:41,499 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:41,500 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:41,501 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:41,502 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:41,503 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:41,504 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:41,505 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:41,505 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:41,506 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:41,507 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:41,507 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:41,513 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:41,513 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:41,514 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:41,516 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:41,517 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:41,518 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:41,521 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:41,522 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:41,524 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:41,524 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:41,534 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:41,537 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:41,537 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:41,538 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:41,539 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:41,539 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:41,540 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:41,787 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-DISABLED "HTTP/1.1 403 Forbidden"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-DISABLED "HTTP/1.1 403 Forbidden"
+_____________________ test_patch_validation_and_not_found _____________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:42,084 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:42,086 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:42,086 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:42,090 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:42,095 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,095 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,095 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,095 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,099 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:42,099 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:42,102 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:42,104 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:42,105 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:42,107 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:42,107 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:42,108 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:42,110 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:42,111 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:42,119 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:42,122 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:42,123 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:42,124 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:42,125 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:42,125 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:42,126 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:42,605 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:42,631 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/NOPE "HTTP/1.1 404 Not Found"
+2026-11-12 17:27:42,641 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 404 Not Found"
+2026-11-12 17:27:42,645 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+2026-11-12 17:27:42,648 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+2026-11-12 17:27:42,651 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/NOPE "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-VALID "HTTP/1.1 400 Bad Request"
+_____________________ test_patch_target_user_inactive_400 _____________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:42,939 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:42,941 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:42,943 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:42,944 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:42,944 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:42,945 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:42,946 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:42,946 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:42,947 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:42,947 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,948 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,948 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,949 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:42,954 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:42,955 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:42,956 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:42,958 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:42,959 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:42,961 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:42,961 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:42,962 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:42,964 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:42,965 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:42,973 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:42,976 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:42,976 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:42,976 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:42,976 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:42,976 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:42,981 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:43,400 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:43,659 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/PATCH-INACTIVE-TARGET "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/PATCH-INACTIVE-TARGET "HTTP/1.1 400 Bad Request"
+_______________ test_get_device_forbidden_details_field_serial ________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:27:43,954 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-12 17:27:43,957 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-12 17:27:43,959 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-12 17:27:43,960 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-12 17:27:43,960 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-12 17:27:43,961 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-12 17:27:43,962 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-12 17:27:43,962 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-12 17:27:43,963 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-12 17:27:43,964 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:43,964 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:43,965 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:43,965 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-12 17:27:43,971 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-12 17:27:43,972 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-12 17:27:43,972 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-12 17:27:43,974 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-12 17:27:43,975 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-12 17:27:43,977 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-12 17:27:43,978 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-12 17:27:43,978 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-12 17:27:43,980 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-12 17:27:43,981 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-12 17:27:43,990 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-12 17:27:43,992 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-12 17:27:43,993 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-12 17:27:43,994 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-12 17:27:43,994 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-12 17:27:43,996 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-12 17:27:43,996 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-12 17:27:44,476 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:27:44,735 [INFO] httpx: HTTP Request: GET http://test/api/v1/devices/DETAIL-FORBIDDEN "HTTP/1.1 403 Forbidden"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/devices/DETAIL-FORBIDDEN "HTTP/1.1 403 Forbidden"
+=========================== short test summary info ===========================
+PASSED tests/integration/test_v1_device_admin.py::test_discovery_success_201_owner_unchanged
+PASSED tests/integration/test_v1_device_admin.py::test_discovery_does_not_change_existing_owner_pc_version
+PASSED tests/integration/test_v1_device_admin.py::test_normal_user_discovery_new_device_owner_null
+PASSED tests/integration/test_v1_device_admin.py::test_discovery_adb_failure_503_does_not_offline_or_touch_testing
+PASSED tests/integration/test_v1_device_admin.py::test_discovery_empty_valid_scan_does_not_batch_offline
+PASSED tests/integration/test_v1_device_admin.py::test_legacy_refresh_delegates_same_service
+PASSED tests/integration/test_v1_device_admin.py::test_patch_admin_assign_success_version_increments
+PASSED tests/integration/test_v1_device_admin.py::test_patch_version_conflict_409
+PASSED tests/integration/test_v1_device_admin.py::test_patch_full_replay_idempotent_even_stale_version
+PASSED tests/integration/test_v1_device_admin.py::test_patch_normal_user_forbidden
+PASSED tests/integration/test_v1_device_admin.py::test_patch_disabled_user_forbidden
+PASSED tests/integration/test_v1_device_admin.py::test_patch_validation_and_not_found
+PASSED tests/integration/test_v1_device_admin.py::test_patch_target_user_inactive_400
+PASSED tests/integration/test_v1_device_admin.py::test_get_device_forbidden_details_field_serial
+============================= 14 passed in 12.90s =============================
+
+exit=0 17:27:45

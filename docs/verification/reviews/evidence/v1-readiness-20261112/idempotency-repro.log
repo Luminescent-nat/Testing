@@ -1,0 +1,90 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 1 item
+
+tests\unit\test_v1_readiness_audit.py F                                  [100%]
+
+================================== FAILURES ===================================
+____________ test_audit_same_idempotency_key_creates_only_one_task ____________
+tests\unit\test_v1_readiness_audit.py:52: in test_audit_same_idempotency_key_creates_only_one_task
+    assert second.json()["data"]["id"] == first.json()["data"]["id"]
+E   assert 2 == 1
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 15:44:32,426 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 15:44:32,428 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 15:44:32,430 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 15:44:32,431 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 15:44:32,431 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 15:44:32,433 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 15:44:32,433 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 15:44:32,434 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 15:44:32,434 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 15:44:32,435 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 15:44:32,435 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 15:44:32,435 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 15:44:32,435 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 15:44:32,440 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 15:44:32,441 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 15:44:32,441 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 15:44:32,443 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 15:44:32,444 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 15:44:32,445 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 15:44:32,446 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 15:44:32,447 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 15:44:32,447 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 15:44:32,447 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 15:44:32,455 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 15:44:32,460 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 15:44:32,460 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 15:44:32,460 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 15:44:32,460 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 15:44:32,460 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 15:44:32,464 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 15:44:32,853 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 15:44:32,929 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+2026-11-12 15:44:32,944 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED tests/unit/test_v1_readiness_audit.py::test_audit_same_idempotency_key_creates_only_one_task
+============================== 1 failed in 0.90s ==============================
+
+EXIT_CODE=1

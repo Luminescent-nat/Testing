@@ -1,0 +1,265 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 67 items
+
+tests\unit\test_v1_judgement_stop.py ................................    [ 47%]
+tests\unit\test_judgement_engine.py ............                         [ 65%]
+tests\unit\test_execution_engine.py ............                         [ 83%]
+tests\unit\test_task_executor.py ...........                             [100%]
+
+=================================== PASSES ====================================
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:51,977 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+_________ test_stop_on_failure_all_trigger_kinds_fill_skip[fail-fail] _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:52,845 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+________ test_stop_on_failure_all_trigger_kinds_fill_skip[error-error] ________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:53,704 [ERROR] app.services.task_executor: ������ 2 ִ���쳣: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 389, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2302, in _execute_mock_call
+    result = await effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 282, in _shell
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-11-12 16:48:53,737 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.task_executor:task_executor.py:409 ������ 2 ִ���쳣: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 389, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2302, in _execute_mock_call
+    result = await effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 282, in _shell
+    raise RuntimeError("boom")
+RuntimeError: boom
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+______ test_stop_on_failure_all_trigger_kinds_fill_skip[timeout-timeout] ______
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:54,642 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+__________ test_real_adb_launch_failure_classified_internal_error_rc __________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:54,719 [ERROR] app.services.device: adb shell ִ�����ڲ��쳣
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\device.py", line 290, in execute_shell
+    process = await asyncio.create_subprocess_exec(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 371, in _boom
+    raise FileNotFoundError(canary)
+FileNotFoundError: SECRET-CANARY-ADB-LAUNCH-9876
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.device:device.py:312 adb shell ִ�����ڲ��쳣
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\device.py", line 290, in execute_shell
+    process = await asyncio.create_subprocess_exec(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 371, in _boom
+    raise FileNotFoundError(canary)
+FileNotFoundError: SECRET-CANARY-ADB-LAUNCH-9876
+________________________ test_ai_fallback_without_llm _________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:56,107 [ERROR] app.services.judgement_engine: AI �ж�ʧ��: LLM API Key δ����
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 546, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 95, in chat_completion_structured
+    content = await self.chat_completion(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 43, in chat_completion
+    raise ValueError("LLM API Key δ����")
+ValueError: LLM API Key δ����
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.judgement_engine:judgement_engine.py:585 AI �ж�ʧ��: LLM API Key δ����
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 546, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 95, in chat_completion_structured
+    content = await self.chat_completion(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 43, in chat_completion
+    raise ValueError("LLM API Key δ����")
+ValueError: LLM API Key δ����
+_________________________ test_adb_shell_engine_pass __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:56,130 [WARNING] app.services.execution_engine: ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.execution_engine:execution_engine.py:202 ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+____________________ test_adb_shell_engine_with_parameters ____________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:56,140 [WARNING] app.services.execution_engine: ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.execution_engine:execution_engine.py:202 ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+_________________________ test_host_exec_engine_pass __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:48:56,556 [WARNING] app.services.execution_engine: ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.execution_engine:execution_engine.py:202 ���ػ���ʧ��: (sqlite3.OperationalError) no such table: baselines
+[SQL: SELECT baselines.id, baselines.device_model, baselines.item_id, baselines.metric_name, baselines.avg_value, baselines.min_value, baselines.max_value, baselines.sample_count, baselines.last_record_id, baselines.updated_at 
+FROM baselines 
+WHERE baselines.device_model = ?]
+[parameters: ('rk3568',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________________________ test_start_task_duplicate __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:02,699 [WARNING] app.services.task_executor: ���� 999999 ����������
+2026-11-12 16:49:02,699 [INFO] app.services.task_executor: ���� 999999 ��ȡ��
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:77 ���� 999999 ����������
+INFO     app.services.task_executor:task_executor.py:89 ���� 999999 ��ȡ��
+__________________ test_cancel_running_task_keeps_cancelled ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:03,605 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:89 ���� 1 ��ȡ��
+__________________ test_handle_cancel_missing_task_no_error ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:04,074 [WARNING] app.services.task_executor: ȡ�������� 999998 �����ڣ�����״̬��β
+2026-11-12 16:49:04,075 [WARNING] app.services.task_executor: ʧ�ܵ����� 999998 �����ڣ�����״̬��β
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:467 ȡ�������� 999998 �����ڣ�����״̬��β
+WARNING  app.services.task_executor:task_executor.py:504 ʧ�ܵ����� 999998 �����ڣ�����״̬��β
+____________ test_retry_count_retries_failed_item_and_keeps_output ____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:04,783 [INFO] app.services.task_executor: ������ 1 �� 1/2 ������
+2026-11-12 16:49:04,783 [INFO] app.services.task_executor: ������ 1 �� 2/2 ������
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:383 ������ 1 �� 1/2 ������
+INFO     app.services.task_executor:task_executor.py:383 ������ 1 �� 2/2 ������
+___________________ test_retry_count_exhausted_keeps_failed ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:05,503 [INFO] app.services.task_executor: ������ 1 �� 1/1 ������
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:383 ������ 1 �� 1/1 ������
+________________________ test_queued_task_cancellable _________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:08,372 [INFO] app.services.task_executor: �豸 queue-cancel-serial ������ 1 ���У����� 2 ��ִ���ͷ�
+2026-11-12 16:49:08,373 [INFO] app.services.task_executor: ���� 2 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:321 �豸 queue-cancel-serial ������ 1 ���У����� 2 ��ִ���ͷ�
+INFO     app.services.task_executor:task_executor.py:89 ���� 2 ��ȡ��
+___________________ test_device_offline_mid_run_fails_fast ____________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:09,188 [WARNING] app.services.task_executor: ���� 1 ���豸 offline-mid-serial ������ֹ
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:281 ���� 1 ���豸 offline-mid-serial ������ֹ
+=========================== short test summary info ===========================
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[bad_rules0]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[bad_rules1]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[conditions]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[5]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[5.0]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[True]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[None]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_result_parse_root_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_empty_dict_rules_still_route_to_pattern_layer
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_approx_ratio_zero_target_cannot_pass
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[00]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[0.00]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[01]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[0.01]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[spec:zero]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_nonzero_target_still_works
+PASSED tests/unit/test_v1_judgement_stop.py::test_non_numeric_comparison_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_nan_target_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_regex_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_unknown_operator_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_extract_failure_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_both_patterns_hit_is_fail
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[fail-fail]
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[error-error]
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[timeout-timeout]
+PASSED tests/unit/test_v1_judgement_stop.py::test_real_adb_launch_failure_classified_internal_error_rc
+PASSED tests/unit/test_v1_judgement_stop.py::test_adb_shell_engine_internal_error_rc_is_error_not_fail
+PASSED tests/unit/test_v1_judgement_stop.py::test_host_exec_launch_failure_is_error_and_canary_absent
+PASSED tests/unit/test_v1_judgement_stop.py::test_platform_exception_record_fields_safe
+PASSED tests/unit/test_v1_judgement_stop.py::test_task_error_message_persists_safe_summary
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_eq_pass
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_gt_fail
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_gte
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_approx_ratio
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_contains
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_returncode_nonzero
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_with_spec_target
+PASSED tests/unit/test_judgement_engine.py::test_rubric_scoring_pass
+PASSED tests/unit/test_judgement_engine.py::test_rubric_scoring_fail
+PASSED tests/unit/test_judgement_engine.py::test_judgement_engine_no_config_is_error
+PASSED tests/unit/test_judgement_engine.py::test_judgement_engine_default_returncode_fail
+PASSED tests/unit/test_judgement_engine.py::test_ai_fallback_without_llm
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_pass
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_with_parameters
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_unrendered_placeholder
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_adb_device_not_found
+PASSED tests/unit/test_execution_engine.py::test_push_exec_engine_missing_tool_file
+PASSED tests/unit/test_execution_engine.py::test_host_exec_engine_pass
+PASSED tests/unit/test_execution_engine.py::test_host_exec_engine_timeout
+PASSED tests/unit/test_execution_engine.py::test_engine_factory
+PASSED tests/unit/test_execution_engine.py::test_engine_factory_unknown_type
+PASSED tests/unit/test_execution_engine.py::test_compatibility_android_version
+PASSED tests/unit/test_execution_engine.py::test_compatibility_arch
+PASSED tests/unit/test_execution_engine.py::test_compatibility_features
+PASSED tests/unit/test_task_executor.py::test_device_lock_acquire_and_release
+PASSED tests/unit/test_task_executor.py::test_device_lock_release_unknown
+PASSED tests/unit/test_task_executor.py::test_start_task_duplicate
+PASSED tests/unit/test_task_executor.py::test_cancel_running_task_keeps_cancelled
+PASSED tests/unit/test_task_executor.py::test_handle_cancel_missing_task_no_error
+PASSED tests/unit/test_task_executor.py::test_retry_count_retries_failed_item_and_keeps_output
+PASSED tests/unit/test_task_executor.py::test_retry_count_exhausted_keeps_failed
+PASSED tests/unit/test_task_executor.py::test_timeout_record_marked_as_timeout
+PASSED tests/unit/test_task_executor.py::test_queued_task_runs_after_first_completes
+PASSED tests/unit/test_task_executor.py::test_queued_task_cancellable
+PASSED tests/unit/test_task_executor.py::test_device_offline_mid_run_fails_fast
+============================= 67 passed in 18.07s =============================
+
+exit=0 16:49:09

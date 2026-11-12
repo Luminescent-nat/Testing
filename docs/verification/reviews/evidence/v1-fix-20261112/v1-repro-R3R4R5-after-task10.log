@@ -1,0 +1,40 @@
+﻿python.exe : 2026-11-12 16:49:17,046 [INFO] app.logging_config: ��־ϵͳ��ʼ����ɣ��ļ�: D:\MCTEST\test-platform\backend\logs
+\server.log
+所在位置 行:5 字符: 1
++ & 'D:\MCTEST\test-platform\.venv\Scripts\python.exe' -m pytest '..\.. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-11-12 16:4...logs\server.log:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+...                                                                      [100%]
+============================== warnings summary ===============================
+app\models\__init__.py:115
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:115: PytestCollectionWarning: cannot collect test class 'TestItem' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestItem(Base):
+
+app\models\__init__.py:93
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:93: PytestCollectionWarning: cannot collect test class 'TestModule' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestModule(Base):
+
+app\models\__init__.py:203
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:203: PytestCollectionWarning: cannot collect test class 'TestRecord' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestRecord(Base):
+
+app\models\__init__.py:171
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:171: PytestCollectionWarning: cannot collect test class 'TestTask' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestTask(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=================================== PASSES ====================================
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:49:17,836 [INFO] app.services.task_executor: \ufffd\ufffd\ufffd\ufffd 1 \ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\ufffd 2 \ufffd\ufffd\u02a7\ufffd\ufffd\u0363\u05b9\r
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:209 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+=========================== short test summary info ===========================
+PASSED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+PASSED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_approx_ratio_zero_target_cannot_pass
+PASSED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+3 passed, 3 deselected, 4 warnings in 0.78s
+
+exit=0 16:49:16->16:49:18

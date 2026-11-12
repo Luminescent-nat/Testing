@@ -1,8 +1,8 @@
 ﻿=== npm test ===
 command: npm test
-start: 2026-11-12 11:57:46.623
-end: 2026-11-12 11:57:48.059
-duration_ms: 1428
+start: 2026-11-12 16:30:54.571
+end: 2026-11-12 16:30:56.104
+duration_ms: 1522
 exit_code: 0
 
 
@@ -21,11 +21,12 @@ s-node-api-deprecated for more details.[39m
  RUN  v4.1.10 D:/MCTEST/test-platform/frontend
 
  ✓ src/utils/__tests__/datetime.test.js (3 tests) 3ms
- ✓ src/utils/__tests__/client.test.js (27 tests) 16ms
- ✓ src/utils/__tests__/request.test.js (3 tests) 9ms
+ ✓ src/utils/__tests__/client.test.js (27 tests) 19ms
+ ✓ src/utils/__tests__/v1-10-success.test.js (10 tests) 43ms
+ ✓ src/utils/__tests__/request.test.js (3 tests) 3ms
 
- Test Files  3 passed (3)
-      Tests  33 passed (33)
-   Start at  11:57:47
-   Duration  790ms (transform 84ms, setup 0ms, import 816ms, tests 28ms, environment 0ms)
+ Test Files  4 passed (4)
+      Tests  43 passed (43)
+   Start at  16:30:55
+   Duration  800ms (transform 119ms, setup 0ms, import 928ms, tests 68ms, environment 1ms)
 

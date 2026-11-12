@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0 -- D:\MCTEST\test-platform\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collecting ... collected 9 items
+
+tests/integration/test_v1_idempotency.py::test_same_key_same_body_replays_single_task PASSED [ 11%]
+tests/integration/test_v1_idempotency.py::test_same_key_different_body_returns_409 PASSED [ 22%]
+tests/integration/test_v1_idempotency.py::test_concurrent_same_key_creates_at_most_one_task PASSED [ 33%]
+tests/integration/test_v1_idempotency.py::test_missing_key_is_not_idempotent_compat_policy PASSED [ 44%]
+tests/integration/test_v1_idempotency.py::test_invalid_idempotency_key_rejected[short] PASSED [ 55%]
+tests/integration/test_v1_idempotency.py::test_invalid_idempotency_key_rejected[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] PASSED [ 66%]
+tests/integration/test_v1_idempotency.py::test_invalid_idempotency_key_rejected[bad\tkey-with-tab] PASSED [ 77%]
+tests/integration/test_v1_idempotency.py::test_rerun_endpoints_return_201_and_reuse_idempotency PASSED [ 88%]
+tests/integration/test_v1_idempotency.py::test_rerun_without_key_returns_201_and_creates_each_time PASSED [100%]
+
+============================== 9 passed in 8.95s ==============================

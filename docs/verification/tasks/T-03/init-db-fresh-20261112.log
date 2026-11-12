@@ -1,0 +1,22 @@
+﻿COMMAND: python init probe (fresh empty db, app.models imported)
+WORKDIR: D:\MCTEST
+START: 2026-11-12T17:11:26.0207876+08:00
+END: 2026-11-12T17:11:26.6572683+08:00
+EXITCODE: 0
+
+python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:43 字符: 39
++ ... String('o'); $out2 = & $py "$env:TEMP\t19_init_probe.py" 2>&1 | Out-S ...
++                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotenc
+y_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive 设
+备乐观并发版本列（V1-01 设备改派契约 §2/§6）。
+[fresh-empty] init_db OK
+RESULT: PASS
+

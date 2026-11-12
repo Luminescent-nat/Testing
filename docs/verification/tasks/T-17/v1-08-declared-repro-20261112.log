@@ -1,0 +1,11 @@
+﻿COMMAND: python docs/verification/tasks/T-17/v1-08-declared-repro.py
+WORKDIR: D:\MCTEST
+START: 2026-11-12T16:35:23.1536954+08:00
+END: 2026-11-12T16:35:23.8546000+08:00
+EXITCODE: 0
+
+[before] demo/binaries/arm64-v8a/tool in requirements = True
+[after ] demo/binaries/arm64-v8a/tool in requirements = True
+[startup] blocked=True (启动失败：TEST_TOOLS_PATH 工具清单校验未通过（V1-08 显式声明 + 哈希 + 依赖闭包）。)
+RESULT: PASS
+

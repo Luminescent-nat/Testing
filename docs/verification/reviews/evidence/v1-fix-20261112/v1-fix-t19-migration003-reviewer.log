@@ -1,0 +1,73 @@
+﻿[source] D:\MCTEST\test-platform\backend\test_platform.db size=1060864 sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+[work] C:\Users\MCTECH\AppData\Local\Temp\t19_devver_ejqee7yz
+
+[empty/upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/empty.db
+[empty/upgrade-head] exit=0
+[empty/upgrade-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotency_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+
+[empty/downgrade-002] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic downgrade 002_idempotency  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/empty.db
+[empty/downgrade-002] exit=0
+[empty/downgrade-002] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 003_device_version -> 002_idempotency, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+
+[empty/re-upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/empty.db
+[empty/re-upgrade-head] exit=0
+[empty/re-upgrade-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+[legacy] copy=C:\Users\MCTECH\AppData\Local\Temp\t19_devver_ejqee7yz\legacy_backup.db sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+[legacy] counts(before)={'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}
+
+[legacy/stamp-0817] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic stamp 0817df993d8b  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/legacy_backup.db
+[legacy/stamp-0817] exit=0
+[legacy/stamp-0817] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running stamp_revision  -> 0817df993d8b
+
+[legacy/upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/legacy_backup.db
+[legacy/upgrade-head] exit=0
+[legacy/upgrade-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotency_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+[legacy] counts(after upgrade head)={'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}
+
+[legacy/downgrade-002] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic downgrade 002_idempotency  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/legacy_backup.db
+[legacy/downgrade-002] exit=0
+[legacy/downgrade-002] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 003_device_version -> 002_idempotency, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+[legacy] counts(after downgrade 002)={'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}
+
+[legacy/re-upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t19_devver_ejqee7yz/legacy_backup.db
+[legacy/re-upgrade-head] exit=0
+[legacy/re-upgrade-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive �豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+
+================ 汇总 ================
+  [PASS] empty:devices-version-column  (['id', 'serial_number', 'model', 'brand', 'android_version', 'sdk_version', 'cpu_abi', 'resolution', 'battery_level', 'status', 'owner_id', 'pc_identifier', 'last_seen_at', 'created_at', 'updated_at', 'board', 'hardware', 'ddr_info', 'emmc_info', 'wifi_chip', 'bt_chip', 'eth_interfaces', 'features', 'version'])
+  [PASS] empty:default-version-1  (version=1)
+  [PASS] empty:downgrade-drops-version  (['id', 'serial_number', 'model', 'brand', 'android_version', 'sdk_version', 'cpu_abi', 'resolution', 'battery_level', 'status', 'owner_id', 'pc_identifier', 'last_seen_at', 'created_at', 'updated_at', 'board', 'hardware', 'ddr_info', 'emmc_info', 'wifi_chip', 'bt_chip', 'eth_interfaces', 'features'])
+  [PASS] empty:downgrade-keeps-device-row  ({'test_tasks': 0, 'test_records': 0, 'devices': 1, 'users': 0})
+  [PASS] empty:re-upgrade-restores-version
+  [PASS] empty:re-upgrade-keeps-device-row  ({'test_tasks': 0, 'test_records': 0, 'devices': 1, 'users': 0})
+  [PASS] legacy:copy-sha-matches-source
+  [PASS] legacy:pre-has-no-version-column
+  [PASS] legacy:upgrade-adds-version-column
+  [PASS] legacy:existing-devices-version-1  (n=26 sample=[1, 1, 1])
+  [PASS] legacy:upgrade-preserves-row-counts  ({'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5})
+  [PASS] legacy:downgrade-drops-version-column
+  [PASS] legacy:downgrade-preserves-row-counts  ({'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5})
+  [PASS] legacy:re-upgrade-adds-version-column
+  [PASS] legacy:re-upgrade-preserves-row-counts  ({'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5})
+  [PASS] source:sha256-unchanged  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 -> 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+
+RESULT: PASS (16/16)
+
+exit=0 17:27:45->17:27:49

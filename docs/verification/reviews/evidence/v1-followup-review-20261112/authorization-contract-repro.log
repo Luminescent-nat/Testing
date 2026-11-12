@@ -1,0 +1,532 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 5 items
+
+tests\integration\test_v1_followup_audit.py FFFFF                        [100%]
+
+================================== FAILURES ===================================
+________________ test_audit_ai_maintenance_device_cannot_start ________________
+tests\integration\test_v1_followup_audit.py:35: in test_audit_ai_maintenance_device_cannot_start
+    assert response.status_code == 409, response.text
+E   AssertionError: {"code":200,"message":"AI 任务已创建并开始执行","data":{"task_id":1,"plan":{"device_id":1,"item_ids":[18],"intent":"audit","llm_used":false,"llm_available":false},"device_serial":"audit-ai-maintenance"}}
+E   assert 200 == 409
+E    +  where 200 = <Response [200 OK]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:43:33,600 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 17:43:33,600 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 17:43:33,603 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 17:43:33,604 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 17:43:33,604 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 17:43:33,605 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 17:43:33,605 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 17:43:33,606 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 17:43:33,608 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 17:43:33,609 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:33,609 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:33,609 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:33,610 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:33,613 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 17:43:33,614 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 17:43:33,614 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 17:43:33,616 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 17:43:33,617 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 17:43:33,619 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 17:43:33,619 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 17:43:33,619 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 17:43:33,621 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 17:43:33,622 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 17:43:33,634 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 17:43:33,635 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 17:43:33,635 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 17:43:33,635 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 17:43:33,635 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 17:43:33,635 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 17:43:33,639 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 17:43:34,017 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:43:34,261 [INFO] httpx: HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 200 OK"
+__________ test_audit_patch_owner_id_is_required_even_when_nullable ___________
+tests\integration\test_v1_followup_audit.py:48: in test_audit_patch_owner_id_is_required_even_when_nullable
+    assert response.status_code == 400, response.text
+E   AssertionError: {"code":200,"message":"设备归属已更新","data":{"serial_number":"rk3568-test","model":"rk3568","brand":"rockchip","android_version":"11","sdk_version":"30","cpu_abi":"arm64-v8a","resolution":"1080x1920","battery_level":80,"board":"rk3568","hardware":"rk3568-evb","ddr_info":{"total_mb":2048,"type":"LPDDR4","frequency_mhz":1600},"emmc_info":{"total_gb":32,"model":"Samsung","health":"good"},"wifi_chip":"AP6255","bt_chip":"AP6255","eth_interfaces":["eth0"],"features":["wifi","bluetooth","ethernet"],"id":1,"status":"online","owner_id":null,"pc_identifier":"pc-a","version":2,"last_seen_at":null,"created_at":"2026-11-12T09:43:35"}}
+E   assert 200 == 400
+E    +  where 200 = <Response [200 OK]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:43:34,663 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 17:43:34,669 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 17:43:34,671 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 17:43:34,671 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 17:43:34,672 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 17:43:34,672 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 17:43:34,672 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 17:43:34,672 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 17:43:34,674 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 17:43:34,674 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:34,675 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:34,676 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:34,676 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:34,681 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 17:43:34,681 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 17:43:34,682 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 17:43:34,683 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 17:43:34,684 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 17:43:34,686 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 17:43:34,686 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 17:43:34,687 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 17:43:34,688 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 17:43:34,689 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 17:43:34,699 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 17:43:34,701 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 17:43:35,091 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:43:35,128 [INFO] httpx: HTTP Request: PATCH http://test/api/v1/devices/rk3568-test "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: PATCH http://test/api/v1/devices/rk3568-test "HTTP/1.1 200 OK"
+_________________ test_audit_discovery_rejects_nonempty_body __________________
+tests\integration\test_v1_followup_audit.py:60: in test_audit_discovery_rejects_nonempty_body
+    assert response.status_code == 400, response.text
+E   AssertionError: {"code":201,"message":"设备发现完成","data":{"items":[{"serial_number":"rk3568-test","model":"rk3568","brand":"rockchip","android_version":"11","sdk_version":"30","cpu_abi":"arm64-v8a","resolution":"1080x1920","battery_level":80,"board":"mock output","hardware":"mock output","ddr_info":{"total_mb":null,"available_mb":null,"freq_mhz":null},"emmc_info":{"size_gb":null,"model":"mock output","health":"mock output"},"wifi_chip":"AP6255","bt_chip":"AP6255","eth_interfaces":["eth0"],"features":["wifi","bluetooth","ethernet"],"id":1,"status":"online","owner_id":2,"pc_identifier":"test-pc-admin","version":1,"last_seen_at":"2026-11-12T09:43:36.204011Z","created_at":"2026-11-12T09:43:36"}],"total":1,"owner_unchanged":true}}
+E   assert 201 == 400
+E    +  where 201 = <Response [201 Created]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:43:35,428 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 17:43:35,430 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 17:43:35,431 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 17:43:35,432 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 17:43:35,433 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 17:43:35,433 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 17:43:35,434 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 17:43:35,435 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 17:43:35,436 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 17:43:35,437 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:35,437 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:35,437 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:35,437 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:35,444 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 17:43:35,444 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 17:43:35,444 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 17:43:35,448 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 17:43:35,448 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 17:43:35,452 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 17:43:35,453 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 17:43:35,454 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 17:43:35,456 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 17:43:35,457 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 17:43:35,472 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 17:43:35,474 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 17:43:35,475 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 17:43:35,475 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 17:43:35,477 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 17:43:35,478 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 17:43:35,479 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 17:43:35,965 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:43:36,212 [INFO] httpx: HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/device-discoveries "HTTP/1.1 201 Created"
+_________ test_audit_maintenance_device_serializes_and_is_filterable __________
+tests\integration\test_v1_followup_audit.py:69: in test_audit_maintenance_device_serializes_and_is_filterable
+    detail = await client.get(
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1786: in get
+    return await self.request(
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1559: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1646: in send
+    response = await self._send_handling_auth(
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1674: in _send_handling_auth
+    response = await self._send_handling_redirects(
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1711: in _send_handling_redirects
+    response = await self._send_single_request(request)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_client.py:1748: in _send_single_request
+    response = await transport.handle_async_request(request)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\httpx\_transports\asgi.py:162: in handle_async_request
+    await self.app(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\cors.py:83: in __call__
+    await self.app(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py:762: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py:782: in app
+    await route.handle(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py:299: in app
+    raise e
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py:294: in app
+    raw_response = await run_endpoint_function(
+C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+app\api\devices.py:185: in get_device
+    return ResponseModel(code=200, data=DeviceResponse.model_validate(device))
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for DeviceResponse
+E   status
+E     Input should be 'online', 'offline' or 'testing' [type=enum, input_value='maintenance', input_type=str]
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:43:36,586 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 17:43:36,586 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 17:43:36,590 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 17:43:36,590 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 17:43:36,590 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 17:43:36,590 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 17:43:36,590 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 17:43:36,594 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 17:43:36,596 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 17:43:36,596 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:36,597 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:36,598 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:36,599 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:36,605 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 17:43:36,606 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 17:43:36,607 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 17:43:36,609 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 17:43:36,610 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 17:43:36,612 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 17:43:36,613 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 17:43:36,613 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 17:43:36,616 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 17:43:36,616 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 17:43:36,629 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 17:43:36,631 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 17:43:36,632 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 17:43:36,634 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 17:43:36,635 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 17:43:36,635 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 17:43:36,636 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 17:43:37,085 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:43:37,127 [ERROR] app.errors: 未预期异常 at GET /api/v1/devices/rk3568-test: 1 validation error for DeviceResponse
+status
+  Input should be 'online', 'offline' or 'testing' [type=enum, input_value='maintenance', input_type=str]
+Traceback (most recent call last):
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\cors.py", line 83, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\api\devices.py", line 185, in get_device
+    return ResponseModel(code=200, data=DeviceResponse.model_validate(device))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\pydantic\main.py", line 503, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for DeviceResponse
+status
+  Input should be 'online', 'offline' or 'testing' [type=enum, input_value='maintenance', input_type=str]
+------------------------------ Captured log call ------------------------------
+ERROR    app.errors:errors.py:128 未预期异常 at GET /api/v1/devices/rk3568-test: 1 validation error for DeviceResponse
+status
+  Input should be 'online', 'offline' or 'testing' [type=enum, input_value='maintenance', input_type=str]
+Traceback (most recent call last):
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\cors.py", line 83, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\starlette\routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\fastapi\routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\api\devices.py", line 185, in get_device
+    return ResponseModel(code=200, data=DeviceResponse.model_validate(device))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\pydantic\main.py", line 503, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for DeviceResponse
+status
+  Input should be 'online', 'offline' or 'testing' [type=enum, input_value='maintenance', input_type=str]
+______________ test_audit_device_list_rejects_invalid_pagination ______________
+tests\integration\test_v1_followup_audit.py:86: in test_audit_device_list_rejects_invalid_pagination
+    assert response.status_code == 400, response.text
+E   AssertionError: {"code":200,"message":"success","data":{"items":[{"serial_number":"rk3568-test","model":"rk3568","brand":"rockchip","android_version":"11","sdk_version":"30","cpu_abi":"arm64-v8a","resolution":"1080x1920","battery_level":80,"board":"rk3568","hardware":"rk3568-evb","ddr_info":{"total_mb":2048,"type":"LPDDR4","frequency_mhz":1600},"emmc_info":{"total_gb":32,"model":"Samsung","health":"good"},"wifi_chip":"AP6255","bt_chip":"AP6255","eth_interfaces":["eth0"],"features":["wifi","bluetooth","ethernet"],"id":1,"status":"online","owner_id":1,"pc_identifier":"test-pc-admin","version":1,"last_seen_at":null,"created_at":"2026-11-12T09:43:38"}],"total":1}}
+E   assert 200 == 400
+E    +  where 200 = <Response [200 OK]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 17:43:37,651 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 17:43:37,652 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 17:43:37,657 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 17:43:37,657 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 17:43:37,657 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 17:43:37,657 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 17:43:37,657 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:37,661 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 17:43:37,670 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 17:43:37,671 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 17:43:37,671 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 17:43:37,673 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 17:43:37,674 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 17:43:37,675 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 17:43:37,676 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 17:43:37,677 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 17:43:37,679 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 17:43:37,679 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 17:43:37,690 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 17:43:37,693 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 17:43:37,693 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 17:43:37,694 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 17:43:37,695 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 17:43:37,696 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 17:43:37,697 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 17:43:38,176 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 17:43:38,218 [INFO] httpx: HTTP Request: GET http://test/api/v1/devices?page=0&page_size=1000 "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: GET http://test/api/v1/devices?page=0&page_size=1000 "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED tests/integration/test_v1_followup_audit.py::test_audit_ai_maintenance_device_cannot_start
+FAILED tests/integration/test_v1_followup_audit.py::test_audit_patch_owner_id_is_required_even_when_nullable
+FAILED tests/integration/test_v1_followup_audit.py::test_audit_discovery_rejects_nonempty_body
+FAILED tests/integration/test_v1_followup_audit.py::test_audit_maintenance_device_serializes_and_is_filterable
+FAILED tests/integration/test_v1_followup_audit.py::test_audit_device_list_rejects_invalid_pagination
+============================== 5 failed in 4.95s ==============================
+
+EXIT_CODE=1

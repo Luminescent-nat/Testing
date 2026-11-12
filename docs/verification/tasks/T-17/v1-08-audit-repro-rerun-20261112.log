@@ -1,0 +1,25 @@
+﻿COMMAND: python -m pytest tests/unit/test_audit_v108_repro_tmp.py::test_audit_missing_device_binary_remains_a_required_manifest_entry -q (临时复制审计 repro 到 tests/unit，运行后删除)
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T16:35:03.7349701+08:00
+END: 2026-11-12T16:35:04.9438605+08:00
+EXITCODE: 1
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 1 item
+
+tests\unit\test_audit_v108_repro_tmp.py F                                [100%]
+
+================================== FAILURES ===================================
+_____ test_audit_missing_device_binary_remains_a_required_manifest_entry ______
+tests\unit\test_audit_v108_repro_tmp.py:161: in test_audit_missing_device_binary_remains_a_required_manifest_entry
+    assert "demo/binaries/arm64-v8a/tool" in before
+E   AssertionError: assert 'demo/binaries/arm64-v8a/tool' in {}
+=========================== short test summary info ===========================
+FAILED tests/unit/test_audit_v108_repro_tmp.py::test_audit_missing_device_binary_remains_a_required_manifest_entry
+============================== 1 failed in 0.08s ==============================
+

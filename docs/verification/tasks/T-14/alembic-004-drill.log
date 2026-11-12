@@ -1,0 +1,98 @@
+﻿=== 004_task_deleted_at 迁移演练（隔离临时库 C:\Users\MCTECH\AppData\Local\Temp\alembic-004-a3d09b64dcfb4a8d897e0425e8d8c374，不触碰真实库） ===
+START: 2026-11-12 17:35:38 +08:00
+---- 1) alembic upgrade head ----
+python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:10 字符: 1
++ & $py -m alembic upgrade head *> $tmp; $c1=$LASTEXITCODE; Get-Content ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotenc
+y_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive �
+豸�ֹ۲����汾�У�V1-01 �豸������Լ ��2/��6����
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: addit
+ive ������ɾ���У���Լ task-execution ��8 / V1-09b����
+EXIT: 0
+---- 2) 播种：1 行已软删除 + 1 行未删除任务 ----
+seeded rows(total, soft-deleted): [(2, 1)]
+EXIT: 0
+---- 3) downgrade 003_device_version（存在软删除数据 → 期望拒绝，非 0 退出） ----
+python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:14 字符: 1
++ & $py -m alembic downgrade 003_device_version *> $tmp; $c3=$LASTEXITC ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 004_task_deleted_at -> 003_device_version, 004_task_deleted_at: add
+itive ������ɾ���У���Լ task-execution ��8 / V1-09b����
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\__main__.py", line 4, in <module>
+    main(prog="alembic")
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\config.py", line 641, in main
+    CommandLine(prog=prog).main(argv=argv)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\config.py", line 631, in main
+    self.run_cmd(cfg, options)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\config.py", line 608, in run_cmd
+    fn(
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\command.py", line 449, in downgrade
+    script.run_env()
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\script\base.py", line 583, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\util\pyfiles.py", line 95, in load_python_file
+    module = load_module_py(module_id, path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\util\pyfiles.py", line 113, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\MCTEST\test-platform\backend\alembic\env.py", line 106, in <module>
+    run_migrations_online()
+  File "D:\MCTEST\test-platform\backend\alembic\env.py", line 100, in run_migrations_online
+    context.run_migrations()
+  File "<string>", line 8, in run_migrations
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\runtime\environment.py", line 948, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\alembic\runtime\migration.py", line 627, in run_migrations
+    step.migration_fn(**kw)
+  File "D:\MCTEST\test-platform\backend\alembic\versions\004_task_deleted_at.py", line 35, in downgrade
+    raise RuntimeError(
+RuntimeError: �޷����� 004_task_deleted_at������ 1 ������ɾ������deleted_at �ǿգ�����������ʧɾ����ǣ����ȹ鵵/������ɾ�����ݡ�
+EXIT: 1 (期望非 0)
+---- 3b) 拒绝后数据仍在 ----
+rows(total, soft-deleted): [(2, 1)]
+---- 4) 清空软删除数据后 downgrade 003_device_version → 成功且行保留 ----
+cleared soft-deleted rows
+python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:19 字符: 1
++ & $py -m alembic downgrade 003_device_version *> $tmp; $c4=$LASTEXITC ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 004_task_deleted_at -> 003_device_version, 004_task_deleted_at: add
+itive ������ɾ���У���Լ task-execution ��8 / V1-09b����
+EXIT: 0
+---- 5) 重新 upgrade head → 成功 ----
+python.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:21 字符: 1
++ & $py -m alembic upgrade head *> $tmp; $c5=$LASTEXITCODE; Get-Content ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: addit
+ive ������ɾ���У���Լ task-execution ��8 / V1-09b����
+EXIT: 0
+END: 2026-11-12 17:35:41 +08:00
+SUMMARY: upgrade_head=0 seed=0 downgrade_with_softdeleted=1(期望非0) downgrade_clean=0 reupgrade=0

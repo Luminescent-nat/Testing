@@ -1,0 +1,102 @@
+ISOLATED_DB=C:/Users/MCTECH/AppData/Local/Temp/tmp.ziaUtqjYqS/fresh.db
+INIT_DB_EXIT=0
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+Traceback (most recent call last):
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: table users already exists
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\__main__.py", line 4, in <module>
+    main(prog="alembic")
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\config.py", line 641, in main
+    CommandLine(prog=prog).main(argv=argv)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\config.py", line 631, in main
+    self.run_cmd(cfg, options)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\config.py", line 608, in run_cmd
+    fn(
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\command.py", line 403, in upgrade
+    script.run_env()
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\script\base.py", line 583, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\util\pyfiles.py", line 95, in load_python_file
+    module = load_module_py(module_id, path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\util\pyfiles.py", line 113, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\MCTEST\test-platform\backend\alembic\env.py", line 106, in <module>
+    run_migrations_online()
+  File "D:\MCTEST\test-platform\backend\alembic\env.py", line 100, in run_migrations_online
+    context.run_migrations()
+  File "<string>", line 8, in run_migrations
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\runtime\environment.py", line 948, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\runtime\migration.py", line 627, in run_migrations
+    step.migration_fn(**kw)
+  File "D:\MCTEST\test-platform\backend\alembic\versions\0817df993d8b_initial_schema.py", line 21, in upgrade
+    op.create_table('users',
+  File "<string>", line 8, in create_table
+  File "<string>", line 3, in create_table
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\operations\ops.py", line 1311, in create_table
+    return operations.invoke(op)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\operations\base.py", line 445, in invoke
+    return fn(self, operation)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\operations\toimpl.py", line 131, in create_table
+    operations.impl.create_table(table)
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\ddl\impl.py", line 366, in create_table
+    self._exec(schema.CreateTable(table))
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\alembic\ddl\impl.py", line 207, in _exec
+    return conn.execute(construct, multiparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\sql\ddl.py", line 181, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1528, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) table users already exists
+[SQL: 
+CREATE TABLE users (
+	id INTEGER NOT NULL, 
+	username VARCHAR(50) NOT NULL, 
+	password_hash VARCHAR(255) NOT NULL, 
+	role VARCHAR(20) NOT NULL, 
+	status VARCHAR(20) NOT NULL, 
+	pc_identifier VARCHAR(255), 
+	last_login_at DATETIME, 
+	created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+	updated_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ALEMBIC_UPGRADE_EXIT=1
+REPRO_RESULT=CONFIRMED: create_all initialization blocks subsequent alembic upgrade head

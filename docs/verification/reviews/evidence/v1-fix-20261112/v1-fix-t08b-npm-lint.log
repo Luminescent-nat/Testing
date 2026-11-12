@@ -1,0 +1,14 @@
+﻿=== REVIEWER: npm-lint
+=== CMD: npm run lint
+=== TIME: 17:31:07 -> 17:31:09  exit=0
+--- TAIL ---
+  290:81   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  292:40   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  293:26   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  300:59   warning  'watch' is defined but never used                                                               no-unused-vars
+  313:7    warning  'router' is assigned a value but never used                                                     no-unused-vars
+
+✖ 994 problems (0 errors, 994 warnings)
+  0 errors and 825 warnings potentially fixable with the `--fix` option.
+
+

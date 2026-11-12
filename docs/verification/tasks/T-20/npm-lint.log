@@ -1,8 +1,8 @@
 ﻿=== npm run lint ===
 command: npm run lint
-start: 2026-11-12 11:57:48.079
-end: 2026-11-12 11:57:49.332
-duration_ms: 1252
+start: 2026-11-12 16:30:56.126
+end: 2026-11-12 16:30:57.901
+duration_ms: 1773
 exit_code: 0
 
 
@@ -1077,7 +1077,7 @@ D:\MCTEST\test-platform\frontend\src\views\tasks\monitor.vue
   292:40   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
   293:26   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
   300:59   warning  'watch' is defined but never used                                                               no-unused-vars
-  312:7    warning  'router' is assigned a value but never used                                                     no-unused-vars
+  313:7    warning  'router' is assigned a value but never used                                                     no-unused-vars
 
 ✖ 1037 problems (0 errors, 1037 warnings)
   0 errors and 864 warnings potentially fixable with the `--fix` option.

@@ -1,0 +1,5 @@
+﻿[before] demo/binaries/arm64-v8a/tool in requirements = True
+[after ] demo/binaries/arm64-v8a/tool in requirements = True
+[startup] blocked=True (���ʧ�ܣ�TEST_TOOLS_PATH �����嵥У��δͨ����V1-08 ��ʽ���� + ��ϣ + �����հ�����)
+RESULT: PASS
+

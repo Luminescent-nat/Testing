@@ -21,6 +21,20 @@
 | RR-T20 | T-20 前端契约客户端与 mock | 2026-11-12 | 有条件通过（P-T20-2/3 已修复并增量复核通过；唯一剩余条件为 mock-api 偏差 U1，待用户最终确认） | [RR-T20-frontend-client-mock.md](RR-T20-frontend-client-mock.md) |
 | RR-T21 | T-21 UI token 映射 | 2026-11-12 | 通过（静态 token 范围；页面级视觉留 T-22+） | [RR-T21-ui-tokens.md](RR-T21-ui-tokens.md) |
 | RR-FINAL-batch-G | 批次 G 整体评审 | 2026-11-12 | **整体验收不通过**（阻塞：T-02/R20 不通过、T-17/R27 无法核验；T-20 mock 偏差待确认；实机仅 Android10/32 位） | [RR-FINAL-batch-G.md](RR-FINAL-batch-G.md) |
+| RR-V1-PLAN-20261112 | V1 readiness 修订阶段一（基线复现+修复映射） | 2026-11-12 | 基线确证：6 项反例在当前 HEAD 全部 FAILED；修复映射建立；诚实边界已列 | [RR-V1-PLAN-20261112.md](RR-V1-PLAN-20261112.md) |
+| RR-V1-FIX-T20 | V1-10 前端 2xx 判定与 pc_identifier（task-14） | 2026-11-12 | 通过（残留 0、43 用例、lint 1037w/0e、pc_identifier 仅注入；前端最终门禁属 V1-11） | [RR-V1-FIX-T20.md](RR-V1-FIX-T20.md) |
+| RR-V1-FIX-T06T07 | V1-02/03/07 判定/stop/执行器异常（task-10） | 2026-11-12 | 通过（R3/R4/R5 转 PASS；67 passed；写入侧 400 与统一聚合属后续/V1-06） | [RR-V1-FIX-T06T07.md](RR-V1-FIX-T06T07.md) |
+| RR-V1-FIX-T03T04T05 | V1-01/07 设备与 WS 统一授权（task-9） | 2026-11-12 | 通过（R1 转 PASS；17 passed；设备发现/改派未做→V1-01 部分未闭环） | [RR-V1-FIX-T03T04T05.md](RR-V1-FIX-T03T04T05.md) |
+| RR-V1-FIX-T02 | V1-04/05 幂等模型与迁移闭环基础（task-11） | 2026-11-12 | 通过（新装仅 alembic 幂等；002 可逆回滚 10/98 保留→R20 revision 级通过；真实库漂移需用户对账） | [RR-V1-FIX-T02.md](RR-V1-FIX-T02.md) |
+| RR-V1-FIX-T10 | V1-04 幂等+201 入口（task-12） | 2026-11-12 | 有条件通过（R2 转 PASS、9 用例；缺失键/offline 400→409 偏差，后者阻塞完全闭环） | [RR-V1-FIX-T10.md](RR-V1-FIX-T10.md) |
+| RR-V1-FIX-T15 | V1-09a 知识规则写前校验（task-18） | 2026-11-12 | 通过（400 零写入/details.field 精确；V1-09 残余：目标 404、DB 唯一、test_item list 透传） | [RR-V1-FIX-T15.md](RR-V1-FIX-T15.md) |
+| RR-V1-FIX-T08 | V1-06 统一统计口径（task-16） | 2026-11-12 | 通过（单一 statistics.py 复用；9 用例；Dashboard today 形状待 task-20、前端待 task-21） | [RR-V1-FIX-T08.md](RR-V1-FIX-T08.md) |
+| RR-V1-FIX-T19V1-01 | V1-01 补全：发现/改派/Device.version+003（task-19） | 2026-11-12 | 通过（14 用例+003 演练 16/16；V1-01 主体闭环；真机发现/真实库迁移无法核验） | [RR-V1-FIX-T19V1-01.md](RR-V1-FIX-T19V1-01.md) |
+| RR-V1-FIX-T08B | V1-06 收口：Dashboard 分列+前端统计显示（task-20/21） | 2026-11-12 | 通过（today 10 键+零态；前端自算残留 0；lint 994w 未关规则；联调/浏览器属 T-38/T-35） | [RR-V1-FIX-T08B.md](RR-V1-FIX-T08B.md) |
+| RR-V1-FIX-T14 | V1-09b 删除边界/item_ids/D2 409（task-17） | 2026-11-12 | 通过（42 passed；004 软删除 downgrade 保护；D2 全闭环含 AI 409） | [RR-V1-FIX-T14.md](RR-V1-FIX-T14.md) |
+| RR-V1-FIX-T17 | V1-08 显式工具清单/哈希（task-13） | 2026-11-12 | **有条件通过**（R6 基线语义更新后 v2 7/7；缺陷类别闭合；待用户确认基线变更；Docker 运行时无法核验） | [RR-V1-FIX-T17.md](RR-V1-FIX-T17.md) |
+| RR-V1-FIX-T22 | V1 followup 契约收口（task-22） | 2026-11-12 | 通过（AI 409/PATCH owner_id/discovery 空体/分页/DeviceStatus/004 74·74；审计转永久回归） | [RR-V1-FIX-T22.md](RR-V1-FIX-T22.md) |
+| RR-V1-FINAL-20261112 | V1 修订轮最终评审与上线结论 | 2026-11-12 | **不通过/受控开发基线（收口）**：v2 反例基线 7/7 全过（R6 语义更新待用户确认）+ STRICT-3 448 passed/0 failed + 前端 56/0e/exit0；V1-11/12/13、R27、真实库对账、真机端到端未闭环 | [RR-V1-FINAL-20261112.md](RR-V1-FINAL-20261112.md) |
 
 ## 2. 统一评审记录模板
 

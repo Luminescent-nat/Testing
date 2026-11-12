@@ -1,0 +1,312 @@
+﻿python.exe : 2026-11-12 16:27:58,757 [INFO] app.logging_config: ��־ϵͳ��ʼ����ɣ��ļ�: D:\MCTEST\test-platform\backend\logs
+\server.log
+所在位置 行:6 字符: 1
++ & 'D:\MCTEST\test-platform\.venv\Scripts\python.exe' -m pytest '..\.. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-11-12 16:2...logs\server.log:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+_______ test_audit_normal_user_cannot_start_task_on_other_users_device ________
+
+client = <httpx.AsyncClient object at 0x00000260F34BA960>
+normal_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYWwiLCJleHAiOjE3OTQ1NTg0Nzl9.0YXRHNoA8FqH_q_zA7YFO0DYYOxb9D9iMM7VtcPhjAU'
+admin_user = <User(id=2, username=admin, role=admin)>
+sample_device = <Device(id=1, serial=rk3568-test, status=online)>
+sample_item = <TestItem(id=18, name=Sample Item, type=adb_shell)>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000260F340B6E0>
+
+    @pytest.mark.asyncio
+    async def test_audit_normal_user_cannot_start_task_on_other_users_device(
+        client, normal_token, admin_user, sample_device, sample_item, monkeypatch
+    ):
+        """��ͨ�û�ʹ���������� PC �豸�����������Ϊ 403���Ҳ���д����"""
+        monkeypatch.setattr(TaskExecutor, "start_task", lambda task_id: True)
+        response = await client.post(
+            "/api/v1/tasks",
+            headers={"Authorization": f"Bearer {normal_token}"},
+            json={
+                "device_serial": sample_device.serial_number,
+                "item_ids": [sample_item.id],
+                "schedule_type": "immediate",
+            },
+        )
+>       assert response.status_code == 403, response.text
+E       AssertionError: {"code":200,"message":"���񴴽��ɹ�","data":{"id":1,"name":"��������_20261112_162759","device_serial":"rk3568-test","status":"pending","progress_percent":0,"result":null,"schedule_type":"immediate","scheduled_time":null,"next_run_at":null,"started_at":null,"completed_at":null,"created_at":"2026-11-12T08:27:59"}}
+E       assert 200 == 403
+E        +  where 200 = <Response [200 OK]>.status_code
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:28: AssertionError
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 16:27:59,087 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: DDR\r\n2026-11-12 16:27:59,088 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: DDR / \ufffd\ufffd\ufffd\ufffd\u0423\ufffd\ufffd\r\n2026-11-12 16:27:59,091 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: EMMC\r\n2026-11-12 16:27:59,092 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\u06b5\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,092 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / EXT_CSD \ufffd\u0134\ufffd\ufffd\ufffd\ufffd\ufffd\u0221\r\n2026-11-12 16:27:59,093 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,093 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,094 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,094 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,095 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:27:59,096 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:27:59,096 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:27:59,096 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:27:59,102 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: WIFI\r\n2026-11-12 16:27:59,103 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 16:27:59,104 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\u017a\ufffd\u01ff\ufffd\ufffd\r\n2026-11-12 16:27:59,106 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,107 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 16:27:59,108 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd\r\n2026-11-12 16:27:59,109 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / \ufffd\ufffd\xb7\u05f4\u032c\r\n2026-11-12 16:27:59,110 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / Ping \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,111 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: CPU\r\n2026-11-12 16:27:59,112 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: CPU / CPU \ufffd\ufffd\u03e2\r\n2026-11-12 16:27:59,119 [INFO] app.seed_data: \u012c\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd\ufffd\u02bc\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,122 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\u03b4\ufffd\u04b5\ufffd\r\n2026-11-12 16:27:59,123 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,124 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\uecec\u02b1\r\n2026-11-12 16:27:59,126 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \u0228\ufffd\u07b2\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,128 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0231\u02a7\r\n2026-11-12 16:27:59,129 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\u0532\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:27:59,526 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"\r
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:27:59,815 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+____________ test_audit_same_idempotency_key_creates_only_one_task ____________
+
+client = <httpx.AsyncClient object at 0x00000260F374CEF0>
+admin_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc5NDU1ODQ4MH0.eHHjmgBwaQfOenzD62Arw8VxwuL9IK-1D72Ra3RuXsM'
+sample_device = <Device(id=1, serial=rk3568-test, status=online)>
+sample_item = <TestItem(id=18, name=Sample Item, type=adb_shell)>
+test_db = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x00000260F3437B60>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000260F340B680>
+
+    @pytest.mark.asyncio
+    async def test_audit_same_idempotency_key_creates_only_one_task(
+        client, admin_token, sample_device, sample_item, test_db, monkeypatch
+    ):
+        """��ͬ�ݵȼ����������طŲ��ô����ڶ�������"""
+        monkeypatch.setattr(TaskExecutor, "start_task", lambda task_id: True)
+        payload = {
+            "device_serial": sample_device.serial_number,
+            "item_ids": [sample_item.id],
+            "schedule_type": "immediate",
+        }
+        headers = {
+            "Authorization": f"Bearer {admin_token}",
+            "Idempotency-Key": "audit-same-key-0001",
+        }
+        first = await client.post("/api/v1/tasks", headers=headers, json=payload)
+        second = await client.post("/api/v1/tasks", headers=headers, json=payload)
+>       assert second.json()["data"]["id"] == first.json()["data"]["id"]
+E       assert 2 == 1
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:52: AssertionError
+---------------------------- Captured stderr setup ----------------------------
+2026-11-12 16:28:00,113 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: DDR\r\n2026-11-12 16:28:00,115 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: DDR / \ufffd\ufffd\ufffd\ufffd\u0423\ufffd\ufffd\r\n2026-11-12 16:28:00,116 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: EMMC\r\n2026-11-12 16:28:00,117 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\u06b5\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,117 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / EXT_CSD \ufffd\u0134\ufffd\ufffd\ufffd\ufffd\ufffd\u0221\r\n2026-11-12 16:28:00,118 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,119 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,119 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,120 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,121 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:28:00,121 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \u02f3\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:28:00,122 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:28:00,124 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: EMMC / \ufffd\ufffd\ufffd\u0434\ufffd\u0236\ufffd\ufffd\u0523\ufffdBW/IOPS \ufffd\ufffd\ufffd\u07e3\ufffd\r\n2026-11-12 16:28:00,128 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: WIFI\r\n2026-11-12 16:28:00,129 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 16:28:00,130 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: WIFI / WIFI \ufffd\u017a\ufffd\u01ff\ufffd\ufffd\r\n2026-11-12 16:28:00,131 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,132 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\ufffd\ufffd / \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u05f4\u032c\r\n2026-11-12 16:28:00,133 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd\r\n2026-11-12 16:28:00,134 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / \ufffd\ufffd\xb7\u05f4\u032c\r\n2026-11-12 16:28:00,135 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: \ufffd\ufffd\u032b\ufffd\ufffd / Ping \ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,136 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd: CPU\r\n2026-11-12 16:28:00,137 [INFO] app.seed_data: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd: CPU / CPU \ufffd\ufffd\u03e2\r\n2026-11-12 16:28:00,144 [INFO] app.seed_data: \u012c\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0123\ufffd\ufffd\ufffd\u02bc\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,147 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\u03b4\ufffd\u04b5\ufffd\r\n2026-11-12 16:28:00,148 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: ADB \ufffd\u8c78\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,150 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\uecec\u02b1\r\n2026-11-12 16:28:00,151 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \u0228\ufffd\u07b2\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,152 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0231\u02a7\r\n2026-11-12 16:28:00,153 [INFO] app.services.memory_engine: \ufffd\ufffd\ufffd\ufffd\u02a7\ufffd\ufffd\u0123\u02bd: \ufffd\ufffd\ufffd\ufffd\ufffd\u0532\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2026-11-12 16:28:00,549 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"\r
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:28:00,619 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+
+2026-11-12 16:28:00,635 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 200 OK"
+_________ test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern __________
+
+    @pytest.mark.asyncio
+    async def test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern():
+        """conditional_rules=[] �ǷǷ����ṹ�����þ� pass_pattern ��� pass��"""
+        result = await JudgementEngine().judge(
+            output="ok",
+            returncode=0,
+            item_name="audit",
+            item_description="",
+            judgement_type="assertion",
+            rules=[],
+            rubric_criteria={},
+            device_context={},
+            result_parse={"pass_pattern": "ok"},
+        )
+>       assert result.status == "error", result.to_dict()
+E       AssertionError: {'confidence': 1.0, 'evidence': ['ͨ��ģʽ����: ok'], 'fail_reason': '', 'judgement_type': 'pattern', ...}
+E       assert 'pass' == 'error'
+E         - error
+E         + pass
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:73: AssertionError
+_______________ test_audit_approx_ratio_zero_target_cannot_pass _______________
+
+    def test_audit_approx_ratio_zero_target_cannot_pass():
+        """��Ŀ�겻�ǺϷ� approx_ratio ���ã�����ʵ��ֵ������ֱ����ͨ����"""
+        ok, _ = RuleBasedJudger()._compare(100, "approx_ratio", 0, "0%")
+>       assert ok is False
+E       assert True is False
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:79: AssertionError
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+
+test_db = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x00000260F20CC050>
+mock_adb = <MagicMock spec='ADBService' id='2615425065488'>
+admin_user = <User(id=1, username=admin, role=admin)>
+
+    @pytest.mark.asyncio
+    async def test_audit_stop_on_failure_completes_remaining_items_as_skip(
+        test_db, mock_adb, admin_user
+    ):
+        """5 ���е� 2 �� stop+fail ��ʣ�� 3 ����벹 skip������ completed/100% ֻ��������¼��"""
+        from unittest.mock import AsyncMock
+    
+        device = Device(
+            serial_number="audit-stop-device", model="rk3568", status="online",
+            pc_identifier=admin_user.pc_identifier, owner_id=admin_user.id,
+        )
+        module = TestModule(name="audit-stop-module", created_by=admin_user.id)
+        test_db.add_all([device, module])
+        await test_db.commit()
+        await test_db.refresh(device)
+        await test_db.refresh(module)
+    
+        items = []
+        for index in range(5):
+            item = TestItem(
+                module_id=module.id,
+                name=f"audit-stop-{index}",
+                exec_type="adb_shell",
+                exec_command="echo audit",
+                parameters={},
+                compatibility={},
+                judgement_type="assertion",
+                result_parse={"pass_pattern": "ok"},
+                on_failure="stop",
+                timeout=30,
+                created_by=admin_user.id,
+            )
+            test_db.add(item)
+            items.append(item)
+        await test_db.commit()
+        for item in items:
+            await test_db.refresh(item)
+    
+        task = TestTask(
+            user_id=admin_user.id,
+            device_id=device.id,
+            name="audit-stop-task",
+            selected_items=[item.id for item in items],
+            status="pending",
+        )
+        test_db.add(task)
+        await test_db.commit()
+        await test_db.refresh(task)
+    
+        mock_adb.execute_shell = AsyncMock(side_effect=[
+            ("ok", "", 0),
+            ("bad", "", 0),
+        ])
+        TaskExecutor._running_tasks.clear()
+        DeviceLock._locks.clear()
+        DeviceLock._holders.clear()
+        assert TaskExecutor.start_task(task.id) is True
+        running = TaskExecutor._running_tasks[task.id]
+        await asyncio.gather(running, return_exceptions=True)
+    
+        records = (await test_db.execute(
+            select(TestRecord).where(TestRecord.task_id == task.id).order_by(TestRecord.id)
+        )).scalars().all()
+        await test_db.refresh(task)
+>       assert [record.status for record in records] == ["pass", "fail", "skip", "skip", "skip"]
+E       AssertionError: assert ['pass', 'fail'] == ['pass', 'fai...skip', 'skip']
+E         Right contains 3 more items, first extra item: 'skip'
+E         Use -v to get more diff
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:146: AssertionError
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 16:28:01,320 [INFO] app.services.task_executor: \ufffd\ufffd\ufffd\ufffd 1 \ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\ufffd 2 \ufffd\ufffd\u02a7\ufffd\ufffd\u0363\u05b9\r
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:207 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+_____ test_audit_missing_device_binary_remains_a_required_manifest_entry ______
+
+tmp_path = WindowsPath('C:/Users/MCTECH/AppData/Local/Temp/pytest-of-MCTECH/pytest-63/test_audit_missing_device_bina0')
+
+    def test_audit_missing_device_binary_remains_a_required_manifest_entry(tmp_path):
+        """ɾ����������������ƺ�������Ŀ�������ļ�һ����ʧ��"""
+        module = tmp_path / "demo"
+        binary = module / "binaries" / "arm64-v8a" / "tool"
+        binary.parent.mkdir(parents=True)
+        binary.write_bytes(b"audit")
+        (module / "manifest.yaml").write_text(
+            "module:\n  name: demo\nitems: []\n", encoding="utf-8"
+        )
+        before, _ = discover_requirements(tmp_path)
+        assert "demo/binaries/arm64-v8a/tool" in before
+        binary.unlink()
+        after, _ = discover_requirements(tmp_path)
+>       assert "demo/binaries/arm64-v8a/tool" in after
+E       AssertionError: assert 'demo/binaries/arm64-v8a/tool' in {}
+
+..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py:164: AssertionError
+============================== warnings summary ===============================
+app\models\__init__.py:115
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:115: PytestCollectionWarning: cannot collect test class 'TestItem' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestItem(Base):
+
+app\models\__init__.py:93
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:93: PytestCollectionWarning: cannot collect test class 'TestModule' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestModule(Base):
+
+app\models\__init__.py:203
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:203: PytestCollectionWarning: cannot collect test class 'TestRecord' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestRecord(Base):
+
+app\models\__init__.py:171
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:171: PytestCollectionWarning: cannot collect test class 'TestTask' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-readiness-20261112/targeted-defect-repro.py)
+    class TestTask(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_normal_user_cannot_start_task_on_other_users_device
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_same_idempotency_key_creates_only_one_task
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_approx_ratio_zero_target_cannot_pass
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+FAILED ..\..\docs\verification\reviews\evidence\v1-readiness-20261112\targeted-defect-repro.py::test_audit_missing_device_binary_remains_a_required_manifest_entry
+6 failed, 4 warnings in 2.62s
+
+exit=1 from 16:27:57 to 16:28:01

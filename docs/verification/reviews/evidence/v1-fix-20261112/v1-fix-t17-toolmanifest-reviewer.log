@@ -1,0 +1,86 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 10 items
+
+tests\unit\test_v1_tool_manifest.py ..........                           [100%]
+
+=================================== PASSES ====================================
+__ test_deleting_declared_device_binary_keeps_requirement_and_fails_startup ___
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,374 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-12 18:11:50,376 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+_______________ test_legacy_manifest_without_tools_is_rejected ________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,380 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-12 18:11:50,381 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+_________________________ test_sha256_mismatch_fails __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,385 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-12 18:11:50,387 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-12 18:11:50,389 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+____________________ test_missing_shared_dependency_fails _____________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,395 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+2026-11-12 18:11:50,398 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-12 18:11:50,400 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+_____________ test_undeclared_common_import_is_closure_violation ______________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,406 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+2026-11-12 18:11:50,408 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+_____________ test_undeclared_sibling_module_is_closure_violation _____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,413 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_sibling_module0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_undeclared_sibling_module0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+__________________ test_extra_required_missing_binary_fails ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,416 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_extra_required_missing_bi0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_extra_required_missing_bi0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+_____________________ test_no_manifest_root_warns_but_ok ______________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,418 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_no_manifest_root_warns_bu0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-170\test_no_manifest_root_warns_bu0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+___________ test_real_repo_manifests_are_explicit_and_hashes_match ____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 18:11:50,527 [WARNING] app.services.tool_manifest: �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+2026-11-12 18:11:50,527 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.tool_manifest:tool_manifest.py:331 �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+INFO     app.services.tool_manifest:tool_manifest.py:345 �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+=========================== short test summary info ===========================
+PASSED tests/unit/test_v1_tool_manifest.py::test_deleting_declared_device_binary_keeps_requirement_and_fails_startup
+PASSED tests/unit/test_v1_tool_manifest.py::test_legacy_manifest_without_tools_is_rejected
+PASSED tests/unit/test_v1_tool_manifest.py::test_sha256_mismatch_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_missing_shared_dependency_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_undeclared_common_import_is_closure_violation
+PASSED tests/unit/test_v1_tool_manifest.py::test_undeclared_sibling_module_is_closure_violation
+PASSED tests/unit/test_v1_tool_manifest.py::test_extra_required_missing_binary_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_no_manifest_root_warns_but_ok
+PASSED tests/unit/test_v1_tool_manifest.py::test_missing_tools_root_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_real_repo_manifests_are_explicit_and_hashes_match
+============================= 10 passed in 0.20s ==============================
+
+exit=0 18:11:50
