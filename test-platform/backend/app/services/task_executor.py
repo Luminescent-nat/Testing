@@ -118,7 +118,9 @@ class TaskExecutor:
                 raise
             except Exception as exc:
                 logger.exception("任务 %s 执行失败: %s", task_id, exc)
-                await cls._handle_failure(task_id, db, str(exc))
+                # 平台异常只持久化安全摘要（异常类型），完整堆栈仅进服务端日志，
+                # 避免原始异常文本经 task 详情 200 返回（V1-07）。
+                await cls._handle_failure(task_id, db, f"任务执行平台异常（{type(exc).__name__}）")
 
     @classmethod
     async def _execute_with_db(cls, task_id: int, db: AsyncSession):
@@ -205,6 +207,9 @@ class TaskExecutor:
                 # 检查是否因失败停止
                 if record.status in ("fail", "error", "timeout") and item and item.on_failure == "stop":
                     logger.info("任务 %s 在测试项 %s 处失败停止", task_id, item_id)
+                    # T-07：stop-on-failure 后剩余未执行项补 skip（stopped_by_item_id），
+                    # 不执行、不重试、不伪造输出，避免 completed/100% 只留下两条记录。
+                    await cls._skip_remaining_items(task, idx, item_id, db)
                     break
 
             # 任务收尾
@@ -276,6 +281,29 @@ class TaskExecutor:
         logger.warning("任务 %s 因设备 %s 离线终止", task.id, device.serial_number)
         # 失败收尾同样后台生成报告落盘
         cls._schedule_report_generation(task.id)
+
+    @classmethod
+    async def _skip_remaining_items(
+        cls, task: TestTask, trigger_idx: int, trigger_item_id: int, db: AsyncSession
+    ):
+        """stop-on-failure 收尾（T-07）：剩余未执行项补 skip 记录。
+
+        - 不执行命令、不消耗重试、不伪造输出（output 保持空）；
+        - fail_reason 精确标注 `stopped_by_item_id=<触发项 id>`，与
+          docs/design/execution-state-machine.md §4 一致；
+        - 仅补记录，任务收尾（completed/100%）仍由主流程统一处理。
+        """
+        now = datetime.now(timezone.utc)
+        for item_id in task.selected_items[trigger_idx + 1:]:
+            db.add(TestRecord(
+                task_id=task.id,
+                item_id=item_id,
+                status="skip",
+                fail_reason=f"stopped_by_item_id={trigger_item_id}",
+                started_at=now,
+                completed_at=now,
+            ))
+        await db.commit()
 
     @classmethod
     async def _release_device(cls, db: AsyncSession, device: Device, task_id: Optional[int] = None):
@@ -380,7 +408,8 @@ class TaskExecutor:
                 except Exception as exc:
                     logger.exception("测试项 %s 执行异常: %s", item.id, exc)
                     record.status = "error"
-                    record.fail_reason = f"执行异常: {exc}"
+                    # 只持久化安全摘要（异常类型），原始异常文本/堆栈仅进服务端日志（V1-07）
+                    record.fail_reason = f"执行异常（{type(exc).__name__}）"
 
                 attempt += 1
                 if record.status not in ("fail", "error", "timeout") or attempt > max_retries:

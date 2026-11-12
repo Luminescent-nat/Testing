@@ -9,6 +9,7 @@ timeout（执行器先行） > 内部异常 error（执行器先行） > rc!=0 f
 也不再有「rc=0 默认 pass」。
 """
 import re
+import math
 import logging
 from typing import Dict, Any, Optional, List, Tuple
 from dataclasses import dataclass
@@ -230,6 +231,21 @@ class RuleBasedJudger:
             if expected_value is None:
                 return _unavailable(f"判定配置不可用：无法解析期望值 target={target}", "assertion")
 
+            # 非数值 / NaN/Inf / approx_ratio 零目标 → 运行时 error 兜底（V1-02）
+            if operator in ("gt", "gte", "lt", "lte", "approx_ratio"):
+                try:
+                    num_actual = float(actual_value)
+                    num_expected = float(expected_value)
+                except (ValueError, TypeError):
+                    return _unavailable(
+                        f"判定配置不可用：非数值比较 {actual_value!r} {operator} {expected_value!r}",
+                        "assertion",
+                    )
+                if not (math.isfinite(num_actual) and math.isfinite(num_expected)):
+                    return _unavailable("判定配置不可用：比较值非有限数值（NaN/Inf）", "assertion")
+                if operator == "approx_ratio" and num_expected == 0:
+                    return _unavailable("判定配置不可用：approx_ratio 目标为 0（禁止零目标）", "assertion")
+
             metrics[source.split(":")[-1]] = actual_value
             try:
                 ok, reason = self._compare(actual_value, operator, expected_value, tolerance)
@@ -312,7 +328,15 @@ class RuleBasedJudger:
                         baseline_value = self._resolve_baseline_value(
                             baseline, criterion_config.get("baseline_field", "avg_value")
                         )
+                        if baseline_value is None or not math.isfinite(baseline_value):
+                            return _unavailable(
+                                f"判定配置不可用：rubric 基线值非数值 ({criterion_name})", "rubric"
+                            )
                         operator = self._normalize_operator(criterion_config.get("operator", ">="))
+                        if operator == "approx_ratio" and baseline_value == 0:
+                            return _unavailable(
+                                f"判定配置不可用：rubric approx_ratio 基线为 0 ({criterion_name})", "rubric"
+                            )
                         tolerance = criterion_config.get("tolerance", "0%")
                         ok, reason = self._compare(value, operator, baseline_value, tolerance)
                         score = 4 if ok else 1
@@ -462,8 +486,11 @@ class RuleBasedJudger:
             except (ValueError, TypeError):
                 return False, f"无法计算比例: {actual} vs {expected}"
 
+            # V1-02：零目标不是合法 approx_ratio 配置，任何实际值都不得直接判通过。
+            if not (math.isfinite(a) and math.isfinite(e)) or e == 0:
+                return False, f"approx_ratio 目标为 0 或非有限数值（{expected}），非法配置"
             tol = float(str(tolerance).replace("%", "")) / 100.0
-            ratio = abs(a - e) / e if e != 0 else 0
+            ratio = abs(a - e) / e
             ok = ratio <= tol
             return ok, f"{a} 与 {e} 偏差 {ratio*100:.1f}% {'在' if ok else '超出'} 阈值 {tolerance}"
 
@@ -593,8 +620,6 @@ class JudgementEngine:
         result_parse: Optional[Dict[str, Any]] = None
     ) -> JudgementResult:
         """执行唯一判定，返回的 status 只可能是 pass/fail/skip/error。"""
-        result_parse = result_parse if isinstance(result_parse, dict) else {}
-
         # 行3：非零退出码优先于任何输出内容（SKIP / pass_pattern 均不得改判）。
         if returncode not in (0, None):
             return JudgementResult(
@@ -615,6 +640,23 @@ class JudgementEngine:
                 fail_reason=skip_reason,
                 judgement_type="native_skip"
             )
+
+        # 行11（前置校验，V1-02）：先按原始 JSON 类型校验根结构，再做默认值处理。
+        # `rules=[]`/标量/null 等非法根结构必须直接 error，绝不能被 truthiness
+        # （`or {}`）擦除成空对象后被 pass_pattern 变成 pass。
+        if not isinstance(rules, dict):
+            return _unavailable(
+                f"判定配置不可用：conditional_rules 非法根结构（{type(rules).__name__}，必须为对象）"
+            )
+        if result_parse is not None and not isinstance(result_parse, dict):
+            return _unavailable(
+                f"判定配置不可用：result_parse 非法根结构（{type(result_parse).__name__}，必须为对象）"
+            )
+        if rubric_criteria is not None and not isinstance(rubric_criteria, dict):
+            return _unavailable(
+                f"判定配置不可用：rubric_criteria 非法根结构（{type(rubric_criteria).__name__}，必须为对象）"
+            )
+        result_parse = result_parse or {}
 
         # 行5：fail_pattern 命中（含 pass/fail 双命中）→ fail，全局生效。
         fail_pattern = result_parse.get("fail_pattern")
@@ -637,8 +679,6 @@ class JudgementEngine:
 
         # 行6/行7：assertion（条件规则或正则模式）；行11：配置缺失/非法结构。
         if judgement_type == "assertion":
-            if not isinstance(rules, dict):
-                return _unavailable("判定配置不可用：conditional_rules 结构非法", "assertion")
             if rules.get("conditions"):
                 return self.rule_judger.judge_assertion(output, returncode, rules, spec)
             return parse_patterns(output, result_parse)

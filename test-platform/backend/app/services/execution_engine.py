@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional, Callable
 from datetime import datetime, timezone
 from abc import ABC, abstractmethod
 from enum import Enum
-from app.services.device import ADBService, stream_process_output
+from app.services.device import ADBService, stream_process_output, INTERNAL_ERROR_RC
 from app.services.parameter_renderer import ParameterRenderer
 from app.services.judgement_engine import (
     JudgementEngine,
@@ -230,10 +230,45 @@ class ExecutionEngine(ABC):
         ADB 设备级失败在本层特化：rc!=0 时给出带 ADB 归因的 fail（行3），
         rc=0 时先让原生 SKIP（行4）优先，再按内置失败模式判 fail（行5）。
         """
+        # 行2：执行器内部异常（含子进程无法启动）专用返回码 → error，不做测试判定
+        if returncode == INTERNAL_ERROR_RC:
+            return {
+                "status": "error",
+                "fail_reason": output.strip() or "执行器内部异常（无法启动测试子进程）",
+                "extracted_data": {"returncode": returncode},
+            }
+
         judgement_type = item.judgement_type or "assertion"
-        rules = item.conditional_rules or {}
-        rubric_criteria = item.rubric_criteria or {}
-        result_parse = item.result_parse or {}
+
+        # 先按原始 JSON 类型校验根结构，再做默认值处理（V1-02）：
+        # 严禁用 truthiness（`or {}`）把 []/标量 等非法根结构擦除成空对象后被 pass_pattern 判 pass。
+        # 注：DB 列 NULL 表示「字段缺省/未配置规则」，视为无断言规则（走正则层）；
+        # 而显式非法根结构（list/标量）一律 error。
+        raw_rules = item.conditional_rules
+        if raw_rules is not None and not isinstance(raw_rules, dict):
+            return {
+                "status": "error",
+                "fail_reason": "判定配置不可用：conditional_rules 非法根结构（必须为对象）",
+                "extracted_data": {},
+            }
+        raw_rubric = item.rubric_criteria
+        if raw_rubric is not None and not isinstance(raw_rubric, dict):
+            return {
+                "status": "error",
+                "fail_reason": "判定配置不可用：rubric_criteria 非法根结构（必须为对象）",
+                "extracted_data": {},
+            }
+        raw_parse = item.result_parse
+        if raw_parse is not None and not isinstance(raw_parse, dict):
+            return {
+                "status": "error",
+                "fail_reason": "判定配置不可用：result_parse 非法根结构（必须为对象）",
+                "extracted_data": {},
+            }
+
+        rules = raw_rules or {}
+        rubric_criteria = raw_rubric or {}
+        result_parse = raw_parse or {}
 
         adb_hit = self._match_adb_failure(output, returncode)
         if adb_hit:
@@ -366,6 +401,15 @@ class AdbShellEngine(ExecutionEngine):
                 execution_time=execution_time
             )
 
+        # 行2：执行器内部异常（含 adb 子进程无法启动）→ error，不得误判为测试 fail
+        if returncode == INTERNAL_ERROR_RC:
+            return ExecutionResult(
+                status="error",
+                output=stdout + "\n" + stderr,
+                fail_reason=f"执行异常: {stderr.strip() or '执行器无法启动测试子进程'}",
+                execution_time=execution_time
+            )
+
         # 解析结果
         parsed = await self._judge_result(device, item, stdout + "\n" + stderr, returncode)
 
@@ -494,6 +538,15 @@ class PushExecEngine(ExecutionEngine):
                 execution_time=execution_time
             )
 
+        # 行2：执行器内部异常（含 adb 子进程无法启动）→ error，不得误判为测试 fail
+        if returncode == INTERNAL_ERROR_RC:
+            return ExecutionResult(
+                status="error",
+                output="\n".join(outputs),
+                fail_reason=f"执行异常: {stderr.strip() or '执行器无法启动测试子进程'}",
+                execution_time=execution_time
+            )
+
         # 4. 解析结果
         parsed = await self._judge_result(device, item, "\n".join(outputs), returncode)
 
@@ -605,11 +658,14 @@ class HostExecEngine(ExecutionEngine):
             await self._terminate_process(process)
             raise
         except Exception as e:
-            # 行2：执行器内部异常 → error（安全摘要，不含堆栈），不落入判定
+            # 行2：执行器内部异常（无法启动子进程等）→ error。
+            # 只保留安全摘要（异常类型），完整堆栈仅写服务端日志；
+            # 原始异常文本不进入 output/fail_reason，避免经 200 任务详情泄露。
+            logging.getLogger(__name__).exception("host 执行器内部异常")
             returncode = -1
             stdout_str = ""
-            stderr_str = str(e)
-            internal_error = str(e)
+            stderr_str = ""
+            internal_error = f"执行器内部异常（{type(e).__name__}）"
         finally:
             # Windows ProactorEventLoop 下，communicate() 被 cancel/超时打断后
             # 管道 transport 可能不自动关闭并产生资源告警；正规 terminate/kill
