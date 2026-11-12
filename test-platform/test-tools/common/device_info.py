@@ -19,7 +19,8 @@ logger = logging.getLogger("device_info")
 
 def detect_arch(adb: AdbRunner) -> str:
     """检测设备 CPU 架构，返回统一标识。"""
-    res = adb.shell("getprop ro.product.cpu.abi")
+    # T-19：无元字符的简单命令用参数数组（远端仍作为单条 adb shell 命令传递）
+    res = adb.shell(["getprop", "ro.product.cpu.abi"])
     if res and res.returncode == 0:
         arch = res.stdout.strip().lower()
         if "arm64" in arch or "aarch64" in arch:
@@ -40,6 +41,8 @@ def detect_mmc_node(adb: AdbRunner, preferred: Optional[str] = None) -> str:
     if preferred:
         return preferred
 
+    # T-19：含远端管道的命令必须保持字符串形态（整条作为远端 adb shell
+    # 单个参数传递，本地不解释 `|`；参数化 list 会被 shlex.join 引号化而失效）
     res = adb.shell("ls /sys/block/ | grep mmcblk")
     if res and res.returncode == 0:
         blocks = res.stdout.strip().split()
