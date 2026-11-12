@@ -122,6 +122,34 @@ export const getPcIdentifier = () => {
 }
 
 /**
+ * 将 PC 标识并入请求体（登录/注册等契约要求 `pc_identifier` 的接口使用）。
+ * @param {object} [payload] 原请求体
+ * @returns {object} 附加 pc_identifier 后的新对象（不改入参）
+ */
+export const withPcIdentifier = (payload = {}) => ({ ...payload, pc_identifier: getPcIdentifier() })
+
+/**
+ * 重复提交保护（纯逻辑，可与视图的按钮 `:disabled`/`:loading` 配合）：
+ * 上一次未完成时跳过后续调用，返回 undefined，不重复发起请求。
+ * @returns {{ isPending: () => boolean, run: (fn: () => unknown) => Promise<unknown> }} guard 对象
+ */
+export const createSubmitGuard = () => {
+  let pending = false
+  return {
+    isPending: () => pending,
+    run: async (fn) => {
+      if (pending) return undefined
+      pending = true
+      try {
+        return await fn()
+      } finally {
+        pending = false
+      }
+    }
+  }
+}
+
+/**
  * 判断给定字符串是否为合法幂等键（8～128 位可打印 ASCII）。
  * @param {unknown} key 待校验值
  * @returns {boolean} 是否合法
@@ -417,7 +445,7 @@ export const toApiError = (
  * 新契约与 legacy 一致要求成功响应体为 `{ code: 整数(2xx), message, data }`；
  * 错误外层的 `code` 为字符串；HTTP 200 携带数字 `code>=400` 是 legacy 业务错误。
  * 注意：blob/arraybuffer 在响应拦截器中已提前返回，不会进入本判断；
- * 无 `code` 的裸响应体按旧实现语义视为异常（视图均依赖 `res.code === 200`）。
+ * 无 `code` 的裸响应体按旧实现语义视为异常（视图/存储层统一走 isSuccessResponse）。
  * @param {unknown} body 响应体
  * @returns {boolean} 是否成功
  */
@@ -426,6 +454,16 @@ export const isSuccessEnvelope = (body) => {
   const code = /** @type {Record<string, unknown>} */ (body).code
   return typeof code === 'number' && code >= 200 && code < 300
 }
+
+/**
+ * 统一成功判定（视图/存储层唯一入口，禁止散落 `code === 200`）：
+ * 成功外层为 `{ code: 整数(2xx), message, data }`，200/201/204 均视为成功；
+ * 错误外层 `code` 为字符串或非 2xx 整数，判为失败。
+ * 该判定不影响 `data` 取值：`data` 中的 `0` / `false` / `""` / `null` 原样保留。
+ * @param {unknown} body 响应外层
+ * @returns {boolean} 是否为成功响应
+ */
+export const isSuccessResponse = (body) => isSuccessEnvelope(body)
 
 /**
  * 兼容 AxiosHeaders 与普通对象的请求头写入。

@@ -678,6 +678,7 @@ import {
 } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
 import {
   getKnowledgeEntries,
   getKnowledgeEntry,
@@ -799,7 +800,7 @@ const fetchEntries = async () => {
       if (params[key] === '') delete params[key]
     })
     const res = await getKnowledgeEntries(params)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       entries.value = res.data?.items || []
       total.value = res.data?.total || 0
       collectTags()
@@ -837,7 +838,7 @@ const handleSemanticSearch = async () => {
       status: searchForm.status || undefined,
       tag: searchForm.tag || undefined
     })
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       searchResults.value = res.data?.items || []
     }
   } catch (error) {
@@ -856,7 +857,7 @@ const exitSemanticSearch = () => {
 const openDetailById = async (id) => {
   try {
     const res = await getKnowledgeEntry(id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       currentEntry.value = res.data
       detailVisible.value = true
     }
@@ -872,7 +873,7 @@ const currentEntry = ref(null)
 const openDetail = async (entry) => {
   try {
     const res = await getKnowledgeEntry(entry.id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       currentEntry.value = res.data
       detailVisible.value = true
     }
@@ -964,7 +965,7 @@ const handleEmbed = async (id) => {
   embedding.value = true
   try {
     const res = await embedKnowledgeEntry(id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success(res.data?.has_embedding ? '嵌入生成成功' : '嵌入未启用或生成失败')
     }
   } catch (error) {
@@ -978,7 +979,7 @@ const handleExtract = async (id) => {
   extracting.value = true
   try {
     const res = await extractKnowledgeEntry(id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('AI 提取完成')
       if (currentEntry.value) {
         currentEntry.value.meta = {
@@ -1004,10 +1005,10 @@ const loadCategoriesAndTags = async () => {
       getKnowledgeCategories(),
       getKnowledgeTags()
     ])
-    if (catRes.code === 200) {
+    if (isSuccessResponse(catRes)) {
       categoryOptions.value = catRes.data || []
     }
-    if (tagRes.code === 200) {
+    if (isSuccessResponse(tagRes)) {
       tagOptions.value = tagRes.data || []
     }
   } catch (error) {
@@ -1054,7 +1055,7 @@ const generateConvertPreview = async () => {
       target_type: convertForm.target_type,
       extra_hint: convertForm.extra_hint
     })
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       convertPreviewText.value = JSON.stringify(res.data?.preview_data || {}, null, 2)
       convertStep.value = 1
     }
@@ -1090,7 +1091,7 @@ const submitConvert = async () => {
       target_type: convertForm.target_type,
       preview_data: previewData
     })
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('转换成功')
       convertVisible.value = false
       detailVisible.value = false

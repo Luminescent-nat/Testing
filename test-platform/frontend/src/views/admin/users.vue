@@ -123,6 +123,7 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
 import { getUsers, updateUser, resetUserPassword, deleteUser as deleteUserApi } from '@/api/user'
 
 const users = ref([])
@@ -151,7 +152,7 @@ const fetchUsers = async () => {
       status: filterStatus.value || undefined
     }
     const res = await getUsers(params)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       users.value = res.data.items || []
       total.value = res.data.total || 0
     }
@@ -202,7 +203,7 @@ const toggleStatus = async (user) => {
       type: 'warning'
     })
     const res = await updateUser(user.id, { status: nextStatus })
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success(`${action}成功`)
       fetchUsers()
     }
@@ -217,7 +218,7 @@ const deleteUser = async (user) => {
       type: 'danger'
     })
     const res = await deleteUserApi(user.id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('删除成功')
       fetchUsers()
     }

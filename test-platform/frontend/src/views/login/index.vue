@@ -148,6 +148,7 @@ import {
 import { useUserStore } from '@/store/user'
 import { useThemeStore } from '@/store/theme'
 import { login, register } from '@/api/auth'
+import { isSuccessResponse, withPcIdentifier } from '@/api/client'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -196,20 +197,24 @@ const handleSubmit = async () => {
   loading.value = true
   try {
     if (isRegister.value) {
-      const res = await register({
-        username: form.username,
-        password: form.password
-      })
-      if (res.code === 200) {
+      const res = await register(
+        withPcIdentifier({
+          username: form.username,
+          password: form.password
+        })
+      )
+      if (isSuccessResponse(res)) {
         ElMessage.success(`注册成功，角色：${res.data.role}，请登录`)
         isRegister.value = false
       }
     } else {
-      const res = await login({
-        username: form.username,
-        password: form.password
-      })
-      if (res.code === 200) {
+      const res = await login(
+        withPcIdentifier({
+          username: form.username,
+          password: form.password
+        })
+      )
+      if (isSuccessResponse(res)) {
         userStore.setToken(res.data.access_token)
         userStore.userInfo = res.data.user
         ElMessage.success('登录成功')

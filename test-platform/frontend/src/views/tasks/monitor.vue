@@ -307,6 +307,7 @@ import {
 import { useUserStore } from '@/store/user'
 import { getTaskDetail, getTaskRecords, cancelTask, downloadRecordLog } from '@/api/task'
 import { getItemLog } from '@/api/report'
+import { isSuccessResponse } from '@/api/client'
 
 const route = useRoute()
 const router = useRouter()
@@ -425,7 +426,7 @@ const viewItemLog = async (item) => {
   currentLog.value = null
   try {
     const res = await getItemLog(taskId, item.item_id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       currentLog.value = {
         ...res.data,
         item_name: item.name,
@@ -494,11 +495,11 @@ const fetchTaskData = async () => {
       getTaskRecords(taskId)
     ])
 
-    if (taskRes.code === 200) {
+    if (isSuccessResponse(taskRes)) {
       task.value = taskRes.data
     }
 
-    if (recordsRes.code === 200) {
+    if (isSuccessResponse(recordsRes)) {
       const items = recordsRes.data.items || []
       testItems.value = items
       currentItem.value = items.find(item => item.status === 'running') || null

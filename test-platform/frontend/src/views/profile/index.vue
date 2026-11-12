@@ -94,6 +94,7 @@ import { User, Lock, SwitchButton } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import { getUserInfo, changePassword as changePasswordApi } from '@/api/auth'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
 
 const userStore = useUserStore()
 const loading = ref(false)
@@ -131,7 +132,7 @@ const fetchUserInfo = async () => {
   loading.value = true
   try {
     const res = await getUserInfo()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       userInfo.value = res.data
       userStore.userInfo = res.data
     }
@@ -159,7 +160,7 @@ const changePassword = async () => {
         old_password: passwordForm.old_password,
         new_password: passwordForm.new_password
       })
-      if (res.code === 200) {
+      if (isSuccessResponse(res)) {
         ElMessage.success('密码修改成功，请重新登录')
         userStore.logout()
       } else {

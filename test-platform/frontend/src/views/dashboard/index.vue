@@ -1,40 +1,36 @@
 <template>
   <div class="page-container">
-    <!-- 统计卡片 -->
-    <el-row :gutter="20" class="stat-row">
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card primary">
-          <div class="stat-icon"><el-icon :size="28"><Cellphone /></el-icon></div>
-          <div class="stat-content">
-            <div class="stat-label">在线设备</div>
-            <div class="stat-value">{{ stats.onlineDevices }}</div>
+    <!-- 统计卡片：按后端 today/task_outcomes 分列展示（不把 completed 当 passed） -->
+    <el-row
+      :gutter="20"
+      class="stat-row"
+    >
+      <el-col
+        v-for="card in statCards"
+        :key="card.key"
+        :xs="24"
+        :sm="12"
+        :md="6"
+      >
+        <div
+          class="stat-card"
+          :class="card.type"
+        >
+          <div class="stat-icon">
+            <el-icon :size="28">
+              <component :is="card.icon" />
+            </el-icon>
           </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card success">
-          <div class="stat-icon"><el-icon :size="28"><List /></el-icon></div>
           <div class="stat-content">
-            <div class="stat-label">今日任务</div>
-            <div class="stat-value">{{ stats.todayTasks }}</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card warning">
-          <div class="stat-icon"><el-icon :size="28"><TrendCharts /></el-icon></div>
-          <div class="stat-content">
-            <div class="stat-label">通过率</div>
-            <div class="stat-value">{{ stats.passRate === null ? '--' : stats.passRate + '%' }}</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card danger">
-          <div class="stat-icon"><el-icon :size="28"><Warning /></el-icon></div>
-          <div class="stat-content">
-            <div class="stat-label">失败任务</div>
-            <div class="stat-value">{{ stats.failedTasks }}</div>
+            <div class="stat-label">
+              {{ card.label }}
+            </div>
+            <div
+              class="stat-value"
+              :class="{ 'is-text': card.text }"
+            >
+              {{ card.value }}
+            </div>
           </div>
         </div>
       </el-col>
@@ -177,7 +173,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, markRaw } from 'vue'
 import { Plus, Cellphone, List, Refresh, ArrowRight, MagicStick, TrendCharts, Warning, Histogram } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import VChart from 'vue-echarts'
@@ -190,14 +186,22 @@ import { getTasks } from '@/api/task'
 import { getStatsTrend, getStatsByModule } from '@/api/report'
 import { getDashboardStats } from '@/api/dashboard'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
+import { formatPassRate, normalizeDashboardOutcomes } from '@/utils/stats'
 
 use([LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
 
 const stats = ref({
   onlineDevices: 0,
-  todayTasks: 0,
-  passRate: null,
-  failedTasks: 0
+  tasks: 0,
+  passed: 0,
+  failed: 0,
+  noResult: 0,
+  executionFailed: 0,
+  cancelled: 0,
+  running: 0,
+  pending: 0,
+  passRate: null
 })
 
 const devices = ref([])
@@ -205,6 +209,18 @@ const recentTasks = ref([])
 
 const trendData = ref([])
 const moduleStats = ref([])
+
+// 统计卡片配置：数据全部来自后端 today/task_outcomes 分列
+const statCards = computed(() => [
+  { key: 'online', label: '在线设备', value: stats.value.onlineDevices, type: 'primary', icon: markRaw(Cellphone) },
+  { key: 'tasks', label: '今日任务', value: stats.value.tasks, type: 'primary', icon: markRaw(List) },
+  { key: 'passed', label: '通过（业务）', value: stats.value.passed, type: 'success', icon: markRaw(TrendCharts) },
+  { key: 'failed', label: '业务失败', value: stats.value.failed, type: 'danger', icon: markRaw(Warning) },
+  { key: 'no_result', label: '无有效结果', value: stats.value.noResult, type: 'warning', icon: markRaw(Warning) },
+  { key: 'execution_failed', label: '执行失败', value: stats.value.executionFailed, type: 'danger', icon: markRaw(Warning) },
+  { key: 'cancelled', label: '已取消', value: stats.value.cancelled, type: 'info', icon: markRaw(Histogram) },
+  { key: 'pass_rate', label: '通过率', value: formatPassRate(stats.value.passRate), type: 'warning', icon: markRaw(TrendCharts), text: true }
+])
 
 // 任务趋势图：通过/失败堆叠柱状 + 通过率折线（右轴）
 const trendChartOption = computed(() => ({
@@ -245,13 +261,15 @@ const trendChartOption = computed(() => ({
   ]
 }))
 
-// 模块通过率横向柱状图
+// 模块通过率横向柱状图（使用后端 pass_rate，null 显示“无有效结果”）
 const moduleChartOption = computed(() => ({
   tooltip: {
     trigger: 'axis',
     formatter: (params) => {
       const item = moduleStats.value[params[0].dataIndex]
-      return `${item.module_name}<br/>通过率：${item.pass_rate}%（${item.passed}/${item.total}）`
+      const rate = formatPassRate(item.pass_rate)
+      const counts = `通过 ${item.pass ?? 0} / 失败 ${item.fail ?? 0} / 跳过 ${item.skip ?? 0} / 错误 ${item.error ?? 0} / 超时 ${item.timeout ?? 0}`
+      return `${item.module_name}<br/>通过率：${rate}<br/>${counts}`
     }
   },
   grid: { left: 10, right: 45, top: 20, bottom: 10, containLabel: true },
@@ -261,9 +279,9 @@ const moduleChartOption = computed(() => ({
     {
       name: '通过率',
       type: 'bar',
-      data: moduleStats.value.map(i => i.pass_rate),
+      data: moduleStats.value.map(i => (i.pass_rate === null || i.pass_rate === undefined ? null : i.pass_rate)),
       itemStyle: { color: '#409eff' },
-      label: { show: true, position: 'right', formatter: '{c}%' }
+      label: { show: true, position: 'right', formatter: (p) => (p.value == null ? '' : `${p.value}%`) }
     }
   ]
 }))
@@ -271,7 +289,7 @@ const moduleChartOption = computed(() => ({
 const fetchTrend = async () => {
   try {
     const res = await getStatsTrend(30)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       trendData.value = res.data.series || []
     }
   } catch (error) {
@@ -282,7 +300,7 @@ const fetchTrend = async () => {
 const fetchModuleStats = async () => {
   try {
     const res = await getStatsByModule()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       moduleStats.value = res.data.items || []
     }
   } catch (error) {
@@ -293,7 +311,7 @@ const fetchModuleStats = async () => {
 const refreshDevices = async () => {
   try {
     const res = await refreshDevicesApi()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       devices.value = res.data.items || []
       stats.value.onlineDevices = devices.value.filter(d => d.status === 'online').length
       ElMessage.success('刷新成功')
@@ -303,15 +321,12 @@ const refreshDevices = async () => {
   }
 }
 
-// 头部统计卡片：服务端按真实口径聚合（普通用户仅统计自己的任务与设备）
+// 头部统计卡片：服务端按真实口径聚合（today/task_outcomes 分列，不把 completed 当 passed）
 const fetchStats = async () => {
   try {
     const res = await getDashboardStats()
-    if (res.code === 200) {
-      stats.value.todayTasks = res.data.today.tasks
-      stats.value.passRate = res.data.today.pass_rate
-      stats.value.failedTasks = res.data.today.failed
-      stats.value.onlineDevices = res.data.devices.online
+    if (isSuccessResponse(res)) {
+      Object.assign(stats.value, normalizeDashboardOutcomes(res.data))
     }
   } catch (error) {
     console.error('获取仪表盘统计失败:', error)
@@ -321,7 +336,7 @@ const fetchStats = async () => {
 const fetchTasks = async () => {
   try {
     const res = await getTasks({ page_size: 5 })
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       // 仅用于"最近测试"列表展示，头部统计数字由 fetchStats 提供
       recentTasks.value = res.data.items || []
     }
@@ -394,6 +409,7 @@ onMounted(() => {
   &.success { background: linear-gradient(135deg, #67c23a 0%, #85ce61 100%); }
   &.warning { background: linear-gradient(135deg, #e6a23c 0%, #ebb563 100%); }
   &.danger { background: linear-gradient(135deg, #f56c6c 0%, #f78989 100%); }
+  &.info { background: linear-gradient(135deg, #909399 0%, #b1b3b8 100%); }
   
   .stat-icon {
     width: 48px;
@@ -417,6 +433,10 @@ onMounted(() => {
     .stat-value {
       font-size: 28px;
       font-weight: 700;
+
+      &.is-text {
+        font-size: 18px;
+      }
     }
   }
 }

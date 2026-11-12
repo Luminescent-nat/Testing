@@ -77,6 +77,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { MagicStick } from '@element-plus/icons-vue'
 import { createNaturalTask } from '@/api/ai'
+import { isSuccessResponse } from '@/api/client'
 
 const router = useRouter()
 const inputText = ref('')
@@ -92,7 +93,7 @@ const handleSubmit = async () => {
 
   try {
     const res = await createNaturalTask(text)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('AI 任务已创建')
       planResult.value = res.data
       setTimeout(() => {

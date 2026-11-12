@@ -157,6 +157,7 @@ import {
 } from '@element-plus/icons-vue'
 import { getDevices, getDeviceDetail, refreshDevices as refreshDevicesApi } from '@/api/device'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
 
 const route = useRoute()
 const router = useRouter()
@@ -186,7 +187,7 @@ const filteredDevices = computed(() => {
 const refreshDevices = async () => {
   try {
     const res = await refreshDevicesApi()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       devices.value = res.data.items || []
       ElMessage.success('刷新成功')
     }
@@ -199,7 +200,7 @@ const refreshDevices = async () => {
 const fetchDevices = async () => {
   try {
     const res = await getDevices()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       devices.value = res.data.items || []
     }
   } catch (error) {
@@ -260,7 +261,7 @@ const handleCommand = async (command, device) => {
       detailLoading.value = true
       try {
         const res = await getDeviceDetail(device.serial_number)
-        if (res.code === 200) {
+        if (isSuccessResponse(res)) {
           currentDevice.value = res.data
         }
       } catch (error) {

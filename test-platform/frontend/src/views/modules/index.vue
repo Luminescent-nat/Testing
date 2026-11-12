@@ -445,6 +445,7 @@ import {
   deleteItem as deleteItemApi
 } from '@/api/module'
 import { getTools, scanToolModules } from '@/api/tool'
+import { isSuccessResponse } from '@/api/client'
 
 const userStore = useUserStore()
 const isAdmin = computed(() => userStore.isAdmin)
@@ -526,7 +527,7 @@ const itemForm = ref(getDefaultItemForm())
 const fetchModules = async () => {
   try {
     const res = await getModules()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       modules.value = res.data.items || []
     }
   } catch (error) {
@@ -597,7 +598,7 @@ const saveModule = async () => {
 const fetchModuleItems = async (moduleId) => {
   try {
     const res = await getModuleItems(moduleId)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       moduleItems.value = res.data.items || []
     } else {
       moduleItems.value = []
@@ -800,7 +801,7 @@ const getJudgeTypeText = (type) => {
 const fetchTools = async () => {
   try {
     const res = await getTools()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       toolOptions.value = res.data.items || []
     }
   } catch (error) {

@@ -138,6 +138,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus } from '@element-plus/icons-vue'
 import { getTasks, cancelTask as cancelTaskApi, rerunFailedTasks } from '@/api/task'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
 
 const router = useRouter()
 const tasks = ref([])
@@ -184,7 +185,7 @@ const fetchTasks = async (silent = false) => {
     if (searchKeyword.value.trim()) params.search = searchKeyword.value.trim()
 
     const res = await getTasks(params)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       tasks.value = res.data.items || []
       total.value = res.data.total || 0
     }
@@ -270,7 +271,7 @@ const viewReport = (task) => {
 const rerunFailed = async (task) => {
   try {
     const res = await rerunFailedTasks(task.id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('已创建重跑任务')
       monitorTask(res.data)
     } else {
@@ -288,7 +289,7 @@ const cancelTask = async (task) => {
       type: 'warning'
     })
     const res = await cancelTaskApi(task.id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       ElMessage.success('任务已取消')
       fetchTasks()
     } else {

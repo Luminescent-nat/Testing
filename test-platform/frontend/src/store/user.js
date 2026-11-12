@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { login, getUserInfo } from '@/api/auth'
+import { isSuccessResponse, withPcIdentifier } from '@/api/client'
 import router from '@/router'
 
 export const useUserStore = defineStore('user', () => {
@@ -25,8 +26,8 @@ export const useUserStore = defineStore('user', () => {
   }
   
   const loginAction = async (credentials) => {
-    const res = await login(credentials)
-    if (res.code === 200) {
+    const res = await login(withPcIdentifier(credentials))
+    if (isSuccessResponse(res)) {
       setToken(res.data.access_token)
       userInfo.value = res.data.user
       return true
@@ -43,7 +44,7 @@ export const useUserStore = defineStore('user', () => {
     if (!token.value) return
     try {
       const res = await getUserInfo()
-      if (res.code === 200) {
+      if (isSuccessResponse(res)) {
         userInfo.value = res.data
       }
     } catch (error) {

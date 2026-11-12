@@ -44,7 +44,7 @@
           <div class="report-header">
             <div class="report-id">#{{ report.task_id }}</div>
             <el-tag :type="getStatusType(report.summary)" size="small" effect="dark">
-              {{ getPassRate(report.summary) }}% 通过
+              {{ formatPassRate(report.summary?.pass_rate) }}
             </el-tag>
           </div>
           
@@ -61,25 +61,25 @@
               </div>
               <div class="meta-item">
                 <el-icon><Timer /></el-icon>
-                <span>{{ report.total_duration || '-' }}</span>
+                <span>{{ reportDuration(report) }}</span>
               </div>
             </div>
             
             <div class="report-stats">
               <div class="stat-item pass">
-                <div class="stat-value">{{ report.summary?.passed || 0 }}</div>
+                <div class="stat-value">{{ report.summary?.counts?.pass ?? 0 }}</div>
                 <div class="stat-label">通过</div>
               </div>
               <div class="stat-item fail">
-                <div class="stat-value">{{ report.summary?.failed || 0 }}</div>
+                <div class="stat-value">{{ report.summary?.counts?.fail ?? 0 }}</div>
                 <div class="stat-label">失败</div>
               </div>
               <div class="stat-item skip">
-                <div class="stat-value">{{ report.summary?.skipped || 0 }}</div>
+                <div class="stat-value">{{ report.summary?.counts?.skip ?? 0 }}</div>
                 <div class="stat-label">跳过</div>
               </div>
               <div class="stat-item error">
-                <div class="stat-value">{{ report.summary?.error || 0 }}</div>
+                <div class="stat-value">{{ report.summary?.counts?.error ?? 0 }}</div>
                 <div class="stat-label">错误</div>
               </div>
             </div>
@@ -116,7 +116,7 @@
             <h3>{{ currentReport.task_name || '未命名任务' }}</h3>
             <div class="detail-meta">
               <el-tag :type="getStatusType(currentReport.summary)" size="small" effect="dark">
-                {{ getPassRate(currentReport.summary) }}%
+                {{ formatPassRate(currentReport.summary?.pass_rate) }}
               </el-tag>
               <span>报告ID: {{ currentReport.report_id }}</span>
               <span>设备: {{ currentReport.device?.model || currentReport.device?.serial_number || '-' }}</span>
@@ -135,23 +135,31 @@
         <div class="detail-stats">
           <div class="stat-box">
             <div class="stat-title">总项数</div>
-            <div class="stat-number">{{ currentReport.summary?.total_items || 0 }}</div>
+            <div class="stat-number">{{ currentReport.summary?.total_items ?? 0 }}</div>
           </div>
           <div class="stat-box pass">
             <div class="stat-title">通过</div>
-            <div class="stat-number">{{ currentReport.summary?.passed || 0 }}</div>
+            <div class="stat-number">{{ currentReport.summary?.counts?.pass ?? 0 }}</div>
           </div>
           <div class="stat-box fail">
             <div class="stat-title">失败</div>
-            <div class="stat-number">{{ currentReport.summary?.failed || 0 }}</div>
+            <div class="stat-number">{{ currentReport.summary?.counts?.fail ?? 0 }}</div>
           </div>
           <div class="stat-box skip">
             <div class="stat-title">跳过</div>
-            <div class="stat-number">{{ currentReport.summary?.skipped || 0 }}</div>
+            <div class="stat-number">{{ currentReport.summary?.counts?.skip ?? 0 }}</div>
           </div>
           <div class="stat-box error">
             <div class="stat-title">错误</div>
-            <div class="stat-number">{{ currentReport.summary?.error || 0 }}</div>
+            <div class="stat-number">{{ currentReport.summary?.counts?.error ?? 0 }}</div>
+          </div>
+          <div class="stat-box timeout">
+            <div class="stat-title">
+              超时
+            </div>
+            <div class="stat-number">
+              {{ currentReport.summary?.counts?.timeout ?? 0 }}
+            </div>
           </div>
         </div>
 
@@ -254,12 +262,12 @@
             </el-table-column>
             <el-table-column prop="execution_time" label="耗时" width="100">
               <template #default="{ row }">
-                {{ row.execution_time || 0 }}秒
+                {{ formatDurationSeconds(row.execution_time) }}
               </template>
             </el-table-column>
-            <el-table-column prop="fail_reason" label="失败原因" min-width="180">
+            <el-table-column prop="reason" label="失败原因" min-width="180">
               <template #default="{ row }">
-                <span class="fail-reason">{{ row.fail_reason || '-' }}</span>
+                <span class="fail-reason">{{ row.reason || row.fail_reason || '-' }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -315,10 +323,11 @@
             结果不一致 {{ compareResult.rows.filter(r => !r.same && !r.only_left && !r.only_right).length }} 项
           </el-tag>
           <el-tag size="small" type="info">
-            仅一方存在 {{ compareResult.rows.filter(r => r.only_left || r.only_right).length }} 项
+            不可对比 {{ compareResult.rows.filter(r => r.only_left || r.only_right).length }} 项
           </el-tag>
         </div>
         <el-table :data="compareResult.rows" size="small" class="app-table" max-height="420">
+          <el-table-column prop="item_id" label="项 ID" width="80" />
           <el-table-column prop="module_name" label="模块" width="110" />
           <el-table-column prop="item_name" label="测试项" min-width="160" />
           <el-table-column :label="`报告 A (#${compareResult.left.task_id})`" width="150">
@@ -327,7 +336,7 @@
                 <el-tag :type="getResultType(row.left_status)" size="small" effect="dark">
                   {{ getResultText(row.left_status) }}
                 </el-tag>
-                <span class="compare-time">{{ row.left_time || 0 }}秒</span>
+                <span class="compare-time">{{ formatDurationSeconds(row.left_time) }}</span>
               </template>
               <span v-else>-</span>
             </template>
@@ -338,16 +347,15 @@
                 <el-tag :type="getResultType(row.right_status)" size="small" effect="dark">
                   {{ getResultText(row.right_status) }}
                 </el-tag>
-                <span class="compare-time">{{ row.right_time || 0 }}秒</span>
+                <span class="compare-time">{{ formatDurationSeconds(row.right_time) }}</span>
               </template>
               <span v-else>-</span>
             </template>
           </el-table-column>
           <el-table-column label="差异" width="110">
             <template #default="{ row }">
-              <el-tag v-if="row.same" type="success" size="small">一致</el-tag>
-              <el-tag v-else-if="row.only_left" type="info" size="small">仅 A 有</el-tag>
-              <el-tag v-else-if="row.only_right" type="info" size="small">仅 B 有</el-tag>
+              <el-tag v-if="row.verdict === 'same'" type="success" size="small">一致</el-tag>
+              <el-tag v-else-if="row.verdict === 'not_comparable'" type="info" size="small">不可对比</el-tag>
               <el-tag v-else type="danger" size="small">不一致</el-tag>
             </template>
           </el-table-column>
@@ -370,7 +378,7 @@
               {{ getResultText(currentLog.status) }}
             </el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="失败原因">{{ currentLog.fail_reason || '-' }}</el-descriptions-item>
+          <el-descriptions-item label="失败原因">{{ currentLog.reason || currentLog.fail_reason || '-' }}</el-descriptions-item>
         </el-descriptions>
         <pre v-if="currentLog?.output" class="log-output">{{ currentLog.output }}</pre>
         <el-empty v-else description="无日志输出" />
@@ -392,6 +400,15 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { getReport, getSummaryReport, exportReport, exportBatchReport, getItemLog } from '@/api/report'
 import dayjs from 'dayjs'
 import { formatDateTime } from '@/utils/datetime'
+import { isSuccessResponse } from '@/api/client'
+import {
+  buildCompareRows,
+  deriveTaskSummary,
+  formatDurationSeconds,
+  formatPassRate,
+  normalizeSummary,
+  toPassRate
+} from '@/utils/stats'
 
 // 按需注册 echarts 组件（与仪表盘一致）
 use([PieChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
@@ -416,32 +433,22 @@ const compareRightId = ref(null)
 const compareLoading = ref(false)
 const compareResult = ref(null)
 
-// 秒级耗时格式化为可读时长（如 2分35秒），超过 1 小时带小时位
-const formatDuration = (seconds) => {
-  if (seconds == null) return '-'
-  const total = Math.max(0, Math.floor(seconds))
-  const hours = Math.floor(total / 3600)
-  const minutes = Math.floor((total % 3600) / 60)
-  const secs = total % 60
-  if (hours > 0) return `${hours}小时${minutes}分${secs}秒`
-  if (minutes > 0) return `${minutes}分${secs}秒`
-  return `${secs}秒`
-}
-
-// 报告总耗时：优先用秒级字段自行格式化，缺失时回退到后端格式化好的字符串
+// 报告总耗时：优先用秒级字段格式化（0 保留为 0秒），缺失时回退到后端格式化字符串
 const reportDuration = (report) => {
-  if (report?.total_duration_seconds != null) return formatDuration(report.total_duration_seconds)
-  return report?.total_duration || '-'
+  if (report?.total_duration_seconds != null) return formatDurationSeconds(report.total_duration_seconds)
+  if (report?.total_duration != null && report.total_duration !== '') return String(report.total_duration)
+  return '—'
 }
 
-// 测试项结果分布（环形图）
+// 测试项结果分布（环形图）：使用后端 summary 五类计数（0 保真）
 const statusChartOption = computed(() => {
-  const s = currentReport.value?.summary || {}
+  const normalized = normalizeSummary(currentReport.value?.summary)
   const data = [
-    { name: '通过', value: s.passed || 0, itemStyle: { color: '#67c23a' } },
-    { name: '失败', value: s.failed || 0, itemStyle: { color: '#f56c6c' } },
-    { name: '跳过', value: s.skipped || 0, itemStyle: { color: '#909399' } },
-    { name: '错误', value: s.error || 0, itemStyle: { color: '#e6a23c' } }
+    { name: '通过', value: normalized.counts.pass, itemStyle: { color: '#67c23a' } },
+    { name: '失败', value: normalized.counts.fail, itemStyle: { color: '#f56c6c' } },
+    { name: '跳过', value: normalized.counts.skip, itemStyle: { color: '#909399' } },
+    { name: '错误', value: normalized.counts.error, itemStyle: { color: '#e6a23c' } },
+    { name: '超时', value: normalized.counts.timeout, itemStyle: { color: '#b88230' } }
   ].filter(d => d.value > 0)
   return {
     tooltip: { trigger: 'item' },
@@ -471,7 +478,7 @@ const timeChartOption = computed(() => {
     series: [{
       type: 'bar',
       barMaxWidth: 16,
-      data: results.map(r => r.execution_time || 0),
+      data: results.map(r => r.execution_time ?? 0),
       itemStyle: { color: '#2563eb' }
     }]
   }
@@ -483,11 +490,19 @@ const filteredReports = computed(() => {
     const text = `${report.task_name || ''} ${report.device?.model || ''} ${report.device?.serial_number || ''}`.toLowerCase()
     const matchKeyword = !keyword || text.includes(keyword)
 
-    const rate = getPassRate(report.summary)
+    const rate = toPassRate(report.summary?.pass_rate)
     let matchStatus = true
-    if (filterStatus.value === 'good') matchStatus = rate >= 80
-    if (filterStatus.value === 'warning') matchStatus = rate >= 50 && rate < 80
-    if (filterStatus.value === 'danger') matchStatus = rate < 50
+    if (filterStatus.value) {
+      if (rate === null) {
+        matchStatus = false
+      } else if (filterStatus.value === 'good') {
+        matchStatus = rate >= 80
+      } else if (filterStatus.value === 'warning') {
+        matchStatus = rate >= 50 && rate < 80
+      } else if (filterStatus.value === 'danger') {
+        matchStatus = rate < 50
+      }
+    }
 
     return matchKeyword && matchStatus
   })
@@ -501,25 +516,25 @@ const fetchReports = async () => {
   loading.value = true
   try {
     const res = await getSummaryReport()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       const data = res.data
       reports.value = (data.tasks || []).map(task => {
-        const taskReport = data.results.filter(r => r.task_id === task.task_id)
+        const taskResults = data.results.filter(r => r.task_id === task.task_id)
+        const derived = deriveTaskSummary(task, taskResults)
         return {
           task_id: task.task_id,
           task_name: task.task_name,
           device: { model: task.device_model, serial_number: task.device_serial },
           created_at: task.created_at,
-          total_duration: task.total_duration || '-',
+          total_duration: task.total_duration ?? null,
           total_duration_seconds: task.total_duration_seconds ?? null,
+          // 通过率严格取后端 task.pass_rate（number|null）；计数为结果状态精确汇总，不自算通过率
           summary: {
-            total_items: task.total_items,
-            passed: taskReport.filter(r => r.status === 'pass').length,
-            failed: taskReport.filter(r => r.status === 'fail').length,
-            skipped: taskReport.filter(r => r.status === 'skip').length,
-            error: taskReport.filter(r => r.status === 'error').length
+            total_items: derived.totalItems,
+            counts: derived.counts,
+            pass_rate: derived.passRate
           },
-          results: taskReport,
+          results: taskResults,
           selected: false
         }
       })
@@ -536,17 +551,13 @@ const fetchReports = async () => {
   }
 }
 
+// 通过率状态标签：null（无有效结果）→ info；仅按后端 pass_rate 分档
 const getStatusType = (summary) => {
-  if (!summary || summary.total_items === 0) return 'info'
-  const rate = summary.passed / summary.total_items
-  if (rate === 1) return 'success'
-  if (rate >= 0.8) return 'warning'
+  const rate = toPassRate(summary?.pass_rate)
+  if (rate === null) return 'info'
+  if (rate >= 80) return 'success'
+  if (rate >= 50) return 'warning'
   return 'danger'
-}
-
-const getPassRate = (summary) => {
-  if (!summary || summary.total_items === 0) return 0
-  return Math.round((summary.passed / summary.total_items) * 100)
 }
 
 const getResultType = (status) => {
@@ -610,7 +621,7 @@ const viewItemLog = async (row) => {
   currentLog.value = null
   try {
     const res = await getItemLog(currentReport.value.task_id, row.item_id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       currentLog.value = {
         ...res.data,
         item_name: row.item_name
@@ -634,7 +645,7 @@ const viewReport = async (report) => {
   showDetailDialog.value = true
   try {
     const res = await getReport(report.task_id)
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       currentReport.value = res.data
     }
   } catch (error) {
@@ -706,7 +717,7 @@ const runCompare = async () => {
       getReport(compareLeftId.value),
       getReport(compareRightId.value)
     ])
-    if (leftRes.code === 200 && rightRes.code === 200) {
+    if (isSuccessResponse(leftRes) && isSuccessResponse(rightRes)) {
       compareResult.value = buildCompareRows(leftRes.data, rightRes.data)
     }
   } catch (error) {
@@ -715,40 +726,6 @@ const runCompare = async () => {
   } finally {
     compareLoading.value = false
   }
-}
-
-const buildCompareRows = (left, right) => {
-  const rightMap = new Map((right.results || []).map(r => [r.item_name, r]))
-  const rows = (left.results || []).map(lr => {
-    const rr = rightMap.get(lr.item_name)
-    rightMap.delete(lr.item_name)
-    return {
-      item_name: lr.item_name,
-      module_name: lr.module_name,
-      left_status: lr.status,
-      left_time: lr.execution_time,
-      right_status: rr?.status || null,
-      right_time: rr?.execution_time ?? null,
-      same: !!rr && lr.status === rr.status,
-      only_left: !rr,
-      only_right: false
-    }
-  })
-  // 仅报告 B 中存在的测试项
-  for (const rr of rightMap.values()) {
-    rows.push({
-      item_name: rr.item_name,
-      module_name: rr.module_name,
-      left_status: null,
-      left_time: null,
-      right_status: rr.status,
-      right_time: rr.execution_time,
-      same: false,
-      only_left: false,
-      only_right: true
-    })
-  }
-  return { left, right, rows }
 }
 
 onMounted(async () => {

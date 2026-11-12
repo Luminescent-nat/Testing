@@ -359,6 +359,7 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Refresh, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
+import { isSuccessResponse } from '@/api/client'
 import {
   getFailurePatterns,
   createFailurePattern,
@@ -515,7 +516,7 @@ const formatTime = (time) => {
 const fetchDevices = async () => {
   try {
     const res = await getDevices()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       devices.value = res.data.items || []
     }
   } catch (error) {
@@ -528,7 +529,7 @@ const fetchBaselines = async () => {
   loadingBaselines.value = true
   try {
     const res = await getBaselines()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       baselines.value = res.data || []
     }
   } catch (error) {
@@ -543,7 +544,7 @@ const fetchFailurePatterns = async () => {
   loadingFailures.value = true
   try {
     const res = await getFailurePatterns()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       failures.value = res.data || []
     }
   } catch (error) {
@@ -558,7 +559,7 @@ const fetchGoldenCases = async () => {
   loadingGolden.value = true
   try {
     const res = await getGoldenCases()
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       goldenCases.value = res.data || []
     }
   } catch (error) {

@@ -172,6 +172,7 @@ import { ElMessage } from 'element-plus'
 import { getModules, getModuleDetail } from '@/api/module'
 import { getDevices } from '@/api/device'
 import { createTask } from '@/api/task'
+import { isSuccessResponse } from '@/api/client'
 
 const router = useRouter()
 const route = useRoute()
@@ -304,7 +305,7 @@ const startTask = async () => {
 
     const res = await createTask(payload)
 
-    if (res.code === 200) {
+    if (isSuccessResponse(res)) {
       if (scheduleType.value === 'immediate') {
         ElMessage.success('任务创建成功')
         router.push(`/tasks/monitor/${res.data.id}`)
@@ -327,7 +328,7 @@ const fetchData = async () => {
       getDevices({ status: 'online' })
     ])
 
-    if (modulesRes.code === 200) {
+    if (isSuccessResponse(modulesRes)) {
       const moduleList = modulesRes.data.items || []
       // 并行获取每个模块的测试项
       const modulesWithItems = await Promise.all(
@@ -336,7 +337,7 @@ const fetchData = async () => {
             const detailRes = await getModuleDetail(m.id, true)
             return {
               ...m,
-              items: detailRes.code === 200 ? (detailRes.data.items || []) : [],
+              items: isSuccessResponse(detailRes) ? (detailRes.data.items || []) : [],
               selected: false
             }
           } catch (error) {
@@ -348,7 +349,7 @@ const fetchData = async () => {
       modules.value = modulesWithItems
     }
 
-    if (devicesRes.code === 200) {
+    if (isSuccessResponse(devicesRes)) {
       devices.value = devicesRes.data.items
       // 如果从设备页跳转过来，预选择设备
       if (prefillDeviceSerial.value) {
