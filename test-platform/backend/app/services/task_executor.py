@@ -359,7 +359,8 @@ class TaskExecutor:
                 try:
                     lines_before = streamed_lines
                     exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
-                    # 执行引擎可能返回 unknown，统一映射为 error 以符合数据模型
+                    # T-06 后执行引擎只产出 pass/fail/skip/error/timeout；保留防御性映射，
+                    # 任何越界状态一律落 error（失败关闭，绝不落 unknown）。
                     record.status = exec_result.status if exec_result.status in ("pass", "fail", "skip", "error", "timeout") else "error"
                     record.fail_reason = exec_result.fail_reason
                     record.execution_time = (record.execution_time or 0) + exec_result.execution_time

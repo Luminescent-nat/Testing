@@ -127,7 +127,8 @@ async def test_rubric_scoring_fail():
 
 
 @pytest.mark.asyncio
-async def test_judgement_engine_default_returncode():
+async def test_judgement_engine_no_config_is_error():
+    """T-06 新契约：无判定配置（空规则、无 pass_pattern）rc=0 不再默认 pass，落 error。"""
     engine = JudgementEngine()
     result = await engine.judge(
         output="",
@@ -139,7 +140,8 @@ async def test_judgement_engine_default_returncode():
         rubric_criteria={},
         device_context={},
     )
-    assert result.status == "pass"
+    assert result.status == "error"
+    assert "判定配置不可用" in result.fail_reason
 
 
 @pytest.mark.asyncio
@@ -160,7 +162,7 @@ async def test_judgement_engine_default_returncode_fail():
 
 @pytest.mark.asyncio
 async def test_ai_fallback_without_llm():
-    """TC-JUDGE-012: 未配置 LLM API Key 时，AI fallback 应降级返回 unknown。"""
+    """TC-JUDGE-012（T-06 新契约）：未配置 LLM API Key 时 AI fallback 落 error，不再产出 unknown。"""
     engine = JudgementEngine(ai_client=LLMClient(api_key=""))
     result = await engine.judge(
         output="some output",
@@ -172,6 +174,6 @@ async def test_ai_fallback_without_llm():
         rubric_criteria={},
         device_context={"model": "rk3568"},
     )
-    assert result.status == "unknown"
+    assert result.status == "error"
     assert result.judgement_type == "ai_fallback"
     assert "LLM API Key 未配置" in result.fail_reason

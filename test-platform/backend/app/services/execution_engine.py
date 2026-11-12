@@ -10,7 +10,12 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from app.services.device import ADBService, stream_process_output
 from app.services.parameter_renderer import ParameterRenderer
-from app.services.judgement_engine import JudgementEngine
+from app.services.judgement_engine import (
+    JudgementEngine,
+    find_native_skip,
+    parse_patterns,
+    extract_fail_reason,
+)
 from app.services.memory_engine import BaselineService
 from app.services.knowledge_judge_context import JudgeKnowledgeContext, format_context_for_llm
 from app.database import AsyncSessionLocal
@@ -154,44 +159,24 @@ class ExecutionEngine(ABC):
         return None
 
     def parse_result(self, output: str, config: Dict[str, Any]) -> Dict[str, Any]:
-        """解析执行结果"""
-        result = {"status": "unknown", "fail_reason": "", "extracted_data": {}}
-        
-        # 检查失败
-        if config.get("fail_pattern"):
-            if re.search(config["fail_pattern"], output, re.IGNORECASE):
-                result["status"] = "fail"
-                result["fail_reason"] = self._extract_fail_reason(output)
-                return result
-        
-        # 检查成功
-        if config.get("pass_pattern"):
-            if re.search(config["pass_pattern"], output, re.IGNORECASE):
-                result["status"] = "pass"
-        else:
-            # 默认成功
-            result["status"] = "pass"
-        
-        # 提取数据
-        if config.get("extract_pattern"):
-            matches = re.findall(config["extract_pattern"], output)
-            if matches:
-                result["extracted_data"]["values"] = matches
-        
-        return result
-    
+        """解析执行结果（正则模式层，对应状态机 §2 行5/6/7/11）。
+
+        T-06 契约：不再返回 unknown，也不再因 rc=0/缺少 pass_pattern 默认 pass；
+        无法形成有效判定时落 error（失败关闭）。
+        """
+        judged = parse_patterns(output, config)
+        extracted_data = {}
+        if judged.metrics and "values" in judged.metrics:
+            extracted_data["values"] = judged.metrics["values"]
+        return {
+            "status": judged.status,
+            "fail_reason": judged.fail_reason,
+            "extracted_data": extracted_data,
+        }
+
     def _extract_fail_reason(self, output: str) -> str:
-        """提取失败原因"""
-        # 查找包含error/fail的行
-        lines = output.split('\n')
-        for line in lines:
-            if any(keyword in line.lower() for keyword in ['error', 'fail', 'exception', 'crash']):
-                return line.strip()[:500]
-        
-        # 返回最后几行
-        if lines:
-            return lines[-1].strip()[:500]
-        return "未知错误"
+        """提取失败原因（保留兼容接口，逻辑见 judgement_engine.extract_fail_reason）。"""
+        return extract_fail_reason(output)
 
     # ADB 常见失败模式：设备离线、未找到、无权限、二进制缺失等应直接判 fail
     ADB_FAILURE_PATTERNS = [
@@ -228,6 +213,11 @@ class ExecutionEngine(ABC):
             logger.warning("加载知识库判定上下文失败: %s", exc)
             return ""
 
+    def _match_adb_failure(self, output: str, returncode: Optional[int]) -> bool:
+        """判断输出/返回码是否命中 ADB 设备级失败模式。"""
+        combined = output + "\n" + (str(returncode) if returncode is not None else "")
+        return any(re.search(p, combined, re.IGNORECASE) for p in self.ADB_FAILURE_PATTERNS)
+
     async def _judge_result(
         self,
         device: Device,
@@ -235,26 +225,32 @@ class ExecutionEngine(ABC):
         output: str,
         returncode: int
     ) -> Dict[str, Any]:
-        """调用判定引擎对结果进行判定。"""
-        # 默认 judgement_type 为 assertion，但如果没有条件规则，仍走原有正则解析
+        """按状态机 §2 优先级形成唯一判定（行3～行11，行1/2 由上层先行处理）。
+
+        ADB 设备级失败在本层特化：rc!=0 时给出带 ADB 归因的 fail（行3），
+        rc=0 时先让原生 SKIP（行4）优先，再按内置失败模式判 fail（行5）。
+        """
         judgement_type = item.judgement_type or "assertion"
         rules = item.conditional_rules or {}
         rubric_criteria = item.rubric_criteria or {}
+        result_parse = item.result_parse or {}
 
-        # 先识别 ADB 设备级失败（离线、未找到等），避免落到 unknown
-        combined = output + "\n" + (str(returncode) if returncode is not None else "")
-        for pattern in self.ADB_FAILURE_PATTERNS:
-            if re.search(pattern, combined, re.IGNORECASE):
+        adb_hit = self._match_adb_failure(output, returncode)
+        if adb_hit:
+            adb_reason = f"ADB 设备异常: {output.strip()[-200:]}"
+            adb_data = {"adb_error": output.strip()[-500:], "returncode": returncode}
+            if returncode not in (0, None):
+                # 行3：非零退出码优先，附 ADB 归因与退出码
                 return {
                     "status": "fail",
-                    "fail_reason": f"ADB 设备异常: {output.strip()[-200:]}",
-                    "extracted_data": {"adb_error": output.strip()[-500:], "returncode": returncode}
+                    "fail_reason": f"{adb_reason}（退出码 {returncode}）",
+                    "extracted_data": adb_data,
                 }
-
-        # 如果没有条件规则/Rubrics/AI 上下文，且 judgement_type 不是 ai_fallback，
-        # 则回退到原有正则解析
-        if judgement_type == "assertion" and not rules.get("conditions"):
-            return self.parse_result(output, item.result_parse or {})
+            # 行4 优先于行5：原生 SKIP 行存在时判 skip
+            skip_reason = find_native_skip(output)
+            if skip_reason is not None:
+                return {"status": "skip", "fail_reason": skip_reason, "extracted_data": {}}
+            return {"status": "fail", "fail_reason": adb_reason, "extracted_data": adb_data}
 
         # 预加载基线（用于 Rubric 基线判定）
         baselines = await self._load_baselines(device, item)
@@ -314,7 +310,8 @@ class ExecutionEngine(ABC):
             ai_context=ai_context,
             spec=spec,
             baselines=baselines_dict,
-            knowledge_context=knowledge_context
+            knowledge_context=knowledge_context,
+            result_parse=result_parse
         )
 
         return {
@@ -574,6 +571,7 @@ class HostExecEngine(ExecutionEngine):
         # 在PC端执行
         process = None
         timed_out = False
+        internal_error: Optional[str] = None
         try:
             process = await asyncio.create_subprocess_shell(
                 command,
@@ -607,9 +605,11 @@ class HostExecEngine(ExecutionEngine):
             await self._terminate_process(process)
             raise
         except Exception as e:
+            # 行2：执行器内部异常 → error（安全摘要，不含堆栈），不落入判定
             returncode = -1
             stdout_str = ""
             stderr_str = str(e)
+            internal_error = str(e)
         finally:
             # Windows ProactorEventLoop 下，communicate() 被 cancel/超时打断后
             # 管道 transport 可能不自动关闭并产生资源告警；正规 terminate/kill
@@ -626,6 +626,15 @@ class HostExecEngine(ExecutionEngine):
                 status="timeout",
                 output=combined_output,
                 fail_reason=f"执行超时（{item.timeout or 300}秒）",
+                execution_time=execution_time
+            )
+
+        # 执行器内部异常（无法启动子进程等），标记为 error 而非走判定逻辑
+        if internal_error is not None:
+            return ExecutionResult(
+                status="error",
+                output=combined_output,
+                fail_reason=f"执行异常: {internal_error}",
                 execution_time=execution_time
             )
 
