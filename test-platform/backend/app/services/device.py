@@ -13,6 +13,20 @@ from app.services.device_profile import DeviceProfileService
 
 logger = logging.getLogger(__name__)
 
+# 执行器内部异常（含 adb 子进程无法启动）专用返回码。
+# 与设备命令真实退出码以及超时 -1 区分：执行引擎据此按状态机 §2 行2
+# 归类为 error（执行器无法启动/内部异常），而不是把启动失败误判为测试 fail。
+INTERNAL_ERROR_RC = -2
+
+
+class ADBDiscoveryError(RuntimeError):
+    """ADB 发现失败（adb 不可执行/超时/非零退出）。
+
+    发现动作遇到此异常必须向调用方返回 503，且不得把空列表当作“有效空扫描”去
+    批量推进设备状态（尤其是 testing/排队设备不得被误置 offline）。
+    """
+
+
 
 async def stream_process_output(process, timeout: float, on_output: Callable[[str], Any]) -> tuple:
     """逐行读取进程 stdout/stderr，每行实时回调（同步/异步回调均可）并累积完整输出。
@@ -101,37 +115,41 @@ class ADBService:
             await self._kill_process(process)
             raise
         except Exception as e:
+            # 行2：执行器内部异常（含子进程无法启动）→ 专用返回码，摘要仅含异常类型；
+            # 完整堆栈只进服务端日志，绝不把 str(exc) 随 stdout/stderr 持久化到记录。
             await self._kill_process(process)
-            return "", str(e), -1
+            logger.exception("adb 执行器内部异常")
+            return "", f"执行器内部异常（{type(e).__name__}）", INTERNAL_ERROR_RC
     
-    async def get_devices(self, timeout: Optional[int] = None) -> List[Dict[str, str]]:
-        """获取设备列表，timeout 缺省使用 self.timeout"""
+    async def get_device_list(self, timeout: Optional[int] = None) -> tuple:
+        """获取设备列表并显式区分「ADB 失败」与「有效空扫描」。
+
+        返回 (devices, error)；error 为 None 表示 adb 成功返回（可能设备为空），
+        否则为失败摘要（调用方据此返回 503，而不是伪造空成功）。
+        """
         stdout, stderr, returncode = await self._run_adb_command(["devices", "-l"], timeout=timeout)
-        
-        devices = []
         if returncode != 0:
-            return devices
-        
+            detail = (stderr or stdout or "").strip()[:200]
+            return [], f"adb devices 返回码 {returncode}（{detail or '无输出'}）"
+
+        devices = []
         lines = stdout.strip().split('\n')
         for line in lines[1:]:  # 跳过标题行
             if not line.strip():
                 continue
-            
             parts = line.split()
             if len(parts) >= 2:
-                serial = parts[0]
-                state = parts[1]
-                
-                # 解析其他信息
-                device_info = {"serial": serial, "state": state}
-                
+                device_info = {"serial": parts[0], "state": parts[1]}
                 for part in parts[2:]:
                     if ':' in part:
                         key, value = part.split(':', 1)
                         device_info[key] = value
-                
                 devices.append(device_info)
-        
+        return devices, None
+
+    async def get_devices(self, timeout: Optional[int] = None) -> List[Dict[str, str]]:
+        """获取设备列表（兼容旧语义：失败时返回空列表）。timeout 缺省使用 self.timeout。"""
+        devices, _error = await self.get_device_list(timeout=timeout)
         return devices
     
     async def get_device_info(self, serial: str) -> Dict[str, Any]:
@@ -298,8 +316,11 @@ class ADBService:
             await self._kill_process(process)
             raise
         except Exception as e:
+            # 行2：执行器内部异常（含 adb 子进程无法启动）→ 专用返回码 + 安全摘要；
+            # 完整堆栈仅进服务端日志，原始异常文本不进入返回值/记录。
             await self._kill_process(process)
-            return "", str(e), -1
+            logger.exception("adb shell 执行器内部异常")
+            return "", f"执行器内部异常（{type(e).__name__}）", INTERNAL_ERROR_RC
     
     async def push_file(self, serial: str, local_path: str, remote_path: str) -> tuple:
         """推送文件到设备"""
@@ -324,20 +345,27 @@ class DeviceService:
         self.profile_service = DeviceProfileService()
 
     async def discover_devices(self, db: AsyncSession, user: User, pc_identifier: str) -> List[Device]:
-        """发现并同步设备，同时更新硬件画像。"""
-        # 获取ADB设备列表
-        adb_devices = await self.adb.get_devices()
+        """发现并同步设备（契约 §5）：只读同步，不改既有 owner/PC/version。
 
-        updated_devices = []
+        - ADB 发现失败 → 抛 ADBDiscoveryError（调用方 503），且完全不触碰数据库，
+          避免把 testing/排队设备批量误置 offline；
+        - 既有设备：仅在非 testing/maintenance 时按探活推进 online/offline，
+          owner_id / pc_identifier / version 一律不改；
+        - 新设备：owner_id=None（待管理员分配）、pc_identifier=""，普通用户不认领。
+        """
+        adb_devices, error = await self._list_adb_devices()
+        if error is not None:
+            raise ADBDiscoveryError(error)
+
+        updated_devices: List[Device] = []
+        now = datetime.now(timezone.utc)
         for adb_device in adb_devices:
             serial = adb_device["serial"]
             state = adb_device.get("state", "offline")
             is_online = state == "device"
 
-            # 获取基础信息
             device_info = await self.adb.get_device_info(serial)
 
-            # 设备在线时采集完整硬件画像
             profile = {}
             if is_online:
                 try:
@@ -345,13 +373,15 @@ class DeviceService:
                 except Exception as exc:
                     logger.warning("采集设备 %s 画像失败: %s", serial, exc)
 
-            # 查询现有记录
             result = await db.execute(select(Device).where(Device.serial_number == serial))
             existing_device = result.scalar_one_or_none()
 
             if existing_device:
-                # 更新现有记录
-                existing_device.status = "online" if is_online else "offline"
+                # 状态推进：testing/maintenance 不得被发现覆盖；owner/pc/version 不改
+                if existing_device.status not in ("testing", "maintenance"):
+                    desired = "online" if is_online else "offline"
+                    if existing_device.status != desired:
+                        existing_device.status = desired
                 existing_device.model = device_info.get("model") or existing_device.model
                 existing_device.brand = device_info.get("brand") or existing_device.brand
                 existing_device.android_version = device_info.get("android_version") or existing_device.android_version
@@ -359,9 +389,7 @@ class DeviceService:
                 existing_device.cpu_abi = device_info.get("cpu_abi") or existing_device.cpu_abi
                 existing_device.resolution = device_info.get("resolution") or existing_device.resolution
                 existing_device.battery_level = device_info.get("battery_level") or existing_device.battery_level
-                existing_device.last_seen_at = datetime.now(timezone.utc)
-
-                # 更新硬件画像
+                existing_device.last_seen_at = now
                 if profile:
                     existing_device.board = profile.get("board") or existing_device.board
                     existing_device.hardware = profile.get("hardware") or existing_device.hardware
@@ -371,15 +399,8 @@ class DeviceService:
                     existing_device.bt_chip = profile.get("bt_chip") or existing_device.bt_chip
                     existing_device.eth_interfaces = profile.get("eth_interfaces") or existing_device.eth_interfaces
                     existing_device.features = profile.get("features") or existing_device.features
-
-                # 如果设备没有所有者，绑定当前用户
-                if existing_device.owner_id is None:
-                    existing_device.owner_id = user.id
-                    existing_device.pc_identifier = pc_identifier
-
                 updated_devices.append(existing_device)
             else:
-                # 创建新记录
                 new_device = Device(
                     serial_number=serial,
                     model=device_info.get("model"),
@@ -390,9 +411,9 @@ class DeviceService:
                     resolution=device_info.get("resolution"),
                     battery_level=device_info.get("battery_level"),
                     status="online" if is_online else "offline",
-                    owner_id=user.id,
-                    pc_identifier=pc_identifier,
-                    last_seen_at=datetime.now(timezone.utc),
+                    owner_id=None,          # 新设备待管理员分配，普通用户不认领
+                    pc_identifier="",
+                    last_seen_at=now,
                     board=profile.get("board"),
                     hardware=profile.get("hardware"),
                     ddr_info=profile.get("ddr_info"),
@@ -400,13 +421,33 @@ class DeviceService:
                     wifi_chip=profile.get("wifi_chip"),
                     bt_chip=profile.get("bt_chip"),
                     eth_interfaces=profile.get("eth_interfaces"),
-                    features=profile.get("features")
+                    features=profile.get("features"),
                 )
                 db.add(new_device)
                 updated_devices.append(new_device)
 
+        await db.flush()
+        # 新设备补齐服务端默认值（id/created_at/version）
+        for device in updated_devices:
+            if device.id is None:
+                await db.refresh(device)
         await db.commit()
         return updated_devices
+
+    async def _list_adb_devices(self) -> tuple:
+        """取 adb 设备列表并显式区分失败；兼容旧调用方/测试按 get_devices 注入的 Mock。
+
+        真实 ADBService.get_device_list 返回 (devices, error) 元组；若注入对象未按新
+        契约返回元组（例如既有测试只 mock 了 get_devices），回退到 get_devices()，
+        视为无错误。这样既保证真实 ADB 失败可 503，又不破坏既有 Mock 用例。
+        """
+        try:
+            result = await self.adb.get_device_list()
+        except Exception:
+            result = None
+        if isinstance(result, tuple) and len(result) == 2:
+            return result
+        return await self.adb.get_devices(), None
     
     async def get_devices_for_user(self, db: AsyncSession, user: User, pc_identifier: str) -> List[Device]:
         """获取用户可见的设备列表"""
