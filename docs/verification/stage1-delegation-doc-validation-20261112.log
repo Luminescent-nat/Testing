@@ -1,0 +1,52 @@
+PASS Markdown/UTF-8/无emoji: 52个文件
+PASS JSON示例: 45块完成解析
+PASS 相对链接: 158个目标存在
+PASS ADR: 8篇accepted、五段及确认记录齐全
+PASS 六段规格: 6组件+15页面，九状态/三断点齐全
+PASS 前端四表契约: 6组件+15页面/布局，共84张表
+PASS 任务板: 38个任务字段/DoD/状态/依赖引用及无环检查完成
+PASS 追踪矩阵: R1～R31连续且各一行
+PASS 交接门禁: 后端/基础设施与T-20/T-21放行，组件/页面不放行
+PASS UI token状态: v1.0及扩展项确认状态一致
+SUMMARY files=52 json=45 links=158 adrs=8 components=6 pages=15 tasks=38 requirements=31 errors=39
+FAIL T-01 DoD少于2项
+FAIL T-02 DoD少于2项
+FAIL T-03 DoD少于2项
+FAIL T-04 DoD少于2项
+FAIL T-05 DoD少于2项
+FAIL T-06 DoD少于2项
+FAIL T-07 DoD少于2项
+FAIL T-08 DoD少于2项
+FAIL T-09 DoD少于2项
+FAIL T-10 DoD少于2项
+FAIL T-11 DoD少于2项
+FAIL T-12 DoD少于2项
+FAIL T-13 DoD少于2项
+FAIL T-14 DoD少于2项
+FAIL T-15 DoD少于2项
+FAIL T-16 DoD少于2项
+FAIL T-17 DoD少于2项
+FAIL T-18 DoD少于2项
+FAIL T-19 DoD少于2项
+FAIL T-20 DoD少于2项
+FAIL T-21 DoD少于2项
+FAIL T-22 DoD少于2项
+FAIL T-23 DoD少于2项
+FAIL T-24 DoD少于2项
+FAIL T-25 DoD少于2项
+FAIL T-26 DoD少于2项
+FAIL T-27 DoD少于2项
+FAIL T-28 DoD少于2项
+FAIL T-29 DoD少于2项
+FAIL T-30 DoD少于2项
+FAIL T-31 DoD少于2项
+FAIL T-32 DoD少于2项
+FAIL T-33 DoD少于2项
+FAIL T-34 DoD少于2项
+FAIL T-35 DoD少于2项
+FAIL T-36 DoD少于2项
+FAIL T-37 DoD少于2项
+FAIL T-38 DoD少于2项
+FAIL 任务依赖存在环: T-01
+
+EXIT_CODE=1

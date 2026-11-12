@@ -1,0 +1,14 @@
+PASS Markdown/UTF-8/无emoji: 52个文件
+PASS JSON示例: 45块完成解析
+PASS 相对链接: 162个目标存在
+PASS ADR: 8篇accepted、五段及确认记录齐全
+PASS 六段规格: 6组件+15页面，九状态/三断点齐全
+PASS 前端四表契约: 6组件+15页面/布局，共84张表
+PASS 任务板: 38个任务字段/DoD/状态/依赖引用及无环检查完成
+PASS 追踪矩阵: R1～R31连续且各一行
+PASS 交接门禁: 后端/基础设施与T-20/T-21放行，组件/页面不放行
+PASS UI token状态: v1.0及扩展项确认状态一致
+SUMMARY files=52 json=45 links=162 adrs=8 components=6 pages=15 tasks=38 requirements=31 errors=0
+RESULT PASS 文档结构回归通过；不代表业务实现或最终验收通过
+
+EXIT_CODE=0

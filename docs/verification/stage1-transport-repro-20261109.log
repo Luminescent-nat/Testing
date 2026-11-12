@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 18 items
+
+tests\unit\test_execution_engine.py ............                         [ 66%]
+tests\unit\test_log_stream.py ......                                     [100%]
+
+============================= 18 passed in 8.70s ==============================

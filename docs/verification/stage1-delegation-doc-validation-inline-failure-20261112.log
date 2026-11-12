@@ -1,0 +1,5 @@
+首次文档回归命令未进入Python校验阶段。
+命令形式：Bash内联heredoc Python脚本，输出目标为stage1-delegation-doc-validation-20261112.log。
+实际结果：Exit code 2
+原始错误：/usr/bin/bash: -c: line 1: unexpected EOF while looking for matching `''
+处理：不判定文档通过；改用独立Python脚本重跑并另存完整日志。

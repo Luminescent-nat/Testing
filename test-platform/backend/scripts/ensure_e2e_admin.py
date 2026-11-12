@@ -1,6 +1,22 @@
-"""确保 E2E 测试管理员账号存在且密码正确。"""
+"""确保隔离 E2E 环境中的测试管理员账号存在且密码正确。"""
 import asyncio
+import os
 import sys
+
+
+def validate_e2e_environment():
+    """未显式选择隔离数据库时拒绝创建或重置管理员。"""
+    if os.environ.get("E2E_TEST_MODE") != "1":
+        raise SystemExit("拒绝执行：E2E 管理员初始化要求 E2E_TEST_MODE=1")
+    database_url = os.environ.get("DATABASE_URL", "")
+    expected_url = os.environ.get("E2E_DATABASE_URL", "")
+    if not expected_url or database_url != expected_url:
+        raise SystemExit("拒绝执行：DATABASE_URL 必须与显式设置的 E2E_DATABASE_URL 一致")
+    if database_url == "sqlite+aiosqlite:///./test_platform.db":
+        raise SystemExit("拒绝执行：E2E 不得使用平台默认数据库")
+
+
+validate_e2e_environment()
 
 sys.path.insert(0, ".")
 

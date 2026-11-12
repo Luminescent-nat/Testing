@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 # 测试统一使用固定测试密钥，与生产密钥无关。
 os.environ.setdefault("SECRET_KEY", "test-only-secret-key-not-for-production")
 
+from app.config import get_settings  # noqa: E402
 from app.database import AsyncSessionLocal, Base, engine, get_db  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models import Device, TestItem, TestModule, TestTool, User  # noqa: E402
@@ -31,6 +32,43 @@ from app.services.device import ADBService  # noqa: E402
 from app.services.task_executor import DeviceLock, TaskExecutor  # noqa: E402
 
 pytestmark = pytest.mark.asyncio
+
+
+@pytest.fixture(autouse=True)
+def isolated_storage(tmp_path, monkeypatch):
+    """将每个用例的工具、日志和报告写入独立临时目录。"""
+    settings = get_settings()
+    storage_path = tmp_path / "storage"
+    paths = {
+        "STORAGE_PATH": storage_path,
+        "TOOLS_PATH": storage_path / "tools",
+        "REPORTS_PATH": storage_path / "reports",
+        "LOGS_PATH": storage_path / "logs",
+    }
+    for setting_name, path in paths.items():
+        monkeypatch.setattr(settings, setting_name, str(path))
+        path.mkdir(parents=True, exist_ok=True)
+    return storage_path
+
+
+async def _cleanup_background_tasks():
+    """在测试数据库关闭前，取消并等待执行器及报告后台任务。"""
+    current = asyncio.current_task()
+    tasks = set(TaskExecutor._running_tasks.values())
+    tasks.update(
+        task
+        for task in asyncio.all_tasks()
+        if task is not current
+        and task.get_name().startswith(("task-", "report-"))
+    )
+    for task in tasks:
+        if not task.done():
+            task.cancel()
+    if tasks:
+        await asyncio.gather(*tasks, return_exceptions=True)
+    TaskExecutor._running_tasks.clear()
+    DeviceLock._locks.clear()
+    DeviceLock._holders.clear()
 
 
 @pytest_asyncio.fixture(scope="function")
@@ -92,6 +130,7 @@ async def test_db() -> AsyncGenerator[AsyncSession, None]:
     try:
         yield session
     finally:
+        await _cleanup_background_tasks()
         await session.close()
         db_module.engine = original_locals["db_module.engine"]
         db_module.AsyncSessionLocal = original_locals["db_module.AsyncSessionLocal"]
@@ -264,9 +303,13 @@ def mock_adb(monkeypatch) -> MagicMock:
     # 2) 已导入模块中保存的是旧 ADBService 类引用，需要同步替换
     import app.services.execution_engine as ee_module
     import app.services.device_profile as dp_module
+    import app.main as main_module
 
     ee_module.ADBService = lambda: mock
     dp_module.ADBService = lambda: mock
+    # TestClient lifespan 在 main.py 中使用导入时绑定的类引用，也必须替换，
+    # 否则后台心跳会绕过 fixture 并创建真实 ADB 子进程。
+    monkeypatch.setattr(main_module, "ADBService", lambda: mock)
 
     # 3) devices.py 在模块导入时已创建 DeviceService 实例，直接替换其实例
     import app.api.devices as devices_api
@@ -372,9 +415,7 @@ async def sample_item(
 @pytest_asyncio.fixture(scope="function")
 async def sample_tool(test_db: AsyncSession, admin_user: User) -> TestTool:
     """创建一个示例测试工具记录与占位文件。"""
-    tool_path = os.path.join(
-        os.path.dirname(__file__), "..", "storage", "tools", "sample_tool"
-    )
+    tool_path = os.path.join(get_settings().TOOLS_PATH, "sample_tool")
     os.makedirs(os.path.dirname(tool_path), exist_ok=True)
     with open(tool_path, "wb") as f:
         f.write(b"#!/system/bin/sh\necho ok\n")

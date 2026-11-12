@@ -3,6 +3,8 @@ import os
 import pytest
 from httpx import AsyncClient
 
+from app.config import get_settings
+
 
 @pytest.mark.asyncio
 async def test_list_tools_empty(client: AsyncClient, admin_token: str):
@@ -19,9 +21,7 @@ async def test_list_tools_empty(client: AsyncClient, admin_token: str):
 @pytest.mark.asyncio
 async def test_upload_and_delete_tool(client: AsyncClient, admin_token: str):
     """TC-TOOL-002: 管理员上传并删除工具。"""
-    tool_path = os.path.join(
-        os.path.dirname(__file__), "..", "storage", "tools", "test_upload_tool"
-    )
+    tool_path = os.path.join(get_settings().TOOLS_PATH, "test_upload_tool")
     os.makedirs(os.path.dirname(tool_path), exist_ok=True)
     with open(tool_path, "wb") as f:
         f.write(b"#!/system/bin/sh\necho ok\n")

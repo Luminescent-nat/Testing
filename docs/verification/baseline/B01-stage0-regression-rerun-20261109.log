@@ -1,0 +1,64 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 188 items
+
+test-platform\backend\tests\e2e\test_full_workflow.py .                  [  0%]
+test-platform\backend\tests\integration\test_ai_tasks_api.py ....        [  2%]
+test-platform\backend\tests\integration\test_auth_api.py ..........      [  7%]
+test-platform\backend\tests\integration\test_devices_api.py ......       [ 11%]
+test-platform\backend\tests\integration\test_knowledge_api.py .......... [ 16%]
+....                                                                     [ 18%]
+test-platform\backend\tests\integration\test_memory_api.py ....          [ 20%]
+test-platform\backend\tests\integration\test_modules_api.py ........     [ 25%]
+test-platform\backend\tests\integration\test_reports_api.py ............ [ 31%]
+                                                                         [ 31%]
+test-platform\backend\tests\integration\test_reports_stats_api.py .....  [ 34%]
+test-platform\backend\tests\integration\test_security_hardening.py ..... [ 36%]
+.                                                                        [ 37%]
+test-platform\backend\tests\integration\test_tasks_api.py ..........     [ 42%]
+test-platform\backend\tests\integration\test_tool_registry.py .......    [ 46%]
+test-platform\backend\tests\integration\test_tools_api.py .....          [ 48%]
+test-platform\backend\tests\integration\test_users_api.py .......        [ 52%]
+test-platform\backend\tests\integration\test_websocket.py ...            [ 54%]
+test-platform\backend\tests\unit\test_auth_service.py ......             [ 57%]
+test-platform\backend\tests\unit\test_device_exec_kill.py ...            [ 59%]
+test-platform\backend\tests\unit\test_device_heartbeat.py .....          [ 61%]
+test-platform\backend\tests\unit\test_e2e_environment_guard.py ..        [ 62%]
+test-platform\backend\tests\unit\test_execution_engine.py ............   [ 69%]
+test-platform\backend\tests\unit\test_judgement_engine.py ............   [ 75%]
+test-platform\backend\tests\unit\test_knowledge_converter.py ....        [ 77%]
+test-platform\backend\tests\unit\test_log_stream.py ......               [ 80%]
+test-platform\backend\tests\unit\test_memory_engine.py ......            [ 84%]
+test-platform\backend\tests\unit\test_parameter_renderer.py ........     [ 88%]
+test-platform\backend\tests\unit\test_report_generation.py ..            [ 89%]
+test-platform\backend\tests\unit\test_scheduler.py .......               [ 93%]
+test-platform\backend\tests\unit\test_startup_recovery.py .              [ 93%]
+test-platform\backend\tests\unit\test_storage_isolation.py .             [ 94%]
+test-platform\backend\tests\unit\test_task_executor.py ...........       [100%]
+
+============================== warnings summary ===============================
+tests/integration/test_websocket.py::test_websocket_ping_pong
+  C:\Users\MCTECH\AppData\Roaming\Python\Python312\site-packages\_pytest\unraisableexception.py:78: PytestUnraisableExceptionWarning: Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x0000021971F84680>
+  
+  Traceback (most recent call last):
+    File "C:\Program Files\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+      _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+                                 ^^^^^^^^
+    File "C:\Program Files\Python312\Lib\asyncio\base_subprocess.py", line 78, in __repr__
+      info.append(f'stdout={stdout.pipe}')
+                           ^^^^^^^^^^^^^
+    File "C:\Program Files\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+      info.append(f'fd={self._sock.fileno()}')
+                        ^^^^^^^^^^^^^^^^^^^
+    File "C:\Program Files\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+      raise ValueError("I/O operation on closed pipe")
+  ValueError: I/O operation on closed pipe
+  
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 188 passed, 1 warning in 92.28s (0:01:32) ==================

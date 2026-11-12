@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 1 item
+
+tests\integration\test_websocket.py F                                    [100%]
+
+================================== FAILURES ===================================
+__________________________ test_websocket_ping_pong ___________________________
+tests\integration\test_websocket.py:132: in test_websocket_ping_pong
+    assert main_module.ADBService() is mock_adb
+E   AssertionError: assert <app.services.device.ADBService object at 0x00000197C5149310> is <MagicMock spec='ADBService' id='1751356810416'>
+E    +  where <app.services.device.ADBService object at 0x00000197C5149310> = <class 'app.services.device.ADBService'>()
+E    +    where <class 'app.services.device.ADBService'> = <module 'app.main' from 'D:\\MCTEST\\test-platform\\backend\\tests\\..\\app\\main.py'>.ADBService
+=========================== short test summary info ===========================
+FAILED tests/integration/test_websocket.py::test_websocket_ping_pong - Assert...
+============================== 1 failed in 0.55s ==============================

@@ -93,8 +93,8 @@ async def _prepare_ws_context(test_db):
 
 
 @pytest_asyncio.fixture(name="ws_context")
-async def _ws_context_fixture(test_db):
-    """基于 test_db fixture 准备 WebSocket 测试上下文。"""
+async def _ws_context_fixture(test_db, mock_adb):
+    """基于测试数据库准备 WS 上下文，并阻止 lifespan 心跳访问真实 ADB。"""
     ctx = await _prepare_ws_context(test_db)
     yield ctx
 
@@ -123,8 +123,14 @@ def test_websocket_auth_timeout(ws_context, monkeypatch):
             assert exc_info.value.code == status.WS_1008_POLICY_VIOLATION
 
 
-def test_websocket_ping_pong(ws_context):
-    """WS-003: WebSocket ping/pong 正常。"""
+@pytest.mark.filterwarnings("error::pytest.PytestUnraisableExceptionWarning")
+def test_websocket_ping_pong(ws_context, mock_adb):
+    """WS-003: WebSocket ping/pong 正常，且 lifespan 心跳不得绕过 Mock ADB。"""
+    import app.main as main_module
+
+    # main.py 在导入时保存 ADBService 引用；此断言防止只 patch device 模块而漏掉 lifespan。
+    assert main_module.ADBService() is mock_adb
+
     with TestClient(app) as client:
         with client.websocket_connect(
             f"/ws/tasks/{ws_context['task_id']}"

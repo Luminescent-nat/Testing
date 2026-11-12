@@ -197,7 +197,18 @@ tests/e2e/
 
 - 后端服务已启动：http://localhost:8000
 - 前端开发服务已启动：http://localhost:3000
+- 后端必须使用一次性隔离数据库和独立 storage，不得连接正式库
 - 已安装 Chromium（执行 `npx playwright install chromium`）
+
+PowerShell 下先配置隔离数据库，并以相同 `DATABASE_URL` 启动后端：
+
+```powershell
+$env:E2E_DATABASE_URL = "sqlite+aiosqlite:///./e2e_test.db"
+$env:DATABASE_URL = $env:E2E_DATABASE_URL
+$env:E2E_TEST_MODE = "1"
+```
+
+`global-setup.mjs` 会拒绝缺失 `E2E_DATABASE_URL` 的运行；初始化脚本也会拒绝平台默认数据库，避免把现有同名账号重置为固定密码的管理员。
 
 ### 运行测试
 

@@ -1,0 +1,5 @@
+ADR files: 8
+Contract files: 6; JSON examples parsed: 45
+Trace rows: 31; range: [1]..[31]
+Relative links checked: 90
+PASS: ADR structure, contract JSON, R1-R31 coverage, links, no emoji

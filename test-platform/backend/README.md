@@ -168,13 +168,16 @@ python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))" >> 
 
 ### 2. 数据库初始化
 
-启动服务时会自动执行 `init_db()` 和 `seed_default_data()` 创建表并初始化默认数据。默认不自动创建用户，第一个通过 `/auth/register` 注册的用户自动成为 `admin`。如需为 E2E 测试准备固定管理员，可执行：
+启动服务时会自动执行 `init_db()` 和 `seed_default_data()` 创建表并初始化默认数据。默认不自动创建用户，第一个通过 `/auth/register` 注册的用户自动成为 `admin`。E2E 固定管理员脚本只允许操作显式配置的隔离数据库，PowerShell 示例：
 
-```bash
+```powershell
+$env:E2E_DATABASE_URL = "sqlite+aiosqlite:///./e2e_test.db"
+$env:DATABASE_URL = $env:E2E_DATABASE_URL
+$env:E2E_TEST_MODE = "1"
 python scripts/ensure_e2e_admin.py
 ```
 
-该脚本会创建/更新 `e2e-admin / e2e-admin-pass` 管理员账号。
+该脚本会创建/更新隔离库中的 `e2e-admin / e2e-admin-pass` 管理员账号；缺少隔离配置或指向平台默认数据库时会拒绝执行。运行 Playwright 时，后端也必须使用同一隔离数据库及独立 storage。
 
 对已有老库升级表结构，统一走 alembic 迁移（`alembic/` 目录，`alembic.ini` 为配置）：
 

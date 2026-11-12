@@ -210,7 +210,7 @@ python start.py
 - API 地址：http://localhost:8000
 - API 文档：http://localhost:8000/docs
 - 默认不自动创建用户，第一个通过 `/auth/register` 注册的用户自动成为 `admin`。
-- 为 E2E 测试准备固定管理员可执行：`python scripts/ensure_e2e_admin.py`（账号：`e2e-admin / e2e-admin-pass`）。
+- E2E 固定管理员脚本仅用于隔离环境；须按 `frontend/README.md` 配置 `E2E_DATABASE_URL`，脚本会拒绝未标记环境及平台默认数据库。
 
 ### 4.3 前端启动
 

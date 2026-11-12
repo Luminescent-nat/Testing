@@ -1,0 +1,24 @@
+{
+  "backup": "test-platform\\backups\\test_platform_20261109_091839.db",
+  "backup_sha256": "42b928d417063da534c2f941f45efa6c0fba1a6303a25ecf78119a075875de5e",
+  "backup_size": 1060864,
+  "restored_copy_sha256": "42b928d417063da534c2f941f45efa6c0fba1a6303a25ecf78119a075875de5e",
+  "backup_integrity": "ok",
+  "restored_copy_integrity": "ok",
+  "restored_copy_matches_backup": true,
+  "table_counts": {
+    "baselines": 19,
+    "devices": 26,
+    "failure_patterns": 6,
+    "golden_cases": 38,
+    "knowledge_entries": 1,
+    "test_items": 44,
+    "test_modules": 7,
+    "test_records": 98,
+    "test_tasks": 10,
+    "test_tools": 0,
+    "users": 5
+  },
+  "current_database_integrity": "ok",
+  "current_database_table_counts_match_backup": true
+}
