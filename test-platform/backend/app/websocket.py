@@ -9,6 +9,7 @@ from sqlalchemy.orm import joinedload
 
 from app.database import AsyncSessionLocal
 from app.models import TestTask, TestRecord, TestItem, TestModule
+from app.services import authorization, statistics
 from app.services.auth import decode_token
 
 logger = logging.getLogger(__name__)
@@ -88,8 +89,11 @@ async def build_progress_message(task_id: int) -> dict:
         )
 
         completed_results = []
+        pending_items = []
         current_item = None
+        all_statuses = []
         for record, item, module in records_result.all():
+            all_statuses.append(record.status)
             item_data = {
                 "id": item.id,
                 "record_id": record.id,
@@ -101,26 +105,32 @@ async def build_progress_message(task_id: int) -> dict:
                 "extracted_data": record.extracted_data,
             }
 
-            if record.status == "running":
-                current_item = item_data
-            else:
+            if record.status in statistics.FINAL_STATUSES:
                 completed_results.append(item_data)
+            elif record.status == "running":
+                current_item = item_data
+            else:  # pending
+                pending_items.append(item_data)
 
         total = len(task.selected_items) if task.selected_items else 0
-        completed = len([r for r in completed_results if r["status"] in ("pass", "fail", "skip", "error", "timeout")])
-        if current_item:
-            completed += 1
+        # V1-06：进度/完成数/五类 counts/通过率/result 统一走 statistics 聚合；
+        # running 与 pending 均不计入 completed_items，任务未完成 result 为 null。
+        stats = statistics.compute_task_statistics(task.status, total, all_statuses)
 
         return {
             "type": "test_progress",
             "task_id": task_id,
             "device_serial": task.device.serial_number if task.device else None,
             "data": {
-                "total_items": total,
-                "completed_items": completed,
-                "progress_percent": task.progress_percent,
+                "total_items": stats["total_items"] if stats["total_items"] else total,
+                "completed_items": stats["completed_items"],
+                "progress_percent": stats["progress_percent"],
                 "task_status": task.status,
+                "counts": stats["counts"],
+                "pass_rate": stats["pass_rate"],
+                "result": stats["result"],
                 "current_item": current_item,
+                "pending_items": pending_items,
                 "completed_results": completed_results,
             },
             "timestamp": task.completed_at.isoformat() if task.completed_at else (task.started_at.isoformat() if task.started_at else task.created_at.isoformat()),
@@ -194,10 +204,15 @@ async def task_progress_websocket(websocket: WebSocket, task_id: int):
     if not user:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="用户不存在")
         return
+    # 统一授权策略（契约 device-authorization §1）：disabled 用户一律 1008，
+    # 且仅任务创建者或管理员可订阅该任务进度与日志（与 REST get_current_user 同口径）。
+    if not authorization.is_active(user):
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="用户已被禁用")
+        return
     if not task:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="任务不存在")
         return
-    if user.role != "admin" and task.user_id != user.id:
+    if not authorization.can_read_task(user, task):
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="无权访问该任务")
         return
 

@@ -3,6 +3,8 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 from enum import Enum
 
+from app.services import statistics
+
 
 # ========== 用户模块 ==========
 
@@ -60,6 +62,8 @@ class DeviceStatus(str, Enum):
     ONLINE = "online"
     OFFLINE = "offline"
     TESTING = "testing"
+    # 契约 device §2：status 集合含 maintenance（既有 PUT status 已允许而枚举缺项的缺口补齐）
+    MAINTENANCE = "maintenance"
 
 
 class DeviceBase(BaseModel):
@@ -96,6 +100,8 @@ class DeviceResponse(DeviceBase):
     status: DeviceStatus
     owner_id: Optional[int]
     pc_identifier: str
+    # 乐观并发版本（契约 device-authorization-v1.0 §2：从 1 开始）
+    version: int = 1
     last_seen_at: Optional[datetime]
     created_at: datetime
 
@@ -314,6 +320,23 @@ class TestTaskCreate(BaseModel):
     # once 传 "YYYY-MM-DD HH:MM"，daily 传 "HH:MM"（服务器本地时间），immediate 忽略
     scheduled_time: Optional[str] = None
 
+    @field_validator("item_ids")
+    @classmethod
+    def _validate_item_ids(cls, v):
+        """契约 task-execution §2：item_ids 至少 1 个、正整数、无重复。
+
+        非法时抛 ValueError → RequestValidationError → 400 VALIDATION_ERROR
+        （details.field=item_ids）；测试项存在性/禁用由 API 层写前校验（item_ids.<下标>）。
+        """
+        if not isinstance(v, list) or not v:
+            raise ValueError("item_ids 至少选择一个测试项且为数组")
+        for item in v:
+            if isinstance(item, bool) or not isinstance(item, int) or item <= 0:
+                raise ValueError("item_ids 必须为正整数")
+        if len(set(v)) != len(v):
+            raise ValueError("item_ids 存在重复项")
+        return v
+
 
 class TestTaskResponse(BaseModel):
     id: int
@@ -322,6 +345,10 @@ class TestTaskResponse(BaseModel):
     status: TaskStatus
     progress_percent: int
     result: Optional[str] = None  # passed/failed/None(未出结果)
+    total_items: int = 0
+    completed_items: int = 0
+    counts: Dict[str, int] = Field(default_factory=dict)
+    pass_rate: Optional[float] = None  # number|null；分母 0 时为 null
     schedule_type: str = "immediate"
     scheduled_time: Optional[str] = None
     next_run_at: Optional[datetime] = None
@@ -339,20 +366,57 @@ class TestTaskResponse(BaseModel):
 
     @model_validator(mode='before')
     @classmethod
-    def compute_result(cls, data: Any):
-        """根据测试记录计算任务级结果：有失败/错误/超时为 failed，否则有通过为 passed。
+    def compute_aggregates(cls, data: Any):
+        """任务级 result / 进度 / 完成数 / 五类 counts / 通过率统一走 statistics 聚合。
 
-        仅从已加载（selectinload）的 records 关系读取，避免触发异步懒加载。
+        V1-06：只按已加载（selectinload）的 records 关系与任务 status 计算，避免异步
+        懒加载；任务未完成（pending/running/cancelled/平台 failed）一律 result=None，
+        绝不由已有记录推出业务 passed/failed。
         """
-        records = getattr(data, "__dict__", {}).get("records") if not isinstance(data, dict) else data.get("records")
-        if records is not None and not getattr(data, "result", None):
-            statuses = [r.status for r in records]
-            if any(s in ("fail", "error", "timeout") for s in statuses):
-                data.result = "failed"
-            elif any(s == "pass" for s in statuses):
-                data.result = "passed"
-        return data
-    
+        if isinstance(data, dict):
+            records = data.get("records")
+            status = data.get("status")
+            selected_items = data.get("selected_items") or []
+        else:
+            records = getattr(data, "__dict__", {}).get("records")
+            status = getattr(data, "status", None)
+            selected_items = getattr(data, "selected_items", None) or []
+
+        statuses = [r.status for r in records] if records is not None else []
+        stats = statistics.compute_task_statistics(status, len(selected_items), statuses)
+        computed = {
+            "result": stats["result"],
+            "total_items": stats["total_items"],
+            "completed_items": stats["completed_items"],
+            "counts": stats["counts"],
+            "progress_percent": stats["progress_percent"],
+            "pass_rate": stats["pass_rate"],
+        }
+
+        if isinstance(data, dict):
+            merged = dict(data)
+            merged.update(computed)
+            return merged
+
+        # ORM 对象：构造 dict 覆盖，避免就地改写映射列（progress_percent 等）造成脏会话
+        overlay: Dict[str, Any] = {}
+        for field_name in cls.model_fields:
+            if field_name in computed:
+                continue
+            try:
+                overlay[field_name] = getattr(data, field_name)
+            except AttributeError:
+                continue
+            except Exception:
+                continue
+        overlay.update(computed)
+        # 详情响应需要嵌套 device 对象（TestTaskDetail.device）
+        if "device" in cls.model_fields:
+            device = getattr(data, "device", None)
+            if device is not None:
+                overlay["device"] = device
+        return overlay
+
     class Config:
         from_attributes = True
 

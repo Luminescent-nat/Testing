@@ -4,11 +4,13 @@ from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Query
+from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc, or_, func
 
 from app.database import get_db
 from app.api.auth import get_current_user, get_current_admin
+from app.errors import build_error_body
 from app.models import User, KnowledgeEntry
 from app.schemas import (
     ResponseModel,
@@ -25,9 +27,23 @@ from app.services.knowledge_parser import parse_document, chunk_text
 from app.services.knowledge_embedder import get_embedder
 from app.services.knowledge_search import KnowledgeSearchService
 from app.services.knowledge_extractor import get_extractor
-from app.services.knowledge_converter import KnowledgeConverter
+from app.services.knowledge_converter import (
+    KnowledgeConverter,
+    RuleValidationError,
+    validate_conditional_rules,
+)
 
 router = APIRouter(prefix="/knowledge", tags=["测试知识库"])
+
+
+def _rule_validation_response(exc: RuleValidationError, message: str) -> JSONResponse:
+    """按契约错误外层返回 400 VALIDATION_ERROR，details.field 精确到条件字段路径。"""
+    return JSONResponse(
+        status_code=400,
+        content=build_error_body(
+            "VALIDATION_ERROR", message, {"field": exc.field, "reason": exc.reason}
+        ),
+    )
 
 KNOWLEDGE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "storage", "knowledge")
 os.makedirs(KNOWLEDGE_DIR, exist_ok=True)
@@ -501,6 +517,16 @@ async def preview_convert_knowledge(
             raise HTTPException(status_code=400, detail="未配置 LLM，无法生成预览")
         raise HTTPException(status_code=500, detail="AI 预览生成失败")
 
+    # 写前校验：rule 预览的 conditional_rules 必须符合契约 §1 唯一对象结构；
+    # 非法立即 400，且本接口不写任何测试资产。
+    if data.target_type.value == "rule":
+        try:
+            preview["conditional_rules"] = validate_conditional_rules(
+                preview.get("conditional_rules"), "preview_data.conditional_rules"
+            )
+        except RuleValidationError as exc:
+            return _rule_validation_response(exc, "转换预览参数不合法")
+
     return ResponseModel(
         code=200,
         data={
@@ -533,6 +559,9 @@ async def convert_knowledge(
             preview_data=data.preview_data,
             current_user_id=current_user.id
         )
+    except RuleValidationError as exc:
+        # 规则写前校验失败：400 契约错误外层，事务未写入任何资产
+        return _rule_validation_response(exc, "转换数据不合法")
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:

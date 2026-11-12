@@ -82,7 +82,7 @@ async def test_custom_parameter_legit_accepted(
             "custom_parameters": {"target": "https://example.com/a-b_c.zip"},
         },
     )
-    assert response.status_code == 200, response.text
+    assert response.status_code == 201, response.text
 
 
 @pytest.mark.asyncio
@@ -96,9 +96,21 @@ async def test_dashboard_stats_response_shape(
     )
     assert response.status_code == 200, response.text
     data = response.json()["data"]
-    assert set(data["today"].keys()) == {"tasks", "passed", "failed", "pass_rate"}
+    # reporting-v1.0 §5：today 必须直接含完整分列（更严，保留既有键）
+    assert set(data["today"].keys()) == {
+        "tasks", "passed", "failed", "pass_rate",
+        "completed", "no_result", "execution_failed", "cancelled", "running", "pending",
+    }
     assert data["today"]["tasks"] == 0
-    assert data["today"]["pass_rate"] is None  # 无完成任务时为 None 而非假数字
+    assert data["today"]["completed"] == 0
+    assert data["today"]["passed"] == 0
+    assert data["today"]["failed"] == 0
+    assert data["today"]["no_result"] == 0
+    assert data["today"]["execution_failed"] == 0
+    assert data["today"]["cancelled"] == 0
+    assert data["today"]["running"] == 0
+    assert data["today"]["pending"] == 0
+    assert data["today"]["pass_rate"] is None  # 无完成任务（分母 0）为 None 而非假数字
     assert data["devices"]["total"] == 1
     assert data["devices"]["online"] == 1
     assert "running_tasks" in data

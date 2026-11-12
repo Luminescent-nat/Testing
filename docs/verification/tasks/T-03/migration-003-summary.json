@@ -1,0 +1,119 @@
+{
+  "started": "2026-11-12T17:27:49+0800",
+  "source": "D:\\MCTEST\\test-platform\\backend\\test_platform.db",
+  "source_sha256_before": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789",
+  "source_sha256_after": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789",
+  "empty_counts": {
+    "test_tasks": 0,
+    "test_records": 0,
+    "devices": 1,
+    "users": 0
+  },
+  "legacy_pre": {
+    "test_tasks": 10,
+    "test_records": 98,
+    "devices": 26,
+    "users": 5
+  },
+  "legacy_after_upgrade": {
+    "test_tasks": 10,
+    "test_records": 98,
+    "devices": 26,
+    "users": 5
+  },
+  "legacy_after_downgrade": {
+    "test_tasks": 10,
+    "test_records": 98,
+    "devices": 26,
+    "users": 5
+  },
+  "legacy_after_reupgrade": {
+    "test_tasks": 10,
+    "test_records": 98,
+    "devices": 26,
+    "users": 5
+  },
+  "checks": [
+    {
+      "name": "empty:devices-version-column",
+      "ok": true,
+      "detail": "['id', 'serial_number', 'model', 'brand', 'android_version', 'sdk_version', 'cpu_abi', 'resolution', 'battery_level', 'status', 'owner_id', 'pc_identifier', 'last_seen_at', 'created_at', 'updated_at', 'board', 'hardware', 'ddr_info', 'emmc_info', 'wifi_chip', 'bt_chip', 'eth_interfaces', 'features', 'version']"
+    },
+    {
+      "name": "empty:default-version-1",
+      "ok": true,
+      "detail": "version=1"
+    },
+    {
+      "name": "empty:downgrade-drops-version",
+      "ok": true,
+      "detail": "['id', 'serial_number', 'model', 'brand', 'android_version', 'sdk_version', 'cpu_abi', 'resolution', 'battery_level', 'status', 'owner_id', 'pc_identifier', 'last_seen_at', 'created_at', 'updated_at', 'board', 'hardware', 'ddr_info', 'emmc_info', 'wifi_chip', 'bt_chip', 'eth_interfaces', 'features']"
+    },
+    {
+      "name": "empty:downgrade-keeps-device-row",
+      "ok": true,
+      "detail": "{'test_tasks': 0, 'test_records': 0, 'devices': 1, 'users': 0}"
+    },
+    {
+      "name": "empty:re-upgrade-restores-version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty:re-upgrade-keeps-device-row",
+      "ok": true,
+      "detail": "{'test_tasks': 0, 'test_records': 0, 'devices': 1, 'users': 0}"
+    },
+    {
+      "name": "legacy:copy-sha-matches-source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:pre-has-no-version-column",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:upgrade-adds-version-column",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:existing-devices-version-1",
+      "ok": true,
+      "detail": "n=26 sample=[1, 1, 1]"
+    },
+    {
+      "name": "legacy:upgrade-preserves-row-counts",
+      "ok": true,
+      "detail": "{'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}"
+    },
+    {
+      "name": "legacy:downgrade-drops-version-column",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:downgrade-preserves-row-counts",
+      "ok": true,
+      "detail": "{'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}"
+    },
+    {
+      "name": "legacy:re-upgrade-adds-version-column",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy:re-upgrade-preserves-row-counts",
+      "ok": true,
+      "detail": "{'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5} -> {'test_tasks': 10, 'test_records': 98, 'devices': 26, 'users': 5}"
+    },
+    {
+      "name": "source:sha256-unchanged",
+      "ok": true,
+      "detail": "2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 -> 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789"
+    }
+  ],
+  "result": "PASS"
+}

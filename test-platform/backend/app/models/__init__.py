@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime, timezone
@@ -43,6 +43,8 @@ class Device(Base):
     status = Column(String(20), nullable=False, default="offline")  # online/offline/testing
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     pc_identifier = Column(String(255), nullable=False)
+    # 乐观并发版本（设备改派契约 §2/§6）：从 1 开始，条件更新时递增
+    version = Column(Integer, nullable=False, default=1, server_default="1")
     last_seen_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -190,6 +192,9 @@ class TestTask(Base):
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    # 软删除标记（契约 task-execution §8）：终态任务删除时写入 UTC 时间；
+    # 默认列表排除非空值，记录/报告引用保留可追溯。由 004_task_deleted_at 迁移提供。
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
     
     # 关系
     user = relationship("User", back_populates="tasks")
@@ -314,3 +319,34 @@ class KnowledgeEntry(Base):
 
     def __repr__(self):
         return f"<KnowledgeEntry(id={self.id}, title={self.title}, type={self.entry_type})>"
+
+
+class IdempotencyRecord(Base):
+    """写操作幂等记录：保存 (user_id, operation, idempotency_key) 的首次响应。
+
+    契约 docs/contracts/README.md 第 3 节：任务创建与失败重跑使用
+    Idempotency-Key；UNIQUE(user_id, operation, idempotency_key) 由数据库
+    唯一约束兜底并发重复，同一键不同请求体返回 409（request_sha256 比对）。
+    """
+    __tablename__ = "idempotency_records"
+    __table_args__ = (
+        UniqueConstraint(
+            "user_id", "operation", "idempotency_key",
+            name="uq_idempotency_user_op_key",
+        ),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    operation = Column(String(50), nullable=False)  # task_create / task_rerun 等
+    idempotency_key = Column(String(128), nullable=False)
+    request_sha256 = Column(String(64), nullable=False)  # 规范化请求体摘要
+    response_json = Column(JSON, nullable=True)  # 首次成功响应（None=仍在执行中）
+    task_id = Column(Integer, ForeignKey("test_tasks.id"), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    def __repr__(self):
+        return (
+            f"<IdempotencyRecord(id={self.id}, user_id={self.user_id}, "
+            f"operation={self.operation}, key={self.idempotency_key})>"
+        )

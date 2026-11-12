@@ -3,6 +3,7 @@
 """
 import asyncio
 import os
+import shutil
 import sys
 import tempfile
 from contextlib import asynccontextmanager
@@ -21,6 +22,24 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 # 测试环境自包含配置：应用要求 SECRET_KEY 非空（lifespan 校验），
 # 测试统一使用固定测试密钥，与生产密钥无关。
 os.environ.setdefault("SECRET_KEY", "test-only-secret-key-not-for-production")
+
+# 测试数据库隔离（V1-05）：部分用例用 `with TestClient(app)` 会真实触发 lifespan →
+# app.database.init_db（生产迁移路径）。必须在导入 app 之前把 DATABASE_URL 指向
+# 会话级临时 SQLite 文件，确保 init_db 绝不触碰真实 backend/test_platform.db。
+# 未显式设置 DATABASE_URL 时才启用（尊重外部显式配置）。
+if "DATABASE_URL" not in os.environ:
+    _PYTEST_SESSION_DB_DIR = tempfile.mkdtemp(prefix="pytest_session_db_")
+    os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///" + os.path.join(
+        _PYTEST_SESSION_DB_DIR, "session.db"
+    ).replace("\\", "/")
+    os.environ["_PYTEST_SESSION_DB_DIR"] = _PYTEST_SESSION_DB_DIR
+
+
+def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
+    """会话结束清理 pytest 会话级临时数据库目录（不触碰真实库）。"""
+    session_dir = os.environ.get("_PYTEST_SESSION_DB_DIR")
+    if session_dir:
+        shutil.rmtree(session_dir, ignore_errors=True)
 
 from app.config import get_settings  # noqa: E402
 from app.database import AsyncSessionLocal, Base, engine, get_db  # noqa: E402

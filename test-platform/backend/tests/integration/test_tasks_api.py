@@ -28,7 +28,8 @@ async def test_create_task_success(
             "custom_parameters": {},
         },
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
+    assert response.json()["code"] == 201
     data = response.json()["data"]
     assert data["status"] == "pending"
     assert data["device_serial"] == sample_device.serial_number
@@ -56,9 +57,9 @@ async def test_create_task_device_offline(
             "item_ids": [sample_item.id],
         },
     )
-    assert response.status_code == 400
+    assert response.status_code == 409
     err = response.json()
-    assert err["code"] == "VALIDATION_ERROR"
+    assert err["code"] == "CONFLICT"
     assert "离线" in err["message"]
 
 
@@ -89,7 +90,7 @@ async def test_create_task_device_busy(
         },
     )
     # 排队创建成功，任务初始为 pending，由执行器设备锁串行化执行
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["data"]["status"] == "pending"
 
 
@@ -97,7 +98,7 @@ async def test_create_task_device_busy(
 async def test_create_task_invalid_item(
     client: AsyncClient, admin_token: str, sample_device: Device
 ):
-    """TC-TASK-004: 不存在的测试项应 404。"""
+    """TC-TASK-004: 不存在的测试项应 400（R14：非法 item_id 为 VALIDATION_ERROR）。"""
     response = await client.post(
         "/api/v1/tasks",
         headers={"Authorization": f"Bearer {admin_token}"},
@@ -107,7 +108,10 @@ async def test_create_task_invalid_item(
             "item_ids": [99999],
         },
     )
-    assert response.status_code == 404
+    assert response.status_code == 400
+    err = response.json()
+    assert err["code"] == "VALIDATION_ERROR"
+    assert err["details"]["field"] == "item_ids.0"
 
 
 @pytest.mark.asyncio
@@ -282,8 +286,9 @@ async def test_rerun_failed_creates_task_with_failed_items_only(
         f"/api/v1/tasks/{task.id}/rerun-failed",
         headers={"Authorization": f"Bearer {admin_token}"},
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
     data = response.json()["data"]
+    assert response.json()["code"] == 201
     assert data["name"] == "RerunSrc（重跑）"
     assert data["device_serial"] == sample_device.serial_number
 

@@ -9,6 +9,7 @@ from app.api.auth import get_current_user
 from app.models import User, Device, TestTask
 from app.schemas import ResponseModel
 from app.services.task_executor import TaskExecutor
+from app.services.authorization import ensure_can_create_task_on_device
 from app.services.nl_task_planner import NLTaskPlanner
 from app.services.llm_client import LLMClient
 
@@ -65,11 +66,19 @@ async def create_task_from_natural_language(
     if not device:
         raise HTTPException(status_code=404, detail="设备不存在")
 
+    # 统一设备授权（与手动创建同一策略，写前校验）：普通用户仅 owner=本人且 PC 一致，
+    # 他人/null/PC 不一致 403，任何任务/设备状态写入前拒绝。
+    ensure_can_create_task_on_device(current_user, device)
+
     if device.status == "testing":
         raise HTTPException(status_code=409, detail="设备正在执行其他任务")
 
+    # 设备不可用属冲突（契约 task-execution §2/V1-04，与手动创建 D2 一致）：409 而非 400
     if device.status == "offline":
-        raise HTTPException(status_code=400, detail="设备离线")
+        raise HTTPException(status_code=409, detail="设备离线")
+
+    if device.status == "maintenance":
+        raise HTTPException(status_code=409, detail="设备维护中")
 
     # 创建任务，并保存 AI 规划快照
     task = TestTask(

@@ -1,0 +1,35 @@
+真实存量库结构漂移只读诊断（V1-05 / task-11）
+==============================================================================
+源库: D:\MCTEST\test-platform\backend\test_platform.db
+源库 SHA-256(诊断前): 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+业务表(11): ['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users']
+存在 alembic_version: False
+关键表行数: {'users': 5, 'devices': 26, 'test_tasks': 10, 'test_records': 98, 'test_items': 44, 'test_modules': 7}
+
+说明：诊断全程只读（sqlite mode=ro），不执行 stamp/upgrade/downgrade，不修改真实库；下列差异即生产 init_db 拒绝 stamp 的依据。
+
+[A] 与 head（app.models）的 DDL 差异
+  - 缺少表: idempotency_records
+  - 表 knowledge_entries 列 entry_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'document'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 列 fail_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 hit_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 pass_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 source_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'manual'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 列 status 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'draft'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 索引不一致: db=[('ix_knowledge_entries_category', ('category',), False), ('ix_knowledge_entries_entry_type', ('entry_type',), False), ('ix_knowledge_entries_id', ('id',), False), ('ix_knowledge_entries_status', ('status',), False)] models=[('ix_knowledge_entries_id', ('id',), False)]
+  - 表 test_tasks 列 plan 定义不一致: db={'type': 'TEXT', 'nullable': True, 'default': None} models={'type': 'JSON', 'nullable': True, 'default': None}
+  - 表 test_tasks 列 schedule_type 定义不一致: db={'type': 'VARCHAR(20)', 'nullable': False, 'default': "'immediate'"} models={'type': 'VARCHAR(20)', 'nullable': False, 'default': None}
+
+[B] 与初始 revision 0817df993d8b 的 DDL 差异
+  - 表 knowledge_entries 列 entry_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'document'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 列 fail_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 hit_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 pass_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}
+  - 表 knowledge_entries 列 source_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'manual'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 列 status 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'draft'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}
+  - 表 knowledge_entries 索引不一致: db=[('ix_knowledge_entries_category', ('category',), False), ('ix_knowledge_entries_entry_type', ('entry_type',), False), ('ix_knowledge_entries_id', ('id',), False), ('ix_knowledge_entries_status', ('status',), False)] models=[('ix_knowledge_entries_id', ('id',), False)]
+  - 表 test_tasks 列 plan 定义不一致: db={'type': 'TEXT', 'nullable': True, 'default': None} models={'type': 'JSON', 'nullable': True, 'default': None}
+  - 表 test_tasks 列 schedule_type 定义不一致: db={'type': 'VARCHAR(20)', 'nullable': False, 'default': "'immediate'"} models={'type': 'VARCHAR(20)', 'nullable': False, 'default': None}
+
+源库 SHA-256(诊断后): 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+源库未被修改: True

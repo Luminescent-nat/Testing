@@ -1,7 +1,7 @@
 """T-01：统一接口错误外层与目标路由适配的集成测试。
 
 错误码真实触发方式（不修改生产代码制造错误）：
-- 400 VALIDATION_ERROR：业务校验（离线设备/重跑无失败项）与 RequestValidationError
+- 400 VALIDATION_ERROR：业务校验（重跑无失败项）与 RequestValidationError
   （缺字段、数组元素类型错误、query 参数类型错误）；
 - 401 UNAUTHENTICATED：无效 token、缺少 token（HTTPBearer 403 归并 401）；
 - 403 FORBIDDEN：非 owner 查看/取消他人任务、普通用户访问管理员接口；
@@ -67,18 +67,18 @@ def auth(token):
     return {"Authorization": f"Bearer {token}"}
 
 
-# ---------------------------------------------------------------- 400 VALIDATION_ERROR
+# ---------------------------------------------------------------- 409 CONFLICT（设备不可用）
 @pytest.mark.asyncio
-async def test_business_400_offline_device(client: AsyncClient, admin_token: str,
+async def test_business_409_offline_device(client: AsyncClient, admin_token: str,
                                            sample_device: Device, sample_item: TestItem):
-    """业务校验 400：离线设备创建任务，外层为契约结构且 message 保留中文安全摘要。"""
+    """设备不可用属冲突（契约 task-execution §2/V1-04）：离线设备创建任务 → 409 CONFLICT。"""
     res = await client.put(f"/api/v1/devices/{sample_device.serial_number}/status",
                            headers=auth(admin_token), json={"status": "offline"})
     assert res.status_code == 200
     response = await client.post("/api/v1/tasks", headers=auth(admin_token),
                                  json={"device_serial": sample_device.serial_number,
                                        "item_ids": [sample_item.id]})
-    body = assert_error_contract(response, 400, "VALIDATION_ERROR")
+    body = assert_error_contract(response, 409, "CONFLICT")
     assert "离线" in body["message"]
     assert body["details"] == {}
 
@@ -142,7 +142,7 @@ async def test_403_non_owner_task(client: AsyncClient, admin_token: str, normal_
     created = await client.post("/api/v1/tasks", headers=auth(admin_token),
                                 json={"device_serial": sample_device.serial_number,
                                       "item_ids": [sample_item.id]})
-    assert created.status_code == 200
+    assert created.status_code == 201
     task_id = created.json()["data"]["id"]
 
     response = await client.get(f"/api/v1/tasks/{task_id}", headers=auth(normal_token))
@@ -286,10 +286,10 @@ async def test_reruns_alias_delegates_rerun(client: AsyncClient, admin_token: st
     await test_db.commit()
 
     response = await client.post(f"/api/v1/tasks/{task.id}/reruns", headers=auth(admin_token))
-    assert response.status_code == 200, response.text
+    assert response.status_code == 201, response.text
     body = response.json()
     assert set(body) == {"code", "message", "data"}
-    assert body["code"] == 200
+    assert body["code"] == 201
     assert body["data"]["name"] == "RerunSrc（重跑）"
     assert body["data"]["device_serial"] == sample_device.serial_number
 

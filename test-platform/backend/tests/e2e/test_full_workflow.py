@@ -65,7 +65,7 @@ async def test_full_workflow(
             "item_ids": item_ids,
         },
     )
-    assert task_res.status_code == 200
+    assert task_res.status_code == 201
     task_id = task_res.json()["data"]["id"]
 
     # 等待 API 启动的后台任务完成

@@ -96,3 +96,22 @@
 complete。全部说明、合规回滚路径演练（运维层）、补做路径与新增的「干净空库 FK 崩溃」
 发现/修复见增补记录：`docs/verification/tasks/T-02/result-addendum-RR-T02.md`（新文件，
 本文件原有内容与结论未改动，`migration-summary.json` 保持如实）。
+
+---
+
+## 9. V1-05 / task-11 增补 — 2026-11-12（指针，本节不改变上文结论）
+
+task-11（migration-idempotency）在初始迁移与 models 对齐的基础上新增 additive revision
+`002_idempotency`、幂等数据模型/服务、启动迁移三态（空库 upgrade head / 无版本先完整 DDL
+指纹比对再 stamp / 有版本 upgrade）、初始迁移 `downgrade base` 非空库保护、强化
+`verify_migrations.py`（DDL 指纹/WAL 一致性备份/revision 级回滚数据保留/downgrade base 保护/
+非法 FK 与重复唯一键）与 `tests/unit/test_v1_migration.py`。规范化存量副本上的 revision 级
+回滚演练（head→downgrade 0817 仅删幂等表、test_tasks/test_records 10/98 保留→再 upgrade）
+为 R20「回滚恢复原结构且保留原数据」补交新证据，供独立复评。
+
+真实存量库 `backend/test_platform.db` 存在结构漂移，生产新 `init_db` 会明确失败、拒绝
+stamp（符合 V1-05），**未修改真实库**；上线前运维对账方案 A/B 待用户选择。详见增补记录：
+`docs/verification/tasks/T-02/result-addendum-V1-05.md`，原始日志
+`verify-migrations-v1-20261112.log`、`migration-summary-v1.json`、
+`pytest-v1-migration-20261112.log`、`regression-full-v1-20261112.log`、
+`real-db-drift-diagnostic-20261112.txt`。本文件既有 §1～§8 内容与「不通过」结论未改动。

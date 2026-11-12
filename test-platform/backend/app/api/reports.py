@@ -19,6 +19,8 @@ from app.api.auth import get_current_user
 from app.models import User, TestTask, TestRecord, TestItem, TestModule
 from app.schemas import ExportFormat, ResponseModel
 from app.models import FailurePattern
+from app.services.authorization import ensure_can_read_task
+from app.services import statistics
 from app.services.knowledge_matcher import get_device_knowledge
 
 router = APIRouter(prefix="/reports", tags=["报告管理"])
@@ -71,6 +73,25 @@ def _build_verdict_basis(status: str, item: TestItem, record: TestRecord) -> str
 logger = logging.getLogger(__name__)
 
 
+def _format_pass_rate(summary: dict) -> str:
+    """渲染用通过率文本：number → ``xx.x%``；null（无有效分母）→ ``—``。
+
+    契约要求 API/WS/报告 pass_rate 为 number|null；仅在展示层格式化为字符串。
+    """
+    rate = summary.get("pass_rate")
+    return "—" if rate is None else f"{rate}%"
+
+
+def _fmt_metric(value) -> str:
+    """数值展示：仅缺失（None）显示“-”，真实 0 必须显示为 0（R22/ZERO-01）。"""
+    return "-" if value is None else str(value)
+
+
+def _fmt_pct(value) -> str:
+    """百分比数值展示：None → '-'，0 → '0%'。"""
+    return "-" if value is None else f"{value}%"
+
+
 def _task_report_dir(task_id: int) -> str:
     """任务报告落盘目录：REPORTS_PATH/task_{id}。"""
     return os.path.join(get_settings().REPORTS_PATH, f"task_{task_id}")
@@ -92,13 +113,12 @@ def _read_report_file(file_path: str) -> bytes:
 
 
 async def _check_report_permission(db: AsyncSession, task_id: int, current_user: User) -> None:
-    """返回落盘文件前的轻量权限校验（口径与 _build_report 一致）。"""
+    """返回落盘文件前的轻量权限校验（统一授权：active + 创建者/管理员）。"""
     result = await db.execute(select(TestTask).where(TestTask.id == task_id))
     task = result.scalar_one_or_none()
     if not task:
         raise HTTPException(status_code=404, detail="任务不存在")
-    if current_user.role != "admin" and task.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="无权限查看报告")
+    ensure_can_read_task(current_user, task)
 
 
 def _render_report_content(report_data: dict, format: ExportFormat) -> bytes:
@@ -184,8 +204,8 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
     if not task:
         raise HTTPException(status_code=404, detail="任务不存在")
 
-    if current_user.role != "admin" and task.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="无权限查看报告")
+    # 统一授权：active 用户 + 创建者/管理员，否则 403（不泄露他人报告）
+    ensure_can_read_task(current_user, task)
 
     records_result = await db.execute(
         select(TestRecord, TestItem, TestModule)
@@ -209,12 +229,19 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
     else:
         total_duration = "-"
 
-    passed = sum(1 for row in record_rows if row[0].status == "pass")
-    failed = sum(1 for row in record_rows if row[0].status in ("fail", "timeout"))
-    skipped = sum(1 for row in record_rows if row[0].status == "skip")
-    error = sum(1 for row in record_rows if row[0].status == "error")
-    total = len(record_rows)
-    pass_rate = f"{passed / total * 100:.1f}%" if total > 0 else "0%"
+    record_statuses = [row[0].status for row in record_rows]
+    # V1-06：报告 summary 与通过率统一走 statistics，skip 不进分母，零分母为 number null。
+    record_summary = statistics.summarize_records(record_statuses)
+    passed = record_summary["passed"]
+    failed = record_summary["failed"]
+    skipped = record_summary["skipped"]
+    error = record_summary["error"]
+    total = record_summary["total_items"]
+    pass_rate = record_summary["pass_rate"]
+
+    # 任务级状态/业务结果：与任务详情、WS、Dashboard 同一聚合口径（看 status）
+    task_n = len(task.selected_items) if task.selected_items else len(record_rows)
+    task_stats = statistics.compute_task_statistics(task.status, task_n, record_statuses)
 
     # 加载设备相关知识库洞察
     knowledge_insights = []
@@ -276,6 +303,8 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
         "report_id": f"RPT-{task.created_at.strftime('%Y%m%d')}-{task.id:03d}",
         "task_id": task.id,
         "task_name": task.name,
+        "task_status": task.status,
+        "task_result": task_stats["result"],
         "created_at": task.created_at,
         "completed_at": task.completed_at,
         "total_duration": total_duration,
@@ -299,6 +328,8 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
             "failed": failed,
             "skipped": skipped,
             "error": error,
+            "timeout": record_summary["timeout"],
+            "counts": record_summary["counts"],
             "pass_rate": pass_rate
         },
         "knowledge_insights": knowledge_insights,
@@ -317,18 +348,24 @@ async def _build_multi_task_report(
         try:
             report = await _build_report(db, task_id, current_user)
             reports.append(report)
-        except HTTPException:
+        except HTTPException as exc:
+            # 越权不得静默跳过（契约/验证规则 3.1）：请求集中含无权限任务时整体 403；
+            # 仅不存在的任务按原语义跳过。
+            if exc.status_code == 403:
+                raise
             continue
 
     if not reports:
         raise HTTPException(status_code=404, detail="未找到可汇总的任务报告")
 
     total_items = sum(r["summary"]["total_items"] for r in reports)
-    passed = sum(r["summary"]["passed"] for r in reports)
-    failed = sum(r["summary"]["failed"] for r in reports)
-    skipped = sum(r["summary"]["skipped"] for r in reports)
-    error = sum(r["summary"]["error"] for r in reports)
-    pass_rate = f"{passed / total_items * 100:.1f}%" if total_items > 0 else "0%"
+    # 批次报告：逐项累加五类计数后再用总有效分母计算通过率（不能平均各任务百分比）
+    agg_counts = statistics.aggregate_counts(r["summary"].get("counts", {}) for r in reports)
+    passed = agg_counts["pass"]
+    failed = agg_counts["fail"] + agg_counts["timeout"]
+    skipped = agg_counts["skip"]
+    error = agg_counts["error"]
+    pass_rate = statistics.compute_pass_rate(agg_counts)
 
     module_stats = {}
     all_results = []
@@ -338,20 +375,19 @@ async def _build_multi_task_report(
             if module_name not in module_stats:
                 module_stats[module_name] = {
                     "total": 0, "passed": 0, "failed": 0, "skipped": 0, "error": 0,
-                    "running": 0, "pending": 0
+                    "timeout": 0, "running": 0, "pending": 0,
+                    "counts": {s: 0 for s in statistics.FINAL_STATUSES},
                 }
-            status_map = {
-                "pass": "passed",
-                "fail": "failed",
-                "timeout": "failed",
-                "skip": "skipped",
-                "error": "error",
-                "running": "running",
-                "pending": "pending",
-                "unknown": "error"
-            }
+            counts = module_stats[module_name]["counts"]
+            status = result["status"]
+            if status in statistics.FINAL_STATUSES:
+                counts[status] += 1
+            elif status == "running":
+                module_stats[module_name]["running"] += 1
+            elif status == "pending":
+                module_stats[module_name]["pending"] += 1
+
             module_stats[module_name]["total"] += 1
-            module_stats[module_name][status_map.get(result["status"], "error")] += 1
 
             all_results.append({
                 **result,
@@ -360,6 +396,15 @@ async def _build_multi_task_report(
                 "device_model": report["device"]["model"],
                 "device_serial": report["device"]["serial_number"]
             })
+
+    for stats_entry in module_stats.values():
+        c = stats_entry["counts"]
+        stats_entry["passed"] = c["pass"]
+        stats_entry["failed"] = c["fail"] + c["timeout"]
+        stats_entry["skipped"] = c["skip"]
+        stats_entry["error"] = c["error"]
+        stats_entry["timeout"] = c["timeout"]
+        stats_entry["pass_rate"] = statistics.compute_pass_rate(c)
 
     return {
         "report_version": "1.1",
@@ -378,6 +423,8 @@ async def _build_multi_task_report(
             "failed": failed,
             "skipped": skipped,
             "error": error,
+            "timeout": agg_counts["timeout"],
+            "counts": agg_counts,
             "pass_rate": pass_rate
         },
         "module_statistics": module_stats,
@@ -481,7 +528,7 @@ def _generate_markdown(report_data: dict) -> str:
     lines.append("|---|---|---|---|---|---|\n")
     lines.append(
         f"| {summary['total_items']} | {summary['passed']} | {summary['failed']} | "
-        f"{summary['skipped']} | {summary['error']} | {summary['pass_rate']} |\n"
+        f"{summary['skipped']} | {summary['error']} | {_format_pass_rate(summary)} |\n"
     )
 
     if not is_batch:
@@ -511,9 +558,9 @@ def _generate_markdown(report_data: dict) -> str:
             lines.append("|---|---|---|---|---|---|---|---|\n")
             for p in perf_results:
                 lines.append(
-                    f"| {p['name']} | {p['status']} | {p['bw_mbps'] or '-'} | "
-                    f"{p['iops'] or '-'} | {p['max_iops'] or '-'} | {p['lat_p999_us'] or '-'} | "
-                    f"{p['cpu_total'] or '-'} | {p['emmc_util'] or '-'} |\n"
+                    f"| {p['name']} | {p['status']} | {_fmt_metric(p['bw_mbps'])} | "
+                    f"{_fmt_metric(p['iops'])} | {_fmt_metric(p['max_iops'])} | {_fmt_metric(p['lat_p999_us'])} | "
+                    f"{_fmt_metric(p['cpu_total'])} | {_fmt_metric(p['emmc_util'])} |\n"
                 )
 
         # 稳定性测试
@@ -527,10 +574,10 @@ def _generate_markdown(report_data: dict) -> str:
                 lines.append(f"### {s['name']}\n\n")
                 lines.append("| 指标 | 数值 |\n|---|---|\n")
                 lines.append(f"| 状态 | {s['status']} |\n")
-                lines.append(f"| BW 均值(MB/s) | {s['bw_mean'] or '-'} |\n")
-                lines.append(f"| BW 变异系数 CV | {s['bw_cv'] or '-'}% |\n")
-                lines.append(f"| IOPS 均值 | {s['iops_mean'] or '-'} |\n")
-                lines.append(f"| IOPS 变异系数 CV | {s['iops_cv'] or '-'}% |\n")
+                lines.append(f"| BW 均值(MB/s) | {_fmt_metric(s['bw_mean'])} |\n")
+                lines.append(f"| BW 变异系数 CV | {_fmt_pct(s['bw_cv'])} |\n")
+                lines.append(f"| IOPS 均值 | {_fmt_metric(s['iops_mean'])} |\n")
+                lines.append(f"| IOPS 变异系数 CV | {_fmt_pct(s['iops_cv'])} |\n")
                 lines.append(f"| 曲线采样点数 | {s['curve_points']} |\n")
                 if s['chart_base64']:
                     lines.append(f"\n![{s['name']}]({s['chart_base64']})\n\n")
@@ -566,7 +613,7 @@ def _generate_markdown(report_data: dict) -> str:
         if isinstance(actual, dict):
             actual_str = json.dumps(actual, ensure_ascii=False, indent=2)
         else:
-            actual_str = actual or '-'
+            actual_str = json.dumps(actual, ensure_ascii=False, indent=2) if isinstance(actual, dict) else _fmt_metric(actual)
         lines.append(f"- **实际结果**：\n\n```\n{actual_str}\n```\n\n")
         lines.append(f"- **判定依据**：{r.get('verdict_basis') or ''}\n")
         if r.get('suggested_fix'):
@@ -653,7 +700,7 @@ def _generate_word(report_data: dict) -> bytes:
     add_table(doc,
               ["总项数", "通过", "失败", "跳过", "错误", "通过率"],
               [[summary["total_items"], summary["passed"], summary["failed"],
-                summary["skipped"], summary["error"], summary["pass_rate"]]])
+                summary["skipped"], summary["error"], _format_pass_rate(summary)]])
 
     if is_batch and report_data.get("module_statistics"):
         doc.add_heading("模块统计", level=1)
@@ -756,7 +803,7 @@ def _generate_word(report_data: dict) -> bytes:
                       ["前置条件", r.get("precondition") or "无特殊前置条件"],
                       ["测试步骤", r.get("steps") or "未配置"],
                       ["预期结果", r.get("expected_result") or "未配置"],
-                      ["实际结果", json.dumps(r.get("actual_result"), ensure_ascii=False) if isinstance(r.get("actual_result"), dict) else (r.get("actual_result") or "-")],
+                      ["实际结果", json.dumps(r.get("actual_result"), ensure_ascii=False) if isinstance(r.get("actual_result"), dict) else _fmt_metric(r.get("actual_result"))],
                       ["判定依据", r.get("verdict_basis") or ""],
                       ["修复建议", r.get("suggested_fix") or ""],
                       ["失败原因", r.get("fail_reason") or ""],
@@ -861,7 +908,7 @@ def _generate_html(report_data: dict) -> str:
             <td>{summary['failed']}</td>
             <td>{summary['skipped']}</td>
             <td>{summary['error']}</td>
-            <td>{summary['pass_rate']}</td>
+            <td>{_format_pass_rate(summary)}</td>
         </tr>
     </table>
     """
@@ -913,12 +960,12 @@ def _generate_html(report_data: dict) -> str:
             <tr>
                 <td>{p['name']}</td>
                 <td class="{p['status']}">{p['status']}</td>
-                <td>{p['bw_mbps'] or '-'}</td>
-                <td>{p['iops'] or '-'}</td>
-                <td>{p['max_iops'] or '-'}</td>
-                <td>{p['lat_p999_us'] or '-'}</td>
-                <td>{p['cpu_total'] or '-'}</td>
-                <td>{p['emmc_util'] or '-'}</td>
+                <td>{_fmt_metric(p['bw_mbps'])}</td>
+                <td>{_fmt_metric(p['iops'])}</td>
+                <td>{_fmt_metric(p['max_iops'])}</td>
+                <td>{_fmt_metric(p['lat_p999_us'])}</td>
+                <td>{_fmt_metric(p['cpu_total'])}</td>
+                <td>{_fmt_metric(p['emmc_util'])}</td>
             </tr>
             """
         perf_html = f"""
@@ -944,10 +991,10 @@ def _generate_html(report_data: dict) -> str:
                 <table>
                     <tr><th>指标</th><th>数值</th></tr>
                     <tr><td>状态</td><td class="{s['status']}">{s['status']}</td></tr>
-                    <tr><td>BW 均值(MB/s)</td><td>{s['bw_mean'] or '-'}</td></tr>
-                    <tr><td>BW 变异系数 CV</td><td>{s['bw_cv'] or '-'}%</td></tr>
-                    <tr><td>IOPS 均值</td><td>{s['iops_mean'] or '-'}</td></tr>
-                    <tr><td>IOPS 变异系数 CV</td><td>{s['iops_cv'] or '-'}%</td></tr>
+                    <tr><td>BW 均值(MB/s)</td><td>{_fmt_metric(s['bw_mean'])}</td></tr>
+                    <tr><td>BW 变异系数 CV</td><td>{_fmt_pct(s['bw_cv'])}</td></tr>
+                    <tr><td>IOPS 均值</td><td>{_fmt_metric(s['iops_mean'])}</td></tr>
+                    <tr><td>IOPS 变异系数 CV</td><td>{_fmt_pct(s['iops_cv'])}</td></tr>
                     <tr><td>曲线采样点数</td><td>{s['curve_points']}</td></tr>
                 </table>
                 <p><strong>BW/IOPS 曲线图：</strong></p>
@@ -984,7 +1031,7 @@ def _generate_html(report_data: dict) -> str:
         if isinstance(actual, dict):
             actual_html = '<pre class="json-preview">' + json.dumps(actual, ensure_ascii=False, indent=2) + '</pre>'
         else:
-            actual_html = f'<p>{actual or "-"}</p>'
+            actual_html = f'<p>{_fmt_metric(actual)}</p>'
         verdict = r.get('verdict_basis') or ''
         suggested_fix = r.get('suggested_fix')
 
@@ -1163,50 +1210,67 @@ async def get_stats_trend(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """最近 N 天任务趋势：按 completed_at（无则 created_at）日期聚合每天任务数、通过数、失败数。
+    """最近 N 天任务趋势：按 completed_at（无则 created_at）日期聚合。
 
-    通过/失败口径与任务 result 一致：记录中有 fail/error/timeout 为失败，否则有 pass 为通过。
-    非管理员仅统计自己的任务（与汇总报告一致）。
+    V1-06 统一口径：passed/failed 仅取 ``status=completed`` 且业务 result 为
+    passed/failed 的任务；全 skip / 零记录（no_result）、平台 failed、cancelled
+    分别单列且不进入 pass_rate 分母；分母 0 → null（不是 0/字符串）。
+    非管理员仅统计自己的任务。
     """
     day_col = func.date(func.coalesce(TestTask.completed_at, TestTask.created_at))
     today = datetime.now().date()
     start = today - timedelta(days=days - 1)
 
-    query = select(TestTask.id, day_col.label("day")).where(day_col >= start.isoformat())
+    query = select(
+        TestTask.id, TestTask.status, TestTask.selected_items, day_col.label("day")
+    ).where(day_col >= start.isoformat())
     if current_user.role != "admin":
         query = query.where(TestTask.user_id == current_user.id)
     task_rows = (await db.execute(query)).all()
-    task_days = {row[0]: row[1] for row in task_rows}
+    task_meta = {
+        row[0]: {"status": row[1], "selected": row[2], "day": row[3]}
+        for row in task_rows
+    }
 
     record_statuses = {}
-    if task_days:
+    if task_meta:
         rec_rows = (await db.execute(
             select(TestRecord.task_id, TestRecord.status)
-            .where(TestRecord.task_id.in_(task_days.keys()))
+            .where(TestRecord.task_id.in_(task_meta.keys()))
         )).all()
         for task_id, rec_status in rec_rows:
             record_statuses.setdefault(task_id, []).append(rec_status)
 
+    _zero_entry = {
+        "total": 0, "passed": 0, "failed": 0, "no_result": 0,
+        "execution_failed": 0, "cancelled": 0,
+    }
     daily = {}
-    for task_id, day in task_days.items():
-        entry = daily.setdefault(day, {"total": 0, "passed": 0, "failed": 0})
+    for task_id, meta in task_meta.items():
+        entry = daily.setdefault(meta["day"], dict(_zero_entry))
         entry["total"] += 1
         statuses = record_statuses.get(task_id, [])
-        if any(s in ("fail", "error", "timeout") for s in statuses):
-            entry["failed"] += 1
-        elif any(s == "pass" for s in statuses):
-            entry["passed"] += 1
+        selected = meta["selected"] or []
+        n = len(selected) if selected else len(statuses)
+        category = statistics.classify_task_for_dashboard(meta["status"], n, statuses)
+        if category in ("passed", "failed", "no_result", "execution_failed", "cancelled"):
+            entry[category] += 1
+        # running / pending 计入 total 但不进入任何业务通过/失败计数
 
     series = []
     for i in range(days):
         day = (start + timedelta(days=i)).isoformat()
-        entry = daily.get(day, {"total": 0, "passed": 0, "failed": 0})
-        pass_rate = round(entry["passed"] / entry["total"] * 100, 1) if entry["total"] else 0.0
+        entry = daily.get(day, dict(_zero_entry))
+        denominator = entry["passed"] + entry["failed"]
+        pass_rate = round(entry["passed"] / denominator * 100, 1) if denominator else None
         series.append({
             "date": day,
             "total": entry["total"],
             "passed": entry["passed"],
             "failed": entry["failed"],
+            "no_result": entry["no_result"],
+            "execution_failed": entry["execution_failed"],
+            "cancelled": entry["cancelled"],
             "pass_rate": pass_rate,
         })
 
@@ -1218,10 +1282,9 @@ async def get_stats_by_module(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """各测试模块通过率：按记录聚合，timeout 计入失败，error 单列但算未通过。
+    """各测试模块通过率：按记录聚合，统一公式 pass/(pass+fail+error+timeout)。
 
-    通过率 = pass / (pass + fail + error + timeout)，不含 skip/pending/running。
-    非管理员仅统计自己的任务记录。
+    skip 不进分母；error/timeout 单列；分母 0 → null。非管理员仅统计自己的任务记录。
     """
     query = (
         select(TestModule.name, TestRecord.status, func.count(TestRecord.id))
@@ -1237,26 +1300,27 @@ async def get_stats_by_module(
 
     modules = {}
     for module_name, rec_status, count in rows:
-        entry = modules.setdefault(module_name, {"passed": 0, "failed": 0, "error": 0})
-        if rec_status == "pass":
-            entry["passed"] += count
-        elif rec_status in ("fail", "timeout"):
-            entry["failed"] += count
-        elif rec_status == "error":
-            entry["error"] += count
+        counts = modules.setdefault(module_name, {s: 0 for s in statistics.FINAL_STATUSES})
+        if rec_status in counts:
+            counts[rec_status] += count
 
     items = []
-    for module_name, entry in modules.items():
-        total = entry["passed"] + entry["failed"] + entry["error"]
+    for module_name, counts in modules.items():
+        total = (
+            counts["pass"] + counts["fail"] + counts["error"] + counts["timeout"]
+        )
         items.append({
             "module_name": module_name,
             "total": total,
-            "passed": entry["passed"],
-            "failed": entry["failed"],
-            "error": entry["error"],
-            "pass_rate": round(entry["passed"] / total * 100, 1) if total else 0.0,
+            "passed": counts["pass"],
+            "failed": counts["fail"] + counts["timeout"],
+            "error": counts["error"],
+            "skip": counts["skip"],
+            "timeout": counts["timeout"],
+            "pass_rate": statistics.compute_pass_rate(counts),
         })
-    items.sort(key=lambda x: x["pass_rate"])
+    # 契约：null 不参与数值升降比较，统一置后并保留模块
+    items.sort(key=lambda x: (x["pass_rate"] is None, x["pass_rate"] or 0))
 
     return ResponseModel(code=200, data={"items": items})
 
@@ -1372,8 +1436,8 @@ async def get_item_log(
     )
     task = task_result.scalar_one()
 
-    if current_user.role != "admin" and task.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="无权限查看")
+    # 统一授权：active + 创建者/管理员
+    ensure_can_read_task(current_user, task, message="无权限查看")
 
     return ResponseModel(
         code=200,
