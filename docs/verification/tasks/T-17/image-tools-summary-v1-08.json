@@ -1,0 +1,519 @@
+{
+  "checks": [
+    {
+      "name": "Dockerfile 存在",
+      "ok": true,
+      "detail": "D:\\MCTEST\\test-platform\\Dockerfile"
+    },
+    {
+      "name": "COPY test-tools/ 进镜像",
+      "ok": true,
+      "detail": "COPY test-tools/"
+    },
+    {
+      "name": "TEST_TOOLS_PATH=/app/test-tools",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "STATIC_PATH=/app/static",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "WORKDIR /app（与 TEST_TOOLS_PATH/STATIC_PATH 对齐）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": ".dockerignore 不排除 test-tools/",
+      "ok": true,
+      "detail": "bad=[]"
+    },
+    {
+      "name": "TEST_TOOLS_PATH 存在",
+      "ok": true,
+      "detail": "D:\\MCTEST\\test-platform\\test-tools"
+    },
+    {
+      "name": "发现 manifest",
+      "ok": true,
+      "detail": "['D:\\\\MCTEST\\\\test-platform\\\\test-tools\\\\emmc\\\\manifest.yaml', 'D:\\\\MCTEST\\\\test-platform\\\\test-tools\\\\upfm\\\\manifest.yaml']"
+    },
+    {
+      "name": "显式声明无缺口",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "必需工具齐备",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "SHA-256 全部匹配",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "共享依赖闭包完整",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "skip（不伪造）: upfm/assets/test_app.apk",
+      "ok": true,
+      "detail": "可选测试资源缺失，按 R3 记 skip（不伪造已就绪）"
+    }
+  ],
+  "static_failed": 0,
+  "tool_manifest": {
+    "root": "D:\\MCTEST\\test-platform\\test-tools",
+    "manifest_paths": [
+      "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+      "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+    ],
+    "requirements": [
+      {
+        "name": "common/__init__.py",
+        "kind": "shared_python_dep",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.shared"
+        ],
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "common/adb_runner.py",
+        "kind": "shared_python_dep",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.shared"
+        ],
+        "sha256": "618cded181cd251da3781d95c3eab7c065f3d68142eb466d7117f2477bd13097",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "common/device_info.py",
+        "kind": "shared_python_dep",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.shared"
+        ],
+        "sha256": "3606cf5043294873e309048e2f3c1b06a1b4efb27ccb4ad94e9f13f5c5b022c2",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "common/logger.py",
+        "kind": "shared_python_dep",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml",
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.shared"
+        ],
+        "sha256": "d0305df610799de4b0ee5277c9542c56efc50eeda547a08a611befd730e286a1",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "emmc/binaries/arm64-v8a/fio",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.device[arm64-v8a]"
+        ],
+        "sha256": "11c7176ee38d2ace3cbf308523ab0550e261ed342f34e9dce72876fac2560198",
+        "abi": "arm64-v8a",
+        "version": "unspecified",
+        "optional": false
+      },
+      {
+        "name": "emmc/binaries/arm64-v8a/mmc_utils",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.device[arm64-v8a]"
+        ],
+        "sha256": "b0f75b7e71c28453225749a902a7bd5a7ca267bfbba613f20150e9e78baadce0",
+        "abi": "arm64-v8a",
+        "version": "unspecified",
+        "optional": false
+      },
+      {
+        "name": "emmc/binaries/armeabi-v7a/fio",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.device[armeabi-v7a]"
+        ],
+        "sha256": "0211d9c13587ed9ee62e9f542f3b999c2619b2dfe2a7a3118ccfb31e56c0d58d",
+        "abi": "armeabi-v7a",
+        "version": "unspecified",
+        "optional": false
+      },
+      {
+        "name": "emmc/binaries/armeabi-v7a/mmc_utils",
+        "kind": "device_binary",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.device[armeabi-v7a]"
+        ],
+        "sha256": "1fb36f4c3b90aac45dcb27fcb724e8a84c7dad7cfbd610a0c341f2471ea43fd2",
+        "abi": "armeabi-v7a",
+        "version": "unspecified",
+        "optional": false
+      },
+      {
+        "name": "emmc/host/emmc_extcsd_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "23437d69caa8bf2f549748f064f28cc0a517ab4247cf5a0ae8178fdda77e7803",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "emmc/host/emmc_fio_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "d0e5c0bfc76ab3289a3233fe8b6e54728174de20fc297cf9637db1ae542f564f",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "emmc/host/emmc_report.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "5c03267e32fb8b952ed743171ea267fb2f453c391c61a2c234cac0fd4066bac3",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "emmc/host/emmc_stability_runner.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "71c43e7168ad1ea0a76eeb45f015a04dd2222cd7f3ac17a9ec84b27f17b5df5a",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "emmc/host/emmc_tester.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "7e9145284ff241f574f7a70bb22342319ee4bf1f75d9a3d8b765e23f4e7bad6a",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/assets/test_app.apk",
+        "kind": "asset",
+        "required": false,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.assets"
+        ],
+        "sha256": null,
+        "abi": null,
+        "version": null,
+        "optional": true
+      },
+      {
+        "name": "upfm/host/apk_install_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "f652187ef66015a8d305bee1065f018bd2733af0d73dda54cf55b461b09c44a5",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/board_detect.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "fb379b3eb2e1ac9cf6361eecd1a0c1b2175f108c21e4b691bc54a7bcae73231a",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/board_profiles.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "20dec8cb8c30047984f2f6288dda408676f3ba58bb927adde298c7fe21e94d4a",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/cpu_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "479e2384de21a50280a098192e2f62833d2aac34679b7a76de62f257f253b356",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/ddr_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "16208c8e8a909cab49c9ad4cdacb621810457aac1d080ce1ade64cf8147460f3",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/gpu_freq_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "1aa1c9df41f3c9f12abe115b3f1df9dc994f28fa47c56b297ca132750727f41e",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/mc_props_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "a681a880341b435b0158d9b154c988485c6ca778f90b8f31a4bd657809fea155",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/mem_ratio_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "0d9195f191f6dd177518053242ea559673f029131bb47219fee8298d050fda73",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/rotation_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "2b011e9bf407c244d78673a03336b4775b5a238c54922de49361b5fd4c25231e",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/sleep_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "ad280a391612b6698cd3844e1633d7fdd690532d31c09209913e6fc37a499304",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/storage_rw_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "9b50394d3c5fe69d9e589ff2132fddf8841b8b12a817a9d904d0b88dbee214a2",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/toggle_check.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "9ba45b5ec343816e0943316ba4f161b279c129881b0f90f2929828c9ec002429",
+        "abi": null,
+        "version": null,
+        "optional": false
+      },
+      {
+        "name": "upfm/host/touch_points.py",
+        "kind": "host_runner",
+        "required": true,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.host"
+        ],
+        "sha256": "0ff4beb127ce5e291836c52de2d93b5eef6d9c6c53efa4e871079032e18e4c58",
+        "abi": null,
+        "version": null,
+        "optional": false
+      }
+    ],
+    "missing_required": [],
+    "hash_mismatch": [],
+    "closure_violations": [],
+    "declaration_gaps": [],
+    "skipped": [
+      {
+        "name": "upfm/assets/test_app.apk",
+        "kind": "asset",
+        "required": false,
+        "manifests": [
+          "D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml"
+        ],
+        "sources": [
+          "tools.assets"
+        ],
+        "sha256": null,
+        "abi": null,
+        "version": null,
+        "optional": true,
+        "exists": false,
+        "reason": "可选测试资源缺失，按 R3 记 skip（不伪造已就绪）"
+      }
+    ],
+    "ok": true
+  },
+  "docker_available": false,
+  "runtime": {
+    "status": "UNVERIFIABLE",
+    "verified": false,
+    "reason": "当前主机无 docker 命令（Get-Command docker 为空），docker build / compose up / /health / 容器内工具发现均未执行"
+  },
+  "overall": "UNVERIFIABLE"
+}

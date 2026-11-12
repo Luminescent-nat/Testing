@@ -222,3 +222,44 @@ items:
   tags:
   - stability
   - curve
+
+# V1-08：显式工具清单（启动时由 app/services/tool_manifest.py 只读校验存在性 + SHA-256
+# + 依赖闭包）。删除任一已声明文件必须启动失败；路径相对 test-tools 根目录。
+tools:
+  host:
+    - path: emmc/host/emmc_extcsd_runner.py
+      sha256: 23437d69caa8bf2f549748f064f28cc0a517ab4247cf5a0ae8178fdda77e7803
+    - path: emmc/host/emmc_fio_runner.py
+      sha256: d0e5c0bfc76ab3289a3233fe8b6e54728174de20fc297cf9637db1ae542f564f
+    - path: emmc/host/emmc_report.py
+      sha256: 5c03267e32fb8b952ed743171ea267fb2f453c391c61a2c234cac0fd4066bac3
+    - path: emmc/host/emmc_stability_runner.py
+      sha256: 71c43e7168ad1ea0a76eeb45f015a04dd2222cd7f3ac17a9ec84b27f17b5df5a
+    - path: emmc/host/emmc_tester.py
+      sha256: 7e9145284ff241f574f7a70bb22342319ee4bf1f75d9a3d8b765e23f4e7bad6a
+  shared:
+    - path: common/__init__.py
+      sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    - path: common/adb_runner.py
+      sha256: 618cded181cd251da3781d95c3eab7c065f3d68142eb466d7117f2477bd13097
+    - path: common/device_info.py
+      sha256: 3606cf5043294873e309048e2f3c1b06a1b4efb27ccb4ad94e9f13f5c5b022c2
+    - path: common/logger.py
+      sha256: d0305df610799de4b0ee5277c9542c56efc50eeda547a08a611befd730e286a1
+  device:
+    - path: emmc/binaries/arm64-v8a/fio
+      abi: arm64-v8a
+      version: unspecified
+      sha256: 11c7176ee38d2ace3cbf308523ab0550e261ed342f34e9dce72876fac2560198
+    - path: emmc/binaries/arm64-v8a/mmc_utils
+      abi: arm64-v8a
+      version: unspecified
+      sha256: b0f75b7e71c28453225749a902a7bd5a7ca267bfbba613f20150e9e78baadce0
+    - path: emmc/binaries/armeabi-v7a/fio
+      abi: armeabi-v7a
+      version: unspecified
+      sha256: 0211d9c13587ed9ee62e9f542f3b999c2619b2dfe2a7a3118ccfb31e56c0d58d
+    - path: emmc/binaries/armeabi-v7a/mmc_utils
+      abi: armeabi-v7a
+      version: unspecified
+      sha256: 1fb36f4c3b90aac45dcb27fcb724e8a84c7dad7cfbd610a0c341f2471ea43fd2

@@ -653,3 +653,46 @@ items:
   enabled: true
   tags:
   - functional
+
+# V1-08：显式工具清单（启动时由 app/services/tool_manifest.py 只读校验存在性 + SHA-256
+# + 依赖闭包）。删除任一已声明文件必须启动失败；路径相对 test-tools 根目录。
+tools:
+  host:
+    - path: upfm/host/apk_install_check.py
+      sha256: f652187ef66015a8d305bee1065f018bd2733af0d73dda54cf55b461b09c44a5
+    - path: upfm/host/board_detect.py
+      sha256: fb379b3eb2e1ac9cf6361eecd1a0c1b2175f108c21e4b691bc54a7bcae73231a
+    - path: upfm/host/board_profiles.py
+      sha256: 20dec8cb8c30047984f2f6288dda408676f3ba58bb927adde298c7fe21e94d4a
+    - path: upfm/host/cpu_freq_check.py
+      sha256: 479e2384de21a50280a098192e2f62833d2aac34679b7a76de62f257f253b356
+    - path: upfm/host/ddr_freq_check.py
+      sha256: 16208c8e8a909cab49c9ad4cdacb621810457aac1d080ce1ade64cf8147460f3
+    - path: upfm/host/gpu_freq_check.py
+      sha256: 1aa1c9df41f3c9f12abe115b3f1df9dc994f28fa47c56b297ca132750727f41e
+    - path: upfm/host/mc_props_check.py
+      sha256: a681a880341b435b0158d9b154c988485c6ca778f90b8f31a4bd657809fea155
+    - path: upfm/host/mem_ratio_check.py
+      sha256: 0d9195f191f6dd177518053242ea559673f029131bb47219fee8298d050fda73
+    - path: upfm/host/rotation_check.py
+      sha256: 2b011e9bf407c244d78673a03336b4775b5a238c54922de49361b5fd4c25231e
+    - path: upfm/host/sleep_check.py
+      sha256: ad280a391612b6698cd3844e1633d7fdd690532d31c09209913e6fc37a499304
+    - path: upfm/host/storage_rw_check.py
+      sha256: 9b50394d3c5fe69d9e589ff2132fddf8841b8b12a817a9d904d0b88dbee214a2
+    - path: upfm/host/toggle_check.py
+      sha256: 9ba45b5ec343816e0943316ba4f161b279c129881b0f90f2929828c9ec002429
+    - path: upfm/host/touch_points.py
+      sha256: 0ff4beb127ce5e291836c52de2d93b5eef6d9c6c53efa4e871079032e18e4c58
+  shared:
+    - path: common/__init__.py
+      sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    - path: common/adb_runner.py
+      sha256: 618cded181cd251da3781d95c3eab7c065f3d68142eb466d7117f2477bd13097
+    - path: common/device_info.py
+      sha256: 3606cf5043294873e309048e2f3c1b06a1b4efb27ccb4ad94e9f13f5c5b022c2
+    - path: common/logger.py
+      sha256: d0305df610799de4b0ee5277c9542c56efc50eeda547a08a611befd730e286a1
+  assets:
+    - path: upfm/assets/test_app.apk
+      optional: true
