@@ -82,3 +82,17 @@
 ## 7. 签名
 
 reviewer，2026-11-12；本记录汇总各 RR 独立评审结论，所有断言可追溯至 `docs/verification/reviews/` 与 `docs/verification/tasks/` 原始证据；未替开发修改任何代码，未对设备执行写操作，未执行 docker（本机不可用）。
+
+## 8. 提交补记（Lead，2026-11-12）
+
+评审完成时工作区为未提交变更（HEAD `d0b415d`）。评审确认的代码与证据随后按任务提交，内容与本记录一致：
+
+- `445b35c` T-19 ADB runner 去 shell 拼接
+- `b82c71f` T-06 失败关闭与原生 SKIP
+- `15f96c1` T-02 Alembic/外键迁移基础（含 seed FK 启动修复；R20 未通过）
+- `824f57a` T-01/T-17/T-18 统一错误外层 + 启动配置/工具清单校验（共享 app/main.py）
+- `d990729` T-20/T-21 前端契约客户端/mock + token 映射
+- `06812bc` docs 统一评审记录/任务板/追踪矩阵/集成汇总与原始日志
+
+提交后 `git status` 为空；Lead 最终严格全量 310 passed 与评审方独立重跑一致。
+
