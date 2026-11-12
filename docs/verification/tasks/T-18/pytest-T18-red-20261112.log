@@ -1,0 +1,31 @@
+﻿COMMAND: python -m pytest tests/unit/test_secret_strength.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T12:06:11.4784479+08:00
+END: 2026-11-12T12:06:12.6193216+08:00
+EXITCODE: 2
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting tests/unit/test_secret_strength.py _____________
+ImportError while importing test module 'D:\MCTEST\test-platform\backend\tests\unit\test_secret_strength.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Program Files\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests\unit\test_secret_strength.py:13: in <module>
+    from app.config import (  # noqa: F401  实现前：ImportError 即红测
+E   ImportError: cannot import name 'SECRET_KEY_MIN_LENGTH' from 'app.config' (D:\MCTEST\test-platform\backend\tests\..\app\config.py)
+------------------------------- Captured stderr -------------------------------
+2026-11-12 12:06:12,358 [INFO] app.logging_config: 日志系统初始化完成，文件: D:\MCTEST\test-platform\backend\logs\server.log
+=========================== short test summary info ===========================
+ERROR tests/unit/test_secret_strength.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 0.08s ===============================
+

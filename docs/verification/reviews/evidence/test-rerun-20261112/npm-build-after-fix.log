@@ -1,0 +1,12 @@
+=== REVIEWER RERUN: npm-build (direct, after P-T20-2/3 fix)
+=== COMMAND: npm run build
+=== TIME: 2026-11-12 12:00:54.844 -> 12:01:02.259
+=== EXIT CODE: 0
+=== legacy-js-api warnings: 15
+--- OUTPUT TAIL ---
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-m
+anualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 6.67s
+

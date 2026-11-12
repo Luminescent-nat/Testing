@@ -1,0 +1,348 @@
+﻿COMMAND: python docs/verification/tasks/T-18/startup_matrix.py
+WORKDIR: D:\MCTEST
+START: 2026-11-12T12:16:13.1172702+08:00
+END: 2026-11-12T12:16:22.3359111+08:00
+EXITCODE: 0
+
+[env] isolated workroot=C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg
+[env] backend=D:\MCTEST\test-platform\backend
+[env] test_tools=D:\MCTEST\test-platform\test-tools
+[env] python=D:\MCTEST\test-platform\.venv\Scripts\python.exe
+
+[empty] $ python -m uvicorn app.main:app --port 58355 (SECRET_KEY 长度=0)
+[empty] exit=3 elapsed=0.8s
+[empty] stdout:
+
+[empty] stderr:
+2026-11-12 12:16:13,883 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_0\logs\server.log
+2026-11-12 12:16:13,927 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_0\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:13,928 [INFO] uvicorn.error: Started server process [1708]
+2026-11-12 12:16:13,928 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:13,928 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 未配置（空值），应用拒绝启动。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:13,929 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 未配置（空值），应用拒绝启动。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:13,929 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[empty] rejected=True mentions_config=True leaks_value=False
+
+[short] $ python -m uvicorn app.main:app --port 58359 (SECRET_KEY 长度=5)
+[short] exit=3 elapsed=0.8s
+[short] stdout:
+
+[short] stderr:
+2026-11-12 12:16:14,714 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_1\logs\server.log
+2026-11-12 12:16:14,762 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_1\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:14,762 [INFO] uvicorn.error: Started server process [43208]
+2026-11-12 12:16:14,762 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:14,762 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:14,763 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:14,763 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[short] rejected=True mentions_config=True leaks_value=False
+
+[placeholder-secret] $ python -m uvicorn app.main:app --port 55010 (SECRET_KEY 长度=6)
+[placeholder-secret] exit=3 elapsed=0.8s
+[placeholder-secret] stdout:
+
+[placeholder-secret] stderr:
+2026-11-12 12:16:15,525 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_2\logs\server.log
+2026-11-12 12:16:15,567 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_2\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:15,567 [INFO] uvicorn.error: Started server process [33132]
+2026-11-12 12:16:15,568 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:15,568 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:15,573 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:15,573 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[placeholder-secret] rejected=True mentions_config=True leaks_value=False
+
+[placeholder-change-me] $ python -m uvicorn app.main:app --port 54912 (SECRET_KEY 长度=9)
+[placeholder-change-me] exit=3 elapsed=0.8s
+[placeholder-change-me] stdout:
+
+[placeholder-change-me] stderr:
+2026-11-12 12:16:16,314 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_3\logs\server.log
+2026-11-12 12:16:16,356 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_3\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:16,356 [INFO] uvicorn.error: Started server process [12272]
+2026-11-12 12:16:16,356 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:16,356 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:16,360 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:16,360 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[placeholder-change-me] rejected=True mentions_config=True leaks_value=False
+
+[placeholder-your-secret-key] $ python -m uvicorn app.main:app --port 54915 (SECRET_KEY 长度=15)
+[placeholder-your-secret-key] exit=3 elapsed=0.8s
+[placeholder-your-secret-key] stdout:
+
+[placeholder-your-secret-key] stderr:
+2026-11-12 12:16:17,135 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_4\logs\server.log
+2026-11-12 12:16:17,180 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_4\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:17,180 [INFO] uvicorn.error: Started server process [25848]
+2026-11-12 12:16:17,180 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:17,181 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:17,182 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:17,182 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[placeholder-your-secret-key] rejected=True mentions_config=True leaks_value=False
+
+[placeholder-compose-example] $ python -m uvicorn app.main:app --port 54918 (SECRET_KEY 长度=30)
+[placeholder-compose-example] exit=3 elapsed=0.8s
+[placeholder-compose-example] stdout:
+
+[placeholder-compose-example] stderr:
+2026-11-12 12:16:17,936 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_5\logs\server.log
+2026-11-12 12:16:17,979 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_5\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:17,979 [INFO] uvicorn.error: Started server process [7960]
+2026-11-12 12:16:17,980 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:17,980 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:17,981 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 强度不足：长度必须至少 32 字符。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:17,981 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[placeholder-compose-example] rejected=True mentions_config=True leaks_value=False
+
+[placeholder-long-variant] $ python -m uvicorn app.main:app --port 54925 (SECRET_KEY 长度=60)
+[placeholder-long-variant] exit=3 elapsed=0.8s
+[placeholder-long-variant] stdout:
+
+[placeholder-long-variant] stderr:
+2026-11-12 12:16:18,742 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_6\logs\server.log
+2026-11-12 12:16:18,785 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_6\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:18,785 [INFO] uvicorn.error: Started server process [13368]
+2026-11-12 12:16:18,785 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:18,785 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 是已知的示例/占位值，禁止用于开发或生产。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:18,787 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 是已知的示例/占位值，禁止用于开发或生产。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:18,787 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[placeholder-long-variant] rejected=True mentions_config=True leaks_value=False
+
+[single-char-repeat] $ python -m uvicorn app.main:app --port 54928 (SECRET_KEY 长度=40)
+[single-char-repeat] exit=3 elapsed=0.8s
+[single-char-repeat] stdout:
+
+[single-char-repeat] stderr:
+2026-11-12 12:16:19,544 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_7\logs\server.log
+2026-11-12 12:16:19,586 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\weak_7\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:19,586 [INFO] uvicorn.error: Started server process [27084]
+2026-11-12 12:16:19,586 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:19,586 [ERROR] app.main: 启动配置校验失败：SECRET_KEY 为单字符重复，熵不足。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+2026-11-12 12:16:19,593 [ERROR] uvicorn.error: Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\.venv\Lib\site-packages\starlette\routing.py", line 738, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 117, in lifespan
+    validate_startup_config()
+  File "D:\MCTEST\test-platform\backend\app\main.py", line 108, in validate_startup_config
+    assert_secret_key_strength(settings.SECRET_KEY)
+  File "D:\MCTEST\test-platform\backend\app\config.py", line 50, in assert_secret_key_strength
+    raise WeakSecretKeyError(
+app.config.WeakSecretKeyError: SECRET_KEY 为单字符重复，熵不足。请生成随机密钥并写入 backend/.env（compose 场景写入 .env 或环境变量），例如：python -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(48))"
+
+2026-11-12 12:16:19,593 [ERROR] uvicorn.error: Application startup failed. Exiting.
+
+[single-char-repeat] rejected=True mentions_config=True leaks_value=False
+[init] DB+user init exit=0 out='DB_INIT_OK' err=''
+
+[legal] $ python -m uvicorn app.main:app --port 54931 (SECRET_KEY 长度=48)
+[legal] /health status=200 body='{"status":"healthy"}' healthy=True
+[legal] exit=1
+[legal] stdout+stderr:
+2026-11-12 12:16:20,890 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\legal\logs\server.log
+2026-11-12 12:16:20,936 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\legal\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:20,936 [INFO] uvicorn.error: Started server process [5356]
+2026-11-12 12:16:20,936 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:20,958 [WARNING] app.services.tool_manifest: 工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+2026-11-12 12:16:20,958 [INFO] app.services.tool_manifest: 工具清单校验: root=D:\MCTEST\test-platform\test-tools manifests=2 必需工具=22 缺失=0 skip=1 ok=True
+2026-11-12 12:16:21,002 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 12:16:21,006 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 12:16:21,006 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 12:16:21,006 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 12:16:21,006 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:21,010 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:21,019 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 12:16:21,020 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 12:16:21,020 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 12:16:21,022 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 12:16:21,022 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 12:16:21,024 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 12:16:21,024 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 12:16:21,025 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 12:16:21,026 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 12:16:21,027 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 12:16:21,038 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 12:16:21,041 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 12:16:21,041 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 12:16:21,042 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 12:16:21,042 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 12:16:21,043 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 12:16:21,043 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 12:16:21,064 [INFO] uvicorn.error: Application startup complete.
+2026-11-12 12:16:21,068 [INFO] uvicorn.error: Uvicorn running on http://127.0.0.1:54931 (Press CTRL+C to quit)
+2026-11-12 12:16:21,277 [INFO] uvicorn.access: 127.0.0.1:54932 - "GET /health HTTP/1.1" 200
+
+
+[fresh-empty-db] $ python -m uvicorn app.main:app --port 54958 (SECRET_KEY 长度=48)
+[fresh-empty-db] /health status=200 body='{"status":"healthy"}' healthy=True
+[fresh-empty-db] exit=1
+[fresh-empty-db] stdout+stderr:
+2026-11-12 12:16:21,944 [INFO] app.logging_config: 日志系统初始化完成，文件: C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\fresh_empty_db\logs\server.log
+2026-11-12 12:16:21,985 [WARNING] app.main: 前端静态目录 C:\Users\MCTECH\AppData\Local\Temp\t18_startup_dvjmxvcg\fresh_empty_db\no-static 不存在，跳过静态文件挂载（仅提供 API）
+2026-11-12 12:16:21,985 [INFO] uvicorn.error: Started server process [2284]
+2026-11-12 12:16:21,985 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-12 12:16:22,007 [WARNING] app.services.tool_manifest: 工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+2026-11-12 12:16:22,007 [INFO] app.services.tool_manifest: 工具清单校验: root=D:\MCTEST\test-platform\test-tools manifests=2 必需工具=22 缺失=0 skip=1 ok=True
+2026-11-12 12:16:22,133 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-12 12:16:22,134 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-12 12:16:22,136 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-12 12:16:22,137 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-12 12:16:22,138 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-12 12:16:22,138 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-12 12:16:22,139 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-12 12:16:22,139 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-12 12:16:22,140 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-12 12:16:22,140 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:22,141 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:22,141 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:22,142 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-12 12:16:22,145 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-12 12:16:22,145 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-12 12:16:22,146 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-12 12:16:22,148 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-12 12:16:22,149 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-12 12:16:22,150 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-12 12:16:22,150 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-12 12:16:22,151 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-12 12:16:22,152 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-12 12:16:22,153 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-12 12:16:22,163 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-12 12:16:22,166 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-12 12:16:22,166 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-12 12:16:22,167 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-12 12:16:22,167 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-12 12:16:22,168 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-12 12:16:22,168 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-12 12:16:22,187 [INFO] uvicorn.error: Application startup complete.
+2026-11-12 12:16:22,188 [INFO] uvicorn.error: Uvicorn running on http://127.0.0.1:54958 (Press CTRL+C to quit)
+2026-11-12 12:16:22,314 [INFO] uvicorn.access: 127.0.0.1:54959 - "GET /health HTTP/1.1" 200
+
+
+================ 汇总 ================
+  [PASS] empty: exit=3 rejected=True
+  [PASS] short: exit=3 rejected=True
+  [PASS] placeholder-secret: exit=3 rejected=True
+  [PASS] placeholder-change-me: exit=3 rejected=True
+  [PASS] placeholder-your-secret-key: exit=3 rejected=True
+  [PASS] placeholder-compose-example: exit=3 rejected=True
+  [PASS] placeholder-long-variant: exit=3 rejected=True
+  [PASS] single-char-repeat: exit=3 rejected=True
+  [PASS] legal(已初始化临时库): /health=200 body={"status":"healthy"}
+  [PASS] fresh 空库(合法密钥): /health=200 body={"status":"healthy"}
+weak_all_rejected=True no_secret_value_leak=True legal_healthy=True fresh_empty_db_healthy=True
+RESULT: PASS
+

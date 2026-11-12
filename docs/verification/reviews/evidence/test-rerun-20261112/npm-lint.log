@@ -1,0 +1,1082 @@
+=== REVIEWER RERUN: npm-lint
+=== COMMAND: npm run lint
+=== TIME: 2026-11-12 11:52:15.397 -> 11:52:17.627
+=== EXIT CODE: 0
+--- OUTPUT BEGIN ---
+
+> test-platform-frontend@1.0.0 lint
+> eslint . --ext .vue,.js
+
+
+D:\MCTEST\test-platform\frontend\src\components\Breadcrumb.vue
+  7:62  warning  ':key' should be on a new line  vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\layouts\MainLayout.vue
+    7:26  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+    8:31  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+   11:33  warning  'color' should be on a new line                                                    vue/max-attributes-per-line
+   11:46  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   11:57  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   64:39  warning  Attribute "v-if" should go before "index"                                          vue/attributes-order
+   64:39  warning  'v-if' should be on a new line                                                     vue/max-attributes-per-line
+   77:35  warning  'height' should be on a new line                                                   vue/max-attributes-per-line
+   88:17  warning  Attribute "class" should go before "@click"                                        vue/attributes-order
+   97:17  warning  Attribute "class" should go before "@click"                                        vue/attributes-order
+  103:39  warning  ':icon' should be on a new line                                                    vue/max-attributes-per-line
+  112:45  warning  'command' should be on a new line                                                  vue/max-attributes-per-line
+  123:47  warning  'mode' should be on a new line                                                     vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\admin\users.vue
+   15:39  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+   15:58  warning  'clearable' should be on a new line                                                  vue/max-attributes-per-line
+   15:68  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+   16:32  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+   17:33  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+   20:41  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+   20:60  warning  'clearable' should be on a new line                                                  vue/max-attributes-per-line
+   20:70  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+   21:31  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+   22:31  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+   25:33  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   28:1   warning  Expected indentation of 6 spaces but found 8 spaces                                  vue/html-indent
+   32:39  warning  'class' should be on a new line                                                      vue/max-attributes-per-line
+   32:57  warning  Attribute "v-loading" should go before "class"                                       vue/attributes-order
+   32:57  warning  'v-loading' should be on a new line                                                  vue/max-attributes-per-line
+   33:36  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   33:47  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   34:42  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   34:54  warning  'min-width' should be on a new line                                                  vue/max-attributes-per-line
+   35:38  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   35:49  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   42:40  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   42:51  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   49:47  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   49:60  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   54:44  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+   54:57  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   59:37  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+   59:49  warning  'fixed' should be on a new line                                                      vue/max-attributes-per-line
+  112:53  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  112:55  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  113:35  warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+  113:53  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\ai-test\index.vue
+   7:31  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found    vue/singleline-html-element-content-newline
+   7:41  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found  vue/singleline-html-element-content-newline
+  43:30  warning  'class' should be on a new line                                                   vue/max-attributes-per-line
+  45:38  warning  'border' should be on a new line                                                  vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\dashboard\index.vue
+    4:26  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+    5:24  warning  ':sm' should be on a new line                                                      vue/max-attributes-per-line
+    5:33  warning  ':md' should be on a new line                                                      vue/max-attributes-per-line
+    7:34  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+    7:54  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+    7:67  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+    7:77  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+    9:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+    9:41  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   10:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   10:62  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   14:24  warning  ':sm' should be on a new line                                                      vue/max-attributes-per-line
+   14:33  warning  ':md' should be on a new line                                                      vue/max-attributes-per-line
+   16:34  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   16:54  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   16:62  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   16:72  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   18:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   18:41  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   19:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   19:59  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   23:24  warning  ':sm' should be on a new line                                                      vue/max-attributes-per-line
+   23:33  warning  ':md' should be on a new line                                                      vue/max-attributes-per-line
+   25:34  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   25:54  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   25:69  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   25:79  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   27:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   27:40  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   28:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   28:96  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   32:24  warning  ':sm' should be on a new line                                                      vue/max-attributes-per-line
+   32:33  warning  ':md' should be on a new line                                                      vue/max-attributes-per-line
+   34:34  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   34:54  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   34:65  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   34:75  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   36:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   36:41  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   37:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   37:60  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+   44:26  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+   45:24  warning  ':lg' should be on a new line                                                      vue/max-attributes-per-line
+   52:34  warning  ':option' should be on a new line                                                  vue/max-attributes-per-line
+   52:61  warning  'autoresize' should be on a new line                                               vue/max-attributes-per-line
+   55:24  warning  ':lg' should be on a new line                                                      vue/max-attributes-per-line
+   62:48  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+   65:27  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+   65:41  warning  ':option' should be on a new line                                                  vue/max-attributes-per-line
+   65:69  warning  'autoresize' should be on a new line                                               vue/max-attributes-per-line
+   71:31  warning  'style' should be on a new line                                                    vue/max-attributes-per-line
+   78:35  warning  'size' should be on a new line                                                     vue/max-attributes-per-line
+   78:48  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+   82:33  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+   86:33  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+   90:33  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+   99:24  warning  ':lg' should be on a new line                                                      vue/max-attributes-per-line
+  104:31  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+  110:44  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  114:23  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  122:42  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  122:84  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+  124:40  warning  ':type' should be on a new line                                                    vue/max-attributes-per-line
+  136:24  warning  ':lg' should be on a new line                                                      vue/max-attributes-per-line
+  141:31  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+  147:48  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  151:23  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  159:40  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  159:55  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found      vue/singleline-html-element-content-newline
+  188:10  warning  'getDevices' is defined but never used                                             no-unused-vars
+
+D:\MCTEST\test-platform\frontend\src\views\devices\index.vue
+   15:41  warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+   15:60  warning  'clearable' should be on a new line                                                             vue/max-attributes-per-line
+   16:31  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   17:31  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   18:32  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   21:33  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   36:47  warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+   38:40  warning  ':class' should be on a new line                                                                vue/max-attributes-per-line
+   39:58  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   39:78  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+   39:99  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+   40:64  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   40:84  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+   40:95  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+   41:31  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   41:51  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+   41:72  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+   44:42  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+   44:56  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+   47:54  warning  Expected 1 line break after opening tag (`<el-dropdown-item>`), but no line breaks found        vue/singleline-html-element-content-newline
+   47:58  warning  Expected 1 line break before closing tag (`</el-dropdown-item>`), but no line breaks found      vue/singleline-html-element-content-newline
+   48:52  warning  ':disabled' should be on a new line                                                             vue/max-attributes-per-line
+   57:39  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   57:77  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   58:40  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   58:66  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   69:38  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+   69:38  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+   77:58  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+   86:46  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   96:33  warning  'v-loading' should be on a new line                                                             vue/max-attributes-per-line
+   96:59  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   97:38  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+   98:45  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+   98:78  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+   99:44  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+   99:76  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  100:44  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  100:76  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  101:52  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  101:94  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  102:48  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  102:86  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  103:48  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  103:82  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  104:45  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  104:82  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  105:46  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  105:78  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  106:46  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  106:81  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  109:35  warning  Expected 1 line break after opening tag (`<h4>`), but no line breaks found                      vue/singleline-html-element-content-newline
+  109:38  warning  Expected 1 line break before closing tag (`</h4>`), but no line breaks found                    vue/singleline-html-element-content-newline
+  110:38  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  122:35  warning  Expected 1 line break after opening tag (`<h4>`), but no line breaks found                      vue/singleline-html-element-content-newline
+  122:39  warning  Expected 1 line break before closing tag (`</h4>`), but no line breaks found                    vue/singleline-html-element-content-newline
+  123:38  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  127:44  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  127:87  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  128:46  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  128:90  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  131:35  warning  Expected 1 line break after opening tag (`<h4>`), but no line breaks found                      vue/singleline-html-element-content-newline
+  131:39  warning  Expected 1 line break before closing tag (`</h4>`), but no line breaks found                    vue/singleline-html-element-content-newline
+  132:38  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  133:49  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  133:85  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  134:46  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  134:80  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  139:71  warning  ':key' should be on a new line                                                                  vue/max-attributes-per-line
+  139:86  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  139:99  warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\error\404.vue
+  4:31  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found    vue/singleline-html-element-content-newline
+  4:34  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found  vue/singleline-html-element-content-newline
+  5:32  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found    vue/singleline-html-element-content-newline
+  5:37  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found  vue/singleline-html-element-content-newline
+  9:33  warning  'size' should be on a new line                                                 vue/max-attributes-per-line
+  9:46  warning  '@click' should be on a new line                                               vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\knowledge\index.vue
+   55:33   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   66:35   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   71:35   warning  Attribute "v-if" should go before "type"                                                        vue/attributes-order
+   71:35   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+   71:50   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   92:33   warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+   92:54   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   97:40   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  105:29   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  105:29   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  110:9    warning  Attribute "class" should go before "@click"                                                     vue/attributes-order
+  119:9    warning  Attribute "class" should go before "@click"                                                     vue/attributes-order
+  127:35   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  127:35   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  131:65   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  133:22   warning  ':gutter' should be on a new line                                                               vue/max-attributes-per-line
+  143:71   warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+  144:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  144:58   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  147:38   warning  ':type' should be on a new line                                                                 vue/max-attributes-per-line
+  147:78   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  150:43   warning  ':title' should be on a new line                                                                vue/max-attributes-per-line
+  155:42   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  160:38   warning  ':type' should be on a new line                                                                 vue/max-attributes-per-line
+  166:36   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  166:36   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  188:31   warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  188:46   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  188:59   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  198:74   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  200:41   warning  ':gutter' should be on a new line                                                               vue/max-attributes-per-line
+  210:50   warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+  213:36   warning  ':type' should be on a new line                                                                 vue/max-attributes-per-line
+  213:77   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  216:41   warning  ':title' should be on a new line                                                                vue/max-attributes-per-line
+  218:41   warning  '@command' should be on a new line                                                              vue/max-attributes-per-line
+  219:31   warning  'circle' should be on a new line                                                                vue/max-attributes-per-line
+  219:38   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  227:54   warning  'divided' should be on a new line                                                               vue/max-attributes-per-line
+  236:41   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  241:36   warning  ':type' should be on a new line                                                                 vue/max-attributes-per-line
+  247:34   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  247:34   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  276:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  276:72   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  280:29   warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  280:44   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  280:57   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  289:39   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  289:39   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  308:66   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  311:47   warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  311:59   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  311:74   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  314:59   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  319:32   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  319:32   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  332:35   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  332:35   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  335:24   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  338:38   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  338:38   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  339:33   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  339:112  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  347:44   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  347:57   warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  348:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  348:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  348:72   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  348:90   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  349:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  349:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  349:75   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  349:96   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  350:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  350:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  353:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  353:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  353:78   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  353:102  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  354:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  354:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  354:72   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  354:90   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  355:52   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  355:52   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  355:77   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  355:100  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  356:50   warning  Attribute "v-if" should go before "label"                                                       vue/attributes-order
+  356:50   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  356:68   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  356:86   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  363:32   warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  363:32   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  364:33   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  364:37   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  365:38   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  365:51   warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  384:51   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  384:53   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  385:35   warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  385:56   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  388:35   warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  388:57   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  391:35   warning  Attribute "v-if" should go before "type"                                                        vue/attributes-order
+  391:35   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  391:50   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  403:34   warning  'label-width' should be on a new line                                                           vue/max-attributes-per-line
+  404:34   warning  'required' should be on a new line                                                              vue/max-attributes-per-line
+  405:46   warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+  408:34   warning  'required' should be on a new line                                                              vue/max-attributes-per-line
+  409:52   warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+  409:72   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  457:34   warning  'required' should be on a new line                                                              vue/max-attributes-per-line
+  458:48   warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+  458:68   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  478:52   warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+  483:49   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  483:51   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  484:35   warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  484:53   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  484:72   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  484:74   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  494:36   warning  'label-width' should be on a new line                                                           vue/max-attributes-per-line
+  495:34   warning  'required' should be on a new line                                                              vue/max-attributes-per-line
+  496:48   warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+  537:34   warning  'required' should be on a new line                                                              vue/max-attributes-per-line
+  547:46   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+  547:62   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+  561:51   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  561:53   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  562:35   warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  562:56   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  562:78   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  562:83   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  573:39   warning  'finish-status' should be on a new line                                                         vue/max-attributes-per-line
+  573:63   warning  'simple' should be on a new line                                                                vue/max-attributes-per-line
+  579:37   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  580:39   warning  'label-width' should be on a new line                                                           vue/max-attributes-per-line
+  583:43   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found                vue/singleline-html-element-content-newline
+  583:46   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found              vue/singleline-html-element-content-newline
+  584:49   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found                vue/singleline-html-element-content-newline
+  584:53   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found              vue/singleline-html-element-content-newline
+  585:42   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found                vue/singleline-html-element-content-newline
+  585:46   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found              vue/singleline-html-element-content-newline
+  586:38   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found                vue/singleline-html-element-content-newline
+  586:42   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found              vue/singleline-html-element-content-newline
+  600:42   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  625:19   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  626:35   warning  'title' should be on a new line                                                                 vue/max-attributes-per-line
+  626:48   warning  'sub-title' should be on a new line                                                             vue/max-attributes-per-line
+  628:42   warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  641:52   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  641:54   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+  642:43   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  642:66   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  642:69   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+
+D:\MCTEST\test-platform\frontend\src\views\login\index.vue
+    2:27  warning  ':class' should be on a new line                                                   vue/max-attributes-per-line
+    5:7   warning  Require self-closing on HTML elements (<div>)                                      vue/html-self-closing
+    6:7   warning  Require self-closing on HTML elements (<div>)                                      vue/html-self-closing
+   11:55  warning  'placement' should be on a new line                                                vue/max-attributes-per-line
+   12:34  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+   13:34  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   13:43  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   14:27  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   14:35  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   24:11  warning  Disallow self-closing on HTML void elements (<img/>)                               vue/html-self-closing
+   24:44  warning  'alt' should be on a new line                                                      vue/max-attributes-per-line
+   36:32  warning  'color' should be on a new line                                                    vue/max-attributes-per-line
+   36:45  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   36:52  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   41:35  warning  Expected 1 line break after opening tag (`<h1>`), but no line breaks found         vue/singleline-html-element-content-newline
+   41:39  warning  Expected 1 line break before closing tag (`</h1>`), but no line breaks found       vue/singleline-html-element-content-newline
+   42:33  warning  Expected 1 line break after opening tag (`<p>`), but no line breaks found          vue/singleline-html-element-content-newline
+   42:43  warning  Expected 1 line break before closing tag (`</p>`), but no line breaks found        vue/singleline-html-element-content-newline
+   62:11  warning  Require self-closing on HTML elements (<div>)                                      vue/html-self-closing
+   62:35  warning  ':class' should be on a new line                                                   vue/max-attributes-per-line
+   65:46  warning  Attribute "class" should go before "@submit.prevent"                               vue/attributes-order
+   65:46  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+   69:43  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   69:51  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   70:15  warning  Disallow self-closing on HTML void elements (<input/>)                             vue/html-self-closing
+   84:43  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   84:51  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+   85:15  warning  Disallow self-closing on HTML void elements (<input/>)                             vue/html-self-closing
+   97:17  warning  Attribute "tabindex" should go before "@click"                                     vue/attributes-order
+   99:46  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   99:54  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+  100:33  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  100:41  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+  105:35  warning  Attribute "v-if" should go before "class"                                          vue/attributes-order
+  105:35  warning  'v-if' should be on a new line                                                     vue/max-attributes-per-line
+  108:43  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  108:51  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+  109:15  warning  Disallow self-closing on HTML void elements (<input/>)                             vue/html-self-closing
+  121:17  warning  Attribute "tabindex" should go before "@click"                                     vue/attributes-order
+  123:45  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  123:53  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+  124:33  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  124:41  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found  vue/singleline-html-element-content-newline
+  129:27  warning  Attribute "v-if" should go before "class"                                          vue/attributes-order
+  129:27  warning  'v-if' should be on a new line                                                     vue/max-attributes-per-line
+  129:45  warning  Expected 1 line break after opening tag (`<p>`), but no line breaks found          vue/singleline-html-element-content-newline
+  129:59  warning  Expected 1 line break before closing tag (`</p>`), but no line breaks found        vue/singleline-html-element-content-newline
+  131:33  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  131:52  warning  ':disabled' should be on a new line                                                vue/max-attributes-per-line
+  132:13  warning  Require self-closing on HTML elements (<span>)                                     vue/html-self-closing
+  132:34  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\memory\index.vue
+    3:34  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+    3:53  warning  'class' should be on a new line                                                      vue/max-attributes-per-line
+    5:33  warning  'name' should be on a new line                                                       vue/max-attributes-per-line
+   23:60  warning  'description' should be on a new line                                                vue/max-attributes-per-line
+   25:24  warning  ':gutter' should be on a new line                                                    vue/max-attributes-per-line
+   34:51  warning  'shadow' should be on a new line                                                     vue/max-attributes-per-line
+   38:40  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+   38:52  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found       vue/singleline-html-element-content-newline
+   38:96  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found     vue/singleline-html-element-content-newline
+   86:44  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+   86:49  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   96:61  warning  'class' should be on a new line                                                      vue/max-attributes-per-line
+  104:33  warning  'name' should be on a new line                                                       vue/max-attributes-per-line
+  116:37  warning  Attribute "v-if" should go before "type"                                             vue/attributes-order
+  116:37  warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  116:52  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  126:45  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  126:58  warning  'class' should be on a new line                                                      vue/max-attributes-per-line
+  126:76  warning  Attribute "v-loading" should go before "class"                                       vue/attributes-order
+  126:76  warning  'v-loading' should be on a new line                                                  vue/max-attributes-per-line
+  127:48  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  127:61  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  128:43  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  128:58  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  129:47  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  129:59  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  130:45  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  130:57  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  131:45  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  131:57  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  132:45  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  132:57  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  133:48  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  133:60  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  134:46  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  134:59  warning  'min-width' should be on a new line                                                  vue/max-attributes-per-line
+  139:43  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  139:54  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  139:66  warning  'fixed' should be on a new line                                                      vue/max-attributes-per-line
+  141:31  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  141:46  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  141:59  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  144:31  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  144:45  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  144:58  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  153:34  warning  'name' should be on a new line                                                       vue/max-attributes-per-line
+  155:48  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  155:67  warning  'clearable' should be on a new line                                                  vue/max-attributes-per-line
+  155:77  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  156:36  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  157:36  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  158:35  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  159:35  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  161:37  warning  Attribute "v-if" should go before "type"                                             vue/attributes-order
+  161:37  warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  161:52  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  171:44  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  171:57  warning  'class' should be on a new line                                                      vue/max-attributes-per-line
+  171:75  warning  Attribute "v-loading" should go before "class"                                       vue/attributes-order
+  171:75  warning  'v-loading' should be on a new line                                                  vue/max-attributes-per-line
+  172:40  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  172:53  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  173:44  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  173:55  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  174:43  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  174:56  warning  'min-width' should be on a new line                                                  vue/max-attributes-per-line
+  179:47  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  179:58  warning  'min-width' should be on a new line                                                  vue/max-attributes-per-line
+  180:49  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  180:62  warning  'min-width' should be on a new line                                                  vue/max-attributes-per-line
+  181:52  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  181:65  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  182:43  warning  'label' should be on a new line                                                      vue/max-attributes-per-line
+  182:54  warning  'width' should be on a new line                                                      vue/max-attributes-per-line
+  182:66  warning  'fixed' should be on a new line                                                      vue/max-attributes-per-line
+  184:31  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  184:46  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  184:59  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  187:31  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  187:45  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  187:58  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  196:33  warning  'name' should be on a new line                                                       vue/max-attributes-per-line
+  208:37  warning  Attribute "v-if" should go before "type"                                             vue/attributes-order
+  208:37  warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  208:52  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  218:54  warning  'description' should be on a new line                                                vue/max-attributes-per-line
+  220:24  warning  ':gutter' should be on a new line                                                    vue/max-attributes-per-line
+  229:51  warning  'shadow' should be on a new line                                                     vue/max-attributes-per-line
+  232:45  warning  Attribute "v-if" should go before "class"                                            vue/attributes-order
+  232:45  warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  233:35  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  233:50  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  233:63  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  236:35  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  236:49  warning  'size' should be on a new line                                                       vue/max-attributes-per-line
+  236:62  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  241:40  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+  241:66  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  242:40  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+  242:72  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  244:43  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+  244:47  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  259:37  warning  'label-width' should be on a new line                                                vue/max-attributes-per-line
+  260:36  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  261:48  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  263:34  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  264:53  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  264:73  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  265:36  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  266:36  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  267:35  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  268:35  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  269:35  warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  272:36  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  273:51  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  276:55  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  276:71  warning  'rows' should be on a new line                                                       vue/max-attributes-per-line
+  276:80  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  279:57  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  279:73  warning  'rows' should be on a new line                                                       vue/max-attributes-per-line
+  279:82  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  283:58  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  283:60  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  284:35  warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+  284:53  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  284:74  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  284:76  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  294:38  warning  'label-width' should be on a new line                                                vue/max-attributes-per-line
+  295:36  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  296:57  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  298:38  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  299:59  warning  ':min' should be on a new line                                                       vue/max-attributes-per-line
+  299:68  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  301:35  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  302:56  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  304:35  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  305:54  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  307:35  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  308:54  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  310:35  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  311:54  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  314:64  warning  ':min' should be on a new line                                                       vue/max-attributes-per-line
+  314:73  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  318:59  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  318:61  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  319:35  warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+  319:53  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  319:75  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  319:77  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  329:36  warning  'label-width' should be on a new line                                                vue/max-attributes-per-line
+  330:38  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  331:57  warning  ':min' should be on a new line                                                       vue/max-attributes-per-line
+  331:66  warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  333:36  warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  334:55  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  337:58  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  340:66  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  343:56  warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  343:72  warning  'rows' should be on a new line                                                       vue/max-attributes-per-line
+  343:81  warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  350:57  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  350:59  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  351:35  warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+  351:53  warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  351:73  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  351:75  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+
+D:\MCTEST\test-platform\frontend\src\views\modules\index.vue
+    3:35   warning  Attribute "v-if" should go before "class"                                            vue/attributes-order
+    3:35   warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+    4:33   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+    8:38   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   23:47   warning  'shadow' should be on a new line                                                     vue/max-attributes-per-line
+   26:34   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+   26:42   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+   28:41   warning  Attribute "v-if" should go before "class"                                            vue/attributes-order
+   28:41   warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+   29:31   warning  'circle' should be on a new line                                                     vue/max-attributes-per-line
+   29:38   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   32:31   warning  'circle' should be on a new line                                                     vue/max-attributes-per-line
+   32:38   warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+   32:52   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   39:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+   39:55   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   40:42   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+   40:72   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   41:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+   41:72   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+   43:36   warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found       vue/singleline-html-element-content-newline
+   43:69   warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found     vue/singleline-html-element-content-newline
+   48:29   warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+   48:44   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   57:43   warning  'description' should be on a new line                                                vue/max-attributes-per-line
+   65:30   warning  'label-width' should be on a new line                                                vue/max-attributes-per-line
+   66:36   warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+   67:41   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+   70:45   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+   82:54   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+   82:56   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+   83:35   warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+   83:53   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+   97:37   warning  Attribute "v-if" should go before "class"                                            vue/attributes-order
+   97:37   warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+   98:37   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  104:51   warning  'description' should be on a new line                                                vue/max-attributes-per-line
+  116:40   warning  ':type' should be on a new line                                                      vue/max-attributes-per-line
+  119:40   warning  ':type' should be on a new line                                                      vue/max-attributes-per-line
+  119:86   warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  124:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found          vue/singleline-html-element-content-newline
+  124:70   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found        vue/singleline-html-element-content-newline
+  129:41   warning  Attribute "v-if" should go before "class"                                            vue/attributes-order
+  129:41   warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  130:33   warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  130:48   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  130:72   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  130:74   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  131:33   warning  'type' should be on a new line                                                       vue/max-attributes-per-line
+  131:47   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+  131:73   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  131:75   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  146:34   warning  'label-width' should be on a new line                                                vue/max-attributes-per-line
+  147:37   warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  148:45   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  163:72   warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  164:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  164:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  178:85   warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  179:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  179:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  193:96   warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  194:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  194:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  208:74   warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  209:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  209:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  220:36   warning  'required' should be on a new line                                                   vue/max-attributes-per-line
+  221:51   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  221:73   warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  222:42   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  223:38   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  224:37   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  231:149  warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  232:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  232:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  259:36   warning  Attribute "v-if" should go before "label"                                            vue/attributes-order
+  259:36   warning  'v-if' should be on a new line                                                       vue/max-attributes-per-line
+  260:52   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  274:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  274:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  277:56   warning  'placeholder' should be on a new line                                                vue/max-attributes-per-line
+  277:78   warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  278:37   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  279:37   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  280:38   warning  'value' should be on a new line                                                      vue/max-attributes-per-line
+  285:55   warning  ':min' should be on a new line                                                       vue/max-attributes-per-line
+  285:65   warning  ':max' should be on a new line                                                       vue/max-attributes-per-line
+  285:77   warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  291:40   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found     vue/singleline-html-element-content-newline
+  291:42   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found   vue/singleline-html-element-content-newline
+  292:36   warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found     vue/singleline-html-element-content-newline
+  292:38   warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found   vue/singleline-html-element-content-newline
+  297:59   warning  ':min' should be on a new line                                                       vue/max-attributes-per-line
+  297:68   warning  ':max' should be on a new line                                                       vue/max-attributes-per-line
+  297:77   warning  'style' should be on a new line                                                      vue/max-attributes-per-line
+  303:33   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  303:84   warning  'placement' should be on a new line                                                  vue/max-attributes-per-line
+  304:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  304:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  311:25   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  326:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  326:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  333:25   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  348:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  348:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  355:25   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  370:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  370:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  377:25   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  394:42   warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found      vue/singleline-html-element-content-newline
+  394:60   warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found    vue/singleline-html-element-content-newline
+  401:25   warning  Expected to be enclosed by double quotes                                             vue/html-quotes
+  423:52   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found    vue/singleline-html-element-content-newline
+  423:54   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found  vue/singleline-html-element-content-newline
+  424:35   warning  ':loading' should be on a new line                                                   vue/max-attributes-per-line
+  424:57   warning  '@click' should be on a new line                                                     vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\profile\index.vue
+   4:24  warning  ':md' should be on a new line                                                                   vue/max-attributes-per-line
+   5:35  warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+   8:35  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+   8:43  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+  13:40  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  13:47  warning  Attribute "v-loading" should go before "border"                                                 vue/attributes-order
+  13:47  warning  'v-loading' should be on a new line                                                             vue/max-attributes-per-line
+  14:48  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  14:73  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  15:47  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  15:78  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  26:49  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  26:85  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  27:48  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  27:89  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  28:48  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  28:86  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  32:38  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  40:24  warning  ':md' should be on a new line                                                                   vue/max-attributes-per-line
+  41:35  warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+  44:35  warning  Expected 1 line break after opening tag (`<el-icon>`), but no line breaks found                 vue/singleline-html-element-content-newline
+  44:43  warning  Expected 1 line break before closing tag (`</el-icon>`), but no line breaks found               vue/singleline-html-element-content-newline
+  49:42  warning  'label-width' should be on a new line                                                           vue/max-attributes-per-line
+  49:62  warning  ':rules' should be on a new line                                                                vue/max-attributes-per-line
+  49:85  warning  Attribute "ref" should go before ":rules"                                                       vue/attributes-order
+  49:85  warning  'ref' should be on a new line                                                                   vue/max-attributes-per-line
+  50:39  warning  'prop' should be on a new line                                                                  vue/max-attributes-per-line
+  59:39  warning  'prop' should be on a new line                                                                  vue/max-attributes-per-line
+  68:40  warning  'prop' should be on a new line                                                                  vue/max-attributes-per-line
+  78:41  warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  78:61  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  81:53  warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+  81:55  warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+
+D:\MCTEST\test-platform\frontend\src\views\reports\index.vue
+   15:41  warning  'placeholder' should be on a new line                                                           vue/max-attributes-per-line
+   15:60  warning  'clearable' should be on a new line                                                             vue/max-attributes-per-line
+   15:70  warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+   16:38  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   17:41  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   18:38  warning  'value' should be on a new line                                                                 vue/max-attributes-per-line
+   21:33  warning  ':disabled' should be on a new line                                                             vue/max-attributes-per-line
+   21:69  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   43:47  warning  'shadow' should be on a new line                                                                vue/max-attributes-per-line
+   45:36  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   45:57  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   46:59  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+   46:72  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+   52:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   52:71  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   70:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   70:74  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   71:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   71:43  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   74:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   74:74  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   75:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   75:43  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   78:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   78:75  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   79:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   79:43  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   82:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   82:73  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   83:41  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+   83:43  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+   89:52  warning  '@change' should be on a new line                                                               vue/max-attributes-per-line
+   93:31  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+   93:46  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   96:31  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  105:63  warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  113:33  warning  'v-loading' should be on a new line                                                             vue/max-attributes-per-line
+  113:59  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  118:68  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  118:81  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  127:37  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  127:50  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  137:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  137:40  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  138:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  138:83  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  141:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  141:39  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  142:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  142:78  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  145:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  145:39  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  146:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  146:78  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  149:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  149:39  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  150:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  150:79  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  153:37  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  153:39  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  154:38  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  154:77  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  164:36  warning  ':option' should be on a new line                                                               vue/max-attributes-per-line
+  164:64  warning  'autoresize' should be on a new line                                                            vue/max-attributes-per-line
+  168:36  warning  ':option' should be on a new line                                                               vue/max-attributes-per-line
+  168:62  warning  'autoresize' should be on a new line                                                            vue/max-attributes-per-line
+  176:51  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  176:64  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  177:44  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  180:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  180:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  181:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  181:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  182:47  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  182:66  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  185:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  185:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  186:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  186:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  187:47  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  187:69  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  190:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  190:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  191:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  191:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  195:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  195:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  196:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  196:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  197:47  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  197:72  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  200:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  200:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  201:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  201:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  202:71  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  203:33  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  203:54  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  203:77  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  206:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  206:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  207:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  207:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  208:47  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  208:70  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  211:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  211:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  212:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  212:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  213:42  warning  ':type' should be on a new line                                                                 vue/max-attributes-per-line
+  218:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  218:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  219:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  219:57  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  223:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  223:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  224:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  224:57  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  228:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  228:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  229:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  229:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  230:49  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  230:72  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  233:47  warning  Attribute "v-if" should go before "class"                                                       vue/attributes-order
+  233:47  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  234:48  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  234:52  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  239:45  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  239:60  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  246:49  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  246:60  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  247:47  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  247:59  warning  'min-width' should be on a new line                                                             vue/max-attributes-per-line
+  248:44  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  248:55  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  250:59  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  250:72  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  255:52  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  255:63  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  260:49  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  260:62  warning  'min-width' should be on a new line                                                             vue/max-attributes-per-line
+  304:35  warning  ':loading' should be on a new line                                                              vue/max-attributes-per-line
+  304:61  warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  309:33  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  311:32  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  314:32  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  314:46  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  317:32  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  321:46  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  321:59  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  321:77  warning  'max-height' should be on a new line                                                            vue/max-attributes-per-line
+  322:47  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  322:58  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  323:45  warning  'label' should be on a new line                                                                 vue/max-attributes-per-line
+  323:57  warning  'min-width' should be on a new line                                                             vue/max-attributes-per-line
+  324:77  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  327:64  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  327:77  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  335:78  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  338:65  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  338:78  warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  346:39  warning  'width' should be on a new line                                                                 vue/max-attributes-per-line
+  348:39  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  348:54  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  348:67  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found                  vue/singleline-html-element-content-newline
+  348:69  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found                vue/singleline-html-element-content-newline
+  349:49  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  349:61  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  349:74  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found                  vue/singleline-html-element-content-newline
+  349:79  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found                vue/singleline-html-element-content-newline
+  350:50  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  350:62  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  350:75  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found                  vue/singleline-html-element-content-newline
+  350:80  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found                vue/singleline-html-element-content-newline
+  351:30  warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+  351:44  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  351:57  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found                  vue/singleline-html-element-content-newline
+  351:60  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found                vue/singleline-html-element-content-newline
+  356:45  warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  365:35  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  366:38  warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  366:45  warning  Attribute "v-if" should go before "border"                                                      vue/attributes-order
+  366:45  warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  367:45  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  367:71  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  369:62  warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  373:46  warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  373:81  warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  375:40  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  376:26  warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\tasks\create.vue
+   19:42  warning  ':key' should be on a new line                                                      vue/max-attributes-per-line
+   19:59  warning  'class' should be on a new line                                                     vue/max-attributes-per-line
+   42:44  warning  ':type' should be on a new line                                                     vue/max-attributes-per-line
+   50:46  warning  'type' should be on a new line                                                      vue/max-attributes-per-line
+   50:60  warning  'style' should be on a new line                                                     vue/max-attributes-per-line
+   59:46  warning  'type' should be on a new line                                                      vue/max-attributes-per-line
+   59:61  warning  'style' should be on a new line                                                     vue/max-attributes-per-line
+   65:42  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found         vue/singleline-html-element-content-newline
+   65:64  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found       vue/singleline-html-element-content-newline
+   80:44  warning  'class' should be on a new line                                                     vue/max-attributes-per-line
+   84:23  warning  'class' should be on a new line                                                     vue/max-attributes-per-line
+   94:44  warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found         vue/singleline-html-element-content-newline
+   94:86  warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found       vue/singleline-html-element-content-newline
+   96:42  warning  ':type' should be on a new line                                                     vue/max-attributes-per-line
+  107:35  warning  'style' should be on a new line                                                     vue/max-attributes-per-line
+  121:39  warning  'style' should be on a new line                                                     vue/max-attributes-per-line
+  124:45  warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found    vue/singleline-html-element-content-newline
+  124:49  warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found  vue/singleline-html-element-content-newline
+  125:40  warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found    vue/singleline-html-element-content-newline
+  125:44  warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found  vue/singleline-html-element-content-newline
+  126:41  warning  Expected 1 line break after opening tag (`<el-radio>`), but no line breaks found    vue/singleline-html-element-content-newline
+  126:45  warning  Expected 1 line break before closing tag (`</el-radio>`), but no line breaks found  vue/singleline-html-element-content-newline
+  129:49  warning  'class' should be on a new line                                                     vue/max-attributes-per-line
+  140:50  warning  'class' should be on a new line                                                     vue/max-attributes-per-line
+  158:13  warning  Attribute "style" should go before "@click"                                         vue/attributes-order
+
+D:\MCTEST\test-platform\frontend\src\views\tasks\index.vue
+  15:41  warning  'placeholder' should be on a new line                                              vue/max-attributes-per-line
+  15:60  warning  'clearable' should be on a new line                                                vue/max-attributes-per-line
+  16:32  warning  'value' should be on a new line                                                    vue/max-attributes-per-line
+  17:32  warning  'value' should be on a new line                                                    vue/max-attributes-per-line
+  18:32  warning  'value' should be on a new line                                                    vue/max-attributes-per-line
+  19:31  warning  'value' should be on a new line                                                    vue/max-attributes-per-line
+  20:32  warning  'value' should be on a new line                                                    vue/max-attributes-per-line
+  23:33  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+  30:31  warning  'class' should be on a new line                                                    vue/max-attributes-per-line
+  30:49  warning  Attribute "v-loading" should go before "class"                                     vue/attributes-order
+  30:49  warning  'v-loading' should be on a new line                                                vue/max-attributes-per-line
+  31:36  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  31:47  warning  'width' should be on a new line                                                    vue/max-attributes-per-line
+  32:38  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  32:51  warning  'min-width' should be on a new line                                                vue/max-attributes-per-line
+  34:37  warning  '@click' should be on a new line                                                   vue/max-attributes-per-line
+  34:60  warning  Expected 1 line break after opening tag (`<el-link>`), but no line breaks found    vue/singleline-html-element-content-newline
+  34:74  warning  Expected 1 line break before closing tag (`</el-link>`), but no line breaks found  vue/singleline-html-element-content-newline
+  37:47  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  37:58  warning  'min-width' should be on a new line                                                vue/max-attributes-per-line
+  39:34  warning  Expected 1 line break after opening tag (`<el-tag>`), but no line breaks found     vue/singleline-html-element-content-newline
+  39:57  warning  Expected 1 line break before closing tag (`</el-tag>`), but no line breaks found   vue/singleline-html-element-content-newline
+  42:40  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  42:51  warning  'width' should be on a new line                                                    vue/max-attributes-per-line
+  44:55  warning  'effect' should be on a new line                                                   vue/max-attributes-per-line
+  57:37  warning  'min-width' should be on a new line                                                vue/max-attributes-per-line
+  59:58  warning  'size' should be on a new line                                                     vue/max-attributes-per-line
+  59:71  warning  'type' should be on a new line                                                     vue/max-attributes-per-line
+  62:81  warning  'size' should be on a new line                                                     vue/max-attributes-per-line
+  62:94  warning  'type' should be on a new line                                                     vue/max-attributes-per-line
+  69:50  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  69:61  warning  'width' should be on a new line                                                    vue/max-attributes-per-line
+  77:44  warning  'label' should be on a new line                                                    vue/max-attributes-per-line
+  77:57  warning  'width' should be on a new line                                                    vue/max-attributes-per-line
+  82:37  warning  'width' should be on a new line                                                    vue/max-attributes-per-line
+  82:49  warning  'fixed' should be on a new line                                                    vue/max-attributes-per-line
+
+D:\MCTEST\test-platform\frontend\src\views\tasks\monitor.vue
+    6:53   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+    6:66   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+   18:54   warning  'type' should be on a new line                                                                  vue/max-attributes-per-line
+   18:68   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+   21:44   warning  Expected 1 line break after opening tag (`<el-button>`), but no line breaks found               vue/singleline-html-element-content-newline
+   21:46   warning  Expected 1 line break before closing tag (`</el-button>`), but no line breaks found             vue/singleline-html-element-content-newline
+   26:31   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+   49:26   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+   55:36   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+   77:28   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+   81:26   warning  Attribute "v-if" should go before ":span"                                                       vue/attributes-order
+   81:26   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  137:31   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  141:42   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  144:27   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  158:37   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  158:52   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  160:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  160:53   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  161:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  161:60   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  164:64   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  164:77   warning  'effect' should be on a new line                                                                vue/max-attributes-per-line
+  179:42   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  183:19   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  191:37   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  191:52   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  193:38   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  193:53   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  194:40   warning  Expected 1 line break after opening tag (`<div>`), but no line breaks found                     vue/singleline-html-element-content-newline
+  194:62   warning  Expected 1 line break before closing tag (`</div>`), but no line breaks found                   vue/singleline-html-element-content-newline
+  197:57   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  200:59   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  203:59   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  206:60   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  209:62   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  212:59   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  215:31   warning  'color' should be on a new line                                                                 vue/max-attributes-per-line
+  221:131  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  222:51   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  225:104  warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  235:46   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  238:46   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  256:31   warning  'style' should be on a new line                                                                 vue/max-attributes-per-line
+  260:27   warning  '@click' should be on a new line                                                                vue/max-attributes-per-line
+  267:32   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  270:34   warning  Attribute "ref" should go before "class"                                                        vue/attributes-order
+  270:34   warning  'ref' should be on a new line                                                                   vue/max-attributes-per-line
+  281:35   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  282:38   warning  'border' should be on a new line                                                                vue/max-attributes-per-line
+  282:45   warning  Attribute "v-if" should go before "border"                                                      vue/attributes-order
+  282:45   warning  'v-if' should be on a new line                                                                  vue/max-attributes-per-line
+  283:45   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  283:71   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  284:44   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  284:72   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  286:68   warning  'size' should be on a new line                                                                  vue/max-attributes-per-line
+  290:46   warning  Expected 1 line break after opening tag (`<el-descriptions-item>`), but no line breaks found    vue/singleline-html-element-content-newline
+  290:81   warning  Expected 1 line break before closing tag (`</el-descriptions-item>`), but no line breaks found  vue/singleline-html-element-content-newline
+  292:40   warning  'class' should be on a new line                                                                 vue/max-attributes-per-line
+  293:26   warning  'description' should be on a new line                                                           vue/max-attributes-per-line
+  300:59   warning  'watch' is defined but never used                                                               no-unused-vars
+  312:7    warning  'router' is assigned a value but never used                                                     no-unused-vars
+
+✖ 1037 problems (0 errors, 1037 warnings)
+  0 errors and 864 warnings potentially fixable with the `--fix` option.
+--- OUTPUT END ---

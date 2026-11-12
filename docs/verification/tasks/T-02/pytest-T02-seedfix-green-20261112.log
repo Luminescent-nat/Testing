@@ -1,0 +1,20 @@
+﻿COMMAND: python -m pytest tests/unit/test_migration_contract.py tests/unit/test_secret_strength.py tests/unit/test_tool_manifest.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T12:19:17.7604611+08:00
+END: 2026-11-12T12:19:19.6566505+08:00
+EXITCODE: 0
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 35 items
+
+tests\unit\test_migration_contract.py .......                            [ 20%]
+tests\unit\test_secret_strength.py .....................                 [ 80%]
+tests\unit\test_tool_manifest.py .......                                 [100%]
+
+============================= 35 passed in 0.71s ==============================
+

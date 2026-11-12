@@ -1,0 +1,6 @@
+=== CMD: adb -s 5c000c2834414751c9d shell uptime
+=== TIME: 2026-11-12 11:45:28.312 +08:00 -> 11:45:28.454
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+ 11:44:35 up  2:37,  0 users,  load average: 8.66, 8.70, 8.72
+--- RAW OUTPUT END ---

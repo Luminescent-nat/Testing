@@ -1,0 +1,12 @@
+=== CMD: adb -s 5c000c2834414751c9d shell getprop ro.mc.android_version; adb -s 5c000c2834414751c9d shell getprop ro.mc.cpu; adb -s 5c000c2834414751c9d shell getprop ro.mc.custom_api_version; adb -s 5c000c2834414751c9d shell getprop ro.mc.oem.version; adb -s 5c000c2834414751c9d shell getprop ro.mc.product; adb -s 5c000c2834414751c9d shell getprop ro.mc.version; adb -s 5c000c2834414751c9d shell getprop ro.mc.version_code
+=== TIME: 2026-11-12 11:45:24.775 +08:00 -> 11:45:25.534
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+ANDROID10.0
+A133P
+1
+
+FE7G18P/Standard
+6.5.5
+6
+--- RAW OUTPUT END ---

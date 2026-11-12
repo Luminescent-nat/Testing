@@ -1,0 +1,41 @@
+=== CMD: adb -s 5c000c2834414751c9d shell cat /proc/meminfo
+=== TIME: 2026-11-12 11:45:26.157 +08:00 -> 11:45:26.342
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+MemTotal:        2022328 kB
+MemFree:           52960 kB
+MemAvailable:     512908 kB
+Buffers:           29592 kB
+Cached:           441512 kB
+SwapCached:         3780 kB
+Active:           797528 kB
+Inactive:         383336 kB
+Active(anon):     566352 kB
+Inactive(anon):   147540 kB
+Active(file):     231176 kB
+Inactive(file):   235796 kB
+Unevictable:      542316 kB
+Mlocked:          542316 kB
+SwapTotal:       1516740 kB
+SwapFree:        1457612 kB
+Dirty:                 8 kB
+Writeback:             0 kB
+AnonPages:       1251860 kB
+Mapped:           212316 kB
+Shmem:              2048 kB
+Slab:              93004 kB
+SReclaimable:      39216 kB
+SUnreclaim:        53788 kB
+KernelStack:       14416 kB
+PageTables:        20948 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     2527904 kB
+Committed_AS:   15552880 kB
+VmallocTotal:   263061440 kB
+VmallocUsed:       14560 kB
+VmallocChunk:          0 kB
+CmaTotal:           8192 kB
+CmaFree:            4116 kB
+--- RAW OUTPUT END ---

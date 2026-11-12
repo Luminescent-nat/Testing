@@ -1,0 +1,8 @@
+=== CMD: adb -s 5c000c2834414751c9d shell getprop ro.product.cpu.abi; adb -s 5c000c2834414751c9d shell getprop ro.product.cpu.abilist; adb -s 5c000c2834414751c9d shell getprop ro.zygote
+=== TIME: 2026-11-12 11:45:24.403 +08:00 -> 11:45:24.774
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+armeabi-v7a
+armeabi-v7a,armeabi
+zygote32
+--- RAW OUTPUT END ---

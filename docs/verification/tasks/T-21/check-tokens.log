@@ -1,0 +1,45 @@
+﻿=== npm run check:tokens ===
+command: npm run check:tokens
+start: 2026-11-12 11:47:53.254
+end: 2026-11-12 11:47:53.509
+duration_ms: 255
+exit_code: 0
+
+
+> test-platform-frontend@1.0.0 check:tokens
+> node scripts/check-tokens.mjs
+
+=== 设计 token 静态检查（T-21） ===
+文件：src/styles/theme.scss, src/styles/index.scss
+
+[token 清单]
+  颜色 token：期望 15 个，浅色块实际 15 个
+  字号/行高：期望 6 对；间距：7；圆角：4；阴影：3；焦点环：1
+
+[token 差异清单]
+  无差异：token 完整且与 ui-tokens.md v1.0 一致
+
+[裸值违规]
+  无：token 块外未发现裸 hex/rgb、表外字号/间距/圆角/阴影
+
+[核心对比度实测（WCAG 相对亮度）]
+  浅色 text / bg: 17.85:1 (门槛 4.5:1, 文档 17.85:1) 通过
+  浅色 text-secondary / bg: 7.58:1 (门槛 4.5:1, 文档 7.58:1) 通过
+  浅色 primary / bg: 5.17:1 (门槛 4.5:1, 文档 5.17:1) 通过
+  浅色 text-inverse / primary: 5.17:1 (门槛 4.5:1, 文档 5.17:1) 通过
+  浅色 success / bg: 5.02:1 (门槛 4.5:1, 文档 5.02:1) 通过
+  浅色 warning / bg: 4.92:1 (门槛 4.5:1, 文档 4.92:1) 通过
+  浅色 error / bg: 6.47:1 (门槛 4.5:1, 文档 6.47:1) 通过
+  浅色 text-tertiary / bg: 4.76:1 (门槛 4.5:1, 文档 4.76:1) 通过
+  浅色 control-border / bg: 4.76:1 (门槛 3:1, 文档 4.76:1) 通过
+  暗色 text / bg: 17.06:1 (门槛 4.5:1, 文档 17.06:1) 通过
+  暗色 text-secondary / bg: 12.02:1 (门槛 4.5:1, 文档 12.02:1) 通过
+  暗色 primary / bg: 7.02:1 (门槛 4.5:1, 文档 7.02:1) 通过
+  暗色 text-inverse / primary: 7.02:1 (门槛 4.5:1, 文档 7.02:1) 通过
+  暗色 success / bg: 10.25:1 (门槛 4.5:1, 文档 10.25:1) 通过
+  暗色 warning / bg: 12.38:1 (门槛 4.5:1, 文档 12.38:1) 通过
+  暗色 error / bg: 9.41:1 (门槛 4.5:1, 文档 9.41:1) 通过
+  暗色 text-tertiary / bg: 6.96:1 (门槛 4.5:1, 文档 6.96:1) 通过
+  暗色 control-border / bg-elevated: 5.71:1 (门槛 3:1, 文档 5.71:1) 通过
+
+[结论] 裸值违规 0 项；token 差异 0 项；对比度不达标/偏差 0 项

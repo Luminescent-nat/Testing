@@ -1,0 +1,18 @@
+﻿== test-platform/frontend/src/styles/theme.scss
+  HEAD first-line hex: 2f2f203d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d20e4b8bbe9a298e58f98e9878fe5ae9ae4b989203d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d
+  HEAD utf8  : '// ==================== \u4e3b\u9898\u53d8\u91cf\u5b9a\u4e49 ===================='
+  HEAD gbk   : '// ==================== \u6d93\u5a5a\ufffd\u6a3a\u5f49\u95b2\u5fd3\u757e\u6d94\ufffd ===================='
+  HEAD markers present: []
+  WORK first-line hex: 2f2f203d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d20e8aebee8aea120746f6b656eefbc88e69da5e6ba9020646f63732f64657369676e2f7569
+  WORK utf8  : '// ==================== \u8bbe\u8ba1 token\uff08\u6765\u6e90 docs/design/ui-tokens.md v1.0\uff09 ===================='
+  WORK markers present: []
+  WORK has U+FFFD: False
+== test-platform/frontend/src/styles/index.scss
+  HEAD first-line hex: 2f2f20e9809ae794a8e6a0b7e5bc8f
+  HEAD utf8  : '// \u901a\u7528\u6837\u5f0f'
+  HEAD gbk   : '// \u95ab\u6c31\u6564\u93cd\u5cf0\u7d21'
+  HEAD markers present: []
+  WORK first-line hex: 2f2f20e9809ae794a8e6a0b7e5bc8fefbc88e585a8e983a8e5bc95e794a820646f63732f64657369676e2f75692d746f6b656e732e6d642076312e30
+  WORK utf8  : '// \u901a\u7528\u6837\u5f0f\uff08\u5168\u90e8\u5f15\u7528 docs/design/ui-tokens.md v1.0 \u7684 token\uff0c\u7981\u6b62\u88f8\u503c\uff09'
+  WORK markers present: []
+  WORK has U+FFFD: False

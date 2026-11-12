@@ -1,0 +1,18 @@
+﻿COMMAND: python -m pytest tests/unit/test_secret_strength.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T12:19:16.7089743+08:00
+END: 2026-11-12T12:19:17.7594555+08:00
+EXITCODE: 0
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 21 items
+
+tests\unit\test_secret_strength.py .....................                 [100%]
+
+============================= 21 passed in 0.05s ==============================
+

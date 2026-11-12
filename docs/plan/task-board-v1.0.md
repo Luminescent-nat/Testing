@@ -14,7 +14,7 @@
   - [ ] legacy 仅委托同一服务，不形成第二套权限或统计语义。
 - 验证：运行新增 `test_contract_errors.py` 及现有 API 集成测试；每个适用错误码真实触发且 JSON 合法。
 - 回退：单独还原错误处理与路由适配，不影响后续业务服务逻辑。
-- 状态：未开始
+- 状态：已完成（2026-11-12；RR-T01 评审通过；证据 [docs/verification/tasks/T-01/](../verification/tasks/T-01/)、[RR-T01](../verification/reviews/RR-T01-unified-errors.md)）
 
 ## T-02 建立 Alembic 与外键迁移基础
 - 改动：补齐新装/存量 Alembic 升级、SQLite 每连接外键和迁移副本验证脚本。
@@ -24,7 +24,7 @@
   - [ ] 升级、回滚、异常路径保留行数/结构/完整性证据，不删历史记录。
 - 验证：在空库和备份副本执行 upgrade/downgrade/非法关联写入，结果符合 R20。
 - 回退：还原迁移基础设施并恢复演练副本，不触碰真实库。
-- 状态：未开始
+- 状态：进行中/未通过（2026-11-12；RR-T02 判定不通过：初始迁移 downgrade base 删表使存量副本回滚 10/98→0/0，DoD 第2条/R20 回滚数据保留未达成；新装/存量升级、外键/唯一约束、源库保护已通过；真实库严禁 downgrade base，待 T-11 可逆 additive 迁移或用户修订 design§5 后补做。证据 [T-02](../verification/tasks/T-02/)、[RR-T02](../verification/reviews/RR-T02-migration-fk.md)）
 
 ## T-03 实现共享设备授权策略
 - 改动：在设备服务和设备 API 中统一 owner+PC 授权、发现不认领及管理员版本改派。
@@ -64,7 +64,7 @@
   - [ ] SKIP原因保留，普通相似文本不误判，rc!=0优先fail。
 - 验证：运行 `test_execution_failure_closed.py` 的 EXEC-01～05/SKIP-01～02全真值表。
 - 回退：单独还原判定模块，不依赖统计任务回退。
-- 状态：未开始
+- 状态：已完成（2026-11-12；RR-T06 评审通过；45 新增用例，全量 310 passed；报告/WS 端到端贯通留 T-08/最终验收。证据 [T-06](../verification/tasks/T-06/)、[RR-T06](../verification/reviews/RR-T06-failure-closed-skip.md)）
 
 ## T-07 补齐 stop 与任务终态聚合
 - 改动：在任务执行器中补停止项后的skip记录并统一status/result/进度收尾。
@@ -174,7 +174,7 @@
   - [ ] 必需工具缺失明确失败，范围内APK/外设缺失如实skip。
 - 验证：干净构建/启动并导出工具清单和镜像内路径，保存完整日志。
 - 回退：单独还原Docker与发现校验改动。
-- 状态：未开始
+- 状态：进行中（2026-11-12；代码/静态核对 10/10、tool_manifest 7 单测通过；本机无 docker，干净构建/容器启动/多架构二进制容器可用性无法核验，R27 不得声称通过；RR-T17 有条件通过。证据 [T-17](../verification/tasks/T-17/)、[RR-T17](../verification/reviews/RR-T17-clean-image-tools.md)）
 
 ## T-18 拒绝弱默认密钥
 - 改动：启动校验拒绝空、短密钥和契约列出的占位值且不打印密钥。
@@ -184,7 +184,7 @@
   - [ ] 文档示例与实际校验一致，错误日志不泄露值。
 - 验证：运行 `test_secret_strength.py` 并实际执行合法/非法启动矩阵。
 - 回退：单独还原密钥校验和文档示例。
-- 状态：未开始
+- 状态：已完成（2026-11-12；RR-T18 评审通过：8 类弱/占位/短密钥启动 exit=3 拒绝、合法密钥与 fresh 空库 /health=200、错误不打印密钥；容器内 compose `${SECRET_KEY:?}` 展开因无 docker 未核验。证据 [T-18](../verification/tasks/T-18/)、[RR-T18](../verification/reviews/RR-T18-weak-secret.md)）
 
 ## T-19 移除 ADB runner shell 拼接
 - 改动：test-tools公共runner改用参数数组并处理空参数、失败和超时。
@@ -194,7 +194,7 @@
   - [ ] 异常输出和返回码可追踪，正常路径不回归。
 - 验证：运行test-tools新增正常/边界/异常测试并检查实际调用参数。
 - 回退：单独还原公共runner及测试。
-- 状态：未开始
+- 状态：已完成（2026-11-12；RR-T19 评审通过：全参数数组 shell=False、shell(str) 兼容签名、30+ 调用方零改动、真机只读 7/7、25 单测。证据 [T-19](../verification/tasks/T-19/)、[RR-T19](../verification/reviews/RR-T19-adb-runner.md)）
 
 ## T-20 建立前端契约客户端与生成 mock
 - 改动：按契约v1.0统一API路径、错误解析、幂等键并用mock-api生成开发mock。
@@ -204,7 +204,7 @@
   - [ ] mock明确标注且只用于隔离开发/测试，可切换真实API。
 - 验证：运行API client Vitest和mock契约样例，覆盖正常、错误、重放键。
 - 回退：单独还原客户端与生成mock，不影响页面业务。
-- 状态：未开始
+- 状态：进行中/有条件（2026-11-12；RR-T20 有条件通过：客户端/错误双解析/幂等键/33 前端用例均通过，P-T20-2/3 已修复复核；唯一未决为环境无 mock-api，改用仓库确定性脚本生成并如实标注，偏差 U1 待用户确认后方可用于隔离开发，不得用于真实联调。证据 [T-20](../verification/tasks/T-20/)、[RR-T20](../verification/reviews/RR-T20-frontend-client-mock.md)）
 
 ## T-21 映射已确认 UI token
 - 改动：将双主题token v1.0映射到主题变量并移除共享样式中的冲突裸值。
@@ -214,7 +214,7 @@
   - [ ] 亮暗主题无表外魔法值，间距均4倍数。
 - 验证：运行样式静态检查和构建，输出token差异及实测核心对比度。
 - 回退：单独还原主题变量映射。
-- 状态：未开始
+- 状态：已完成（2026-11-12；RR-T21 评审通过（静态 token 范围）：七色+扩展色/字号/间距/圆角/阴影/焦点环与 token 表逐值一致，共享样式裸值 0、18 组对比度达标；浏览器亮暗主题逐页走查属 T-22+。证据 [T-21](../verification/tasks/T-21/)、[RR-T21](../verification/reviews/RR-T21-ui-tokens.md)）
 
 ## T-22 实现共享组件契约与九状态
 - 改动：实现StatusTag、BoundaryState、MetricCard、TaskProgress、DeviceSelect、ReportSummary共享组件。

@@ -1,0 +1,33 @@
+﻿COMMAND: python scripts/check_image_tools.py --report ../docs/verification/tasks/T-17/image-tools-summary.json
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T12:12:21.2653411+08:00
+END: 2026-11-12T12:12:21.9647591+08:00
+EXITCODE: 0
+
+python.exe : 工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+所在位置 行:6 字符: 8
++ $out = & $py scripts/check_image_tools.py --report 'D:\MCTEST\docs\ve ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (工具清单 skip: upfm...记 skip（不伪造已就绪））:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[docker] 无法核验：当前主机无 docker 命令（Get-Command docker 为空），干净镜像构建（docker build）、容器启动与镜像内工具发现未执行；本脚本仅完成 Dockerfile/.dockerignore 静态核对与 host 侧 manifest 工具发现。
+[docker] 明确结论：镜像内实际构建/启动核验 = 无法核验（不伪造通过）
+
+================ 汇总 ================
+  [PASS] Dockerfile 存在  (D:\MCTEST\test-platform\Dockerfile)
+  [PASS] COPY test-tools/ 进镜像  (COPY test-tools/)
+  [PASS] TEST_TOOLS_PATH=/app/test-tools
+  [PASS] STATIC_PATH=/app/static
+  [PASS] WORKDIR /app（与 TEST_TOOLS_PATH/STATIC_PATH 对齐）
+  [PASS] .dockerignore 不排除 test-tools/  (bad=[])
+  [PASS] TEST_TOOLS_PATH 存在  (D:\MCTEST\test-platform\test-tools)
+  [PASS] 发现 manifest  (['D:\\MCTEST\\test-platform\\test-tools\\emmc\\manifest.yaml', 'D:\\MCTEST\\test-platform\\test-tools\\upfm\\manifest.yaml'])
+  [PASS] 必需工具齐备  (missing=[])
+  [PASS] skip（不伪造）: upfm/assets/test_app.apk  (可选测试资源缺失，按 R3 记 skip（不伪造已就绪）)
+
+RESULT: PASS(static) (10/10)
+docker build/start verification: UNVERIFIABLE (no docker)
+[report] D:\MCTEST\docs\verification\tasks\T-17\image-tools-summary.json
+

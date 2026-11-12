@@ -1,0 +1,7 @@
+=== CMD: adb -s 5c000c2834414751c9d shell cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies; adb -s 5c000c2834414751c9d shell cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq
+=== TIME: 2026-11-12 11:45:26.691 +08:00 -> 11:45:26.967
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+408000 600000 816000 1008000 1200000 1416000 1608000 1800000 
+1800000
+--- RAW OUTPUT END ---

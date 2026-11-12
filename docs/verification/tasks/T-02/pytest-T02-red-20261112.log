@@ -1,0 +1,52 @@
+﻿COMMAND: python -m pytest tests/unit/test_migration_contract.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T11:48:18.1119745+08:00
+END: 2026-11-12T11:48:19.5144151+08:00
+EXITCODE: 1
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 6 items
+
+tests\unit\test_migration_contract.py FFFEE.                             [100%]
+
+=================================== ERRORS ====================================
+_ ERROR at setup of test_unique_username_and_serial_number_are_enforced_by_database _
+tests\unit\test_migration_contract.py:65: in contract_engine
+    eng = _make_engine(tmp_path / "contract.db", apply_pragma=True)
+tests\unit\test_migration_contract.py:27: in _make_engine
+    event.listen(eng, "connect", database.configure_sqlite_connection)
+E   AttributeError: module 'app.database' has no attribute 'configure_sqlite_connection'
+_ ERROR at setup of test_illegal_foreign_key_write_is_rejected_with_pragma_on _
+tests\unit\test_migration_contract.py:65: in contract_engine
+    eng = _make_engine(tmp_path / "contract.db", apply_pragma=True)
+tests\unit\test_migration_contract.py:27: in _make_engine
+    event.listen(eng, "connect", database.configure_sqlite_connection)
+E   AttributeError: module 'app.database' has no attribute 'configure_sqlite_connection'
+================================== FAILURES ===================================
+_ test_configure_sqlite_connection_enables_foreign_keys_wal_and_busy_timeout __
+tests\unit\test_migration_contract.py:35: in test_configure_sqlite_connection_enables_foreign_keys_wal_and_busy_timeout
+    database.configure_sqlite_connection(raw)
+E   AttributeError: module 'app.database' has no attribute 'configure_sqlite_connection'
+________________ test_runtime_engine_registers_pragma_listener ________________
+tests\unit\test_migration_contract.py:48: in test_runtime_engine_registers_pragma_listener
+    )
+E   AttributeError: module 'app.database' has no attribute 'configure_sqlite_connection'
+_______________ test_pragma_is_applied_on_every_new_connection ________________
+tests\unit\test_migration_contract.py:53: in test_pragma_is_applied_on_every_new_connection
+    eng = _make_engine(tmp_path / "every.db", apply_pragma=True)
+tests\unit\test_migration_contract.py:27: in _make_engine
+    event.listen(eng, "connect", database.configure_sqlite_connection)
+E   AttributeError: module 'app.database' has no attribute 'configure_sqlite_connection'
+=========================== short test summary info ===========================
+FAILED tests/unit/test_migration_contract.py::test_configure_sqlite_connection_enables_foreign_keys_wal_and_busy_timeout
+FAILED tests/unit/test_migration_contract.py::test_runtime_engine_registers_pragma_listener
+FAILED tests/unit/test_migration_contract.py::test_pragma_is_applied_on_every_new_connection
+ERROR tests/unit/test_migration_contract.py::test_unique_username_and_serial_number_are_enforced_by_database
+ERROR tests/unit/test_migration_contract.py::test_illegal_foreign_key_write_is_rejected_with_pragma_on
+==================== 3 failed, 1 passed, 2 errors in 0.30s ====================
+

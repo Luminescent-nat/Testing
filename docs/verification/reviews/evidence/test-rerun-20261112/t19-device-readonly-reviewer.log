@@ -1,0 +1,50 @@
+=== REVIEWER RERUN: T-19 device readonly verify
+=== COMMAND: python docs/verification/tasks/T-19/verify_device_readonly.py
+=== TIME: 2026-11-12 12:04:22.021 -> 12:04:22.740
+=== EXIT CODE: 0
+--- OUTPUT BEGIN ---
+test-tools root = D:\MCTEST\test-platform\test-tools
+AdbRunner ��ʼ���Լ�ͨ��, last_command=['adb', '-s', '5c000c2834414751c9d', 'version']
+[raw] argv=['adb', '-s', '5c000c2834414751c9d', 'version']
+[raw] returncode=0
+[raw] stdout:
+Android Debug Bridge version 1.0.41
+Version 35.0.2-12147458
+Installed as D:\andriod\platform-tools-latest-windows\platform-tools\adb.exe
+Running on Windows 10.0.26200
+[raw] stderr:
+
+[PASS] adb -s SERIAL version
+[PASS] last_command �ǲ�������(list)  (<class 'list'>)
+[raw] argv=['adb', '-s', '5c000c2834414751c9d', 'shell', 'getprop ro.product.cpu.abi']
+[raw] returncode=0
+[raw] stdout:
+armeabi-v7a
+[PASS] adb -s SERIAL shell getprop ro.product.cpu.abi
+[raw] argv=['adb', '-s', '5c000c2834414751c9d', 'shell', 'echo ok']
+[raw] returncode=0
+[raw] stdout:
+ok
+[PASS] adb -s SERIAL shell echo ok
+[raw] detect_arch -> armeabi-v7a (getprop ��� 'armeabi-v7a')
+[PASS] device_info.detect_arch �����������  (armeabi-v7a)
+[PASS] py_compile test-tools ȫ�� 22 �� .py
+[smoke] upfm/host/board_detect.py: exit=0 stdout='IMPORT_OK'
+[smoke] upfm/host/touch_points.py: exit=0 stdout='IMPORT_OK'
+[smoke] upfm/host/apk_install_check.py: exit=0 stdout='IMPORT_OK'
+[smoke] emmc/host/emmc_tester.py: exit=0 stdout='IMPORT_OK'
+[smoke] emmc/host/emmc_fio_runner.py: exit=0 stdout='IMPORT_OK'
+[smoke] emmc/host/emmc_stability_runner.py: exit=0 stdout='IMPORT_OK'
+[PASS] �����ӽ��̵��� 6 ����Ƶ���÷�ģ��
+
+================ ���� ================
+  [PASS] adb -s SERIAL version
+  [PASS] last_command �ǲ�������(list)  (<class 'list'>)
+  [PASS] adb -s SERIAL shell getprop ro.product.cpu.abi
+  [PASS] adb -s SERIAL shell echo ok
+  [PASS] device_info.detect_arch �����������  (armeabi-v7a)
+  [PASS] py_compile test-tools ȫ�� 22 �� .py
+  [PASS] �����ӽ��̵��� 6 ����Ƶ���÷�ģ��
+
+RESULT: PASS (7/7)
+--- OUTPUT END ---

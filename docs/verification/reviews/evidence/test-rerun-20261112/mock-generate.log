@@ -1,0 +1,11 @@
+=== REVIEWER RERUN: mock-generate
+=== COMMAND: npm run mock:generate
+=== TIME: 2026-11-12 11:52:17.629 -> 11:52:18.796
+=== EXIT CODE: 0
+--- OUTPUT BEGIN ---
+
+> test-platform-frontend@1.0.0 mock:generate
+> node scripts/generate-contract-mocks.mjs
+
+[mock:generate] wrote test-platform\frontend\src\mocks\generated\contract-mocks.js (entries=24, digest=ea3fc258efa2)
+--- OUTPUT END ---

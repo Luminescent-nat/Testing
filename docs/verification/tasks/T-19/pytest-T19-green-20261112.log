@@ -1,0 +1,18 @@
+﻿COMMAND: python -m pytest tests/unit/test_adb_runner.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T11:57:21.9680865+08:00
+END: 2026-11-12T11:57:25.6072994+08:00
+EXITCODE: 0
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 25 items
+
+tests\unit\test_adb_runner.py .........................                  [100%]
+
+============================= 25 passed in 2.58s ==============================
+

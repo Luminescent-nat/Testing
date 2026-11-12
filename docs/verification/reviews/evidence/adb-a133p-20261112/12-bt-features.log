@@ -1,0 +1,7 @@
+=== CMD: adb -s 5c000c2834414751c9d shell pm list features | findstr /i bluetooth
+=== TIME: 2026-11-12 11:45:26.968 +08:00 -> 11:45:27.289
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+feature:android.hardware.bluetooth
+feature:android.hardware.bluetooth_le
+--- RAW OUTPUT END ---

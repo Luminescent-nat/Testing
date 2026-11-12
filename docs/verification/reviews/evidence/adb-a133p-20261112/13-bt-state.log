@@ -1,0 +1,10 @@
+=== CMD: adb -s 5c000c2834414751c9d shell settings get global bluetooth_on; adb -s 5c000c2834414751c9d shell dumpsys bluetooth_manager | findstr /i /c:'enabled' /c:'state' /c:'CRASH' /c:'RESTART' | Select-Object -First 10
+=== TIME: 2026-11-12 11:45:27.290 +08:00 -> 11:45:27.783
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+0
+  enabled: false
+  state: OFF
+Bluetooth never enabled!
+Bluetooth crashed 0 times
+--- RAW OUTPUT END ---

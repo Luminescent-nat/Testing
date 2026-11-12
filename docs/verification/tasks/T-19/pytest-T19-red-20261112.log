@@ -1,0 +1,142 @@
+﻿COMMAND: python -m pytest tests/unit/test_adb_runner.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T11:48:25.6137143+08:00
+END: 2026-11-12T11:48:27.0812970+08:00
+EXITCODE: 1
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 25 items
+
+tests\unit\test_adb_runner.py FFFFFFFFFFFFFFFFFFFFFFFF.                  [100%]
+
+================================== FAILURES ===================================
+_______ test_run_uses_real_subprocess_with_argv_list_and_serial_prefix ________
+tests\unit\test_adb_runner.py:63: in test_run_uses_real_subprocess_with_argv_list_and_serial_prefix
+    runner = AdbRunner(serial="SER-1", adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+_______________ test_subprocess_is_never_called_with_shell_true _______________
+tests\unit\test_adb_runner.py:82: in test_subprocess_is_never_called_with_shell_true
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+________ test_run_str_is_shlex_parsed_and_windows_paths_are_preserved _________
+tests\unit\test_adb_runner.py:92: in test_run_str_is_shlex_parsed_and_windows_paths_are_preserved
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+______ test_shell_str_is_one_remote_argument_and_metacharacters_are_data ______
+tests\unit\test_adb_runner.py:102: in test_shell_str_is_one_remote_argument_and_metacharacters_are_data
+    runner = AdbRunner(serial="SER-1", adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________ test_shell_list_is_joined_into_single_remote_command _____________
+tests\unit\test_adb_runner.py:114: in test_shell_list_is_joined_into_single_remote_command
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________ test_run_special_characters_are_not_interpreted_locally ___________
+tests\unit\test_adb_runner.py:120: in test_run_special_characters_are_not_interpreted_locally
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_push_pull_root_are_parameterized ____________________
+tests\unit\test_adb_runner.py:129: in test_push_pull_root_are_parameterized
+    runner = AdbRunner(serial="SER-1", adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+______________________ test_run_rejects_empty_commands[] ______________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_run_rejects_empty_commands[   ] _____________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_run_rejects_empty_commands[cmd2] ____________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_run_rejects_empty_commands[cmd3] ____________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_run_rejects_empty_commands[cmd4] ____________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+____________________ test_run_rejects_empty_commands[cmd5] ____________________
+tests\unit\test_adb_runner.py:145: in test_run_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+_____________________ test_shell_rejects_empty_commands[] _____________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________________ test_shell_rejects_empty_commands[   ] ____________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________________ test_shell_rejects_empty_commands[cmd2] ___________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________________ test_shell_rejects_empty_commands[cmd3] ___________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________________ test_shell_rejects_empty_commands[cmd4] ___________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________________ test_shell_rejects_empty_commands[cmd5] ___________________
+tests\unit\test_adb_runner.py:152: in test_shell_rejects_empty_commands
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+___________ test_push_pull_reject_empty_arguments_and_record_error ____________
+tests\unit\test_adb_runner.py:158: in test_push_pull_reject_empty_arguments_and_record_error
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+__________________ test_timeout_returns_none_and_is_tracked ___________________
+tests\unit\test_adb_runner.py:167: in test_timeout_returns_none_and_is_tracked
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+______________________ test_nonzero_exit_code_is_tracked ______________________
+tests\unit\test_adb_runner.py:176: in test_nonzero_exit_code_is_tracked
+    runner = AdbRunner(adb=fake_adb)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+________________ test_missing_adb_binary_raises_and_is_tracked ________________
+tests\unit\test_adb_runner.py:186: in test_missing_adb_binary_raises_and_is_tracked
+    runner = AdbRunner(adb=missing, check_adb=False)
+E   TypeError: AdbRunner.__init__() got an unexpected keyword argument 'adb'
+_______________ test_device_info_detect_arch_uses_argument_list _______________
+tests\unit\test_adb_runner.py:209: in test_device_info_detect_arch_uses_argument_list
+    assert adb.commands == [["getprop", "ro.product.cpu.abi"]]
+E   AssertionError: assert ['getprop ro.product.cpu.abi'] == [['getprop', ...uct.cpu.abi']]
+E     At index 0 diff: 'getprop ro.product.cpu.abi' != ['getprop', 'ro.product.cpu.abi']
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED tests/unit/test_adb_runner.py::test_run_uses_real_subprocess_with_argv_list_and_serial_prefix
+FAILED tests/unit/test_adb_runner.py::test_subprocess_is_never_called_with_shell_true
+FAILED tests/unit/test_adb_runner.py::test_run_str_is_shlex_parsed_and_windows_paths_are_preserved
+FAILED tests/unit/test_adb_runner.py::test_shell_str_is_one_remote_argument_and_metacharacters_are_data
+FAILED tests/unit/test_adb_runner.py::test_shell_list_is_joined_into_single_remote_command
+FAILED tests/unit/test_adb_runner.py::test_run_special_characters_are_not_interpreted_locally
+FAILED tests/unit/test_adb_runner.py::test_push_pull_root_are_parameterized
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[] - Typ...
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[   ] - ...
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[cmd2]
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[cmd3]
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[cmd4]
+FAILED tests/unit/test_adb_runner.py::test_run_rejects_empty_commands[cmd5]
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[] - T...
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[   ]
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[cmd2]
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[cmd3]
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[cmd4]
+FAILED tests/unit/test_adb_runner.py::test_shell_rejects_empty_commands[cmd5]
+FAILED tests/unit/test_adb_runner.py::test_push_pull_reject_empty_arguments_and_record_error
+FAILED tests/unit/test_adb_runner.py::test_timeout_returns_none_and_is_tracked
+FAILED tests/unit/test_adb_runner.py::test_nonzero_exit_code_is_tracked - Typ...
+FAILED tests/unit/test_adb_runner.py::test_missing_adb_binary_raises_and_is_tracked
+FAILED tests/unit/test_adb_runner.py::test_device_info_detect_arch_uses_argument_list
+======================== 24 failed, 1 passed in 0.22s =========================
+

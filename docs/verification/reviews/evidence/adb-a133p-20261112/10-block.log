@@ -1,0 +1,46 @@
+=== CMD: adb -s 5c000c2834414751c9d shell ls /sys/block
+=== TIME: 2026-11-12 11:45:26.503 +08:00 -> 11:45:26.691
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+dm-0
+dm-1
+dm-2
+dm-3
+loop0
+loop1
+loop10
+loop11
+loop12
+loop13
+loop14
+loop15
+loop2
+loop3
+loop4
+loop5
+loop6
+loop7
+loop8
+loop9
+mmcblk0
+mmcblk0boot0
+mmcblk0boot1
+mmcblk0rpmb
+ram0
+ram1
+ram10
+ram11
+ram12
+ram13
+ram14
+ram15
+ram2
+ram3
+ram4
+ram5
+ram6
+ram7
+ram8
+ram9
+zram0
+--- RAW OUTPUT END ---

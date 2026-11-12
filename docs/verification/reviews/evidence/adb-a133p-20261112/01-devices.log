@@ -1,0 +1,7 @@
+=== CMD: adb devices -l
+=== TIME: 2026-11-12 11:45:23.536 +08:00 -> 11:45:23.599
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+List of devices attached
+5c000c2834414751c9d    device product:A133P model:A133P device:A133P transport_id:1
+--- RAW OUTPUT END ---

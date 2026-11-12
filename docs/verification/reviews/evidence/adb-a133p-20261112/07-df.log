@@ -1,0 +1,20 @@
+=== CMD: adb -s 5c000c2834414751c9d shell df -h
+=== TIME: 2026-11-12 11:45:25.991 +08:00 -> 11:45:26.157
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+Filesystem            Size  Used Avail Use% Mounted on
+tmpfs                 987M  620K  987M   1% /dev
+tmpfs                 987M     0  987M   0% /mnt
+tmpfs                 987M     0  987M   0% /apex
+/dev/block/mmcblk0p11  11M   72K   11M   1% /metadata
+/dev/block/dm-0       881M  878M  2.6M 100% /
+/dev/block/mmcblk0p17 494M   16M  478M   4% /oem
+/dev/block/dm-3       510M  125M  385M  25% /mnt/scratch
+overlay               510M  125M  385M  25% /system
+overlay               510M  125M  385M  25% /vendor
+overlay               510M  125M  385M  25% /product
+/dev/block/mmcblk0p19 3.4G  468M  3.0G  14% /data
+/dev/block/mmcblk0p7  740M  796K  739M   1% /cache
+/dev/block/mmcblk0p12  16M   12K   16M   1% /mnt/private
+/data/media           3.4G  468M  3.0G  14% /mnt/runtime/default/emulated
+--- RAW OUTPUT END ---

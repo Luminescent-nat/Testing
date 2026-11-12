@@ -1,0 +1,710 @@
+﻿COMMAND: python scripts/verify_migrations.py --report docs/verification/tasks/T-02/migration-summary.json
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-12T11:53:15.6753259+08:00
+END: 2026-11-12T11:53:20.9736873+08:00
+EXITCODE: 0
+
+[env] backend_dir=D:\MCTEST\test-platform\backend
+[env] source=D:\MCTEST\test-platform\backend\test_platform.db
+[env] source size=1060864 sha256(before)=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+[env] source sidecars(before)={'test_platform.db-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'test_platform.db-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb', 'test_platform.db-journal': None}
+[env] isolated workdir=C:\Users\MCTECH\AppData\Local\Temp\t02_migrations_c399b7cz
+[pragma] apply = app.database.configure_sqlite_connection
+
+================ 场景 A：新装空库 ================
+
+[empty/upgrade] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head
+[empty/upgrade] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/empty.db
+[empty/upgrade] exit=0
+[empty/upgrade] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+
+[empty/after-upgrade] state={"label": "empty/after-upgrade", "tables": ["baselines", "devices", "failure_patterns", "golden_cases", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "0817df993d8b", "counts": {"test_tasks": 0, "test_records": 0}, "integrity_check": ["ok"], "foreign_key_violations": []}
+
+[empty/offline-sql] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head --sql
+[empty/offline-sql] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/empty.db
+[empty/offline-sql] exit=0
+[empty/offline-sql] stdout:
+CREATE TABLE alembic_version (
+    version_num VARCHAR(32) NOT NULL, 
+    CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+);
+
+-- Running upgrade  -> 0817df993d8b
+
+CREATE TABLE users (
+    id INTEGER NOT NULL, 
+    username VARCHAR(50) NOT NULL, 
+    password_hash VARCHAR(255) NOT NULL, 
+    role VARCHAR(20) NOT NULL, 
+    status VARCHAR(20) NOT NULL, 
+    pc_identifier VARCHAR(255), 
+    last_login_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX ix_users_id ON users (id);
+
+CREATE UNIQUE INDEX ix_users_username ON users (username);
+
+CREATE TABLE devices (
+    id INTEGER NOT NULL, 
+    serial_number VARCHAR(100) NOT NULL, 
+    model VARCHAR(100), 
+    brand VARCHAR(50), 
+    android_version VARCHAR(20), 
+    sdk_version VARCHAR(10), 
+    cpu_abi VARCHAR(50), 
+    resolution VARCHAR(20), 
+    battery_level INTEGER, 
+    status VARCHAR(20) NOT NULL, 
+    owner_id INTEGER, 
+    pc_identifier VARCHAR(255) NOT NULL, 
+    last_seen_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    board VARCHAR(50), 
+    hardware VARCHAR(50), 
+    ddr_info JSON, 
+    emmc_info JSON, 
+    wifi_chip VARCHAR(100), 
+    bt_chip VARCHAR(100), 
+    eth_interfaces JSON, 
+    features JSON, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(owner_id) REFERENCES users (id)
+);
+
+CREATE INDEX ix_devices_id ON devices (id);
+
+CREATE UNIQUE INDEX ix_devices_serial_number ON devices (serial_number);
+
+CREATE TABLE failure_patterns (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    category VARCHAR(50), 
+    pattern VARCHAR(500) NOT NULL, 
+    description TEXT, 
+    suggested_fix TEXT, 
+    occurrence_count INTEGER, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_failure_patterns_id ON failure_patterns (id);
+
+CREATE TABLE knowledge_entries (
+    id INTEGER NOT NULL, 
+    title VARCHAR(200) NOT NULL, 
+    entry_type VARCHAR(50) NOT NULL, 
+    category VARCHAR(100), 
+    tags JSON, 
+    content TEXT, 
+    chunks JSON, 
+    embedding JSON, 
+    source_type VARCHAR(50) NOT NULL, 
+    source_file VARCHAR(500), 
+    status VARCHAR(50) NOT NULL, 
+    metadata JSON, 
+    pass_count INTEGER, 
+    fail_count INTEGER, 
+    hit_count INTEGER, 
+    created_by INTEGER, 
+    created_at DATETIME, 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_knowledge_entries_id ON knowledge_entries (id);
+
+CREATE TABLE test_modules (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    category VARCHAR(50), 
+    description TEXT, 
+    icon VARCHAR(50), 
+    sort_order INTEGER, 
+    enabled BOOLEAN, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_modules_id ON test_modules (id);
+
+CREATE TABLE test_tools (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    description TEXT, 
+    filename VARCHAR(255) NOT NULL, 
+    version VARCHAR(50), 
+    architecture VARCHAR(50), 
+    file_size INTEGER NOT NULL, 
+    file_path VARCHAR(500) NOT NULL, 
+    mime_type VARCHAR(100), 
+    md5_hash VARCHAR(32), 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_tools_id ON test_tools (id);
+
+CREATE TABLE test_items (
+    id INTEGER NOT NULL, 
+    module_id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    description TEXT, 
+    objective TEXT, 
+    precondition TEXT, 
+    steps TEXT, 
+    expected_result TEXT, 
+    sort_order INTEGER, 
+    enabled BOOLEAN, 
+    exec_type VARCHAR(20) NOT NULL, 
+    exec_command TEXT NOT NULL, 
+    tool_id INTEGER, 
+    push_target VARCHAR(255), 
+    parameters JSON, 
+    parameters_schema JSON, 
+    compatibility JSON, 
+    judgement_type VARCHAR(20), 
+    conditional_rules JSON, 
+    rubric_criteria JSON, 
+    result_parse JSON, 
+    timeout INTEGER, 
+    on_failure VARCHAR(20), 
+    retry_count INTEGER, 
+    skills JSON, 
+    tags JSON, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id), 
+    FOREIGN KEY(module_id) REFERENCES test_modules (id), 
+    FOREIGN KEY(tool_id) REFERENCES test_tools (id)
+);
+
+CREATE INDEX ix_test_items_id ON test_items (id);
+
+CREATE TABLE test_tasks (
+    id INTEGER NOT NULL, 
+    user_id INTEGER NOT NULL, 
+    device_id INTEGER NOT NULL, 
+    name VARCHAR(200), 
+    selected_items JSON NOT NULL, 
+    custom_parameters JSON, 
+    status VARCHAR(20) NOT NULL, 
+    progress_percent INTEGER, 
+    "plan" JSON, 
+    report_path VARCHAR(500), 
+    error_message TEXT, 
+    schedule_type VARCHAR(20) NOT NULL, 
+    scheduled_time VARCHAR(50), 
+    next_run_at DATETIME, 
+    started_at DATETIME, 
+    completed_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(device_id) REFERENCES devices (id), 
+    FOREIGN KEY(user_id) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_tasks_id ON test_tasks (id);
+
+CREATE TABLE golden_cases (
+    id INTEGER NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    device_model VARCHAR(100) NOT NULL, 
+    expected_status VARCHAR(20) NOT NULL, 
+    expected_output_pattern VARCHAR(500), 
+    sample_output TEXT, 
+    pass_count INTEGER, 
+    total_count INTEGER, 
+    is_active BOOLEAN, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id)
+);
+
+CREATE INDEX ix_golden_cases_device_model ON golden_cases (device_model);
+
+CREATE INDEX ix_golden_cases_id ON golden_cases (id);
+
+CREATE TABLE test_records (
+    id INTEGER NOT NULL, 
+    task_id INTEGER NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    status VARCHAR(20) NOT NULL, 
+    output TEXT, 
+    fail_reason TEXT, 
+    extracted_data JSON, 
+    execution_time INTEGER, 
+    log_file_path VARCHAR(500), 
+    started_at DATETIME, 
+    completed_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id), 
+    FOREIGN KEY(task_id) REFERENCES test_tasks (id)
+);
+
+CREATE INDEX ix_test_records_id ON test_records (id);
+
+CREATE TABLE baselines (
+    id INTEGER NOT NULL, 
+    device_model VARCHAR(100) NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    metric_name VARCHAR(100) NOT NULL, 
+    avg_value VARCHAR(50), 
+    min_value VARCHAR(50), 
+    max_value VARCHAR(50), 
+    sample_count INTEGER, 
+    last_record_id INTEGER, 
+    updated_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id), 
+    FOREIGN KEY(last_record_id) REFERENCES test_records (id)
+);
+
+CREATE INDEX ix_baselines_device_model ON baselines (device_model);
+
+CREATE INDEX ix_baselines_id ON baselines (id);
+
+INSERT INTO alembic_version (version_num) VALUES ('0817df993d8b') RETURNING version_num;
+
+
+[empty/offline-sql] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Generating static SQL
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+
+
+[empty/downgrade-base] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic downgrade base
+[empty/downgrade-base] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/empty.db
+[empty/downgrade-base] exit=0
+[empty/downgrade-base] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 0817df993d8b -> , initial schema
+
+[empty/after-downgrade] state={"label": "empty/after-downgrade", "tables": [], "alembic_version": null, "counts": {}, "integrity_check": ["ok"], "foreign_key_violations": []}
+
+[empty/upgrade-again] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head
+[empty/upgrade-again] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/empty.db
+[empty/upgrade-again] exit=0
+[empty/upgrade-again] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+
+[empty/after-reupgrade] state={"label": "empty/after-reupgrade", "tables": ["baselines", "devices", "failure_patterns", "golden_cases", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "0817df993d8b", "counts": {"test_tasks": 0, "test_records": 0}, "integrity_check": ["ok"], "foreign_key_violations": []}
+
+[empty/current] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic current
+[empty/current] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/empty.db
+[empty/current] exit=0
+[empty/current] stdout:
+0817df993d8b (head)
+
+[empty/current] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+
+    expected IntegrityError: UNIQUE constraint failed: users.username
+    expected IntegrityError: UNIQUE constraint failed: devices.serial_number
+    expected IntegrityError: FOREIGN KEY constraint failed
+
+================ 场景 B：存量库备份副本（只读复制） ================
+[legacy] copy D:\MCTEST\test-platform\backend\test_platform.db -> C:\Users\MCTECH\AppData\Local\Temp\t02_migrations_c399b7cz\legacy_backup.db
+[legacy] source_size=1060864 copy_size=1060864
+[legacy] copy_sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+[legacy/before] state={"label": "legacy/before", "tables": ["baselines", "devices", "failure_patterns", "golden_cases", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": null, "counts": {"test_tasks": 10, "test_records": 98}, "integrity_check": ["ok"], "foreign_key_violations": []}
+[legacy] counts(before)={'test_tasks': 10, 'test_records': 98}
+
+[legacy/offline-sql] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head --sql
+[legacy/offline-sql] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/offline-sql] exit=0
+[legacy/offline-sql] stdout:
+CREATE TABLE alembic_version (
+    version_num VARCHAR(32) NOT NULL, 
+    CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+);
+
+-- Running upgrade  -> 0817df993d8b
+
+CREATE TABLE users (
+    id INTEGER NOT NULL, 
+    username VARCHAR(50) NOT NULL, 
+    password_hash VARCHAR(255) NOT NULL, 
+    role VARCHAR(20) NOT NULL, 
+    status VARCHAR(20) NOT NULL, 
+    pc_identifier VARCHAR(255), 
+    last_login_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX ix_users_id ON users (id);
+
+CREATE UNIQUE INDEX ix_users_username ON users (username);
+
+CREATE TABLE devices (
+    id INTEGER NOT NULL, 
+    serial_number VARCHAR(100) NOT NULL, 
+    model VARCHAR(100), 
+    brand VARCHAR(50), 
+    android_version VARCHAR(20), 
+    sdk_version VARCHAR(10), 
+    cpu_abi VARCHAR(50), 
+    resolution VARCHAR(20), 
+    battery_level INTEGER, 
+    status VARCHAR(20) NOT NULL, 
+    owner_id INTEGER, 
+    pc_identifier VARCHAR(255) NOT NULL, 
+    last_seen_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    board VARCHAR(50), 
+    hardware VARCHAR(50), 
+    ddr_info JSON, 
+    emmc_info JSON, 
+    wifi_chip VARCHAR(100), 
+    bt_chip VARCHAR(100), 
+    eth_interfaces JSON, 
+    features JSON, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(owner_id) REFERENCES users (id)
+);
+
+CREATE INDEX ix_devices_id ON devices (id);
+
+CREATE UNIQUE INDEX ix_devices_serial_number ON devices (serial_number);
+
+CREATE TABLE failure_patterns (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    category VARCHAR(50), 
+    pattern VARCHAR(500) NOT NULL, 
+    description TEXT, 
+    suggested_fix TEXT, 
+    occurrence_count INTEGER, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_failure_patterns_id ON failure_patterns (id);
+
+CREATE TABLE knowledge_entries (
+    id INTEGER NOT NULL, 
+    title VARCHAR(200) NOT NULL, 
+    entry_type VARCHAR(50) NOT NULL, 
+    category VARCHAR(100), 
+    tags JSON, 
+    content TEXT, 
+    chunks JSON, 
+    embedding JSON, 
+    source_type VARCHAR(50) NOT NULL, 
+    source_file VARCHAR(500), 
+    status VARCHAR(50) NOT NULL, 
+    metadata JSON, 
+    pass_count INTEGER, 
+    fail_count INTEGER, 
+    hit_count INTEGER, 
+    created_by INTEGER, 
+    created_at DATETIME, 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_knowledge_entries_id ON knowledge_entries (id);
+
+CREATE TABLE test_modules (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    category VARCHAR(50), 
+    description TEXT, 
+    icon VARCHAR(50), 
+    sort_order INTEGER, 
+    enabled BOOLEAN, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_modules_id ON test_modules (id);
+
+CREATE TABLE test_tools (
+    id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    description TEXT, 
+    filename VARCHAR(255) NOT NULL, 
+    version VARCHAR(50), 
+    architecture VARCHAR(50), 
+    file_size INTEGER NOT NULL, 
+    file_path VARCHAR(500) NOT NULL, 
+    mime_type VARCHAR(100), 
+    md5_hash VARCHAR(32), 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_tools_id ON test_tools (id);
+
+CREATE TABLE test_items (
+    id INTEGER NOT NULL, 
+    module_id INTEGER NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    description TEXT, 
+    objective TEXT, 
+    precondition TEXT, 
+    steps TEXT, 
+    expected_result TEXT, 
+    sort_order INTEGER, 
+    enabled BOOLEAN, 
+    exec_type VARCHAR(20) NOT NULL, 
+    exec_command TEXT NOT NULL, 
+    tool_id INTEGER, 
+    push_target VARCHAR(255), 
+    parameters JSON, 
+    parameters_schema JSON, 
+    compatibility JSON, 
+    judgement_type VARCHAR(20), 
+    conditional_rules JSON, 
+    rubric_criteria JSON, 
+    result_parse JSON, 
+    timeout INTEGER, 
+    on_failure VARCHAR(20), 
+    retry_count INTEGER, 
+    skills JSON, 
+    tags JSON, 
+    created_by INTEGER, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(created_by) REFERENCES users (id), 
+    FOREIGN KEY(module_id) REFERENCES test_modules (id), 
+    FOREIGN KEY(tool_id) REFERENCES test_tools (id)
+);
+
+CREATE INDEX ix_test_items_id ON test_items (id);
+
+CREATE TABLE test_tasks (
+    id INTEGER NOT NULL, 
+    user_id INTEGER NOT NULL, 
+    device_id INTEGER NOT NULL, 
+    name VARCHAR(200), 
+    selected_items JSON NOT NULL, 
+    custom_parameters JSON, 
+    status VARCHAR(20) NOT NULL, 
+    progress_percent INTEGER, 
+    "plan" JSON, 
+    report_path VARCHAR(500), 
+    error_message TEXT, 
+    schedule_type VARCHAR(20) NOT NULL, 
+    scheduled_time VARCHAR(50), 
+    next_run_at DATETIME, 
+    started_at DATETIME, 
+    completed_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(device_id) REFERENCES devices (id), 
+    FOREIGN KEY(user_id) REFERENCES users (id)
+);
+
+CREATE INDEX ix_test_tasks_id ON test_tasks (id);
+
+CREATE TABLE golden_cases (
+    id INTEGER NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    device_model VARCHAR(100) NOT NULL, 
+    expected_status VARCHAR(20) NOT NULL, 
+    expected_output_pattern VARCHAR(500), 
+    sample_output TEXT, 
+    pass_count INTEGER, 
+    total_count INTEGER, 
+    is_active BOOLEAN, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    updated_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id)
+);
+
+CREATE INDEX ix_golden_cases_device_model ON golden_cases (device_model);
+
+CREATE INDEX ix_golden_cases_id ON golden_cases (id);
+
+CREATE TABLE test_records (
+    id INTEGER NOT NULL, 
+    task_id INTEGER NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    status VARCHAR(20) NOT NULL, 
+    output TEXT, 
+    fail_reason TEXT, 
+    extracted_data JSON, 
+    execution_time INTEGER, 
+    log_file_path VARCHAR(500), 
+    started_at DATETIME, 
+    completed_at DATETIME, 
+    created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id), 
+    FOREIGN KEY(task_id) REFERENCES test_tasks (id)
+);
+
+CREATE INDEX ix_test_records_id ON test_records (id);
+
+CREATE TABLE baselines (
+    id INTEGER NOT NULL, 
+    device_model VARCHAR(100) NOT NULL, 
+    item_id INTEGER NOT NULL, 
+    metric_name VARCHAR(100) NOT NULL, 
+    avg_value VARCHAR(50), 
+    min_value VARCHAR(50), 
+    max_value VARCHAR(50), 
+    sample_count INTEGER, 
+    last_record_id INTEGER, 
+    updated_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(item_id) REFERENCES test_items (id), 
+    FOREIGN KEY(last_record_id) REFERENCES test_records (id)
+);
+
+CREATE INDEX ix_baselines_device_model ON baselines (device_model);
+
+CREATE INDEX ix_baselines_id ON baselines (id);
+
+INSERT INTO alembic_version (version_num) VALUES ('0817df993d8b') RETURNING version_num;
+
+
+[legacy/offline-sql] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Generating static SQL
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+
+
+[legacy/stamp-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic stamp head
+[legacy/stamp-head] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/stamp-head] exit=0
+[legacy/stamp-head] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running stamp_revision  -> 0817df993d8b
+
+
+[legacy/upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head
+[legacy/upgrade-head] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/upgrade-head] exit=0
+[legacy/upgrade-head] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+
+[legacy/after-upgrade] state={"label": "legacy/after-upgrade", "tables": ["baselines", "devices", "failure_patterns", "golden_cases", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "0817df993d8b", "counts": {"test_tasks": 10, "test_records": 98}, "integrity_check": ["ok"], "foreign_key_violations": []}
+[legacy] counts(after_upgrade)={'test_tasks': 10, 'test_records': 98}
+
+[legacy/downgrade-base] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic downgrade base
+[legacy/downgrade-base] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/downgrade-base] exit=0
+[legacy/downgrade-base] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 0817df993d8b -> , initial schema
+
+[legacy/after-downgrade] state={"label": "legacy/after-downgrade", "tables": [], "alembic_version": null, "counts": {}, "integrity_check": ["ok"], "foreign_key_violations": []}
+[legacy] counts(after_downgrade)={}
+
+[legacy/upgrade-again] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head
+[legacy/upgrade-again] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/upgrade-again] exit=0
+[legacy/upgrade-again] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+
+[legacy/after-reupgrade] state={"label": "legacy/after-reupgrade", "tables": ["baselines", "devices", "failure_patterns", "golden_cases", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "0817df993d8b", "counts": {"test_tasks": 0, "test_records": 0}, "integrity_check": ["ok"], "foreign_key_violations": []}
+[legacy] counts(after_reupgrade)={'test_tasks': 0, 'test_records': 0}
+
+[legacy/current] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic current
+[legacy/current] DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_migrations_c399b7cz/legacy_backup.db
+[legacy/current] exit=0
+[legacy/current] stdout:
+0817df993d8b (head)
+
+[legacy/current] stderr:
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+
+    expected IntegrityError: UNIQUE constraint failed: users.username
+    expected IntegrityError: UNIQUE constraint failed: devices.serial_number
+    expected IntegrityError: FOREIGN KEY constraint failed
+
+================ 校验汇总 ================
+  [PASS] empty/upgrade:exit-0
+  [PASS] empty:table-set-equals-expected  (['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'])
+  [PASS] empty:alembic-version-present  (0817df993d8b)
+  [PASS] empty:integrity-ok  (['ok'])
+  [PASS] empty:no-fk-violations  ([])
+  [PASS] empty/offline-sql:exit-0
+  [PASS] empty:offline-sql-creates-all-tables  (missing=[])
+  [PASS] empty/downgrade-base:exit-0
+  [PASS] empty:tables-dropped-after-downgrade  ([])
+  [PASS] empty/upgrade-again:exit-0
+  [PASS] empty:reupgrade-table-set  (['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'])
+  [PASS] empty:reupgrade-integrity  (['ok'])
+  [PASS] empty/current:exit-0
+  [PASS] empty:foreign_keys_pragma_on  (got=1)
+  [PASS] empty:duplicate_username_rejected
+  [PASS] empty:duplicate_serial_number_rejected
+  [PASS] empty:legal_foreign_key_accepted
+  [PASS] empty:illegal_foreign_key_rejected
+  [PASS] legacy:avoid-db-already-migrated  (None)
+  [PASS] legacy:pre-schema-matches-head  (pre=['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'] expected=['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'])
+  [PASS] legacy/offline-sql:exit-0
+  [PASS] legacy:offline-sql-creates-all-tables  (missing=[])
+  [PASS] legacy/stamp-head:exit-0
+  [PASS] legacy/upgrade-head:exit-0
+  [PASS] legacy:integrity-after-upgrade  (['ok'])
+  [PASS] legacy/downgrade-base:exit-0
+  [PASS] legacy/upgrade-again:exit-0
+  [PASS] legacy:reupgrade-table-set  (['baselines', 'devices', 'failure_patterns', 'golden_cases', 'knowledge_entries', 'test_items', 'test_modules', 'test_records', 'test_tasks', 'test_tools', 'users'])
+  [PASS] legacy:reupgrade-integrity  (['ok'])
+  [PASS] legacy/current:exit-0
+  [PASS] legacy:foreign_keys_pragma_on  (got=1)
+  [PASS] legacy:duplicate_username_rejected
+  [PASS] legacy:duplicate_serial_number_rejected
+  [PASS] legacy:legal_foreign_key_accepted
+  [PASS] legacy:illegal_foreign_key_rejected
+  [PASS] source:sha256-unchanged  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 -> 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+  [PASS] source:sidecars-unchanged  ({'test_platform.db-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'test_platform.db-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb', 'test_platform.db-journal': None} -> {'test_platform.db-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'test_platform.db-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb', 'test_platform.db-journal': None})
+
+================ 已知缺陷/观察（不作为门禁，须如实上报） ================
+  [NOT MET] legacy:rollback-preserves-original-data (KNOWN DEFECT, NOT A GATE)  (before={'test_tasks': 10, 'test_records': 98} after_downgrade={} after_reupgrade={'test_tasks': 0, 'test_records': 0})
+
+RESULT: PASS (37/37 checks)
+[report] D:\MCTEST\docs\verification\tasks\T-02\migration-summary.json
+

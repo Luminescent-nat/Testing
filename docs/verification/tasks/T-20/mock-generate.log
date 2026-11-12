@@ -1,0 +1,12 @@
+﻿=== npm run mock:generate ===
+command: npm run mock:generate
+start: 2026-11-12 11:47:52.891
+end: 2026-11-12 11:47:53.253
+duration_ms: 361
+exit_code: 0
+
+
+> test-platform-frontend@1.0.0 mock:generate
+> node scripts/generate-contract-mocks.mjs
+
+[mock:generate] wrote test-platform\frontend\src\mocks\generated\contract-mocks.js (entries=24, digest=ea3fc258efa2)

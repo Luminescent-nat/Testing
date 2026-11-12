@@ -1,0 +1,210 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 80 items
+
+tests\unit\test_execution_failure_closed.py ............................ [ 35%]
+.................                                                        [ 56%]
+tests\unit\test_judgement_engine.py ............                         [ 71%]
+tests\unit\test_execution_engine.py ............                         [ 86%]
+tests\unit\test_task_executor.py ...........                             [100%]
+
+=================================== PASSES ====================================
+______________________ test_exec04_ai_exception_is_error ______________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:13:47,686 [ERROR] app.services.judgement_engine: AI �ж�ʧ��: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 519, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_execution_failure_closed.py", line 95, in chat_completion_structured
+    raise self._exc
+RuntimeError: boom
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.judgement_engine:judgement_engine.py:558 AI �ж�ʧ��: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 519, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_execution_failure_closed.py", line 95, in chat_completion_structured
+    raise self._exc
+RuntimeError: boom
+____________ test_exec05_adb_shell_exception_maps_to_error_record _____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:13:53,399 [ERROR] app.services.task_executor: ������ 1 ִ���쳣: adb ���ʧ��
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 361, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 354, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2291, in _execute_mock_call
+    raise effect
+RuntimeError: adb ���ʧ��
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.task_executor:task_executor.py:381 ������ 1 ִ���쳣: adb ���ʧ��
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 361, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 354, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2291, in _execute_mock_call
+    raise effect
+RuntimeError: adb ���ʧ��
+________________________ test_ai_fallback_without_llm _________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:13:54,856 [ERROR] app.services.judgement_engine: AI �ж�ʧ��: LLM API Key δ����
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 519, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 95, in chat_completion_structured
+    content = await self.chat_completion(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 43, in chat_completion
+    raise ValueError("LLM API Key δ����")
+ValueError: LLM API Key δ����
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.judgement_engine:judgement_engine.py:558 AI �ж�ʧ��: LLM API Key δ����
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\judgement_engine.py", line 519, in judge
+    result = await self.client.chat_completion_structured(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 95, in chat_completion_structured
+    content = await self.chat_completion(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\llm_client.py", line 43, in chat_completion
+    raise ValueError("LLM API Key δ����")
+ValueError: LLM API Key δ����
+__________________________ test_start_task_duplicate __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:01,381 [WARNING] app.services.task_executor: ���� 999999 ����������
+2026-11-12 12:14:01,381 [INFO] app.services.task_executor: ���� 999999 ��ȡ��
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:77 ���� 999999 ����������
+INFO     app.services.task_executor:task_executor.py:89 ���� 999999 ��ȡ��
+__________________ test_cancel_running_task_keeps_cancelled ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:01,960 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:89 ���� 1 ��ȡ��
+__________________ test_handle_cancel_missing_task_no_error ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:02,208 [WARNING] app.services.task_executor: ȡ�������� 999998 �����ڣ�����״̬��β
+2026-11-12 12:14:02,209 [WARNING] app.services.task_executor: ʧ�ܵ����� 999998 �����ڣ�����״̬��β
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:438 ȡ�������� 999998 �����ڣ�����״̬��β
+WARNING  app.services.task_executor:task_executor.py:475 ʧ�ܵ����� 999998 �����ڣ�����״̬��β
+____________ test_retry_count_retries_failed_item_and_keeps_output ____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:02,778 [INFO] app.services.task_executor: ������ 1 �� 1/2 ������
+2026-11-12 12:14:02,778 [INFO] app.services.task_executor: ������ 1 �� 2/2 ������
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:355 ������ 1 �� 1/2 ������
+INFO     app.services.task_executor:task_executor.py:355 ������ 1 �� 2/2 ������
+___________________ test_retry_count_exhausted_keeps_failed ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:03,408 [INFO] app.services.task_executor: ������ 1 �� 1/1 ������
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:355 ������ 1 �� 1/1 ������
+________________________ test_queued_task_cancellable _________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:05,855 [INFO] app.services.task_executor: �豸 queue-cancel-serial ������ 1 ���У����� 2 ��ִ���ͷ�
+2026-11-12 12:14:05,855 [INFO] app.services.task_executor: ���� 2 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:293 �豸 queue-cancel-serial ������ 1 ���У����� 2 ��ִ���ͷ�
+INFO     app.services.task_executor:task_executor.py:89 ���� 2 ��ȡ��
+___________________ test_device_offline_mid_run_fails_fast ____________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-12 12:14:06,522 [WARNING] app.services.task_executor: ���� 1 ���豸 offline-mid-serial ������ֹ
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:276 ���� 1 ���豸 offline-mid-serial ������ֹ
+=========================== short test summary info ===========================
+PASSED tests/unit/test_execution_failure_closed.py::test_exec01_nonzero_rc_with_pass_and_skip_is_fail_engine
+PASSED tests/unit/test_execution_failure_closed.py::test_exec01_nonzero_rc_with_pass_pattern_is_fail_judge
+PASSED tests/unit/test_execution_failure_closed.py::test_exec01_nonzero_rc_with_skip_line_is_fail_judge
+PASSED tests/unit/test_execution_failure_closed.py::test_exec02_pass_pattern_miss_is_fail_judge
+PASSED tests/unit/test_execution_failure_closed.py::test_exec02_pass_pattern_miss_is_fail_engine
+PASSED tests/unit/test_execution_failure_closed.py::test_exec02_parse_result_no_longer_returns_unknown
+PASSED tests/unit/test_execution_failure_closed.py::test_exec03_both_patterns_hit_is_fail_judge
+PASSED tests/unit/test_execution_failure_closed.py::test_exec03_both_patterns_hit_is_fail_engine
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_no_config_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_empty_conditions_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_unknown_operator_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_illegal_regex_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_illegal_structure_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_assertion_extract_failure_is_error_not_default_pass
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_ai_no_conclusion_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_ai_exception_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec04_unknown_judgement_type_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_fail_pattern_only_without_hit_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec05_timeout_is_timeout
+PASSED tests/unit/test_execution_failure_closed.py::test_exec05_subprocess_start_error_is_error
+PASSED tests/unit/test_execution_failure_closed.py::test_exec05_adb_shell_exception_maps_to_error_record
+PASSED tests/unit/test_execution_failure_closed.py::test_skip01_find_native_skip_reason
+PASSED tests/unit/test_execution_failure_closed.py::test_skip01_engine_skip_with_reason
+PASSED tests/unit/test_execution_failure_closed.py::test_skip01_skip_beats_pass_pattern
+PASSED tests/unit/test_execution_failure_closed.py::test_skip01_reason_persists_to_record
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[foo RESULT: SKIP]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[prefix RESULT: SKIP: reason]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[RESULT: SKIPPED]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[RESULT: SKIPPED: reason]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[RESULT: skip]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[result: skip: reason]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[\u4f60\u5c06\u770b\u5230 RESULT: SKIP \u7684\u8bf4\u660e]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_not_native_skip[You may use RESULT: SKIP when absent]
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_skipped_word_is_not_skip_but_fail
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_embedded_phrase_is_not_skip_but_error
+PASSED tests/unit/test_execution_failure_closed.py::test_skip02_native_skip_beats_fail_pattern
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_assertion_true_pass
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_assertion_false_fail
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_rubric_above_threshold_pass
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_rubric_below_threshold_fail
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_rubric_no_valid_score_error
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_ai_explicit_pass
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_ai_explicit_fail
+PASSED tests/unit/test_execution_failure_closed.py::test_truth_table_ai_skip_status_is_error_not_skip
+PASSED tests/unit/test_execution_failure_closed.py::test_skip_does_not_trigger_stop_on_failure
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_eq_pass
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_gt_fail
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_gte
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_approx_ratio
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_contains
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_returncode_nonzero
+PASSED tests/unit/test_judgement_engine.py::test_rule_assertion_with_spec_target
+PASSED tests/unit/test_judgement_engine.py::test_rubric_scoring_pass
+PASSED tests/unit/test_judgement_engine.py::test_rubric_scoring_fail
+PASSED tests/unit/test_judgement_engine.py::test_judgement_engine_no_config_is_error
+PASSED tests/unit/test_judgement_engine.py::test_judgement_engine_default_returncode_fail
+PASSED tests/unit/test_judgement_engine.py::test_ai_fallback_without_llm
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_pass
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_with_parameters
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_unrendered_placeholder
+PASSED tests/unit/test_execution_engine.py::test_adb_shell_engine_adb_device_not_found
+PASSED tests/unit/test_execution_engine.py::test_push_exec_engine_missing_tool_file
+PASSED tests/unit/test_execution_engine.py::test_host_exec_engine_pass
+PASSED tests/unit/test_execution_engine.py::test_host_exec_engine_timeout
+PASSED tests/unit/test_execution_engine.py::test_engine_factory
+PASSED tests/unit/test_execution_engine.py::test_engine_factory_unknown_type
+PASSED tests/unit/test_execution_engine.py::test_compatibility_android_version
+PASSED tests/unit/test_execution_engine.py::test_compatibility_arch
+PASSED tests/unit/test_execution_engine.py::test_compatibility_features
+PASSED tests/unit/test_task_executor.py::test_device_lock_acquire_and_release
+PASSED tests/unit/test_task_executor.py::test_device_lock_release_unknown
+PASSED tests/unit/test_task_executor.py::test_start_task_duplicate
+PASSED tests/unit/test_task_executor.py::test_cancel_running_task_keeps_cancelled
+PASSED tests/unit/test_task_executor.py::test_handle_cancel_missing_task_no_error
+PASSED tests/unit/test_task_executor.py::test_retry_count_retries_failed_item_and_keeps_output
+PASSED tests/unit/test_task_executor.py::test_retry_count_exhausted_keeps_failed
+PASSED tests/unit/test_task_executor.py::test_timeout_record_marked_as_timeout
+PASSED tests/unit/test_task_executor.py::test_queued_task_runs_after_first_completes
+PASSED tests/unit/test_task_executor.py::test_queued_task_cancellable
+PASSED tests/unit/test_task_executor.py::test_device_offline_mid_run_fails_fast
+============================= 80 passed in 18.99s =============================
+

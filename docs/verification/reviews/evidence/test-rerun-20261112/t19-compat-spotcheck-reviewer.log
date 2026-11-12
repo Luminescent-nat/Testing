@@ -1,0 +1,13 @@
+=== REVIEWER T-19 compat spot-check exit=0
+TIME: 2026-11-12 12:07:07.772
+--- OUTPUT BEGIN ---
+--- normalise_tokens on real f-string / quoted / pipe forms ---
+'settings put global airplane_mode_on 1' -> ['settings', 'put', 'global', 'airplane_mode_on', '1']
+'settings put system screen_off_timeout 60000' -> ['settings', 'put', 'system', 'screen_off_timeout', '60000']
+'install -r "C:\\tools\\my app.apk"' -> ['install', '-r', 'C:\\tools\\my app.apk']
+'sm list-volumes public' -> ['sm', 'list-volumes', 'public']
+--- shell() remote single-arg semantics (argv only, no execution) ---
+shell pipe argv = ['adb', '-s', 'SER', 'shell', 'ls /sys/block/ | grep mmcblk']
+shell metachar argv = ['adb', '-s', 'SER', 'shell', 'echo ok; echo hacked > marker && echo $(id)']
+shell ' '.join(cmd_parts) argv = ['adb', '-s', 'SER', 'shell', 'fio --name=seqread --size=64m']
+--- OUTPUT END ---

@@ -1,0 +1,37 @@
+﻿COMMAND: python docs/verification/tasks/T-02/restore_drill.py
+WORKDIR: D:\MCTEST
+START: 2026-11-12T12:21:34.9314722+08:00
+END: 2026-11-12T12:21:35.9402658+08:00
+EXITCODE: 0
+
+[time] finished_at=2026-11-12T12:21:35+0800
+[source] D:\MCTEST\test-platform\backend\test_platform.db size=1060864 sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+[source] sidecars={'test_platform.db-wal': None, 'test_platform.db-shm': None, 'test_platform.db-journal': None}
+[work] isolated dir=C:\Users\MCTECH\AppData\Local\Temp\t02_restore_1n7ften7
+[backup] sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 counts={'test_tasks': 10, 'test_records': 98, 'users': 5, 'devices': 26}
+[live/stamp-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic stamp head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_restore_1n7ften7/live_copy.db
+[live/stamp-head] exit=0
+[live/stamp-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running stamp_revision  -> 0817df993d8b
+[live/upgrade-head] $ D:\MCTEST\test-platform\.venv\Scripts\python.exe -m alembic upgrade head  DATABASE_URL=sqlite:///C:/Users/MCTECH/AppData/Local/Temp/t02_restore_1n7ften7/live_copy.db
+[live/upgrade-head] exit=0
+[live/upgrade-head] INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+[live] after stamp+upgrade sha256=f71a8d1150c5a2abcc566f5faa07bb4fee197bbbe8a3887a5433d714479cf485 counts={'test_tasks': 10, 'test_records': 98, 'users': 5, 'devices': 26} changed=True
+[restored] sha256=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 counts={'test_tasks': 10, 'test_records': 98, 'users': 5, 'devices': 26}
+
+================ 汇总 ================
+  [PASS] backup-copy-sha256-matches-source  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+  [PASS] live-copy-sha256-matches-source  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+  [PASS] live-changed-after-alembic  (rc1=0 rc2=0 changed=True)
+  [PASS] live-restored-sha256-equals-backup  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+  [PASS] restored-data-counts-preserved  ({'test_tasks': 10, 'test_records': 98, 'users': 5, 'devices': 26} vs {'test_tasks': 10, 'test_records': 98, 'users': 5, 'devices': 26})
+  [PASS] restored-integrity-ok
+  [PASS] restored-no-alembic-version
+  [PASS] source-sha256-unchanged  (2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789 -> 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789)
+  [PASS] source-sidecars-unchanged
+
+NOTE: 本演练仅为运维恢复路径证据，不能替代 alembic 数据保留回滚证据（R20 另行判定）。
+RESULT: PASS (9/9)
+

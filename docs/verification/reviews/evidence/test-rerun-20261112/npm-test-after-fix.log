@@ -1,0 +1,29 @@
+=== REVIEWER RERUN: npm-test (direct, after P-T20-2/3 fix)
+=== COMMAND: npm test
+=== TIME: 2026-11-12 12:00:40.174 -> 12:00:41.577
+=== EXIT CODE: 0
+--- OUTPUT BEGIN ---
+
+> test-platform-frontend@1.0.0 test
+> vitest run
+
+node.exe : [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cj
+s-node-api-deprecated for more details.[39m
+所在位置 行:1 字符: 1
++ & "D:\Program Files/node.exe" "C:\Users\MCTECH\AppData\Roaming\npm/no ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33mThe CJS bu...e details.[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ RUN  v4.1.10 D:/MCTEST/test-platform/frontend
+
+ ✓ src/utils/__tests__/datetime.test.js (3 tests) 3ms
+ ✓ src/utils/__tests__/client.test.js (27 tests) 17ms
+ ✓ src/utils/__tests__/request.test.js (3 tests) 3ms
+
+ Test Files  3 passed (3)
+      Tests  33 passed (33)
+   Start at  12:00:40
+   Duration  745ms (transform 94ms, setup 0ms, import 774ms, tests 23ms, environment 0ms)
+--- OUTPUT END ---

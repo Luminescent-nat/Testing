@@ -1,0 +1,41 @@
+=== CMD: adb -s 5c000c2834414751c9d shell getevent -p
+=== TIME: 2026-11-12 11:45:27.783 +08:00 -> 11:45:28.019
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+add device 1: /dev/input/event4
+  name:     "techwin"
+  events:
+    KEY (0001): 0072  0073  0074  009e  00ac  0145  014a 
+    ABS (0003): 0030  : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+                0035  : value 0, min 0, max 1024, fuzz 0, flat 0, resolution 0
+                0036  : value 0, min 0, max 600, fuzz 0, flat 0, resolution 0
+                0039  : value 0, min 0, max 9, fuzz 0, flat 0, resolution 0
+                003a  : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+  input props:
+    INPUT_PROP_DIRECT
+add device 2: /dev/input/event3
+  name:     "MH248"
+  events:
+    KEY (0001): 008e  008f 
+  input props:
+    <none>
+add device 3: /dev/input/event1
+  name:     "axp2202-pek"
+  events:
+    KEY (0001): 0074 
+  input props:
+    <none>
+add device 4: /dev/input/event2
+  name:     "sun50iw10-codec sunxi Audio Jack"
+  events:
+    KEY (0001): 0072  0073  00e2  0246 
+    SW  (0005): 0002  0004 
+  input props:
+    <none>
+add device 5: /dev/input/event0
+  name:     "sunxi-keyboard"
+  events:
+    KEY (0001): 0073  009e  0259 
+  input props:
+    <none>
+--- RAW OUTPUT END ---

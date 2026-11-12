@@ -1,0 +1,7 @@
+=== CMD: adb -s 5c000c2834414751c9d shell wm size; adb -s 5c000c2834414751c9d shell wm density
+=== TIME: 2026-11-12 11:45:25.535 +08:00 -> 11:45:25.990
+=== EXIT CODE: 0
+--- RAW OUTPUT BEGIN ---
+Physical size: 1024x600
+Physical density: 160
+--- RAW OUTPUT END ---
