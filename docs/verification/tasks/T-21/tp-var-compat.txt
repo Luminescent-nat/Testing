@@ -1,0 +1,46 @@
+﻿== 视图/共享样式引用的 --tp-* 变量 (16) ==
+--tp-bg-card
+--tp-bg-elevated
+--tp-bg-page
+--tp-border
+--tp-border-light
+--tp-info
+--tp-primary
+--tp-primary-light
+--tp-primary-soft
+--tp-shadow
+--tp-shadow-glow
+--tp-shadow-lg
+--tp-shadow-sm
+--tp-text
+--tp-text-secondary
+--tp-text-tertiary
+
+== theme.scss 定义的兼容别名 (24) ==
+--tp-bg
+--tp-bg-card
+--tp-bg-elevated
+--tp-bg-overlay
+--tp-bg-page
+--tp-border
+--tp-border-light
+--tp-danger
+--tp-divider
+--tp-info
+--tp-primary
+--tp-primary-dark
+--tp-primary-light
+--tp-primary-soft
+--tp-shadow
+--tp-shadow-glow
+--tp-shadow-lg
+--tp-shadow-sm
+--tp-success
+--tp-text
+--tp-text-inverse
+--tp-text-secondary
+--tp-text-tertiary
+--tp-warning
+
+== 未被定义的引用（应为空）==
+(none)

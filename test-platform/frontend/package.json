@@ -9,6 +9,8 @@
     "lint": "eslint . --ext .vue,.js",
     "format": "prettier --write .",
     "test": "vitest run",
+    "mock:generate": "node scripts/generate-contract-mocks.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug"

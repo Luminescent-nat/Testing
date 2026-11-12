@@ -1,85 +1,163 @@
-// ==================== 主题变量定义 ====================
+// ==================== 设计 token（来源 docs/design/ui-tokens.md v1.0） ====================
+// 约定：只有被 /* token-block:start ... */ 与 /* token-block:end */ 包裹的区块内
+// 才允许出现十六进制颜色；区块外只能引用 var(--token)。
+// 完整清单：七色 + 8 扩展色 + 6 字号/行高 + 7 间距 + 4 圆角 + 3 阴影 + 焦点环。
 
+/* token-block:start colors-light */
 :root,
-.light {
-  // 品牌色
-  --tp-primary: #2563eb;
-  --tp-primary-light: #3b82f6;
-  --tp-primary-dark: #1d4ed8;
-  --tp-primary-soft: rgba(37, 99, 235, 0.1);
+html.light {
+  // 七个核心色彩角色（浅色）
+  --color-primary: #2563eb;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-bg: #ffffff;
+  --color-success: #15803d;
+  --color-warning: #a16207;
+  --color-error: #b91c1c;
 
-  // Element Plus 主色覆盖
-  --el-color-primary: #2563eb;
-
-  // 背景色
-  --tp-bg: #f8fafc;
-  --tp-bg-page: #f1f5f9;
-  --tp-bg-elevated: #ffffff;
-  --tp-bg-overlay: rgba(255, 255, 255, 0.85);
-
-  // 文字色
-  --tp-text: #0f172a;
-  --tp-text-secondary: #475569;
-  --tp-text-tertiary: #94a3b8;
-  --tp-text-inverse: #ffffff;
-
-  // 边框与分割线
-  --tp-border: #e2e8f0;
-  --tp-border-light: #f1f5f9;
-  --tp-divider: #e2e8f0;
-
-  // 阴影
-  --tp-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --tp-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-  --tp-shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
-  --tp-shadow-glow: 0 0 40px rgba(37, 99, 235, 0.15);
-
-  // 状态色
-  --tp-success: #10b981;
-  --tp-warning: #f59e0b;
-  --tp-danger: #ef4444;
-  --tp-info: #0ea5e9;
+  // 扩展色彩 token（浅色）
+  --color-bg-page: #f8fafc;
+  --color-bg-elevated: #ffffff;
+  --color-text-tertiary: #64748b;
+  --color-text-inverse: #ffffff;
+  --color-border: #e2e8f0;
+  --color-control-border: #64748b;
+  --color-bg-disabled: #f1f5f9;
+  --color-text-disabled: #64748b;
 }
+/* token-block:end */
 
-.dark {
-  // 品牌色
-  --tp-primary: #3b82f6;
-  --tp-primary-light: #60a5fa;
-  --tp-primary-dark: #2563eb;
-  --tp-primary-soft: rgba(59, 130, 246, 0.15);
+/* token-block:start colors-dark */
+html.dark {
+  // 七个核心色彩角色（暗色）
+  --color-primary: #60a5fa;
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-bg: #0f172a;
+  --color-success: #4ade80;
+  --color-warning: #fcd34d;
+  --color-error: #fca5a5;
 
-  // Element Plus 主色覆盖
-  --el-color-primary: #3b82f6;
-
-  // 背景色
-  --tp-bg: #0f172a;
-  --tp-bg-page: #020617;
-  --tp-bg-elevated: #1e293b;
-  --tp-bg-overlay: rgba(15, 23, 42, 0.85);
-
-  // 文字色
-  --tp-text: #f8fafc;
-  --tp-text-secondary: #cbd5e1;
-  --tp-text-tertiary: #64748b;
-  --tp-text-inverse: #0f172a;
-
-  // 边框与分割线
-  --tp-border: #1e293b;
-  --tp-border-light: #0f172a;
-  --tp-divider: #1e293b;
-
-  // 阴影
-  --tp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --tp-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --tp-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
-  --tp-shadow-glow: 0 0 60px rgba(59, 130, 246, 0.25);
-
-  // 状态色
-  --tp-success: #34d399;
-  --tp-warning: #fbbf24;
-  --tp-danger: #f87171;
-  --tp-info: #38bdf8;
+  // 扩展色彩 token（暗色）
+  --color-bg-page: #020617;
+  --color-bg-elevated: #1e293b;
+  --color-text-tertiary: #94a3b8;
+  --color-text-inverse: #0f172a;
+  --color-border: #334155;
+  --color-control-border: #94a3b8;
+  --color-bg-disabled: #1e293b;
+  --color-text-disabled: #94a3b8;
 }
+/* token-block:end */
+
+/* token-block:start typography-spacing-radius-shadow */
+:root {
+  // 字号与行高（字号 × 1.5 取整）
+  --font-size-caption: 12px;
+  --line-height-caption: 18px;
+  --font-size-small: 14px;
+  --line-height-small: 21px;
+  --font-size-body: 16px;
+  --line-height-body: 24px;
+  --font-size-title-sm: 20px;
+  --line-height-title-sm: 30px;
+  --font-size-title-md: 24px;
+  --line-height-title-md: 36px;
+  --font-size-display: 32px;
+  --line-height-display: 48px;
+
+  // 间距（仅 4 的倍数，禁止负值与 calc 表外结果）
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  // 圆角
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-full: 999px;
+
+  // 阴影（两主题共用三档，不得新增发光阴影）
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+  // 焦点环：4px solid color-primary，偏移仅 0 或 4px
+  --focus-ring: 4px solid var(--color-primary);
+  --focus-ring-offset: 4px;
+}
+/* token-block:end */
+
+/* token-block:start element-plus-mapping */
+// Element Plus 变量映射：统一由设计 token 派生。
+// 同时命中选择器组以覆盖 element-plus/theme-chalk/dark/css-vars.css 的默认值。
+:root,
+html.light,
+html.dark {
+  --el-color-primary: var(--color-primary);
+  --el-color-success: var(--color-success);
+  --el-color-warning: var(--color-warning);
+  --el-color-danger: var(--color-error);
+  --el-color-error: var(--color-error);
+  --el-bg-color: var(--color-bg);
+  --el-bg-color-page: var(--color-bg-page);
+  --el-bg-color-overlay: var(--color-bg-elevated);
+  --el-text-color-primary: var(--color-text);
+  --el-text-color-regular: var(--color-text);
+  --el-text-color-secondary: var(--color-text-secondary);
+  --el-text-color-placeholder: var(--color-text-tertiary);
+  --el-text-color-disabled: var(--color-text-disabled);
+  --el-border-color: var(--color-border);
+  --el-border-color-light: var(--color-border);
+  --el-border-color-lighter: var(--color-border);
+  --el-border-color-darker: var(--color-control-border);
+  --el-fill-color-blank: var(--color-bg-elevated);
+  --el-fill-color-light: var(--color-bg-disabled);
+  --el-disabled-bg-color: var(--color-bg-disabled);
+  --el-disabled-text-color: var(--color-text-disabled);
+  --el-mask-color: color-mix(in srgb, var(--color-bg-page) 80%, transparent);
+}
+/* token-block:end */
+
+/* token-block:start compat-aliases */
+// 兼容别名：保留现有视图引用的 --tp-* 变量名，避免页面样式失效。
+// 这些仅为别名（值全部引用已确认 token），不是新增设计 token。
+:root {
+  --tp-primary: var(--color-primary);
+  --tp-primary-light: var(--color-primary);
+  --tp-primary-dark: var(--color-primary);
+  --tp-primary-soft: color-mix(in srgb, var(--color-primary) 10%, transparent);
+
+  --tp-bg: var(--color-bg);
+  --tp-bg-page: var(--color-bg-page);
+  --tp-bg-elevated: var(--color-bg-elevated);
+  --tp-bg-card: var(--color-bg-elevated);
+  --tp-bg-overlay: color-mix(in srgb, var(--color-bg-elevated) 85%, transparent);
+
+  --tp-text: var(--color-text);
+  --tp-text-secondary: var(--color-text-secondary);
+  --tp-text-tertiary: var(--color-text-tertiary);
+  --tp-text-inverse: var(--color-text-inverse);
+
+  --tp-border: var(--color-border);
+  --tp-border-light: var(--color-border);
+  --tp-divider: var(--color-border);
+
+  --tp-shadow-sm: var(--shadow-sm);
+  --tp-shadow: var(--shadow-md);
+  --tp-shadow-lg: var(--shadow-lg);
+  --tp-shadow-glow: var(--shadow-lg);
+
+  --tp-success: var(--color-success);
+  --tp-warning: var(--color-warning);
+  --tp-danger: var(--color-error);
+  --tp-info: var(--color-primary);
+}
+/* token-block:end */
 
 // ==================== 全局基础样式 ====================
 * {
@@ -93,8 +171,10 @@ body,
 #app {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  background-color: var(--tp-bg-page);
-  color: var(--tp-text);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  background-color: var(--color-bg-page);
+  color: var(--color-text);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -109,10 +189,10 @@ body,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--tp-border);
-  border-radius: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--tp-text-tertiary);
+  background: var(--color-text-tertiary);
 }
