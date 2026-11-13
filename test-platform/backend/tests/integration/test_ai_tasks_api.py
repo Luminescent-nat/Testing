@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient
 from unittest.mock import AsyncMock
 
-from app.models import Device
+from app.models import Device, TestTask
 from app.services.task_executor import TaskExecutor
 
 
@@ -12,29 +12,37 @@ async def test_ai_task_natural_ddr(
     client: AsyncClient,
     admin_token: str,
     sample_device: Device,
+    test_db,
     mock_adb,
 ):
-    """TC-AI-001: 自然语言创建 DDR 测试任务。"""
+    """TC-AI-001: 自然语言创建 DDR 测试任务（契约 v1.1：统一创建服务，201）。"""
     mock_adb.execute_shell = AsyncMock(return_value=("MemTotal: 2048 kB", "", 0))
     response = await client.post(
         "/api/v1/ai/tasks/natural",
         headers={"Authorization": f"Bearer {admin_token}"},
         json={"text": "对 rk3568 设备做 DDR 功能测试"},
     )
-    if response.status_code != 200:
+    if response.status_code != 201:
         print("AI TASK RESPONSE:", response.status_code, response.text)
-    assert response.status_code == 200
+    assert response.status_code == 201
     data = response.json()["data"]
     assert data["device_serial"] == sample_device.serial_number
-    assert data["plan"]["selected_modules"] == ["ddr"]
-    assert len(data["plan"]["item_ids"]) >= 1
+    assert data["status"] == "pending"
+    task_id = data["id"]
+
+    # plan 快照仅 AI 任务持有（落库于 TestTask.plan）
+    test_db.expire_all()
+    task = await test_db.get(TestTask, task_id)
+    assert task is not None
+    assert task.plan["selected_modules"] == ["ddr"]
+    assert len(task.plan["item_ids"]) >= 1
 
     # 等待 API 启动的后台任务完成
-    running = TaskExecutor._running_tasks.get(data["task_id"])
+    running = TaskExecutor._running_tasks.get(task_id)
     if running:
         await running
     task_res = await client.get(
-        f"/api/v1/tasks/{data['task_id']}",
+        f"/api/v1/tasks/{task_id}",
         headers={"Authorization": f"Bearer {admin_token}"},
     )
     assert task_res.json()["data"]["status"] in ("completed", "failed")

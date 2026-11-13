@@ -38,27 +38,34 @@ class NLTaskPlanner:
         self.llm_client = llm_client
         self.llm_invoked = False
 
-    async def plan(self, text: str, user_id: int, pc_identifier: str) -> Optional[Dict[str, Any]]:
-        """根据自然语言输入生成测试计划，并结合知识库推荐。"""
+    async def resolve_device(self, text: str, pc_identifier: str = "") -> Optional[Device]:
+        """仅做设备候选匹配（契约 v1.1 §10：授权前唯一允许的查询）。
+
+        不读取知识库、不调用 LLM；在全量登记设备中按文本匹配（序列号/型号/品牌/
+        主板），使他人设备在授权阶段得到 403，而不是因候选不可见被 400 掩盖。
+        """
+        return await self._match_device(text.lower(), pc_identifier)
+
+    async def plan_for_device(self, text: str, device: Device) -> Dict[str, Any]:
+        """生成针对已确定设备的测试计划（契约 v1.1 §10）。
+
+        仅允许在设备授权（403）与可用性（409）校验通过后调用：
+        本方法会读取该设备相关知识条目并可能调用 LLM。
+        """
         text_lower = text.lower()
 
-        # 1. 规则匹配设备
-        device = await self._match_device(text_lower, pc_identifier)
-        if not device:
-            return None
-
-        # 2. 规则匹配模块和类型
+        # 1. 规则匹配模块和类型
         modules = self._match_modules(text_lower)
         test_type = self._match_type(text_lower)
 
-        # 3. 从知识库获取与设备相关的推荐
+        # 2. 从知识库获取与设备相关的推荐
         knowledge_items = await get_device_knowledge(
             self.db, device,
             entry_types=["device_profile", "baseline", "rule", "test_case", "failure_pattern"],
             limit=10
         )
 
-        # 4. 如果规则无法匹配模块或类型，调用 LLM 辅助（注入知识库上下文）
+        # 3. 如果规则无法匹配模块或类型，调用 LLM 辅助（注入知识库上下文）
         use_llm = not modules or test_type == "all" or not self._is_clear_intent(text_lower)
         if use_llm and self.llm_client:
             try:
@@ -70,10 +77,10 @@ class NLTaskPlanner:
             except Exception as exc:
                 logger.warning("LLM 任务规划失败: %s", exc)
 
-        # 5. 查询测试项
+        # 4. 查询测试项
         item_ids = await self._select_items(modules, test_type)
 
-        # 6. 构造推荐说明
+        # 5. 构造推荐说明
         notes = self._build_knowledge_notes(knowledge_items, modules)
 
         return {
@@ -88,35 +95,11 @@ class NLTaskPlanner:
             "llm_used": self.llm_invoked
         }
 
-    async def _match_device(self, text: str, pc_identifier: str) -> Optional[Device]:
-        """从文本中匹配目标设备。优先使用真实在线设备，示例设备仅作兜底。"""
-        text_lower = text.lower()
-
-        # 1. 先查真实本机设备
-        result = await self.db.execute(
-            select(Device).where(Device.pc_identifier == pc_identifier)
-        )
-        real_devices = result.scalars().all()
-
-        # 2. 再查示例/公共设备（pc_identifier 为空，仅用于无真实设备时验证）
-        result = await self.db.execute(
-            select(Device).where(
-                (Device.pc_identifier == "") | (Device.pc_identifier.is_(None))
-            )
-        )
-        demo_devices = result.scalars().all()
-
-        # 3. 优先在真实在线设备中匹配
-        device = self._find_best_match(text_lower, real_devices)
-        if device:
-            return device
-
-        # 4. 真实设备未匹配到时，回退示例设备
-        device = self._find_best_match(text_lower, demo_devices)
-        if device:
-            return device
-
-        return None
+    async def _match_device(self, text: str, pc_identifier: str = "") -> Optional[Device]:
+        """从文本中在全量登记设备中匹配目标设备（授权判断交给创建服务）。"""
+        result = await self.db.execute(select(Device))
+        all_devices = result.scalars().all()
+        return self._find_best_match(text, all_devices)
 
     def _find_best_match(self, text: str, devices: List[Device]) -> Optional[Device]:
         """在设备列表中按优先级找最佳匹配。"""

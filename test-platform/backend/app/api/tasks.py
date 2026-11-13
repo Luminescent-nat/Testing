@@ -1,30 +1,32 @@
-from fastapi import APIRouter, Depends, Header, HTTPException, status, BackgroundTasks
-from fastapi.responses import JSONResponse
+import asyncio
+
+from fastapi import APIRouter, Depends, Header, HTTPException, status
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc, func
+from sqlalchemy import select, desc, func, update
 from sqlalchemy.orm import joinedload, selectinload
 from typing import Optional, List
 from datetime import datetime, timezone
 
 from app.database import get_db
 from app.api.auth import get_current_user, get_current_admin
-from app.errors import build_error_body
 from app.models import User, Device, TestTask, TestItem, TestRecord
 from app.schemas import (
-    TestTaskCreate, TestTaskResponse, TestTaskDetail, 
+    TestTaskCreate, TestTaskResponse, TestTaskDetail,
     TestRecordResponse, TestRecordDetail, ResponseModel, TaskStatus
 )
 from app.services.device import DeviceService
 from app.services.authorization import ensure_can_create_task_on_device
-from app.services.execution_engine import EngineFactory, validate_custom_param_value
+from app.services.task_creation import (
+    ItemValidationError,
+    create_task_instance,
+    resolve_idempotency_key,
+    validation_error_response,
+)
 from app.services.task_executor import TaskExecutor
-from app.services.scheduler import compute_next_run, SCHEDULE_IMMEDIATE, SCHEDULE_ONCE
 from app.services.idempotency import (
     IdempotencyConflictError,
-    IdempotencyKeyError,
     run_idempotent,
-    validate_idempotency_key,
-    OPERATION_TASK_CREATE,
     OPERATION_TASK_RERUN,
 )
 
@@ -32,167 +34,27 @@ router = APIRouter(prefix="/tasks", tags=["测试任务"])
 device_service = DeviceService()
 
 
-class _ItemValidationError(Exception):
-    """测试项存在性/禁用校验失败（R14：非法 item_id 为 400，details.field=item_ids.<下标>）。"""
-
-    def __init__(self, field: str, reason: str):
-        self.field = field
-        self.reason = reason
-        super().__init__(f"{field}: {reason}")
-
-
-def _validation_error_response(
-    field: str, reason: str, message: str = "任务参数不合法"
-) -> JSONResponse:
-    """按契约错误外层返回 400 VALIDATION_ERROR，details.field 精确到字段路径。"""
-    return JSONResponse(
-        status_code=400,
-        content=build_error_body(
-            "VALIDATION_ERROR", message, {"field": field, "reason": reason}
-        ),
-    )
-
-
-def _resolve_idempotency_key(header_value: Optional[str]) -> Optional[str]:
-    """解析 Idempotency-Key 请求头（契约第 3 节：8～128 可打印 ASCII）。
-
-    缺失 → None（兼容策略：不强幂等，正常执行并在 T-10 记录偏差待确认）；
-    提供但不合法 → 400 VALIDATION_ERROR。
-    """
-    if header_value is None:
-        return None
-    try:
-        return validate_idempotency_key(header_value)
-    except IdempotencyKeyError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
-
-
 @router.post("", response_model=ResponseModel, status_code=201)
 async def create_task(
     task_data: TestTaskCreate,
-    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
     idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key"),
 ):
-    """创建测试任务（HTTP 201；携带 Idempotency-Key 时同键同体重放返回首次响应）"""
-    key = _resolve_idempotency_key(idempotency_key)
-    request_payload = task_data.model_dump(mode="json")
+    """创建测试任务（HTTP 201；携带 Idempotency-Key 时同键同体重放返回首次响应）。
 
-    async def _execute() -> dict:
-        # 检查设备
-        device = await device_service.get_device_by_serial(db, task_data.device_serial)
-        if not device:
-            raise HTTPException(status_code=404, detail="设备不存在")
-
-        # 统一设备授权（契约 device-authorization §1，写前校验）：
-        # 管理员任意；普通用户仅 owner=本人且 PC 一致；他人/null/PC 不一致一律 403，零写入。
-        ensure_can_create_task_on_device(current_user, device)
-
-        # 设备不可用属冲突（契约 task-execution §2/V1-04）：offline/maintenance → 409 CONFLICT；
-        # testing 不再拒绝，任务以 pending 排队，由执行器的设备锁按 FIFO 串行化执行
-        if device.status == "offline":
-            raise HTTPException(status_code=409, detail="设备离线")
-
-        if device.status == "maintenance":
-            raise HTTPException(status_code=409, detail="设备维护中")
-
-        # 测试项存在性/禁用校验（R14：非法 item_id 为 400，details.field=item_ids.<下标>；
-        # 写前校验，任何任务写入前拒绝）
-        items_result = await db.execute(
-            select(TestItem).where(TestItem.id.in_(task_data.item_ids))
-        )
-        existing_items = {item.id: item for item in items_result.scalars().all()}
-        for index, item_id in enumerate(task_data.item_ids):
-            item = existing_items.get(item_id)
-            if not item:
-                raise _ItemValidationError(f"item_ids.{index}", "测试项不存在")
-            if not item.enabled:
-                raise _ItemValidationError(f"item_ids.{index}", "测试项已禁用")
-
-        # 自定义参数安全校验：值会拼入 shell 命令，拒绝 shell 元字符（防命令注入）
-        for key_, value in (task_data.custom_parameters or {}).items():
-            error = validate_custom_param_value(value)
-            if error:
-                raise HTTPException(status_code=400, detail=f"参数 {key_} 不合法: {error}")
-
-        # 调度配置：immediate 创建后立即启动；once/daily 计算下次触发时间，
-        # 任务保持 pending，由后台调度器到期启动
-        schedule_type = task_data.schedule_type.value
-        next_run_at = None
-        if schedule_type != SCHEDULE_IMMEDIATE:
-            if not task_data.scheduled_time:
-                raise HTTPException(status_code=400, detail="定时任务必须指定执行时间")
-            try:
-                next_run_at = compute_next_run(schedule_type, task_data.scheduled_time)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400,
-                    detail="执行时间格式不正确（定时一次用 YYYY-MM-DD HH:MM，每日定时用 HH:MM）"
-                )
-            if schedule_type == SCHEDULE_ONCE and next_run_at <= datetime.now(timezone.utc):
-                raise HTTPException(status_code=400, detail="定时时间已过，请重新选择")
-
-        # 创建设备任务
-        task = TestTask(
-            user_id=current_user.id,
-            device_id=device.id,
-            name=task_data.name or f"测试任务_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            selected_items=task_data.item_ids,
-            custom_parameters=task_data.custom_parameters or {},
-            status="pending",
-            schedule_type=schedule_type,
-            scheduled_time=task_data.scheduled_time if schedule_type != SCHEDULE_IMMEDIATE else None,
-            next_run_at=next_run_at
-        )
-
-        db.add(task)
-        await db.commit()
-        await db.refresh(task)
-
-        if schedule_type == SCHEDULE_IMMEDIATE:
-            # 更新设备状态并立即启动异步任务执行
-            await device_service.update_device_status(db, device.id, "testing")
-            TaskExecutor.start_task(task.id)
-
-        # 预加载 device 关系，确保返回中包含 device_serial
-        result = await db.execute(
-            select(TestTask).options(joinedload(TestTask.device)).where(TestTask.id == task.id)
-        )
-        task_with_device = result.scalar_one()
-
-        response_data = TestTaskResponse.model_validate(task_with_device).model_dump(mode="json")
-        if task_with_device.device:
-            response_data["device_serial"] = task_with_device.device.serial_number
-
-        return ResponseModel(
-            code=201,
-            message="任务创建成功",
-            data=response_data
-        ).model_dump(mode="json")
-
-    if key is None:
-        # 兼容策略：缺失 Idempotency-Key = 不强幂等（正常创建，每次都执行）
-        try:
-            return await _execute()
-        except _ItemValidationError as exc:
-            return _validation_error_response(exc.field, exc.reason)
-
+    薄委托统一创建服务 app/services/task_creation.py（契约 v1.1 §10：
+    校验/授权/可用性/item/调度/幂等/落库/启动全部收口同一服务）。
+    """
     try:
-        response, _record = await run_idempotent(
+        return await create_task_instance(
             db,
-            user_id=current_user.id,
-            operation=OPERATION_TASK_CREATE,
-            idempotency_key=key,
-            request_payload=request_payload,
-            execute=_execute,
-            task_id_extractor=lambda resp: resp["data"]["id"],
+            user=current_user,
+            request=task_data,
+            idempotency_key=idempotency_key,
         )
-    except IdempotencyConflictError:
-        raise HTTPException(status_code=409, detail="Idempotency-Key 已被不同的请求体使用")
-    except _ItemValidationError as exc:
-        return _validation_error_response(exc.field, exc.reason)
-    return response
+    except ItemValidationError as exc:
+        return validation_error_response(exc.field, exc.reason)
 
 
 @router.get("", response_model=ResponseModel)
@@ -292,36 +154,77 @@ async def cancel_task(
 
     Deprecated: legacy 路径 POST /tasks/{task_id}/cancel（契约 v1.0 第 4 节），
     仅作短期适配；目标路径为 POST /tasks/{task_id}/cancellations，两者委托同一业务函数。
+
+    task-C1：预检后以条件更新（仅 pending/running → cancelled）落库，提交先于
+    响应返回（happens-before）；输掉竞态不覆盖终态，重读当前状态幂等返回。
+    SQLite 并发写者交错时可能立即返回 BUSY（死锁规避不等待），带退避重试，
+    保证并发取消全部正常返回（无 500）。
     """
-    result = await db.execute(
-        select(TestTask).where(TestTask.id == task_id)
-    )
-    task = result.scalar_one_or_none()
-    
-    if not task:
-        raise HTTPException(status_code=404, detail="任务不存在")
-    
-    # 权限检查
-    if current_user.role != "admin" and task.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="无权限取消此任务")
-    
-    # 只能取消pending或running的任务
-    if task.status not in ["pending", "running"]:
-        raise HTTPException(status_code=400, detail="任务无法取消")
-    
-    # 先通知执行器取消正在运行的协程，避免后台任务继续执行并把状态覆盖回 completed
-    executor_cancelled = TaskExecutor.cancel_task(task_id)
-    
-    task.status = "cancelled"
-    task.completed_at = datetime.now(timezone.utc)
-    await db.commit()
-    
-    # 设备释放：若执行器侧任务仍在运行，由其收尾逻辑（含 adb 探活）负责释放，
-    # 避免把离线设备误置 online；否则由 API 层直接释放
-    if not executor_cancelled:
-        await device_service.update_device_status(db, task.device_id, "online")
-    
-    return ResponseModel(code=200, message="任务已取消")
+    # 提前取标量：重试回滚会 expire 会话内全部 ORM 对象（含依赖注入的
+    # current_user），循环内再访问其属性会触发同步惰性加载（MissingGreenlet）
+    is_admin = current_user.role == "admin"
+    requesting_user_id = current_user.id
+    executor_cancelled = False
+    for attempt in range(1, 7):
+        last_attempt = attempt == 6
+        try:
+            # 标量查询（非 ORM 对象）：重试回滚会 expire 会话内 ORM 对象，
+            # 后续属性访问会触发同步惰性加载（MissingGreenlet）；标量行无此陷阱
+            row = (await db.execute(
+                select(TestTask.user_id, TestTask.status, TestTask.device_id)
+                .where(TestTask.id == task_id)
+            )).first()
+
+            if row is None:
+                raise HTTPException(status_code=404, detail="任务不存在")
+            owner_id, current_status, device_id = row
+
+            # 权限检查
+            if not is_admin and owner_id != requesting_user_id:
+                raise HTTPException(status_code=403, detail="无权限取消此任务")
+
+            # 只能取消pending或running的任务
+            if current_status not in ["pending", "running"]:
+                raise HTTPException(status_code=400, detail="任务无法取消")
+
+            # 先通知执行器取消正在运行的协程（单次投递，避免打断取消收尾本身）
+            if not executor_cancelled:
+                executor_cancelled = TaskExecutor.cancel_task(task_id)
+
+            # 条件更新：仅 pending/running → cancelled；输掉竞态（预检后已被并发
+            # 收尾为其他终态）时不覆盖任何状态，重读当前状态幂等返回
+            cancelled_at = datetime.now(timezone.utc)
+            update_result = await db.execute(
+                update(TestTask)
+                .where(TestTask.id == task_id, TestTask.status.in_(["pending", "running"]))
+                .values(status="cancelled", completed_at=cancelled_at)
+            )
+            await db.commit()
+
+            if not update_result.rowcount:
+                current_status = (await db.execute(
+                    select(TestTask.status).where(TestTask.id == task_id)
+                )).scalar_one()
+                if current_status != "cancelled":
+                    # 已被并发收尾为其他终态：按既有非终态语义返回 400
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"任务当前状态为 {current_status}，无法取消",
+                    )
+
+            # 设备释放：若执行器侧任务仍在运行，由其收尾逻辑（含 adb 探活）负责释放，
+            # 避免把离线设备误置 online；否则由 API 层直接释放
+            if not executor_cancelled:
+                await device_service.update_device_status(db, device_id, "online")
+
+            return ResponseModel(code=200, message="任务已取消")
+        except HTTPException:
+            raise
+        except OperationalError:
+            if last_attempt:
+                raise
+            await db.rollback()
+            await asyncio.sleep(0.25 * attempt)
 
 
 @router.post("/{task_id}/rerun-failed", response_model=ResponseModel, status_code=201)
@@ -337,7 +240,7 @@ async def rerun_failed_items(
     仅作短期适配；目标路径为 POST /tasks/{task_id}/reruns，两者委托同一业务函数，
     复用同一 Idempotency-Key 幂等语义（operation=task_rerun，请求体含 task_id）。
     """
-    key = _resolve_idempotency_key(idempotency_key)
+    key = resolve_idempotency_key(idempotency_key)
     request_payload = {"task_id": task_id}
 
     async def _execute() -> dict:
