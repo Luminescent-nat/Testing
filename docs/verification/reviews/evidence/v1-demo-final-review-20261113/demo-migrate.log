@@ -1,0 +1,25 @@
+========== 测试平台 · 演示环境 ==========
+历史库 backend/test_platform.db 保留不动（只读）；演示使用独立 D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/demo.db + D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/storage/demo/
+注意：历史库存在结构漂移，严格 init_db 会 SchemaMismatchError 拒绝启动，属预期；严禁 alembic downgrade base。
+[1/2] 初始化演示库（alembic upgrade head，空库 001→004，幂等）...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotency_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive 设备乐观并发版本列（V1-01 设备改派契约 §2/§6）。
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: additive 任务软删除列（契约 task-execution §8 / V1-09b）。
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+004_task_deleted_at (head)
+[2/2] 启动演示服务...
+  演示库:      D:\MCTEST\test-platform\backend/D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/demo.db
+  存储目录:    D:\MCTEST\test-platform\backend/D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/storage/demo/{tools,reports,logs}
+  平台地址:    http://localhost:8000
+  API 文档:    http://localhost:8000/docs
+  首次使用请在登录页注册账号（首个注册用户自动成为管理员）。
+  提示：演示请只用只读测试项（如 cat /proc/meminfo），不要写入/烧录/重启/压测；daily/once 演示禁用。
+[MigrateOnly] 已完成演示库初始化，未启动服务。
+EXIT_CODE=0
+SOURCE_SHA256_BEFORE=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+SOURCE_SHA256_AFTER=2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+SOURCE_UNCHANGED=true

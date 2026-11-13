@@ -1,0 +1,23 @@
+��������Ա�˺�: e2e-admin
+
+Running 16 tests using 1 worker
+
+  ✓   1 [setup] › tests\e2e\auth.setup.spec.js:8:6 › 初始化管理员账号并登录 (1.1s)
+  ✓   2 [chromium] › tests\e2e\auth.setup.spec.js:8:6 › 初始化管理员账号并登录 (981ms)
+  ✓   3 [chromium] › tests\e2e\interactions.spec.js:8:7 › 关键按钮与交互 › 主题切换按钮可正常切换亮/暗色 (776ms)
+  ✓   4 [chromium] › tests\e2e\interactions.spec.js:21:7 › 关键按钮与交互 › 仪表盘“开始新测试”快捷按钮可进入创建任务页 (507ms)
+  ✓   5 [chromium] › tests\e2e\interactions.spec.js:26:7 › 关键按钮与交互 › 设备页刷新设备按钮可点击且不报错 (422ms)
+  ✓   6 [chromium] › tests\e2e\interactions.spec.js:38:7 › 关键按钮与交互 › 用户管理页可加载用户列表并展示操作按钮 (425ms)
+  ✓   7 [chromium] › tests\e2e\navigation.spec.js:9:7 › 侧边栏导航与页面渲染 › 仪表盘页面关键元素渲染正常 (427ms)
+  ✓   8 [chromium] › tests\e2e\navigation.spec.js:16:7 › 侧边栏导航与页面渲染 › 点击“设备管理”进入设备列表且交互正常 (556ms)
+  ✓   9 [chromium] › tests\e2e\navigation.spec.js:23:7 › 侧边栏导航与页面渲染 › 点击“测试模块”进入模块管理页 (538ms)
+  ✓  10 [chromium] › tests\e2e\navigation.spec.js:29:7 › 侧边栏导航与页面渲染 › 点击“测试任务”进入任务列表 (491ms)
+  ✓  11 [chromium] › tests\e2e\navigation.spec.js:35:7 › 侧边栏导航与页面渲染 › 点击“测试报告”进入报告页 (471ms)
+  ✓  12 [chromium] › tests\e2e\navigation.spec.js:41:7 › 侧边栏导航与页面渲染 › 管理员可展开系统管理并进入用户管理 (1.7s)
+  ✓  13 [chromium] › tests\e2e\navigation.spec.js:48:7 › 侧边栏导航与页面渲染 › 顶部用户下拉可进入个人信息并返回 (1.4s)
+  ✓  14 [chromium] › tests\e2e\task-workflow.spec.js:16:7 › 任务创建与报告查看流程 › 任务创建页模块、测试项可正常加载与选择 (534ms)
+  ✓  15 [chromium] › tests\e2e\task-workflow.spec.js:62:7 › 任务创建与报告查看流程 › 报告空态：全新隔离库进入 /reports 显示空态且无 console error (441ms)
+  ✓  16 [chromium] › tests\e2e\task-workflow.spec.js:92:7 › 任务创建与报告查看流程 › 非空报告：创建任务→轮询 completed→报告详情统计正确 (2.9s)
+
+  16 passed (16.3s)
+EXIT_CODE=0

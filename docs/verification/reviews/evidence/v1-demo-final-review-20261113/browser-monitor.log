@@ -1,0 +1,11 @@
+{
+  "task_id": 1,
+  "task_name": "E2E 报告校验任务 1794553366074",
+  "item_name_visible": true,
+  "log_dialog_item_name_visible": true,
+  "undefined_present": false,
+  "console_errors": [],
+  "page_errors": [],
+  "http_5xx": [],
+  "result": "PASS"
+}

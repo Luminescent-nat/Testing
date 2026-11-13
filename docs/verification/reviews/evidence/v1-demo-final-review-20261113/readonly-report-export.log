@@ -1,0 +1,14 @@
+{
+  "task_id": 1,
+  "device_serial": "5c000c2834414751c9d",
+  "task_status": "completed",
+  "task_result": "passed",
+  "item_name": "容量校验",
+  "record_status": "pass",
+  "output_has_memtotal": true,
+  "pass_rate": 100,
+  "html_status": 200,
+  "html_bytes": 4878,
+  "result": "PASS"
+}
+EXIT_CODE=0

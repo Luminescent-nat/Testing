@@ -1,0 +1,23 @@
+========== 测试平台 · 演示环境 ==========
+历史库 backend/test_platform.db 保留不动（只读）；演示使用独立 D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/demo.db + D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/storage/demo/
+注意：历史库存在结构漂移，严格 init_db 会 SchemaMismatchError 拒绝启动，属预期；严禁 alembic downgrade base。
+[1/2] 初始化演示库（alembic upgrade head，空库 001→004，幂等）...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+004_task_deleted_at (head)
+[2/2] 启动演示服务...
+  演示库:      D:\MCTEST\test-platform\backend/D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/demo.db
+  存储目录:    D:\MCTEST\test-platform\backend/D:/MCTEST/docs/verification/reviews/evidence/v1-demo-final-review-20261113/runtime-demo/storage/demo/{tools,reports,logs}
+  平台地址:    http://localhost:8770
+  API 文档:    http://localhost:8770/docs
+  首次使用请在登录页注册账号（首个注册用户自动成为管理员）。
+  提示：演示请只用只读测试项（如 cat /proc/meminfo），不要写入/烧录/重启/压测；daily/once 演示禁用。
+2026-11-13 15:01:36,786 [INFO] app.logging_config: 日志系统初始化完成，文件: D:\MCTEST\test-platform\backend\logs\server.log
+2026-11-13 15:01:36,831 [INFO] uvicorn.error: Started server process [7860]
+2026-11-13 15:01:36,832 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-13 15:01:36,948 [WARNING] app.services.tool_manifest: 工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+2026-11-13 15:01:36,948 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=D:\MCTEST\test-platform\test-tools manifests=2 声明=27 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=1 ok=True
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.

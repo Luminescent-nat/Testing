@@ -1,0 +1,15 @@
+
+> test-platform-frontend@1.0.0 test
+> vitest run
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v4.1.10 D:/MCTEST/test-platform/frontend
+
+
+ Test Files  7 passed (7)
+      Tests  75 passed (75)
+   Start at  14:59:32
+   Duration  825ms (transform 219ms, setup 0ms, import 1.10s, tests 87ms, environment 1ms)
+
+EXIT_CODE=0
