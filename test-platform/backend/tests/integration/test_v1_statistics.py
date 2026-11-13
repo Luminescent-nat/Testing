@@ -510,3 +510,34 @@ def test_statistics_module_single_source_of_truth():
     assert statistics.compute_pass_rate({"pass": 0, "fail": 0, "error": 0, "timeout": 0, "skip": 5}) is None
     # skip 不进分母
     assert statistics.compute_pass_rate({"pass": 1, "fail": 1, "error": 0, "timeout": 0, "skip": 9}) == 50.0
+
+
+# =========================================================================== #
+# 空报告汇总空态（T-25 演示问题 2）：空库 200 空汇总，前端消费字段兼容
+# =========================================================================== #
+@pytest.mark.asyncio
+async def test_summary_all_empty_state_frontend_consumer_fields(
+    client: AsyncClient, admin_token: str
+):
+    """空库 summary/all：200 空汇总；counts/pass_rate/result 消费字段语义安全。"""
+    resp = await client.get(
+        "/api/v1/reports/summary/all",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()["data"]
+
+    # 五类计数全 0（形状与统计口径一致），pass_rate=null，不得为 0/"0%"
+    summary = data["summary"]
+    assert summary["counts"] == {s: 0 for s in FINAL}
+    assert summary["pass_rate"] is None
+    assert summary["pass_rate"] != 0
+    assert summary["total_items"] == 0
+
+    # 任务/结果空数组：前端遍历不会取到 undefined；result 语义为“无结果”
+    assert data["tasks"] == []
+    assert data["results"] == []
+    assert data["task_count"] == 0
+    # 非空复用同一 batch 结构（report_type/version 一致）
+    assert data["report_type"] == "batch"
+    assert data["report_version"] == "1.1"

@@ -147,6 +147,81 @@ async def test_get_summary_report(
         assert "created_at" in task
 
 
+# ---------------------------------------------------------------- 空态收口（T-25 演示问题 2）
+@pytest.mark.asyncio
+async def test_summary_all_empty_db_returns_200_empty_state(
+    client: AsyncClient, admin_token: str
+):
+    """空库/无任务：GET /reports/summary/all 返回 200 空汇总（不再 404）。"""
+    response = await client.get(
+        "/api/v1/reports/summary/all",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["code"] == 200
+    data = body["data"]
+
+    # 顶层形状与非空 batch 汇总一致
+    assert data["report_type"] == "batch"
+    assert data["report_version"] == "1.1"
+    assert data["task_count"] == 0
+    assert data["tasks"] == []
+    assert data["results"] == []
+    assert data["module_statistics"] == {}
+    assert "executor" in data and "created_at" in data
+
+    # summary 五类计数全 0、pass_rate=null、total_items=0；counts 形状为五类
+    summary = data["summary"]
+    assert summary["total_items"] == 0
+    assert summary["passed"] == 0
+    assert summary["failed"] == 0
+    assert summary["skipped"] == 0
+    assert summary["error"] == 0
+    assert summary["timeout"] == 0
+    assert summary["counts"] == {
+        "pass": 0, "fail": 0, "skip": 0, "error": 0, "timeout": 0
+    }
+    assert summary["pass_rate"] is None
+
+    # 前端空态兼容字段（items/total），且 JSON 可序列化（response.json 已证明）
+    assert data["items"] == []
+    assert data["total"] == 0
+
+
+@pytest.mark.asyncio
+async def test_summary_all_nonempty_shape_unchanged(
+    client: AsyncClient, admin_token: str, completed_task: int
+):
+    """非空库：汇总形状与统计口径不变（同一 batch 结构，pass_rate 按五类分母）。"""
+    response = await client.get(
+        "/api/v1/reports/summary/all",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["report_type"] == "batch"
+    assert data["task_count"] >= 1
+    assert len(data["tasks"]) == data["task_count"]
+    summary = data["summary"]
+    assert set(summary["counts"]) == {"pass", "fail", "skip", "error", "timeout"}
+    assert summary["total_items"] >= 1
+    assert summary["pass_rate"] == 100.0  # 完成 1 项 pass，无失败
+
+
+@pytest.mark.asyncio
+async def test_single_report_missing_task_still_404(
+    client: AsyncClient, admin_token: str
+):
+    """单任务 /reports/{id} 不存在仍按契约 404（空态收口不影响单任务语义）。"""
+    response = await client.get(
+        "/api/v1/reports/999999",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert response.status_code == 404
+    assert response.json()["code"] == "NOT_FOUND"
+
+
 @pytest.mark.asyncio
 async def test_batch_export_report(
     client: AsyncClient, admin_token: str, completed_task: int
@@ -159,6 +234,19 @@ async def test_batch_export_report(
     )
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
+
+
+@pytest.mark.asyncio
+async def test_batch_export_nonexistent_tasks_still_4xx(
+    client: AsyncClient, admin_token: str
+):
+    """显式批量导出：任务全部不存在时仍整体失败（空态收口不影响 batch 语义）。"""
+    response = await client.get(
+        "/api/v1/reports/batch/export",
+        headers={"Authorization": f"Bearer {admin_token}"},
+        params={"task_ids": "999998,999999", "format": "json"},
+    )
+    assert response.status_code == 404, response.text
 
 
 @pytest.mark.asyncio

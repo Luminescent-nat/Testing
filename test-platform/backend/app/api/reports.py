@@ -383,12 +383,56 @@ async def _build_report(db: AsyncSession, task_id: int, current_user: User) -> d
     }
 
 
+def _empty_multi_task_report(current_user: User) -> dict:
+    """空库/无任务时的空汇总（HTTP 200 空态，演示收口）。
+
+    字段形状与非空 batch 汇总一致（report_version/report_type/report_id/
+    created_at/task_count/executor/summary/module_statistics/tasks/results），
+    五类 counts 全 0、pass_rate=null、total_items=0；额外提供前端空态兼容字段
+    items=[]、total=0（仅空态附加，非空形状保持不变）。
+    """
+    empty_counts = {status_: 0 for status_ in statistics.FINAL_STATUSES}
+    return {
+        "report_version": "1.1",
+        "report_type": "batch",
+        "report_id": f"RPT-BATCH-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+        "created_at": datetime.now(),
+        "task_count": 0,
+        "executor": {
+            "user_id": current_user.id,
+            "username": current_user.username,
+            "role": current_user.role,
+        },
+        "summary": {
+            "total_items": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "error": 0,
+            "timeout": 0,
+            "counts": empty_counts,
+            "pass_rate": None,
+        },
+        "module_statistics": {},
+        "tasks": [],
+        "results": [],
+        # 前端空态消费兼容：避免把「无任务」当错误处理
+        "items": [],
+        "total": 0,
+    }
+
+
 async def _build_multi_task_report(
     db: AsyncSession,
     task_ids: List[int],
-    current_user: User
+    current_user: User,
+    allow_empty: bool = False,
 ) -> dict:
-    """构建多个任务的聚合总报告。"""
+    """构建多个任务的聚合总报告。
+
+    allow_empty=True（仅 /reports/summary/all）时，空库/无任务返回 200 空汇总；
+    显式批量导出（/reports/batch/export）必须保持任一任务不可用时整体失败。
+    """
     reports = []
     for task_id in task_ids:
         try:
@@ -402,6 +446,8 @@ async def _build_multi_task_report(
             continue
 
     if not reports:
+        if allow_empty:
+            return _empty_multi_task_report(current_user)
         raise HTTPException(status_code=404, detail="未找到可汇总的任务报告")
 
     total_items = sum(r["summary"]["total_items"] for r in reports)
@@ -1404,7 +1450,10 @@ async def get_summary_report(
     tasks = result.scalars().all()
     task_ids = [t.id for t in tasks]
 
-    report_data = await _build_multi_task_report(db, task_ids, current_user)
+    # 空库/无任务：返回 200 空汇总（演示前收口），不再 404
+    report_data = await _build_multi_task_report(
+        db, task_ids, current_user, allow_empty=True
+    )
     return ResponseModel(code=200, data=report_data)
 
 
