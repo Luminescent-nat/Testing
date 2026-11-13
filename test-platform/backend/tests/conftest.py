@@ -103,10 +103,17 @@ async def test_db() -> AsyncGenerator[AsyncSession, None]:
         f"sqlite+aiosqlite:///{db_path}",
         echo=False,
         poolclass=NullPool,
-        connect_args={"check_same_thread": False},
+        # task-C1（Lead 授权，仅测试夹具）：SQLite busy_timeout 默认 5s，
+        # 并发取消/收尾与轮询读交错时写写冲突会等满超时后抛 database is locked，
+        # 导致执行器正常路径误判平台异常；放宽到 30s 让瞬态争用靠等待化解。
+        connect_args={"check_same_thread": False, "timeout": 30},
     )
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # task-C1（Lead 授权域，仅测试夹具）：WAL 模式——回滚日志模式下读者会被
+        # PENDING 写锁直接拒（busy_timeout 不覆盖），并发取消用例的鉴权 SELECT
+        # 因此偶发 database is locked；WAL 下读者与写者互不阻塞，写者间仍串行。
+        await conn.exec_driver_sql("PRAGMA journal_mode=WAL")
 
     test_session_maker = async_sessionmaker(
         test_engine,
@@ -163,6 +170,12 @@ async def test_db() -> AsyncGenerator[AsyncSession, None]:
             os.remove(db_path)
         except OSError:
             pass
+        # WAL sidecar 文件清理
+        for suffix in ("-wal", "-shm"):
+            try:
+                os.remove(db_path + suffix)
+            except OSError:
+                pass
 
 
 @pytest_asyncio.fixture(scope="function")

@@ -470,7 +470,9 @@ async def test_task_error_message_persists_safe_summary(
     DeviceLock._holders.clear()
     te_logger = logging.getLogger("app.services.task_executor")
     try:
-        with patch.object(te_logger, "exception") as log_spy:
+        # task-C1 后 _run_task 用 logger.error（字符串堆栈，避免 exc_info 钉住
+        # 被打断游标的帧）记录平台异常，完整堆栈仍仅进服务端日志
+        with patch.object(te_logger, "error") as log_spy:
             assert TaskExecutor.start_task(task.id) is True
             running = TaskExecutor._running_tasks[task.id]
             await asyncio.gather(running, return_exceptions=True)

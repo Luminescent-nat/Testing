@@ -1,10 +1,11 @@
 import asyncio
 import logging
 import os
+import traceback
 from typing import Dict, Optional
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -95,12 +96,40 @@ class TaskExecutor:
 
     @classmethod
     def cancel_task(cls, task_id: int) -> bool:
-        """取消正在运行的任务。"""
+        """取消正在运行的任务（幂等：同一协程只投递一次取消信号）。
+
+        并发取消会向执行器协程重复投递 CancelledError，第二次信号可能正好打断
+        取消收尾本身（_handle_cancel 的写库），导致记录收尾丢失——故对已投递过
+        信号的协程不再重复 cancel，仅返回 True。
+        """
         running = cls._running_tasks.get(task_id)
         if running and not running.done():
-            running.cancel()
+            if not getattr(running, "_cancel_signalled", False):
+                running._cancel_signalled = True
+                running.cancel()
+                logger.info("任务 %s 取消信号已投递", task_id)
+            else:
+                logger.info("任务 %s 取消信号已投递过，跳过重复投递", task_id)
             return True
         return False
+
+    @classmethod
+    async def _transition_task_status(
+        cls, db: AsyncSession, task_id: int, *, from_statuses, values: dict
+    ) -> bool:
+        """任务状态条件更新（task-C1：core update + rowcount）。
+
+        仅当当前 status ∈ from_statuses 时写入 values；输掉竞态（rowcount==0，
+        例如已被并发取消收尾）时**不写任何字段**，调用方必须放弃后续状态写入、
+        报告调度与记忆体沉淀（cancelled 收尾语义），并仅做设备/锁回收。
+        """
+        result = await db.execute(
+            update(TestTask)
+            .where(TestTask.id == task_id, TestTask.status.in_(list(from_statuses)))
+            .values(**values)
+        )
+        await db.commit()
+        return bool(result.rowcount)
 
     @classmethod
     def _cleanup(cls, task_id: int):
@@ -109,18 +138,45 @@ class TaskExecutor:
 
     @classmethod
     async def _run_task(cls, task_id: int):
-        """任务主执行逻辑。"""
+        """任务主执行逻辑。
+
+        取消/异常收尾刻意放在 except 作用域**之外**执行：CancelledError 的
+        traceback 会钉住被打断的 ORM 游标帧，未复位游标持有的 SQLite 读锁在
+        异常对象存活期间不会释放（实测收尾写库全部 `database is locked`）；
+        except 块结束时异常绑定被自动清除、帧与游标随之回收、锁释放，此时
+        再做收尾才能保证 cancelled 落库（task-C1 偶发 running 的最终根因）。
+        """
         async with AsyncSessionLocal() as db:
+            cancel_flag = False
+            failure_type: Optional[str] = None
+            failure_stack: Optional[str] = None
             try:
                 await cls._execute_with_db(task_id, db)
             except asyncio.CancelledError:
-                await cls._handle_cancel(task_id, db)
-                raise
+                # 不绑定异常对象：块结束时异常与 traceback 即被回收，锁随之释放
+                cancel_flag = True
             except Exception as exc:
-                logger.exception("任务 %s 执行失败: %s", task_id, exc)
-                # 平台异常只持久化安全摘要（异常类型），完整堆栈仅进服务端日志，
-                # 避免原始异常文本经 task 详情 200 返回（V1-07）。
-                await cls._handle_failure(task_id, db, f"任务执行平台异常（{type(exc).__name__}）")
+                failure_type = type(exc).__name__
+                failure_stack = traceback.format_exc()
+                logger.error(
+                    "任务 %s 执行失败（%s），完整堆栈：%s", task_id, failure_type, failure_stack
+                )
+
+            # 此处已在异常作用域之外（无活跃异常、无被钉住的游标帧）
+            if failure_type is not None:
+                # 平台异常只持久化安全摘要（异常类型），完整堆栈仅进服务端日志（V1-07）
+                await cls._handle_failure(
+                    task_id, db, f"任务执行平台异常（{failure_type}）"
+                )
+            if cancel_flag or getattr(asyncio.current_task(), "_cancel_signalled", False):
+                logger.info("任务 %s 取消信号处理开始", task_id)
+                await cls._handle_cancel(task_id, db)
+                # 兜底：无论收尾内部是否部分失败，结束前强制保证 cancelled 终态
+                # 与记录收尾落库（条件更新，幂等；已是终态时 no-op）
+                await cls._ensure_cancelled_persisted(task_id, db)
+
+        if cancel_flag:
+            raise asyncio.CancelledError
 
     @classmethod
     async def _execute_with_db(cls, task_id: int, db: AsyncSession):
@@ -152,8 +208,22 @@ class TaskExecutor:
         await DeviceLock.acquire(device.serial_number, task_id)
 
         try:
+            # 条件更新（task-C1）：仅 pending/running 可推进为 running；输掉竞态
+            # （已被并发取消收尾）时不写任何状态，放弃执行，仅由 finally 放锁
+            started_at = datetime.now(timezone.utc)
+            started = await cls._transition_task_status(
+                db, task_id,
+                from_statuses=("pending", "running"),
+                values={"status": "running", "started_at": started_at,
+                        "progress_percent": 0},
+            )
+            if not started:
+                logger.warning("任务 %s 已被并发收尾（取消），执行器放弃启动", task_id)
+                await db.refresh(task)
+                return
+            # 同步 ORM 对象（值与条件更新一致，避免陈旧属性经后续 flush 写回）
             task.status = "running"
-            task.started_at = datetime.now(timezone.utc)
+            task.started_at = started_at
             task.progress_percent = 0
             # 排队期间设备可能已被上一任务释放回 online，拿到锁后重新标记 testing
             device.status = "testing"
@@ -212,9 +282,23 @@ class TaskExecutor:
                     await cls._skip_remaining_items(task, idx, item_id, db)
                     break
 
-            # 任务收尾
+            # 任务收尾（条件更新，task-C1）：已 cancelled 的行不得被覆盖为 completed；
+            # 输掉竞态时不写任何状态、不调度报告、不做记忆体沉淀（cancelled 收尾语义）
+            completed_at = datetime.now(timezone.utc)
+            finalized = await cls._transition_task_status(
+                db, task_id,
+                from_statuses=("pending", "running"),
+                values={"status": "completed", "completed_at": completed_at,
+                        "progress_percent": 100},
+            )
+            if not finalized:
+                logger.warning(
+                    "任务 %s 已被并发取消收尾，跳过 completed 收尾/记忆体/报告", task_id
+                )
+                await db.refresh(task)
+                return
             task.status = "completed"
-            task.completed_at = datetime.now(timezone.utc)
+            task.completed_at = completed_at
             task.progress_percent = 100
             await db.commit()
             await notify_progress(task_id)
@@ -226,7 +310,28 @@ class TaskExecutor:
             cls._schedule_report_generation(task_id)
 
         finally:
-            await cls._release_device(db, device, task_id)
+            # 释放设备：此处的异常不得替换在飞的 CancelledError——否则取消收尾
+            # （_handle_cancel）不会执行，最后落库值停留 running（偶发 running 根因）。
+            # 取消可能打断提交中的 greenlet（该会话不可恢复），失败时回滚、重取设备
+            # 对象（回滚会 expire ORM 对象，重用会触发同步 IO 的 MissingGreenlet）
+            # 后尽力重试一次；持有者校验语义保持不变。
+            device_pk = device.id
+            try:
+                await cls._release_device(db, device, task_id)
+            except Exception:
+                logger.exception("任务 %s 收尾释放设备失败，回滚后尽力重试", task_id)
+                try:
+                    await db.rollback()
+                except Exception:
+                    logger.exception("任务 %s 收尾回滚失败", task_id)
+                try:
+                    refreshed = (await db.execute(
+                        select(Device).where(Device.id == device_pk)
+                    )).scalar_one_or_none()
+                    if refreshed is not None:
+                        await cls._release_device(db, refreshed, task_id)
+                except Exception:
+                    logger.exception("任务 %s 重试释放设备仍失败", task_id)
 
     @classmethod
     def _schedule_report_generation(cls, task_id: int):
@@ -263,6 +368,17 @@ class TaskExecutor:
         """
         now = datetime.now(timezone.utc)
         reason = f"设备 {device.serial_number} 离线，测试项未执行"
+        # 条件更新（task-C1）：输掉竞态（已被并发取消收尾）时不写任何状态/记录
+        finalized = await cls._transition_task_status(
+            db, task.id,
+            from_statuses=("pending", "running"),
+            values={"status": "failed",
+                    "error_message": f"设备 {device.serial_number} 离线，任务终止",
+                    "completed_at": now, "progress_percent": 100},
+        )
+        if not finalized:
+            logger.warning("任务 %s 已被并发收尾（取消），跳过离线快速失败收尾", task.id)
+            return
         for item_id in task.selected_items[start_idx:]:
             db.add(TestRecord(
                 task_id=task.id,
@@ -272,10 +388,6 @@ class TaskExecutor:
                 started_at=now,
                 completed_at=now,
             ))
-        task.status = "failed"
-        task.error_message = f"设备 {device.serial_number} 离线，任务终止"
-        task.completed_at = now
-        task.progress_percent = 100
         await db.commit()
         await notify_progress(task.id)
         logger.warning("任务 %s 因设备 %s 离线终止", task.id, device.serial_number)
@@ -455,64 +567,157 @@ class TaskExecutor:
                 logger.warning("知识库反馈更新异常: %s", exc)
 
     @classmethod
-    async def _handle_cancel(cls, task_id: int, db: AsyncSession):
-        """处理任务取消。"""
-        result = await db.execute(
-            select(TestTask)
-            .options(joinedload(TestTask.device))
-            .where(TestTask.id == task_id)
-        )
-        task = result.scalar_one_or_none()
-        if not task:
-            logger.warning("取消的任务 %s 不存在，跳过状态收尾", task_id)
-            return
+    async def _ensure_cancelled_persisted(cls, task_id: int, db: Optional[AsyncSession] = None):
+        """取消兜底收尾：保证 cancelled 终态与记录收尾落库（幂等，可重复调用）。
 
-        # 任务最终状态保持 cancelled，不允许被覆盖回 completed
-        task.status = "cancelled"
-        task.completed_at = datetime.now(timezone.utc)
+        - 任务：pending/running → cancelled（已终态 rowcount=0，不覆盖其他终态）；
+        - 记录：running/pending 批量 → error('任务被取消')；
+        - 首选复用传入会话；会话可能已被取消信号打断（不可恢复），失败时关闭并
+          换全新会话退避重试。
+        """
+        now = datetime.now(timezone.utc)
 
-        # 收尾仍处于 running/pending 的测试记录（取消可能发生在记录刚创建后）
-        rec_result = await db.execute(
-            select(TestRecord).where(
-                TestRecord.task_id == task_id,
-                TestRecord.status.in_(["running", "pending"]),
+        async def _apply(target_db: AsyncSession) -> int:
+            result = await target_db.execute(
+                update(TestTask)
+                .where(TestTask.id == task_id, TestTask.status.in_(["pending", "running"]))
+                .values(status="cancelled", completed_at=now)
             )
-        )
-        for record in rec_result.scalars().all():
-            record.status = "error"
-            record.fail_reason = "任务被取消"
-            record.completed_at = datetime.now(timezone.utc)
-        await db.commit()
-        await notify_progress(task_id)
+            await target_db.execute(
+                update(TestRecord)
+                .where(TestRecord.task_id == task_id,
+                       TestRecord.status.in_(["running", "pending"]))
+                .values(status="error", fail_reason="任务被取消", completed_at=now)
+            )
+            await target_db.commit()
+            return result.rowcount or 0
 
-        # 释放设备（排队中被取消时不持锁，_release_device 内部会校验持有者）
-        result = await db.execute(select(Device).where(Device.id == task.device_id))
-        device = result.scalar_one_or_none()
-        if device:
-            await cls._release_device(db, device, task_id)
+        if db is not None:
+            try:
+                rowcount = await _apply(db)
+                if rowcount:
+                    logger.info("任务 %s 取消兜底收尾完成（复用会话）", task_id)
+                else:
+                    logger.info("任务 %s 取消兜底无变更（已是终态）", task_id)
+                return
+            except Exception:
+                logger.exception("任务 %s 取消兜底（复用会话）失败，切换全新会话", task_id)
+                try:
+                    await db.close()
+                except Exception:
+                    logger.exception("任务 %s 取消兜底关闭会话失败", task_id)
+        for attempt in range(1, 7):
+            try:
+                async with AsyncSessionLocal() as fresh_db:
+                    rowcount = await _apply(fresh_db)
+                if rowcount:
+                    logger.info("任务 %s 取消兜底收尾完成（第 %s 次尝试）", task_id, attempt)
+                else:
+                    logger.info("任务 %s 取消兜底无变更（已是终态，第 %s 次尝试）", task_id, attempt)
+                return
+            except Exception:
+                logger.exception("任务 %s 取消兜底第 %s 次尝试失败", task_id, attempt)
+                await asyncio.sleep(0.25 * attempt)
+        logger.error("任务 %s 取消兜底收尾最终失败", task_id)
+
+    @classmethod
+    async def _handle_cancel(cls, task_id: int, db: AsyncSession):
+        """处理任务取消（幂等收尾，task-C1）。
+
+        取消信号可能打断执行器会话上任意数据库操作：提交中被取消的会话/连接
+        不可恢复（后续操作 MissingGreenlet），因此关闭旧会话释放其连接与可能的
+        写锁，改用全新会话完成收尾，保证 cancelled 一定落库：
+        - 任务：pending/running → cancelled（已终态 rowcount=0，幂等不覆盖）；
+        - 记录：running/pending 批量 → error('任务被取消')（旧会话丢弃的 pending
+          写由此替代）；
+        - 设备释放沿用 _release_device 的持有者校验（holder!=自身不释放、不改状态）。
+        """
+        # 尽力关闭被打断的执行器会话，释放连接与锁（其 pending 写由下方批量更新替代）
+        try:
+            await db.close()
+        except Exception:
+            logger.exception("任务 %s 取消收尾关闭执行器会话失败", task_id)
+
+        # 收尾写库多次尝试（含退避）：并发取消时多个写事务交错，SQLite 可能立即返回
+        # BUSY（死锁规避不等待）；cancelled 落库为强需求，退避重试直至成功或耗尽
+        for attempt in range(1, 7):
+            try:
+                async with AsyncSessionLocal() as fresh_db:
+                    result = await fresh_db.execute(
+                        select(TestTask).where(TestTask.id == task_id)
+                    )
+                    task = result.scalar_one_or_none()
+                    if not task:
+                        logger.warning("取消的任务 %s 不存在，跳过状态收尾", task_id)
+                        return
+                    device_id = task.device_id
+
+                    now = datetime.now(timezone.utc)
+                    await fresh_db.execute(
+                        update(TestTask)
+                        .where(TestTask.id == task_id,
+                               TestTask.status.in_(["pending", "running"]))
+                        .values(status="cancelled", completed_at=now)
+                    )
+                    # 收尾仍处于 running/pending 的测试记录（取消可能发生在记录刚创建后）
+                    await fresh_db.execute(
+                        update(TestRecord)
+                        .where(TestRecord.task_id == task_id,
+                               TestRecord.status.in_(["running", "pending"]))
+                        .values(status="error", fail_reason="任务被取消", completed_at=now)
+                    )
+                    await fresh_db.commit()
+                    await notify_progress(task_id)
+
+                    # 释放设备（排队中被取消时不持锁，_release_device 内部会校验持有者）
+                    device_result = await fresh_db.execute(
+                        select(Device).where(Device.id == device_id)
+                    )
+                    device = device_result.scalar_one_or_none()
+                    if device:
+                        try:
+                            await cls._release_device(fresh_db, device, task_id)
+                        except Exception:
+                            logger.exception("任务 %s 取消收尾释放设备失败", task_id)
+                            try:
+                                await fresh_db.rollback()
+                            except Exception:
+                                logger.exception("任务 %s 取消收尾释放回滚失败", task_id)
+                return
+            except Exception:
+                logger.exception("任务 %s 取消收尾第 %s 次尝试失败", task_id, attempt)
+                await asyncio.sleep(0.25 * attempt)
+        logger.error("任务 %s 取消收尾六次尝试均失败", task_id)
 
     @classmethod
     async def _handle_failure(cls, task_id: int, db: AsyncSession, error_message: str):
-        """处理任务执行失败。"""
-        result = await db.execute(
-            select(TestTask)
-            .options(joinedload(TestTask.device))
-            .where(TestTask.id == task_id)
-        )
+        """处理任务执行失败（条件更新：不覆盖 cancelled/completed 终态）。"""
+        result = await db.execute(select(TestTask).where(TestTask.id == task_id))
         task = result.scalar_one_or_none()
         if not task:
             logger.warning("失败的任务 %s 不存在，跳过状态收尾", task_id)
             return
+        device_id = task.device_id
 
-        task.status = "failed"
-        task.error_message = error_message
-        task.completed_at = datetime.now(timezone.utc)
-        await db.commit()
+        now = datetime.now(timezone.utc)
+        finalized = await cls._transition_task_status(
+            db, task_id,
+            from_statuses=("pending", "running"),
+            values={"status": "failed", "error_message": error_message,
+                    "completed_at": now},
+        )
+        if not finalized:
+            logger.warning(
+                "任务 %s 已被并发收尾，平台异常摘要不覆盖终态（当前 %s）",
+                task_id, task.status,
+            )
+        await db.refresh(task)
         await notify_progress(task_id)
-        # 失败收尾同样后台生成报告落盘
-        cls._schedule_report_generation(task_id)
+        # 失败收尾同样后台生成报告落盘（输掉竞态时按 cancelled 收尾语义跳过）
+        if finalized:
+            cls._schedule_report_generation(task_id)
 
-        result = await db.execute(select(Device).where(Device.id == task.device_id))
-        device = result.scalar_one_or_none()
+        device_result = await db.execute(select(Device).where(Device.id == device_id))
+        device = device_result.scalar_one_or_none()
         if device:
             await cls._release_device(db, device, task_id)
