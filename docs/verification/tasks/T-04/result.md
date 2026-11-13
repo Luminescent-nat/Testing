@@ -95,3 +95,44 @@
 1. AI 幂等键缺失仍走兼容策略（不强幂等），与手动一致（偏差已在 T-10 记录待用户确认）。
 2. `resolve_device` 全量匹配使“设备存在但他人所有”的 AI 文本得到 403；设备不存在仍 400 无法识别（契约 §2 未把该场景定为 404，保持现状）。
 3. 期间曾出现 tasks.py 编辑中间态被 Lead 观察到 import 报警，已当场修复并回执（rerun 键解析改用 resolve_idempotency_key），最终全量绿。
+
+## C. 前端同步章节（task-28，RR-V11-REVIEW §2 P1 修复，2026-11-13）
+
+### C.1 缺陷与修复
+task-B 把 AI 创建响应从旧形状 `data={task_id, plan, device_serial}`/200 改为契约 Task 对象/201 后，
+前端 `views/ai-test/index.vue` 未同步：`res.data.task_id` 为 undefined（跳转 `/tasks/monitor/undefined`），
+预览面板读 `planResult.plan.*` 渲染期 TypeError。本轮按契约最小修复：
+
+1. **导航**：`res.data.task_id` → 经 `extractCreatedTaskId(res.data)` 取契约 `id`（正整数）；
+   id 缺失/为 0/负数/浮点/字符串/非对象时不跳转并 `ElMessage.error` 提示（不再拼出 undefined 路由）。
+2. **预览面板（产品决策留痕：保留面板，不移除）**：创建成功后经 `getTaskDetail(id)` 拉取
+   `TestTaskDetail.plan` 渲染；`plan` 为 null/缺失时显示「该任务无规划快照」（`NO_PLAN_TEXT`）；
+   详情拉取失败时保留创建响应兜底（device_serial 来自 Task 对象），不阻塞跳转；全程可选链/纯函数守卫，无 TypeError 路径。
+3. **纯函数抽取**：`src/utils/aiTask.js`（`extractCreatedTaskId` / `buildPlanPreview` / `NO_PLAN_TEXT`），
+   视图仅调用纯函数；`buildPlanPreview` 对 plan 完整/null/部分缺失、device_serial 兜底
+   （`detail.device_serial` → `detail.device.serial_number` → `'-'`）全部归一化。
+
+### C.2 变更文件（diff 摘要）
+| 文件 | 变更 |
+|---|---|
+| `frontend/src/views/ai-test/index.vue` | 重写 handleSubmit：契约 id 提取与非法守卫、创建后拉详情渲染 plan、null 显示「该任务无规划快照」；模板预览块加 `hasPlan` 分支与空态 alert；`setTimeout` 跳转目标由 `res.data.task_id` 改为校验后的 `taskId` |
+| `frontend/src/utils/aiTask.js`（新增） | `extractCreatedTaskId`（仅接受正整数 number，legacy `task_id` 不再读取）、`buildPlanPreview`（plan 归一化 + device_serial 兜底）、`NO_PLAN_TEXT` |
+| `frontend/src/utils/__tests__/ai-task.test.js`（新增） | 9 用例：id 合法/缺失/null/0/负数/浮点/字符串/数组/legacy task_id 不读取；plan 完整/null/缺失/部分缺失；device_serial 兜底；空入参返回 null |
+
+### C.3 命令与退出码（2026-11-13 13:33，test-platform/frontend）
+| 命令 | 开始 | 结束 | 退出码 | 原始日志 |
+|---|---|---|---|---|
+| `npm test` | 13:33:36.473 | 13:33:38.671 | 0 | `task28-frontend-npm-test.log` |
+| `npm run lint` | 13:33:38.692 | 13:33:40.113 | 0 | `task28-frontend-npm-lint.log` |
+| `npm run build` | 13:33:40.115 | 13:33:46.865 | 0 | `task28-frontend-npm-build.log` |
+
+- `npm test`：6 个测试文件 **65 用例全绿**（ai-task 9 新增 + v1-06 13 + client 27 + v1-10 10 + datetime 3 + request 3）。
+- `npm run lint`：**992 warnings / 0 errors**；本任务涉及文件 ai-test/index.vue 4→2 条（重写块按 vue 规则格式化），
+  新增 aiTask.js / ai-task.test.js 均 0/0——**未新增任何 error/warning**（上一轮全量为 994）。
+- `npm run build`：退出码 0（6.0s），历史告警不变（Sass legacy-js-api 15 条 + chunk>500kB 1 条）。
+
+### C.4 未验证项与遗留
+- 未做浏览器实测（无后端/未启动前端服务）：跳转、预览面板与「该任务无规划快照」空态的实际渲染属页面走查；
+  `GET /tasks/{id}` 返回 `plan` 的真实数据仅按 schemas.py `TestTaskDetail.plan: Optional[Dict]` 与契约样例验证。
+- `POST /ai/tasks/natural` 的 201 已由 `isSuccessResponse`（2xx）覆盖，无需额外分支；未改 api/ai.js（不在本任务写范围）。
+- 未 `git commit`；未改 backend、契约文档与其它视图。

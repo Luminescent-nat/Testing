@@ -44,7 +44,7 @@
   - [ ] 合法管理员和普通用户路径均使用同一校验结果。
 - 验证：运行 `test_task_device_authorization.py`，手动/AI各覆盖允许与拒绝路径。
 - 回退：单独还原两个创建入口的授权接入。
-- 状态：已完成（2026-11-12 V1 轮 + 2026-11-13 契约 v1.1 增补：AI 入口改为「resolve_device→设备授权 403→状态 409→知识/LLM（plan_for_device）→统一创建服务」，授权拒绝/不可用时知识与 LLM 调用计数为 0（B1/B2 永久回归）；统一创建服务 [task_creation.py](../../test-platform/backend/app/services/task_creation.py) 手动/AI 共用、AI 独立幂等 operation、成功 201；B3 差分逐字段一致。[RR-V11-FIX-B](../verification/reviews/RR-V11-FIX-B.md) 通过。遗留：AI 缺失幂等键不强幂等（同手动，待 U-D1）、设备不存在仍 400。证据 [T-04](../verification/tasks/T-04/)）
+- 状态：已完成（2026-11-12 V1 轮 + 2026-11-13 契约 v1.1 增补：AI 入口改为「resolve_device→设备授权 403→状态 409→知识/LLM（plan_for_device）→统一创建服务」，授权拒绝/不可用时知识与 LLM 调用计数为 0（B1/B2 永久回归）；统一创建服务 [task_creation.py](../../test-platform/backend/app/services/task_creation.py) 手动/AI 共用、AI 独立幂等 operation、成功 201；B3 差分逐字段一致。[RR-V11-FIX-B](../verification/reviews/RR-V11-FIX-B.md) 通过；交付后独立复核发现 AI 响应形状（契约 Task/201）前端未同步（跳转 task_id undefined、预览 plan TypeError），已由 task-28 修复：导航改 `res.data.id`、预览改经 `GET /tasks/{id}` 拉 `TestTaskDetail.plan`（产品决策保留面板并留痕）、纯函数+9 Vitest、三件套 65 用例/lint 992w-0e/build exit0，独立闭环通过（[RR-V11-REVIEW §4](../verification/reviews/RR-V11-REVIEW-20261113.md)）。遗留：AI 缺失幂等键不强幂等（同手动，待 U-D1）、设备不存在仍 400。证据 [T-04](../verification/tasks/T-04/)）
 
 ## T-05 报告与 WS 统一用户状态及归属
 - 改动：在报告读取/导出和 WS 首消息订阅中复用 active+创建者/管理员校验。

@@ -37,7 +37,7 @@
 
 ## 契约 v1.1 实施轮次（2026-11-13，已完成收口）
 
-依据 [RR-V1-REFINAL-20261112](../reviews/RR-V1-REFINAL-20261112.md)（tool_manifest F1~F4 fail-open、AI 授权顺序/收口、全量不稳定）与已确认契约 v1.1（scheduler §6.1 A1~A5、task-execution §10），四路并行实施完成并经独立评审收口（[RR-V11-PLAN](../reviews/RR-V11-PLAN-20261113.md)、RR-V11-FIX-A/B/C、[RR-V11-FINAL-20261113](../reviews/RR-V11-FINAL-20261113.md)）：A1~A5 红绿落地、F1~F4 销项 9/9 CLOSED、B1/B2 计数=0 + B3 差分、cancel/export 两类竞态根治（20 连跑+并发验证）。门禁基线：**全量连续 2 轮 467 passed / 0 failed**（T-14/v1.1-pytest-full-r1/r2.log）+ Lead 独立验证轮 467 passed（[V11-FINAL-STRICT-LEAD-20261113.log](V11-FINAL-STRICT-LEAD-20261113.log)）+ 前端沿用 56/0e/exit0。明细见 [v11-implementation-summary-20261113](../v11-implementation-summary-20261113.md)。总体上线结论仍为"不通过/受控开发基线"（R27 Docker、真实库对账、V1-11/12/13、U 项、配置导入门禁、未实施任务清单）。
+依据 [RR-V1-REFINAL-20261112](../reviews/RR-V1-REFINAL-20261112.md)（tool_manifest F1~F4 fail-open、AI 授权顺序/收口、全量不稳定）与已确认契约 v1.1（scheduler §6.1 A1~A5、task-execution §10），四路并行实施完成并经独立评审收口（[RR-V11-PLAN](../reviews/RR-V11-PLAN-20261113.md)、RR-V11-FIX-A/B/C、[RR-V11-FINAL-20261113](../reviews/RR-V11-FINAL-20261113.md)）：A1~A5 红绿落地、F1~F4 销项 9/9 CLOSED、B1/B2 计数=0 + B3 差分、cancel/export 两类竞态根治（20 连跑+并发验证）。门禁基线：**全量连续 2 轮 467 passed / 0 failed**（T-14/v1.1-pytest-full-r1/r2.log）+ Lead 独立验证轮 467 passed（[V11-FINAL-STRICT-LEAD-20261113.log](V11-FINAL-STRICT-LEAD-20261113.log)）+ 前端最终 `npm test` 65 用例/lint 992w-0e/build exit0。交付后独立复核发现 AI 创建响应形状前端未同步（P1），已由 task-28 修复并经 [RR-V11-REVIEW §4](../reviews/RR-V11-REVIEW-20261113.md) 闭环，本轮实施签收通过。明细见 [v11-implementation-summary-20261113](../v11-implementation-summary-20261113.md)。总体上线结论仍为"不通过/受控开发基线"。
 
 ## V1 readiness 修订轮次（2026-11-12，已完成收口）
 

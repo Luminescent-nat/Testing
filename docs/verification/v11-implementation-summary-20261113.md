@@ -50,7 +50,14 @@
 | 配置导入 R32~R59/A32~A59 与 D1~D9 | 需求草案待用户逐项确认，未开发 |
 | T-09 参数矩阵、T-11/T-12 daily、T-13 设备锁探活推进、T-16 账号闭环、T-36 画像实测、T-37/T-38 文档与最终验收 | 未实施 |
 
-## 5. 结论
+## 6. 交付后缺陷闭环（2026-11-13，RR-V11-REVIEW §2）
+
+- 独立复核发现：task-B 将 AI 创建响应从旧 `{task_id,plan,device_serial}`/200 改为契约 Task 对象/201 后，前端 `ai-test/index.vue` 未同步——`res.data.task_id` 导致跳转 `/tasks/monitor/undefined`、预览面板读 `planResult.plan.*` 运行期 TypeError（前端无该视图测试覆盖，build/lint 检不出）。
+- 修复（[task-28](../../docs/verification/tasks/T-04/)）：导航改 `extractCreatedTaskId(res.data)`（仅正整数 id，非法不跳转并提示）；预览面板按产品决策**保留**，改为创建成功后 `getTaskDetail(id)` 拉 `TestTaskDetail.plan` 渲染，plan 为 null/缺失显示「该任务无规划快照」，详情失败兜底不阻塞跳转；新增 `src/utils/aiTask.js` 纯函数 + 9 条 Vitest（id/plan 各边界）。
+- 验证：npm test **65 用例全绿**、lint **992w/0e（较上轮 −2、零新增）**、build exit 0；独立评审闭环通过。
+- **reviewer 本轮（契约 v1.1 实施轮）最终签收：通过**（[RR-V11-REVIEW §4](../reviews/RR-V11-REVIEW-20261113.md)）；范围外维持项单列，整体 V1.0 生产上线结论仍为「不通过/受控开发基线」。
+
+## 7. 结论
 
 - RR-V1-REFINAL 指出的两类 P0 未闭合项（tool_manifest F1~F4 机制层 fail-open、AI 入口授权顺序/创建收口）已按契约 v1.1 全部关闭，并通过先红后绿 + 独立评审 + 门禁基线验证。
 - 全量回归不稳定（export/cancel 两类竞态）已根治并以稳定性回归固化；门禁可信度恢复（连续 2 轮 0 failed + Lead 独立验证轮）。

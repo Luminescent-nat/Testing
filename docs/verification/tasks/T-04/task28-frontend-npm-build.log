@@ -1,0 +1,131 @@
+﻿=== npm run build ===
+command: npm run build
+start: 2026-11-13 13:33:40.115
+end: 2026-11-13 13:33:46.865
+duration_ms: 6752
+exit_code: 0
+
+
+> test-platform-frontend@1.0.0 build
+> vite build
+
+node.exe : [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cj
+s-node-api-deprecated for more details.[39m
+所在位置 行:1 字符: 1
++ & "D:\Program Files/node.exe" "C:\Users\MCTECH\AppData\Roaming\npm/no ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33mThe CJS bu...e details.[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+vite v5.4.21 building for production...
+transforming...
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+✓ 2116 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                        0.76 kB │ gzip:   0.44 kB
+dist/assets/index-B7MiHBnw.css                         0.20 kB │ gzip:   0.15 kB
+dist/assets/users-DCkEQKTy.css                         0.20 kB │ gzip:   0.15 kB
+dist/assets/index-Dz-b8meP.css                         0.22 kB │ gzip:   0.16 kB
+dist/assets/index-DRsAwFjn.css                         0.27 kB │ gzip:   0.18 kB
+dist/assets/404-BHi-oIup.css                           0.71 kB │ gzip:   0.29 kB
+dist/assets/index-BQAAtrBr.css                         1.95 kB │ gzip:   0.58 kB
+dist/assets/index-CHyEdfL8.css                         1.95 kB │ gzip:   0.51 kB
+dist/assets/create-2UrBm88E.css                        2.02 kB │ gzip:   0.49 kB
+dist/assets/index-CFapCGTl.css                         2.09 kB │ gzip:   0.55 kB
+dist/assets/MainLayout-LA3iJ9XK.css                    2.71 kB │ gzip:   0.74 kB
+dist/assets/index-DFDzW9WY.css                         4.29 kB │ gzip:   1.00 kB
+dist/assets/index-CBJYOW2H.css                         5.08 kB │ gzip:   0.92 kB
+dist/assets/monitor-YqL-4rm8.css                       5.21 kB │ gzip:   1.10 kB
+dist/assets/index-BYY2vw7j.css                         5.29 kB │ gzip:   1.03 kB
+dist/assets/index-ChkeZDu1.css                         6.81 kB │ gzip:   1.74 kB
+dist/assets/index-nfJqLMno.css                       360.35 kB │ gzip:  49.77 kB
+dist/assets/_plugin-vue_export-helper-DlAUqK2U.js      0.15 kB │ gzip:   0.16 kB │ map:     0.12 kB
+dist/assets/device-mVf_TASn.js                         0.22 kB │ gzip:   0.19 kB │ map:     0.69 kB
+dist/assets/task-DDERWdTK.js                           0.39 kB │ gzip:   0.26 kB │ map:     1.41 kB
+dist/assets/module-B4rvZAwV.js                         0.52 kB │ gzip:   0.29 kB │ map:     2.10 kB
+dist/assets/report-nsIOkMu-.js                         0.55 kB │ gzip:   0.32 kB │ map:     1.83 kB
+dist/assets/404-ClrTH-M6.js                            0.78 kB │ gzip:   0.57 kB │ map:     2.27 kB
+dist/assets/datetime-C2XydnLM.js                       2.34 kB │ gzip:   1.05 kB │ map:     5.78 kB
+dist/assets/index-BG-mpD73.js                          3.49 kB │ gzip:   1.93 kB │ map:    11.38 kB
+dist/assets/index-U1m2Vp6Q.js                          4.65 kB │ gzip:   1.96 kB │ map:    11.81 kB
+dist/assets/index-CT0vC6ts.js                          4.69 kB │ gzip:   2.15 kB │ map:    20.31 kB
+dist/assets/MainLayout-DAMx9oTp.js                     4.87 kB │ gzip:   2.02 kB │ map:    15.12 kB
+dist/assets/users-oJgj2rKT.js                          5.14 kB │ gzip:   2.29 kB │ map:    13.87 kB
+dist/assets/index-CdmMXvBj.js                          5.99 kB │ gzip:   2.61 kB │ map:    16.56 kB
+dist/assets/index-BiLz1F9v.js                          7.41 kB │ gzip:   2.87 kB │ map:    21.61 kB
+dist/assets/create-_3a7yKTk.js                         8.12 kB │ gzip:   3.44 kB │ map:    24.11 kB
+dist/assets/monitor-Bh9HL7jW.js                       13.87 kB │ gzip:   5.45 kB │ map:    43.27 kB
+dist/assets/index-BWcGIWFx.js                         19.01 kB │ gzip:   5.27 kB │ map:    51.68 kB
+dist/assets/index-gbxVZxIu.js                         19.53 kB │ gzip:   6.35 kB │ map:    50.04 kB
+dist/assets/index-BCKdVc2j.js                         25.42 kB │ gzip:   8.14 kB │ map:    70.03 kB
+dist/assets/index-C8aEjXz0.js                         34.71 kB │ gzip:  13.30 kB │ map:   172.10 kB
+dist/assets/index-OSsypkPn.js                         35.34 kB │ gzip:  13.03 kB │ map:   162.22 kB
+dist/assets/stats-CBbv39Kk.js                        489.97 kB │ gzip: 165.44 kB │ map: 2,726.59 kB
+dist/assets/index-DmS_d5ha.js                      1,211.31 kB │ gzip: 394.07 kB │ map: 6,021.52 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-m
+anualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.99s

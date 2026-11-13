@@ -1,0 +1,61 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 467 items
+
+tests\e2e\test_full_workflow.py .                                        [  0%]
+tests\integration\test_ai_tasks_api.py ....                              [  1%]
+tests\integration\test_auth_api.py ..........                            [  3%]
+tests\integration\test_contract_errors.py ................               [  6%]
+tests\integration\test_devices_api.py ......                             [  7%]
+tests\integration\test_knowledge_api.py ..............                   [ 10%]
+tests\integration\test_memory_api.py ....                                [ 11%]
+tests\integration\test_modules_api.py ........                           [ 13%]
+tests\integration\test_reports_api.py ............                       [ 16%]
+tests\integration\test_reports_stats_api.py .....                        [ 17%]
+tests\integration\test_security_hardening.py ......                      [ 18%]
+tests\integration\test_tasks_api.py ..........                           [ 20%]
+tests\integration\test_tool_registry.py .......                          [ 22%]
+tests\integration\test_tools_api.py .....                                [ 23%]
+tests\integration\test_users_api.py .......                              [ 24%]
+tests\integration\test_v1_authorization.py .................             [ 28%]
+tests\integration\test_v1_device_admin.py ..............                 [ 31%]
+tests\integration\test_v1_export_stability.py ...                        [ 31%]
+tests\integration\test_v1_followup_audit.py ........                     [ 33%]
+tests\integration\test_v1_idempotency.py .........                       [ 35%]
+tests\integration\test_v1_knowledge_rules.py .................           [ 39%]
+tests\integration\test_v1_statistics.py .........                        [ 41%]
+tests\integration\test_v1_task_delete.py ................                [ 44%]
+tests\integration\test_websocket.py ...                                  [ 45%]
+tests\unit\test_adb_runner.py .........................                  [ 50%]
+tests\unit\test_auth_service.py ......                                   [ 51%]
+tests\unit\test_device_exec_kill.py ...                                  [ 52%]
+tests\unit\test_device_heartbeat.py .....                                [ 53%]
+tests\unit\test_e2e_environment_guard.py ...                             [ 54%]
+tests\unit\test_execution_engine.py ............                         [ 56%]
+tests\unit\test_execution_failure_closed.py ............................ [ 62%]
+.................                                                        [ 66%]
+tests\unit\test_judgement_engine.py ............                         [ 68%]
+tests\unit\test_knowledge_converter.py ....                              [ 69%]
+tests\unit\test_log_stream.py ......                                     [ 71%]
+tests\unit\test_memory_engine.py ......                                  [ 72%]
+tests\unit\test_migration_contract.py .......                            [ 73%]
+tests\unit\test_parameter_renderer.py ........                           [ 75%]
+tests\unit\test_report_generation.py ..                                  [ 76%]
+tests\unit\test_scheduler.py .......                                     [ 77%]
+tests\unit\test_secret_strength.py .....................                 [ 82%]
+tests\unit\test_startup_recovery.py .                                    [ 82%]
+tests\unit\test_storage_isolation.py .                                   [ 82%]
+tests\unit\test_task_executor.py ...........                             [ 84%]
+tests\unit\test_tool_manifest.py .......                                 [ 86%]
+tests\unit\test_v1_cancel_stability.py .......                           [ 87%]
+tests\unit\test_v1_judgement_stop.py ................................    [ 94%]
+tests\unit\test_v1_migration.py .........                                [ 96%]
+tests\unit\test_v1_tool_manifest.py ................                     [100%]
+
+======================= 467 passed in 248.21s (0:04:08) =======================
+
+EXIT_CODE=0
