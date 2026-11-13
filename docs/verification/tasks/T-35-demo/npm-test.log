@@ -1,0 +1,35 @@
+﻿=== npm test ===
+command: npm test
+start: 2026-11-13 14:25:28.164
+end: 2026-11-13 14:25:29.885
+duration_ms: 1714
+exit_code: 0
+
+
+> test-platform-frontend@1.0.0 test
+> vitest run
+
+node.exe : [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cj
+s-node-api-deprecated for more details.[39m
+所在位置 行:1 字符: 1
++ & "D:\Program Files/node.exe" "C:\Users\MCTECH\AppData\Roaming\npm/no ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33mThe CJS bu...e details.[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ RUN  v4.1.10 D:/MCTEST/test-platform/frontend
+
+ ✓ src/utils/__tests__/ai-task.test.js (10 tests) 4ms
+ ✓ src/utils/__tests__/v1-06-stats.test.js (13 tests) 6ms
+ ✓ src/utils/__tests__/datetime.test.js (3 tests) 4ms
+ ✓ src/utils/__tests__/monitor-record.test.js (9 tests) 3ms
+ ✓ src/utils/__tests__/client.test.js (27 tests) 19ms
+ ✓ src/utils/__tests__/v1-10-success.test.js (10 tests) 45ms
+ ✓ src/utils/__tests__/request.test.js (3 tests) 5ms
+
+ Test Files  7 passed (7)
+      Tests  75 passed (75)
+   Start at  14:25:28
+   Duration  1.09s (transform 220ms, setup 0ms, import 1.41s, tests 85ms, environment 1ms)
+

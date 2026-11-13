@@ -35,6 +35,10 @@
 - 前端：`npm test` 33 用例通过、`npm run lint` 0 error（既有 1037 warning 属 T-35）、`npm run build` exit 0。
 - 批次 G 整体结论：**验收不通过**，阻塞项为 T-02/R20 回滚数据保留与 T-17/R27 干净镜像运行时无法核验；详见 [RR-FINAL-batch-G](../reviews/RR-FINAL-batch-G.md) 与 [集成汇总](../integration-summary-20261112.md)。
 
+## 演示前收口轮（2026-11-13，V1.0-demo 本机演示版）
+
+依据 [RR-V1-DEMO-20261113](../reviews/RR-V1-DEMO-20261113.md)：D-01 监控页 `item_name`、D-02 空报告 200 空态、D-03 报告 E2E 拆分、D-04 demo.db 隔离脚本、D-05 daily/once 禁用、AI-01 LLM 配置与规则规划标注全部修复；独立评审 [RR-DEMO-PREP-20261113](../reviews/RR-DEMO-PREP-20261113.md)。基线：后端严格全量 **472 passed ×2**（[STRICT-1](V11DEMO-FINAL-STRICT-1-20261113.log)/[STRICT-2](V11DEMO-FINAL-STRICT-2-20261113.log)）、前端 **75 用例 / lint 0e 988w / build 0**、Playwright 报告 spec **4 passed** 与全套 **15 passed/1 skipped**、start_demo 干净目录实测 001→004 且历史库 SHA 不变。汇总见 [v10-demo-readiness-summary-20261113](../v10-demo-readiness-summary-20261113.md)。
+
 ## 契约 v1.1 实施轮次（2026-11-13，已完成收口）
 
 依据 [RR-V1-REFINAL-20261112](../reviews/RR-V1-REFINAL-20261112.md)（tool_manifest F1~F4 fail-open、AI 授权顺序/收口、全量不稳定）与已确认契约 v1.1（scheduler §6.1 A1~A5、task-execution §10），四路并行实施完成并经独立评审收口（[RR-V11-PLAN](../reviews/RR-V11-PLAN-20261113.md)、RR-V11-FIX-A/B/C、[RR-V11-FINAL-20261113](../reviews/RR-V11-FINAL-20261113.md)）：A1~A5 红绿落地、F1~F4 销项 9/9 CLOSED、B1/B2 计数=0 + B3 差分、cancel/export 两类竞态根治（20 连跑+并发验证）。门禁基线：**全量连续 2 轮 467 passed / 0 failed**（T-14/v1.1-pytest-full-r1/r2.log）+ Lead 独立验证轮 467 passed（[V11-FINAL-STRICT-LEAD-20261113.log](V11-FINAL-STRICT-LEAD-20261113.log)）+ 前端最终 `npm test` 65 用例/lint 992w-0e/build exit0。交付后独立复核发现 AI 创建响应形状前端未同步（P1），已由 task-28 修复并经 [RR-V11-REVIEW §4](../reviews/RR-V11-REVIEW-20261113.md) 闭环，本轮实施签收通过。明细见 [v11-implementation-summary-20261113](../v11-implementation-summary-20261113.md)。总体上线结论仍为"不通过/受控开发基线"。

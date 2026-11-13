@@ -1,0 +1,12 @@
+﻿=== REVIEWER demo-prep: frontend-npm-test
+=== CMD: npm test
+=== TIME: 14:39:32 -> 14:39:35  exit=0
+--- TAIL ---
+ ✓ src/utils/__tests__/request.test.js (3 tests) 3ms
+
+ Test Files  7 passed (7)
+      Tests  75 passed (75)
+   Start at  14:39:34
+   Duration  804ms (transform 190ms, setup 0ms, import 1.12s, tests 86ms, environment 1ms)
+
+

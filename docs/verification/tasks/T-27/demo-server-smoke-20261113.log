@@ -1,0 +1,25 @@
+﻿TASK: T-27 演示库启动冒烟（等价 start_demo 环境：demo.db 空库自动迁移 + 应用 lifespan + /health）
+WORKDIR: D:\MCTEST\test-platform\backend
+TMP: C:\Users\MCTECH\AppData\Local\Temp\t27_smoke_250c216ebcf74d8fa5d3d6a42e31d5d0
+DEMO_DB: C:\Users\MCTECH\AppData\Local\Temp\t27_smoke_250c216ebcf74d8fa5d3d6a42e31d5d0\demo.db
+PORT: 57868
+START: 2026-11-13T14:26:22.9194105+08:00
+END: 2026-11-13T14:26:24.5183633+08:00
+HEALTHY: True
+HEALTH_BODY: {"status":"healthy"}
+DEMO_DB_INFO: {"tables": ["alembic_version", "baselines", "devices", "failure_patterns", "golden_cases", "idempotency_records", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "004_task_deleted_at"}
+===== uvicorn stdout =====
+
+===== uvicorn stderr (tail) =====
+2026-11-13 14:26:23,835 [INFO] app.logging_config: 鏃ュ織绯荤粺鍒濆鍖栧畬鎴愶紝鏂囦欢: D:\MCTEST\test-platform\backend\logs\server.log
+2026-11-13 14:26:23,881 [WARNING] app.main: 鍓嶇闈欐€佺洰褰?C:\Users\MCTECH\AppData\Local\Temp\t27_smoke_250c216ebcf74d8fa5d3d6a42e31d5d0\no-static 涓嶅瓨鍦紝璺宠繃闈欐€佹枃浠舵寕杞斤紙浠呮彁渚?API锛?
+2026-11-13 14:26:23,884 [INFO] uvicorn.error: Started server process [32136]
+2026-11-13 14:26:23,886 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-13 14:26:23,996 [WARNING] app.services.tool_manifest: 宸ュ叿娓呭崟 skip: upfm/assets/test_app.apk锛堝彲閫夋祴璇曡祫婧愮己澶憋紝鎸?R3 璁?skip锛堜笉浼€犲凡灏辩华锛夛級
+2026-11-13 14:26:23,998 [INFO] app.services.tool_manifest: 宸ュ叿娓呭崟鏍￠獙(V1-08 鏄惧紡澹版槑): root=D:\MCTEST\test-platform\test-tools manifests=2 澹版槑=27 缂哄け=0 鍝堝笇涓嶇=0 闂寘缂哄け=0 澹版槑缂哄彛=0 skip=1 ok=True
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotency_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive 璁惧涔愯骞跺彂鐗堟湰鍒楋紙V1-01 璁惧鏀规淳濂戠害 搂2/搂6锛夈€?
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: additive 浠诲姟杞垹闄ゅ垪锛堝绾?task-execution 搂8 / V1-09b锛夈€?

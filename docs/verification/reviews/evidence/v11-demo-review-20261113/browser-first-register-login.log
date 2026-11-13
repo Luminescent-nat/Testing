@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:8766/dashboard",
+  "adminVisible": true,
+  "dashboard": true,
+  "errors": []
+}
+
+EXIT_CODE=0

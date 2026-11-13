@@ -1,0 +1,78 @@
+{
+  "results": [
+    {
+      "route": "dashboard",
+      "url": "http://127.0.0.1:8765/dashboard",
+      "textLength": 158,
+      "newErrors": []
+    },
+    {
+      "route": "devices",
+      "url": "http://127.0.0.1:8765/devices",
+      "textLength": 78,
+      "newErrors": []
+    },
+    {
+      "route": "modules",
+      "url": "http://127.0.0.1:8765/modules",
+      "textLength": 251,
+      "newErrors": []
+    },
+    {
+      "route": "tasks",
+      "url": "http://127.0.0.1:8765/tasks",
+      "textLength": 70,
+      "newErrors": []
+    },
+    {
+      "route": "tasks/create",
+      "url": "http://127.0.0.1:8765/tasks/create",
+      "textLength": 1117,
+      "newErrors": []
+    },
+    {
+      "route": "ai-test",
+      "url": "http://127.0.0.1:8765/ai-test",
+      "textLength": 88,
+      "newErrors": []
+    },
+    {
+      "route": "reports",
+      "url": "http://127.0.0.1:8765/reports",
+      "textLength": 23,
+      "newErrors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    },
+    {
+      "route": "memory",
+      "url": "http://127.0.0.1:8765/memory",
+      "textLength": 171,
+      "newErrors": []
+    },
+    {
+      "route": "knowledge",
+      "url": "http://127.0.0.1:8765/knowledge",
+      "textLength": 54,
+      "newErrors": []
+    },
+    {
+      "route": "admin/users",
+      "url": "http://127.0.0.1:8765/admin/users",
+      "textLength": 140,
+      "newErrors": []
+    },
+    {
+      "route": "profile",
+      "url": "http://127.0.0.1:8765/profile",
+      "textLength": 166,
+      "newErrors": []
+    }
+  ],
+  "errors": [
+    "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "serverErrors": []
+}
+
+EXIT_CODE=1

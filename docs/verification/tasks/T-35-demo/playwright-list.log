@@ -1,0 +1,13 @@
+﻿=== npx playwright test tests/e2e/task-workflow.spec.js --list ===
+command: npx playwright test tests/e2e/task-workflow.spec.js --list
+start: 2026-11-13 14:25:38.563
+end: 2026-11-13 14:25:39.720
+duration_ms: 1157
+exit_code: 0
+
+Listing tests:
+  [setup] › auth.setup.spec.js:8:6 › 初始化管理员账号并登录
+  [chromium] › task-workflow.spec.js:16:7 › 任务创建与报告查看流程 › 任务创建页模块、测试项可正常加载与选择
+  [chromium] › task-workflow.spec.js:62:7 › 任务创建与报告查看流程 › 报告空态：全新隔离库进入 /reports 显示空态且无 console error
+  [chromium] › task-workflow.spec.js:92:7 › 任务创建与报告查看流程 › 非空报告：创建任务→轮询 completed→报告详情统计正确
+Total: 4 tests in 2 files

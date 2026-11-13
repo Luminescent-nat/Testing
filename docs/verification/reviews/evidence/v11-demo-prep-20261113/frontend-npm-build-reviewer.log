@@ -1,0 +1,12 @@
+﻿=== REVIEWER demo-prep: frontend-npm-build
+=== CMD: npm run build
+=== TIME: 14:39:37 -> 14:39:45  exit=0
+--- TAIL ---
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-m
+anualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 6.55s
+

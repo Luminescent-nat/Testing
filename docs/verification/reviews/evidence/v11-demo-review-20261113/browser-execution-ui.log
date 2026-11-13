@@ -1,0 +1,9 @@
+{
+  "monitorPassed": false,
+  "reportHasTask": true,
+  "reportDetailOpened": true,
+  "errors": [],
+  "badResponses": []
+}
+
+EXIT_CODE=1

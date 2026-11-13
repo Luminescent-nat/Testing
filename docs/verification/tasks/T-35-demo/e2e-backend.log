@@ -1,0 +1,17 @@
+﻿python.exe : 2026-11-13 14:36:34,419 [INFO] app.logging_config: ��־ϵͳ��ʼ����ɣ��ļ�: D:\MCTEST\test-platform\backend\logs
+\server.log
+所在位置 行:12 字符: 1
++ & D:\MCTEST\test-platform\.venv\Scripts\python.exe -m uvicorn app.mai ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-11-13 14:3...logs\server.log:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2026-11-13 14:36:34,466 [WARNING] app.main: ǰ�˾�̬Ŀ¼ _no_static_ �����ڣ�������̬�ļ����أ����ṩ API��
+2026-11-13 14:36:34,466 [INFO] uvicorn.error: Started server process [44272]
+2026-11-13 14:36:34,466 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-13 14:36:34,578 [WARNING] app.services.tool_manifest: �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R
+3 �� skip����α���Ѿ�������
+2026-11-13 14:36:34,578 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-
+tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.

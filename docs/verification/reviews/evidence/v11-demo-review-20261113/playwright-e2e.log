@@ -1,0 +1,59 @@
+创建管理员账号: e2e-admin
+
+Running 15 tests using 1 worker
+
+  ✓   1 [setup] › tests\e2e\auth.setup.spec.js:8:6 › 初始化管理员账号并登录 (965ms)
+  ✓   2 [chromium] › tests\e2e\auth.setup.spec.js:8:6 › 初始化管理员账号并登录 (930ms)
+  ✓   3 [chromium] › tests\e2e\interactions.spec.js:8:7 › 关键按钮与交互 › 主题切换按钮可正常切换亮/暗色 (739ms)
+  ✓   4 [chromium] › tests\e2e\interactions.spec.js:21:7 › 关键按钮与交互 › 仪表盘“开始新测试”快捷按钮可进入创建任务页 (425ms)
+  ✓   5 [chromium] › tests\e2e\interactions.spec.js:26:7 › 关键按钮与交互 › 设备页刷新设备按钮可点击且不报错 (370ms)
+  ✓   6 [chromium] › tests\e2e\interactions.spec.js:38:7 › 关键按钮与交互 › 用户管理页可加载用户列表并展示操作按钮 (418ms)
+  ✓   7 [chromium] › tests\e2e\navigation.spec.js:9:7 › 侧边栏导航与页面渲染 › 仪表盘页面关键元素渲染正常 (445ms)
+  ✓   8 [chromium] › tests\e2e\navigation.spec.js:16:7 › 侧边栏导航与页面渲染 › 点击“设备管理”进入设备列表且交互正常 (547ms)
+  ✓   9 [chromium] › tests\e2e\navigation.spec.js:23:7 › 侧边栏导航与页面渲染 › 点击“测试模块”进入模块管理页 (478ms)
+  ✓  10 [chromium] › tests\e2e\navigation.spec.js:29:7 › 侧边栏导航与页面渲染 › 点击“测试任务”进入任务列表 (565ms)
+  ✓  11 [chromium] › tests\e2e\navigation.spec.js:35:7 › 侧边栏导航与页面渲染 › 点击“测试报告”进入报告页 (514ms)
+  ✓  12 [chromium] › tests\e2e\navigation.spec.js:41:7 › 侧边栏导航与页面渲染 › 管理员可展开系统管理并进入用户管理 (1.6s)
+  ✓  13 [chromium] › tests\e2e\navigation.spec.js:48:7 › 侧边栏导航与页面渲染 › 顶部用户下拉可进入个人信息并返回 (1.4s)
+  ✓  14 [chromium] › tests\e2e\task-workflow.spec.js:6:7 › 任务创建与报告查看流程 › 创建任务页模块、测试项可正常加载与选择 (515ms)
+  ✘  15 [chromium] › tests\e2e\task-workflow.spec.js:45:7 › 任务创建与报告查看流程 › 报告列表页时间显示正常且可进入详情 (5.5s)
+
+
+  1) [chromium] › tests\e2e\task-workflow.spec.js:45:7 › 任务创建与报告查看流程 › 报告列表页时间显示正常且可进入详情 ───────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.reports-page, .report-list, .el-card').first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.reports-page, .report-list, .el-card').first()
+
+
+      64 |
+      65 |     await page.goto('/reports')
+    > 66 |     await expect(page.locator('.reports-page, .report-list, .el-card').first()).toBeVisible()
+         |                                                                                 ^
+      67 |
+      68 |     // 报告页应正确渲染，不出现时间 NaN/Invalid Date 等异常文本
+      69 |     const pageText = await page.locator('body').innerText()
+        at D:\MCTEST\test-platform\frontend\tests\e2e\task-workflow.spec.js:66:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\task-workflow-任务创建与报告查看流程-报告列表页时间显示正常且可进入详情-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\task-workflow-任务创建与报告查看流程-报告列表页时间显示正常且可进入详情-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\task-workflow-任务创建与报告查看流程-报告列表页时间显示正常且可进入详情-chromium\error-context.md
+
+  1 failed
+    [chromium] › tests\e2e\task-workflow.spec.js:45:7 › 任务创建与报告查看流程 › 报告列表页时间显示正常且可进入详情 ────────────
+  14 passed (18.6s)
+
+EXIT_CODE=1

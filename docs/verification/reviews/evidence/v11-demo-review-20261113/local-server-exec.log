@@ -1,0 +1,7 @@
+2026-11-13 13:57:29,787 [INFO] app.logging_config: 日志系统初始化完成，文件: D:\MCTEST\test-platform\backend\logs\server.log
+2026-11-13 13:57:29,831 [INFO] uvicorn.error: Started server process [8536]
+2026-11-13 13:57:29,831 [INFO] uvicorn.error: Waiting for application startup.
+2026-11-13 13:57:29,951 [WARNING] app.services.tool_manifest: 工具清单 skip: upfm/assets/test_app.apk（可选测试资源缺失，按 R3 记 skip（不伪造已就绪））
+2026-11-13 13:57:29,951 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=D:\MCTEST\test-platform\test-tools manifests=2 声明=27 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=1 ok=True
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.

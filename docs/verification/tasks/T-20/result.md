@@ -103,3 +103,18 @@
 - 联调依据：契约 `user-administration-v1.0.md` 登录成功 201、首管理员注册成功 201；当前后端可能仍返回 200，前端 `isSuccessResponse` 同时接受 200/201，双码兼容待后端切换后核对（未与后端实测，环境无后端服务）。
 - 遗留：`createSubmitGuard` 为共享纯逻辑，视图仍用各自 `:disabled/:loading` 守卫（遵守“不得改视图业务逻辑”约束）；如需统一可后续在 T-23+ 接入。
 - `scripts/check-success-codes.mjs` 未注册 npm 脚本（`package.json` 不在本任务写范围），以 `node scripts/check-success-codes.mjs` 直接执行。
+
+## 12. 演示前 AI 规划标注（task-29，2026-11-13）
+- **需求**：AI 页按 `plan.llm_used` 展示规划方式，true→「AI 规划」，false/缺失→「规则规划（未调用 AI）」，不得宣称调用 AI。
+- **实现**：`src/utils/aiTask.js` 的 `buildPlanPreview` 归一化 `llmUsed = rawPlan.llm_used === true`；
+  `src/views/ai-test/index.vue` 预览面板新增「规划方式」`el-tag`（success/info 两态，文案严格按上表）。
+  `plan` 为 null/缺失时仍显示「该任务无规划快照」，不显示规划方式标签（避免误标）。
+- **测试**：`src/utils/__tests__/ai-task.test.js` 新增用例验证 `llm_used=true/false/缺失` 三种归一；
+  现有 plan 完整/部分缺失断言同步更新（`task29-ai-task-vitest.log`：10 passed，exit 0）。
+- **产品/演示决策留痕**：预览面板保留（承接 task-28 决策），规划方式按后端真实 `llm_used` 标注；
+  未调用 LLM 时明确写「规则规划（未调用 AI）」，不把规则解析包装成 AI 能力。
+- **三件套**（详见 `../T-35-demo/result.md`）：`npm test` 75 用例全绿 exit 0；
+  `npm run lint` 988 warnings/0 errors exit 0（ai-test/index.vue 基线 4→2，新增文件 0/0，无新增告警）；
+  `npm run build` exit 0。
+- **未验证**：未浏览器实测标签渲染（无后端/前端服务），真实 `plan.llm_used` 由后端 `ai_tasks.py`
+  写入 `plan["llm_used"] = planner.llm_invoked`，仅静态核对。

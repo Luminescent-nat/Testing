@@ -1,0 +1,31 @@
+source_sha256_before: 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+source_sha256_after: 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+copy: D:\MCTEST\docs\verification\reviews\evidence\v11-demo-review-20261113\runtime\legacy-copy.db
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Program Files\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\database.py", line 328, in init_db
+    action = await asyncio.to_thread(_init_db_sync)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\asyncio\threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\app\database.py", line 294, in _init_db_sync
+    raise SchemaMismatchError(
+app.database.SchemaMismatchError: 存量库结构与 app.models（head）及初始 revision 均不一致，拒绝 stamp：head 差异=多余表: baselines；多余表: devices；多余表: failure_patterns；多余表: golden_cases；多余表: knowledge_entries；多余表: test_items；多余表: test_modules；多余表: test_records；多余表: test_tasks；多余表: test_tools | 初始 revision 差异=表 knowledge_entries 列 entry_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'document'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}；表 knowledge_entries 列 fail_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}；表 knowledge_entries 列 hit_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}；表 knowledge_entries 列 pass_count 定义不一致: db={'type': 'INTEGER', 'nullable': True, 'default': '0'} models={'type': 'INTEGER', 'nullable': True, 'default': None}；表 knowledge_entries 列 source_type 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'manual'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}；表 knowledge_entries 列 status 定义不一致: db={'type': 'VARCHAR(50)', 'nullable': False, 'default': "'draft'"} models={'type': 'VARCHAR(50)', 'nullable': False, 'default': None}；表 knowledge_entries 索引不一致: db=[('ix_knowledge_entries_category', ('category',), False), ('ix_knowledge_entries_entry_type', ('entry_type',), False), ('ix_knowledge_entries_id', ('id',), False), ('ix_knowledge_entries_status', ('status',), False)] models=[('ix_knowledge_entries_id', ('id',), False)]；表 test_tasks 列 plan 定义不一致: db={'type': 'TEXT', 'nullable': True, 'default': None} models={'type': 'JSON', 'nullable': True, 'default': None}；表 test_tasks 列 schedule_type 定义不一致: db={'type': 'VARCHAR(20)', 'nullable': False, 'default': "'immediate'"} models={'type': 'VARCHAR(20)', 'nullable': False, 'default': None}
+
+EXIT_CODE=1

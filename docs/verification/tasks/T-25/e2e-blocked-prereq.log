@@ -1,0 +1,20 @@
+﻿=== playwright run attempt (services absent) ===
+start: 2026-11-13 14:25:51.923
+command: npx playwright test tests/e2e/task-workflow.spec.js --grep 报告空态
+exit_code: 1
+
+Error: 运行 E2E 前必须设置 E2E_DATABASE_URL 为一次性隔离数据库
+
+   at global-setup.mjs:12
+
+  10 |   const e2eDatabaseUrl = process.env.E2E_DATABASE_URL
+  11 |   if (!e2eDatabaseUrl) {
+> 12 |     throw new Error('运行 E2E 前必须设置 E2E_DATABASE_URL 为一次性隔离数据库')
+     |           ^
+  13 |   }
+  14 |
+  15 |   const backendDir = join(__dirname, '..', '..', '..', 'backend')
+    at globalSetup (D:\MCTEST\test-platform\frontend\tests\e2e\global-setup.mjs:12:11)
+
+
+

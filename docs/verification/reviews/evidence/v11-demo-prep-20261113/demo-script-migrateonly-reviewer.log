@@ -1,0 +1,19 @@
+=== REVIEWER demo-prep: start_demo.ps1 -MigrateOnly (clean temp dir)
+=== TIME: 14:40:11 -> 14:40:13  exit=0
+=== HIST_DB_SHA_BEFORE: 2F919B0544E37618628AC358F1B5684EE16C9253596483B62919166A91B1A789
+=== HIST_DB_SHA_AFTER:  2F919B0544E37618628AC358F1B5684EE16C9253596483B62919166A91B1A789
+=== HIST_SHA_UNCHANGED: True
+--- OUTPUT (tail) ---
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: addit
+ive ������ɾ���У���Լ task-execution ��8 / V1-09b����
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+004_task_deleted_at (head)
+[2/2] 启动演示服务...
+  演示库:      D:\MCTEST\test-platform\backend/C:\Users\MCTECH\AppData\Local\Temp\t32_reviewer_demo\demo.db
+  存储目录:    D:\MCTEST\test-platform\backend/C:\Users\MCTECH\AppData\Local\Temp\t32_reviewer_demo\storage\demo/{tools,reports,logs}
+  平台地址:    http://localhost:8000
+  API 文档:    http://localhost:8000/docs
+  首次使用请在登录页注册账号（首个注册用户自动成为管理员）。
+  提示：演示请只用只读测试项（如 cat /proc/meminfo），不要写入/烧录/重启/压测；daily/once 演示禁用。
+[MigrateOnly] 已完成演示库初始化，未启动服务。

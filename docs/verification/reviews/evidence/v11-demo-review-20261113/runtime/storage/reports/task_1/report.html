@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>EMMC 性能测试与验证报告 RPT-20261113-001</title>
+    <style>
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; margin: 40px; color: #333; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #1a5276; border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+        h2 { color: #2874a6; margin-top: 35px; border-left: 5px solid #3498db; padding-left: 12px; }
+        h3 { color: #2e86c1; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #eaf2f8; font-weight: bold; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        .pass { color: #27ae60; font-weight: bold; }
+        .fail { color: #e74c3c; font-weight: bold; }
+        .skip { color: #7f8c8d; }
+        .error { color: #f39c12; font-weight: bold; }
+        .stability-section { margin: 25px 0; padding: 20px; background: #fafafa; border-radius: 8px; }
+        .stability-section img { max-width: 100%; height: auto; margin: 15px 0; }
+        .test-card { margin: 25px 0; padding: 20px; background: #fafafa; border-radius: 8px; }
+        .test-card h3 { margin-top: 0; }
+        .test-card .status { margin-left: 10px; font-size: 14px; padding: 2px 8px; border-radius: 4px; }
+        .test-card pre { background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 4px; white-space: pre-wrap; word-break: break-all; font-size: 13px; }
+        .test-card pre.steps { max-height: 200px; overflow-y: auto; }
+        .test-card .fix { color: #e67e22; }
+        .log-section { margin: 15px 0; }
+        .log-section pre { background: #f4f4f4; padding: 12px; border-radius: 4px; max-height: 300px; overflow-y: auto; font-size: 12px; white-space: pre-wrap; word-break: break-all; }
+        .note { color: #666; font-size: 13px; font-style: italic; }
+        .analysis { color: #555; font-size: 14px; margin-top: 10px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>测试报告</h1>
+    <p><strong>报告 ID：</strong>RPT-20261113-001</p>
+
+    
+        <h2>1. 基本信息</h2>
+        <table>
+            <tr><th>项目</th><th>内容</th></tr>
+            <tr><td>任务名称</td><td>本机演示只读ADB冒烟</td></tr>
+            <tr><td>设备型号</td><td>A133P</td></tr>
+            <tr><td>设备序列号</td><td>5c000c2834414751c9d</td></tr>
+            <tr><td>Android 版本</td><td>10</td></tr>
+            <tr><td>CPU 架构</td><td>armeabi-v7a</td></tr>
+            <tr><td>执行人</td><td>e2e-admin (admin)</td></tr>
+            <tr><td>总耗时</td><td>0秒</td></tr>
+            <tr><td>生成时间</td><td>2026-11-13 05:59:47</td></tr>
+        </table>
+        
+
+    <h2>2. 汇总统计</h2>
+    
+    <table>
+        <tr><th>总项数</th><th>通过</th><th>失败</th><th>跳过</th><th>错误</th><th>通过率</th></tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>100.0%</td>
+        </tr>
+    </table>
+    
+
+    
+    
+    
+    
+
+    <h2>7. 标准测试卡详情</h2>
+    
+        <div class="test-card">
+            <h3>DDR / 容量校验 <span class="status pass">pass</span></h3>
+            <table>
+                <tr><th style="width: 120px">字段</th><th>内容</th></tr>
+                <tr><td>测试目的</td><td>未配置</td></tr>
+                <tr><td>前置条件</td><td>无特殊前置条件</td></tr>
+                <tr><td>测试步骤</td><td><pre class="steps">未配置</pre></td></tr>
+                <tr><td>预期结果</td><td>未配置</td></tr>
+                <tr><td>实际结果</td><td><pre class="json-preview">{
+  "judgement": {
+    "status": "pass",
+    "confidence": 1.0,
+    "score": null,
+    "metrics": {},
+    "evidence": [
+      "通过模式命中: MemTotal"
+    ],
+    "fail_reason": "",
+    "suggestions": "",
+    "judgement_type": "pattern"
+  }
+}</pre></td></tr>
+                <tr><td>判定依据</td><td>断言规则校验通过</td></tr>
+                
+                
+            </table>
+        </div>
+        
+
+    
+        <h2>7. 结论与建议</h2>
+        <ul>
+            <li>所有测试项均通过，设备当前状态符合预期。</li>
+        </ul>
+        
+
+    
+        <h2>8. 原始日志摘要</h2>
+        
+                <div class="log-section">
+                    <h4>DDR / 容量校验</h4>
+                    <pre>MemTotal:        2022328 kB
+
+</pre>
+                </div>
+                
+        
+</div>
+</body>
+</html>
+    

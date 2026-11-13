@@ -1,0 +1,2 @@
+﻿E2E_DIR=C:\Users\MCTECH\AppData\Local\Temp\e2e-demo-77291f22
+C:\Users\MCTECH\AppData\Local\Temp\e2e-demo-77291f22\e2e.db

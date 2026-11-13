@@ -1,0 +1,50 @@
+﻿TASK: T-27 演示库实测（干净临时目录，真实运行 scripts/start_demo.ps1 -MigrateOnly，Windows PowerShell 5.1）
+WORKDIR: D:\MCTEST
+TMP_DEMO_DIR: C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3
+DEMO_DB: C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\demo.db
+STORAGE_ROOT: C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\storage\demo
+HISTORICAL_DB: D:\MCTEST\test-platform\backend\test_platform.db
+HIST_SHA256_BEFORE: 2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+HIST_SHA256_AFTER:  2f919b0544e37618628ac358f1b5684ee16c9253596483b62919166a91b1a789
+HIST_SHA_UNCHANGED: True
+START: 2026-11-13T14:25:59.1335550+08:00
+END: 2026-11-13T14:26:01.5782819+08:00
+SCRIPT_EXITCODE: 0
+PROBE_EXITCODE: 0
+
+===== start_demo.ps1 -MigrateOnly 原始输出 =====
+========== 测试平台 · 演示环境 ==========
+历史库 backend/test_platform.db 保留不动（只读）；演示使用独立 C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\demo.db + C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\storage\demo/
+注意：历史库存在结构漂移，严格 init_db 会 SchemaMismatchError 拒绝启动，属预期；严禁 alembic downgrade base。
+[SECRET_KEY] 使用 backend/.env 中的密钥
+[1/2] 初始化演示库（alembic upgrade head，空库 001→004，幂等）...
+powershell.exe : INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+所在位置 行:13 字符: 8
++ $out = & $ps51 -NoProfile -ExecutionPolicy Bypass -File $script -Migr ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO  [alembic....mpl SQLiteImpl.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0817df993d8b, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 0817df993d8b -> 002_idempotency, 002_idempotency: additive idempotenc
+y_records table
+INFO  [alembic.runtime.migration] Running upgrade 002_idempotency -> 003_device_version, 003_device_version: additive 设
+备乐观并发版本列（V1-01 设备改派契约 §2/§6）。
+INFO  [alembic.runtime.migration] Running upgrade 003_device_version -> 004_task_deleted_at, 004_task_deleted_at: addit
+ive 任务软删除列（契约 task-execution §8 / V1-09b）。
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+004_task_deleted_at (head)
+[2/2] 启动演示服务...
+  演示库:      D:\MCTEST\test-platform\backend/C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\demo.db
+  存储目录:    D:\MCTEST\test-platform\backend/C:\Users\MCTECH\AppData\Local\Temp\t27_demo_78ffabc8dda24532b77d1877f14040f3\storage\demo/{tools,reports,logs}
+  平台地址:    http://localhost:8000
+  API 文档:    http://localhost:8000/docs
+  首次使用请在登录页注册账号（首个注册用户自动成为管理员）。
+  提示：演示请只用只读测试项（如 cat /proc/meminfo），不要写入/烧录/重启/压测；daily/once 演示禁用。
+[MigrateOnly] 已完成演示库初始化，未启动服务。
+
+===== 结构指纹核验输出（app.database._verify_schema_matches_models，等价于应用启动校验）=====
+{"tables": ["alembic_version", "baselines", "devices", "failure_patterns", "golden_cases", "idempotency_records", "knowledge_entries", "test_items", "test_modules", "test_records", "test_tasks", "test_tools", "users"], "alembic_version": "004_task_deleted_at", "schema_matches_models": true}
+

@@ -1,0 +1,93 @@
+{
+  "report_version": "1.0",
+  "report_type": "single",
+  "report_id": "RPT-20261113-001",
+  "task_id": 1,
+  "task_name": "本机演示只读ADB冒烟",
+  "task_status": "completed",
+  "task_result": "passed",
+  "created_at": "2026-11-13 05:59:47",
+  "completed_at": "2026-11-13 05:59:47.347229",
+  "total_duration": "0秒",
+  "total_duration_seconds": 0,
+  "executor": {
+    "user_id": 1,
+    "username": "e2e-admin",
+    "role": "admin"
+  },
+  "device": {
+    "serial_number": "5c000c2834414751c9d",
+    "model": "A133P",
+    "brand": "hzmct",
+    "android_version": "10",
+    "cpu_abi": "armeabi-v7a"
+  },
+  "summary": {
+    "total_items": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "error": 0,
+    "timeout": 0,
+    "counts": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "error": 0,
+      "timeout": 0
+    },
+    "pass_rate": 100.0
+  },
+  "knowledge_insights": [],
+  "results": [
+    {
+      "item_id": 1,
+      "item_name": "容量校验",
+      "module_name": "DDR",
+      "status": "pass",
+      "execution_time": 0,
+      "fail_reason": "",
+      "extracted_data": {
+        "judgement": {
+          "status": "pass",
+          "confidence": 1.0,
+          "score": null,
+          "metrics": {},
+          "evidence": [
+            "通过模式命中: MemTotal"
+          ],
+          "fail_reason": "",
+          "suggestions": "",
+          "judgement_type": "pattern"
+        }
+      },
+      "output_summary": "MemTotal:        2022328 kB\r\n\n",
+      "actual_result": {
+        "judgement": {
+          "status": "pass",
+          "confidence": 1.0,
+          "score": null,
+          "metrics": {},
+          "evidence": [
+            "通过模式命中: MemTotal"
+          ],
+          "fail_reason": "",
+          "suggestions": "",
+          "judgement_type": "pattern"
+        }
+      },
+      "judgement_type": "assertion",
+      "conditional_rules": null,
+      "rubric_criteria": null,
+      "result_parse": {
+        "pass_pattern": "MemTotal"
+      },
+      "compatibility": {},
+      "objective": null,
+      "precondition": null,
+      "steps": null,
+      "expected_result": null,
+      "verdict_basis": "断言规则校验通过"
+    }
+  ]
+}

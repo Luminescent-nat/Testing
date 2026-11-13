@@ -1,0 +1,14 @@
+login: 200
+devices: 200
+target: 5c000c2834414751c9d status: online version: 1
+assign: 200 设备归属已更新
+create: 201
+task_id: 1
+poll: pending None {'pass': 0, 'fail': 0, 'skip': 0, 'error': 0, 'timeout': 0}
+poll: completed passed {'pass': 1, 'fail': 0, 'skip': 0, 'error': 0, 'timeout': 0}
+records: 200 [('pass', None)]
+report: 200 pass_rate: 100.0
+export_html: 200 bytes: 4869 has_html: True
+RESULT: PASS
+
+EXIT_CODE=0

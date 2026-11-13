@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:8765/ai-test",
+  "aiTitle": true,
+  "inputVisible": true,
+  "errors": []
+}
+
+EXIT_CODE=0
