@@ -157,7 +157,7 @@
           >
             <div class="node-index">{{ index + 1 }}</div>
             <div class="node-content">
-              <div class="node-name">{{ item.name }}</div>
+              <div class="node-name">{{ item.item_name }}</div>
               <div class="node-meta">{{ item.module_name }}</div>
             </div>
             <div class="node-status">
@@ -190,7 +190,7 @@
           <div class="item-header">
             <div class="item-index">{{ index + 1 }}</div>
             <div class="item-info">
-              <div class="item-name">{{ item.name }}</div>
+              <div class="item-name">{{ item.item_name }}</div>
               <div class="item-module">{{ item.module_name }}</div>
             </div>
             <div class="item-status">
@@ -308,6 +308,7 @@ import { useUserStore } from '@/store/user'
 import { getTaskDetail, getTaskRecords, cancelTask, downloadRecordLog } from '@/api/task'
 import { getItemLog } from '@/api/report'
 import { isSuccessResponse } from '@/api/client'
+import { formatRecordTitle, normalizeRecord, normalizeRecords } from '@/utils/monitorRecord'
 
 const route = useRoute()
 const router = useRouter()
@@ -427,11 +428,11 @@ const viewItemLog = async (item) => {
   try {
     const res = await getItemLog(taskId, item.item_id)
     if (isSuccessResponse(res)) {
-      currentLog.value = {
+      currentLog.value = normalizeRecord({
         ...res.data,
-        item_name: item.name,
-        module_name: item.module_name
-      }
+        item_name: res.data?.item_name || item.item_name,
+        module_name: res.data?.module_name || item.module_name
+      })
     }
   } catch (error) {
     console.error('获取日志失败:', error)
@@ -500,14 +501,14 @@ const fetchTaskData = async () => {
     }
 
     if (isSuccessResponse(recordsRes)) {
-      const items = recordsRes.data.items || []
+      const items = normalizeRecords(recordsRes.data.items || [])
       testItems.value = items
       currentItem.value = items.find(item => item.status === 'running') || null
 
       // 更新日志内容（按行存储并限制总行数）
       const logs = items
         .filter(item => item.output)
-        .map(item => `=== ${item.module_name} / ${item.name} ===\n${item.output}`)
+        .map(item => `=== ${formatRecordTitle(item)} ===\n${item.output}`)
       logLines.value = logs.length ? logs.join('\n\n').split('\n') : []
       if (logLines.value.length > MAX_LOG_LINES) {
         logLines.value = logLines.value.slice(-MAX_LOG_LINES)
@@ -584,14 +585,15 @@ const handleWebSocketMessage = (message) => {
   }
 
   if (data.completed_results) {
-    testItems.value = [...data.completed_results]
+    testItems.value = normalizeRecords(data.completed_results)
   }
   if (data.current_item) {
-    currentItem.value = data.current_item
+    const normalizedCurrent = normalizeRecord(data.current_item)
+    currentItem.value = normalizedCurrent
     // 避免 current_item 和 completed_results 重复
-    const exists = testItems.value.find(item => item.id === data.current_item.id)
+    const exists = testItems.value.find(item => item.id === normalizedCurrent.id)
     if (!exists) {
-      testItems.value.push(data.current_item)
+      testItems.value.push(normalizedCurrent)
     }
   }
 

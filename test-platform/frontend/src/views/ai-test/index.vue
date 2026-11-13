@@ -69,6 +69,14 @@
           <el-descriptions-item label="测试类型">
             {{ planResult.plan.test_type }}
           </el-descriptions-item>
+          <el-descriptions-item label="规划方式">
+            <el-tag
+              :type="planResult.plan.llmUsed ? 'success' : 'info'"
+              size="small"
+            >
+              {{ planResult.plan.llmUsed ? 'AI 规划' : '规则规划（未调用 AI）' }}
+            </el-tag>
+          </el-descriptions-item>
           <el-descriptions-item label="选中测试项">
             {{ planResult.plan.item_ids.length }} 项
           </el-descriptions-item>

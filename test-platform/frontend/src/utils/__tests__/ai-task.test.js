@@ -49,9 +49,16 @@ describe('buildPlanPreview：详情 → 预览数据', () => {
         intent: 'DDR 稳定性测试',
         selected_modules: ['DDR', '稳定性'],
         test_type: 'stability',
-        item_ids: [12, 13]
+        item_ids: [12, 13],
+        llmUsed: false
       }
     })
+  })
+
+  it('plan.llm_used 标注：true→AI 规划，false/缺失→规则规划', () => {
+    expect(buildPlanPreview({ id: 1, plan: { llm_used: true } }).plan.llmUsed).toBe(true)
+    expect(buildPlanPreview({ id: 1, plan: { llm_used: false } }).plan.llmUsed).toBe(false)
+    expect(buildPlanPreview({ id: 1, plan: {} }).plan.llmUsed).toBe(false)
   })
 
   it('plan 为 null/缺失 → hasPlan=false（显示「该任务无规划快照」）', () => {
@@ -67,7 +74,7 @@ describe('buildPlanPreview：详情 → 预览数据', () => {
   it('plan 部分缺失 → 字段兜底，不抛 TypeError', () => {
     const preview = buildPlanPreview({ id: 7, device_serial: 'rk1', plan: { intent: null } })
     expect(preview.hasPlan).toBe(true)
-    expect(preview.plan).toEqual({ intent: '-', selected_modules: [], test_type: '-', item_ids: [] })
+    expect(preview.plan).toEqual({ intent: '-', selected_modules: [], test_type: '-', item_ids: [], llmUsed: false })
   })
 
   it('device_serial 缺失时回退 device.serial_number，再兜底为 -', () => {

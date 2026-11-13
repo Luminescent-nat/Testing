@@ -34,7 +34,7 @@ export const extractCreatedTaskId = (data) => {
  * - `plan` 部分字段缺失 → 用空数组/'-' 兜底，不抛 TypeError；
  * - `device_serial` 兜底顺序：`detail.device_serial` → `detail.device.serial_number` → '-'。
  * @param {object|null|undefined} detail 任务详情（TestTaskDetail）或创建响应 data
- * @returns {{task_id: number|null, device_serial: string, hasPlan: boolean, plan: {intent: string, selected_modules: string[], test_type: string, item_ids: number[]}|null}|null} 预览数据；入参为空时返回 null
+ * @returns {{task_id: number|null, device_serial: string, hasPlan: boolean, plan: {intent: string, selected_modules: string[], test_type: string, item_ids: number[], llmUsed: boolean}|null}|null} 预览数据；入参为空时返回 null
  */
 export const buildPlanPreview = (detail) => {
   if (!detail || typeof detail !== 'object' || Array.isArray(detail)) return null
@@ -55,7 +55,8 @@ export const buildPlanPreview = (detail) => {
           intent: typeof rawPlan.intent === 'string' && rawPlan.intent !== '' ? rawPlan.intent : '-',
           selected_modules: Array.isArray(rawPlan.selected_modules) ? rawPlan.selected_modules : [],
           test_type: typeof rawPlan.test_type === 'string' && rawPlan.test_type !== '' ? rawPlan.test_type : '-',
-          item_ids: Array.isArray(rawPlan.item_ids) ? rawPlan.item_ids : []
+          item_ids: Array.isArray(rawPlan.item_ids) ? rawPlan.item_ids : [],
+          llmUsed: rawPlan.llm_used === true
         }
       : null
   }

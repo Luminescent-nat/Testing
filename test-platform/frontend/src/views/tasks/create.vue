@@ -122,10 +122,21 @@
               <span class="label">执行方式：</span>
               <el-radio-group v-model="scheduleType">
                 <el-radio label="immediate">立即执行</el-radio>
-                <el-radio label="once">定时一次</el-radio>
-                <el-radio label="daily">每日定时</el-radio>
+                <el-radio
+                  label="once"
+                  disabled
+                >
+                  定时一次（后续版本）
+                </el-radio>
+                <el-radio
+                  label="daily"
+                  disabled
+                >
+                  每日定时（后续版本）
+                </el-radio>
               </el-radio-group>
             </div>
+
             <div v-if="scheduleType === 'once'" class="summary-item">
               <span class="label">执行时间：</span>
               <el-date-picker
