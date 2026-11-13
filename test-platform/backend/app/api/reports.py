@@ -4,8 +4,10 @@ import json
 import logging
 import os
 import re
+import time
 from datetime import datetime, timedelta
 from typing import List, Optional
+from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Query
 from fastapi.responses import StreamingResponse, FileResponse
@@ -98,18 +100,62 @@ def _task_report_dir(task_id: int) -> str:
 
 
 def _write_report_file(file_path: str, content: bytes) -> None:
-    """报告内容落盘（best-effort，失败仅记日志，不影响响应与任务收尾）。"""
+    """报告内容落盘（best-effort，失败仅记日志，不影响响应与任务收尾）。
+
+    原子写（task-C2 / RR-V1-REFINAL §3.4 竞态治理）：先写同目录唯一临时文件并
+    flush+fsync，再 ``os.replace`` 原子覆盖目标文件。
+
+    取舍说明：选择「写后读同步原语（原子替换）」而非「现算直返+异步落盘」，
+    以完整保留既有缓存语义——缓存命中路径直接回吐已落盘文件且不再现算
+    （test_export_report_serves_cached_file / TC-RPT-011 契约）。
+
+    根因：后台 generate_task_report_files 与导出请求并发时，旧实现
+    ``open(path, "wb")`` 打开瞬间即将目标文件截断为 0 字节；导出端点以
+    ``os.path.exists`` 判定缓存命中，FileResponse 在发送时 ``os.stat``——若 stat
+    落在「已截断、未写完」窗口内即产生 content-length=0 的空响应
+    （test_export_report_html 偶发 ``'<html' not in ''``）。
+
+    原子写保证读取方（导出 FileResponse、get_report JSON 缓存）只会看到
+    「旧完整文件」或「新完整文件」，绝不存在被截断的中间态；写线程与读方
+    并发时 ``os.replace`` 在 Windows 上可能因目标被读打开而失败，
+    依旧按 best-effort 记日志（缓存保持旧完整内容，响应不受影响）。
+    """
+    tmp_path = f"{file_path}.{os.getpid()}.{uuid4().hex[:8]}.tmp"
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "wb") as f:
-            f.write(content)
+        try:
+            with open(tmp_path, "wb") as f:
+                f.write(content)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp_path, file_path)
+        finally:
+            # replace 成功后 tmp 已不存在；异常时清理残留临时文件
+            if os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except OSError:
+                    pass
     except Exception as exc:
         logger.warning("报告落盘失败 %s: %s", file_path, exc)
 
 
 def _read_report_file(file_path: str) -> bytes:
-    with open(file_path, "rb") as f:
-        return f.read()
+    """读取已落盘报告文件（task-C2：写后读原语的读取侧）。
+
+    原子替换（os.replace）使目标文件只会是完整内容；但 Windows 上读取方 open
+    与写方 replace 并发交错时，可能瞬时遇到共享冲突（PermissionError）。
+    短暂重试后必能读到「旧完整文件」或「新完整文件」，绝不做半截读取。
+    """
+    last_exc: Exception = None  # type: ignore[assignment]
+    for attempt in range(5):
+        try:
+            with open(file_path, "rb") as f:
+                return f.read()
+        except PermissionError as exc:
+            last_exc = exc
+            time.sleep(0.05)
+    raise last_exc
 
 
 async def _check_report_permission(db: AsyncSession, task_id: int, current_user: User) -> None:
@@ -1389,7 +1435,13 @@ async def export_report(
     """导出单个任务测试报告。
 
     优先返回已落盘的缓存文件；文件不存在才现算（重计算经 asyncio.to_thread
-    放到 worker 线程，避免阻塞事件循环）并顺手落盘缓存。
+    放到 worker 线程，避免阻塞事件循环）并原子落盘缓存。
+
+    task-C2 竞态治理：响应体由「读取侧写后读原语」（_read_report_file，含共享
+    冲突重试）一次性读出后返回，不再使用 FileResponse 在发送阶段自行打开文件——
+    后台 generate_task_report_files 与导出并发时，读取方只会看到旧完整文件或
+    新完整文件，杜绝「存在但被截断」的中间态导致空响应（RR-V1-REFINAL §3.4）。
+    响应语义（200、Content-Type、attachment 文件名、字节内容）与授权保持不变。
     """
     ext = _EXPORT_EXTS.get(format)
     if ext is None:
@@ -1405,10 +1457,13 @@ async def export_report(
     else:
         await _check_report_permission(db, task_id, current_user)
 
-    return FileResponse(
-        file_path,
+    file_content = await asyncio.to_thread(_read_report_file, file_path)
+    return Response(
+        content=file_content,
         media_type=_EXPORT_MEDIA_TYPES[format],
-        filename=f"report_{task_id}.{ext}",
+        headers={
+            "Content-Disposition": f'attachment; filename="report_{task_id}.{ext}"'
+        },
     )
 
 

@@ -209,3 +209,82 @@ buildCompareRows）9 处，逐行列出。
 
 §6 所述并在途失败（task-11/task-19 迁移、device.py 与 mock 未同步）在本次全量中
 状态不变，仍不由本任务（task-16/task-20）修复；最终以 Lead 严格全量为准。
+
+## 10. v1.1 task-26 追加记录（task-C2：报告 HTML 导出落盘/读取竞态治理）
+
+- 日期：2026-11-13；依据 RR-V1-REFINAL §3.4（reviewer 两轮独立全量各 1 次
+  `test_export_report_html` 响应体空，`'<html' not in ''`，隔离 3/3 通过）。
+- 改动仅限 `app/api/reports.py` 导出落盘/读取原语与新增
+  `tests/integration/test_v1_export_stability.py`；未动统计口径、授权、任务收尾、
+  `tests/integration/test_reports_api.py`（既有断言 0 改动、不放宽）、契约文档。
+
+### 10.1 根因定位
+
+- 旧 `_write_report_file` 直接 `open(path, "wb")`：打开瞬间目标文件即被截断为 0 字节。
+- 导出端点以 `os.path.exists(report.html)` 判定缓存命中；任务收尾后台任务
+  `generate_task_report_files` 会重写同一 `report.html`。若导出请求的
+  `FileResponse` 发送阶段 `os.stat` 落在「已截断、未写完」窗口内，
+  content-length=0 → 响应体为空——与 reviewer 观察到的偶发空响应一致
+  （本机复跑 3/3 通过，属时序竞态）。
+
+### 10.2 先红（红证）
+
+`tests/integration/test_v1_export_stability.py::test_export_html_mid_write_cache_never_serves_empty_body`
+——用真实端点 + 真实 `_write_report_file`，仅将「慢速磁盘写」如实放大
+（`open(...,"wb")` 后延迟 write 0.4s），写线程处于 mid-write 窗口时并发导出：
+
+- 修复前：`assert resp.text` 失败（响应体为空，`AssertionError: 导出响应体为空
+  （缓存文件被并发写截断）`），退出码 1 → `red-export-race-before-fix.log`。
+- 修复后：同一用例转绿 → `green-export-race-after-fix.log`。
+
+### 10.3 取舍说明（实现选择：① 写后读同步原语）
+
+选择 **① 原子落盘（写后读顺序原语）**，未选 ②（现算直返+异步落盘）：
+
+1. ② 会改变缓存语义：TC-RPT-011（`test_export_report_serves_cached_file`）契约要求
+   缓存命中直接回吐落盘文件且不得现算（`_build_report` 不被调用）；改为永远现算
+   需放宽该既有测试，违背「不放宽」原则。
+2. ① 保持响应语义/授权/统计口径完全不变，仅收紧写侧时序：
+
+| 原语 | 修复内容 |
+|---|---|
+| 写侧：原子替换 | `_write_report_file` 改为「同目录唯一临时文件（pid+uuid）→ write+flush+fsync → `os.replace`」，异常清理临时文件。读取方只会看到旧完整文件或新完整文件，不存在「存在但被截断」的中间态 |
+| 读侧：写后读原语 | `_read_report_file` 增加共享冲突重试（PermissionError × 5 次、间隔 50ms）；Windows 上读取方 `open` 与写方 `os.replace` 交错时可能瞬时共享冲突，重试后必读到完整内容 |
+| 导出端点 | `export_report` 由 FileResponse（发送阶段自行打开文件，无法注入重试）改为「经 `_read_report_file` 一次性读出后以 `Response` 返回」；200、Content-Type、`attachment; filename="report_{id}.{ext}"`、字节内容、授权路径全部不变 |
+
+修复过程中实测发现并一并治理的第二类瞬态：原子 `os.replace` 与读取方
+`FileResponse` 内部 `open` 并发时，Windows 会瞬时 `PermissionError`（共享冲突）
+——读侧原语 + 读出后响应将其消除（见 10.4 测试 ③）。
+
+### 10.4 测试（tests/integration/test_v1_export_stability.py，3 passed）
+
+| 用例 | 覆盖 |
+|---|---|
+| `test_export_html_mid_write_cache_never_serves_empty_body` | 确定性竞态复现（先红后绿） |
+| `test_export_html_20_consecutive_exports_non_empty` | **验收：模块级连续 20 次导出**，响应体非空且含 `<html`；每 5 次删除缓存以混合「现算+落盘」与「缓存命中」两条路径 |
+| `test_export_html_concurrent_rewrite_loop` | 真实并发重写循环 20 轮（不引入人为延迟）下导出始终非空（覆盖 os.replace 与读取 open 的共享冲突瞬态） |
+
+既有 `test_export_report_html` 及 test_reports_api 全部保持原断言未放宽（12 passed）。
+
+### 10.5 原始日志与退出码
+
+| 命令 | 结果 | 日志 |
+|---|---|---|
+| 修复前 `pytest tests/integration/test_v1_export_stability.py -q -W error::...` | **1 failed（竞态复现）, 2 passed，退出码 1** | `red-export-race-before-fix.log` |
+| 修复后同命令 | **3 passed，退出码 0** | `green-export-race-after-fix.log` |
+| `pytest tests/integration/test_reports_api.py test_v1_statistics.py test_security_hardening.py test_websocket.py -q -W error::...` | **30 passed，退出码 0** | `green-export-consumers.log` |
+| `pytest tests/integration/test_v1_export_stability.py test_reports_api.py`（连跑 3 轮） | **每轮 15 passed，退出码 0×3** | `green-export-stability-repeat3.log` |
+| 全量 `pytest tests -q -W error::... --ignore=tests/unit/test_v1_migration.py --deselect=<在途 device/AI 4 项>` | **447 passed, 4 deselected，退出码 0** | `pytest-full-clean-c2-green.log` |
+| 全量（仅排除迁移/在途 device 项） | 447 passed, **2 failed**（`test_ai_task_natural_ddr` TypeError、`test_b3_ai_and_manual_creation_parity`，均为并在途 AI 任务改动，与本任务无关），退出码 1 | `pytest-full-clean-c2.log` |
+
+### 10.6 在途无关失败与最终判定说明
+
+- `tests/unit/test_v1_migration.py`（迁移收口）、
+  `tests/integration/test_devices_api.py::test_refresh_devices` /
+  `tests/e2e/test_full_workflow.py::test_full_workflow`（device mock 未同步）沿用 §6 结论。
+- 本轮新增在途失败：`tests/integration/test_ai_tasks_api.py::test_ai_task_natural_ddr`
+  与 `tests/integration/test_v1_followup_audit.py::test_b3_ai_and_manual_creation_parity`
+  （`TypeError: object NoneType can't be used in 'await' expression` 等），属并轮 AI
+  任务实施方改动；本任务未改 ai_tasks/tasks 相关代码。
+- 全量证据以 `pytest-full-clean-c2-green.log`（447 passed，退出码 0）为准；
+  **最终以 Lead 在所有并轮任务收口后的严格全量为准**。
