@@ -1,0 +1,68 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-3.7.1, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 448 items
+
+tests\e2e\test_full_workflow.py .                                        [  0%]
+tests\integration\test_ai_tasks_api.py ....                              [  1%]
+tests\integration\test_auth_api.py ..........                            [  3%]
+tests\integration\test_contract_errors.py ................               [  6%]
+tests\integration\test_devices_api.py ......                             [  8%]
+tests\integration\test_knowledge_api.py ..............                   [ 11%]
+tests\integration\test_memory_api.py ....                                [ 12%]
+tests\integration\test_modules_api.py ........                           [ 14%]
+tests\integration\test_reports_api.py ............                       [ 16%]
+tests\integration\test_reports_stats_api.py .....                        [ 17%]
+tests\integration\test_security_hardening.py ......                      [ 19%]
+tests\integration\test_tasks_api.py ..........                           [ 21%]
+tests\integration\test_tool_registry.py .......                          [ 22%]
+tests\integration\test_tools_api.py .....                                [ 24%]
+tests\integration\test_users_api.py .......                              [ 25%]
+tests\integration\test_v1_authorization.py .................             [ 29%]
+tests\integration\test_v1_device_admin.py ..............                 [ 32%]
+tests\integration\test_v1_followup_audit.py .....                        [ 33%]
+tests\integration\test_v1_idempotency.py .........                       [ 35%]
+tests\integration\test_v1_knowledge_rules.py .................           [ 39%]
+tests\integration\test_v1_statistics.py .........                        [ 41%]
+tests\integration\test_v1_task_delete.py ................                [ 45%]
+tests\integration\test_websocket.py ...                                  [ 45%]
+tests\unit\test_adb_runner.py .........................                  [ 51%]
+tests\unit\test_auth_service.py ......                                   [ 52%]
+tests\unit\test_device_exec_kill.py ...                                  [ 53%]
+tests\unit\test_device_heartbeat.py .....                                [ 54%]
+tests\unit\test_e2e_environment_guard.py ...                             [ 55%]
+tests\unit\test_execution_engine.py ............                         [ 57%]
+tests\unit\test_execution_failure_closed.py ............................ [ 64%]
+.................                                                        [ 67%]
+tests\unit\test_judgement_engine.py ............                         [ 70%]
+tests\unit\test_knowledge_converter.py ....                              [ 71%]
+tests\unit\test_log_stream.py ......                                     [ 72%]
+tests\unit\test_memory_engine.py ......                                  [ 74%]
+tests\unit\test_migration_contract.py .......                            [ 75%]
+tests\unit\test_parameter_renderer.py ........                           [ 77%]
+tests\unit\test_report_generation.py ..                                  [ 77%]
+tests\unit\test_scheduler.py .......                                     [ 79%]
+tests\unit\test_secret_strength.py .....................                 [ 84%]
+tests\unit\test_startup_recovery.py .                                    [ 84%]
+tests\unit\test_storage_isolation.py .                                   [ 84%]
+tests\unit\test_task_executor.py ...F.......                             [ 87%]
+tests\unit\test_tool_manifest.py .......                                 [ 88%]
+tests\unit\test_v1_judgement_stop.py ................................    [ 95%]
+tests\unit\test_v1_migration.py .........                                [ 97%]
+tests\unit\test_v1_tool_manifest.py ..........                           [100%]
+
+================================== FAILURES ===================================
+__________________ test_cancel_running_task_keeps_cancelled ___________________
+tests\unit\test_task_executor.py:142: in test_cancel_running_task_keeps_cancelled
+    assert task.status == "cancelled"
+E   AssertionError: assert 'running' == 'cancelled'
+E     - cancelled
+E     + running
+=========================== short test summary info ===========================
+FAILED tests/unit/test_task_executor.py::test_cancel_running_task_keeps_cancelled
+================== 1 failed, 447 passed in 235.98s (0:03:55) ==================
+
+EXIT_CODE=1

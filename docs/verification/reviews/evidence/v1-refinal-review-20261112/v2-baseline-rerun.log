@@ -1,0 +1,21 @@
+2026-11-12 22:34:54,964 [INFO] app.logging_config: 日志系统初始化完成，文件: D:\MCTEST\test-platform\backend\logs\server.log
+.......                                                                  [100%]
+============================== warnings summary ===============================
+app\models\__init__.py:117
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:117: PytestCollectionWarning: cannot collect test class 'TestItem' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestItem(Base):
+
+app\models\__init__.py:95
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:95: PytestCollectionWarning: cannot collect test class 'TestModule' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestModule(Base):
+
+app\models\__init__.py:208
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:208: PytestCollectionWarning: cannot collect test class 'TestRecord' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestRecord(Base):
+
+app\models\__init__.py:173
+  D:\MCTEST\test-platform\backend\app\models\__init__.py:173: PytestCollectionWarning: cannot collect test class 'TestTask' because it has a __init__ constructor (from: docs/verification/reviews/evidence/v1-fix-20261112/targeted-defect-repro-v2.py)
+    class TestTask(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+7 passed, 4 warnings in 2.50s

@@ -82,6 +82,35 @@ once 任务到期后只启动原任务并清 next_run_at；未到期 pending 不
 - 配置错误日志只指出配置项，不打印密钥值；文档命令路径与镜像实际工作目录一致。
 - 当前未执行干净 Docker 构建与启动，R27 仍为未验证。
 
+### 6.1 工具清单声明规则（v1.1 新增，2026-11-13 经用户确认）
+
+每个模块目录的 `manifest.yaml` 必须显式声明 `tools` 段，结构如下：
+
+```yaml
+tools:
+  host:                       # host runner
+    - path: upfm/host/mc_props_check.py
+      sha256: "<64 位十六进制>"   # 必填
+      version: "<可选>"
+  shared:                     # 共享 Python 依赖
+    - path: common/adb_runner.py
+      sha256: "<64 位十六进制>"   # 必填
+  device:                     # 设备二进制
+    - path: emmc/binaries/armeabi-v7a/fio
+      abi: armeabi-v7a          # 必填
+      sha256: "<64 位十六进制>"   # 必填
+  assets:                     # 可选测试资源
+    - path: upfm/assets/test_app.apk
+      sha256: "<可选>"
+```
+
+- **A1**：`tools.host` 与 `tools.shared` 条目 `path`、`sha256` 必填；缺失即 manifest 加载失败（`ToolManifestError`，错误信息指出 manifest 路径与问题条目）。声明了 sha256 的条目必须哈希匹配，不匹配启动失败（v1.0 语义保持）。
+- **A2**：`tools` 段存在但四段全空（如 `tools: {}`）且模块目录含 `host/*.py` 或 `binaries/*/*`，视为声明缺口，启动失败；完全无 `tools` 段同此处理（v1.0 语义保持）。
+- **A3**：`items[].exec_command` 中 `{host_tool_dir}/X` 引用的文件 X 必须在某 manifest 的 `tools.host` 显式声明；**未声明即 manifest 加载失败，废除 undeclared_reference 降级条目**。已声明的 host runner 及其 `import common.*`、`from common import *`、同目录兄弟模块 import 的全部依赖必须在 `tools.shared`/`tools.host` 声明内（依赖闭包，v1.0 语义保持）。
+- **A4**：声明 `path` 规范化后不得为空、为绝对路径或含 `..` 越界；违反即 manifest 加载失败，错误信息包含 manifest 路径与原始声明值。
+- **A5**：`TEST_TOOLS_PATH` 存在但不含任何 `manifest.yaml` 时启动失败，禁止空工具目录静默启动。
+- `tools.assets` 条目 `path` 必填、`sha256` 可选；缺失的已声明可选资源按 R3 记 skip，不伪造工具结果（v1.0 语义保持）。
+
 ## 7. 文件与证据生命周期
 
 | 类别 | 默认策略 | 删除条件 |
