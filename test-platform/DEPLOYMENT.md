@@ -133,7 +133,32 @@ schtasks /create /tn "TestPlatformBackup" ^
 
 ---
 
-## 6. 内网部署检查清单
+## 6. AI / LLM 配置（可选）
+
+后端 AI 能力**仅支持 OpenAI-compatible 的 `/chat/completions` 接口**（`LLM_BASE_URL`
+指向兼容服务，默认 `https://api.openai.com/v1`）。相关配置项见
+`backend/.env.example`：
+
+| 变量 | 说明 | 默认 |
+|---|---|---|
+| `LLM_PROVIDER` | 提供方标识（openai/deepseek/qwen 等兼容服务） | `openai` |
+| `LLM_API_KEY` | API Key；**为空时使用规则规划** | 空 |
+| `LLM_BASE_URL` | OpenAI-compatible 服务基地址 | `https://api.openai.com/v1` |
+| `LLM_MODEL` | 模型名 | `gpt-3.5-turbo` |
+| `LLM_TEMPERATURE` | 采样温度 | `0.1` |
+| `LLM_MAX_TOKENS` | 单次最大 token | `2000` |
+| `LLM_TIMEOUT` | 调用超时（秒） | `60` |
+
+- **无 `LLM_API_KEY` 时**：系统使用**规则规划**（基于模块/关键词/设备画像的确定性规则），
+  **不得对外宣称调用了 AI/LLM**；演示话术应为「规则规划」。
+- 配置了可用服务后，请先用一次真实请求确认服务可达，再对外宣称 AI 可用。
+
+> 演示环境（独立 `demo.db` + `storage/demo/`、只读演示清单、daily/once 禁用说明）
+> 见 [`docs/DEMO.md`](../docs/DEMO.md)。
+
+---
+
+## 7. 内网部署检查清单
 
 - [ ] `SECRET_KEY` 已显式设置（`.env` 或 compose environment）并通过强度校验：≥32 字符、
       非示例占位值、非单字符重复；弱密钥/占位值应用拒绝启动，`docker compose up` 未设置时直接报错
@@ -145,5 +170,5 @@ schtasks /create /tn "TestPlatformBackup" ^
 - [ ] 备份有异地拷贝（共享目录/另一台机器）
 - [ ] 确认 `logs/server.log` 正常写入
 - [ ] adb 连通：`docker exec test-platform adb devices` 能看到被测设备
-- [ ] LLM 相关配置（`LLM_API_KEY` 等）按内网可用服务配置；不配置时 AI 功能降级但不影响主流程
+- [ ] LLM 相关配置（`LLM_PROVIDER`/`LLM_API_KEY`/`LLM_BASE_URL`/`LLM_MODEL`/`LLM_TEMPERATURE`/`LLM_MAX_TOKENS`/`LLM_TIMEOUT`，见第 6 节）按内网可用服务配置；不配置时使用规则规划、不影响主流程，且不得宣称调用了 AI
 - [ ] 防火墙/端口：内网只需开放 8000
