@@ -1,0 +1,91 @@
+﻿COMMAND: python -m pytest tests/unit/test_v1_tool_manifest.py tests/unit/test_tool_manifest.py -q
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-13T08:51:39.1362699+08:00
+END: 2026-11-13T08:51:41.2147419+08:00
+EXITCODE: 1
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 23 items
+
+tests\unit\test_v1_tool_manifest.py .......F..FFFFFF                     [ 69%]
+tests\unit\test_tool_manifest.py ....F..                                 [100%]
+
+================================== FAILURES ===================================
+______________________ test_no_manifest_root_rejected_a5 ______________________
+tests\unit\test_v1_tool_manifest.py:203: in test_no_manifest_root_rejected_a5
+    assert result["ok"] is False, "空工具目录不得静默通过"
+E   AssertionError: 空工具目录不得静默通过
+E   assert True is False
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,615 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_no_manifest_root_rejected0\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_no_manifest_root_rejected0\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+__________________ test_a1_host_entry_missing_sha256_raises ___________________
+tests\unit\test_v1_tool_manifest.py:256: in test_a1_host_entry_missing_sha256_raises
+    with pytest.raises(ToolManifestError) as excinfo:
+E   Failed: DID NOT RAISE <class 'app.services.tool_manifest.ToolManifestError'>
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,836 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a1_host_entry_missing_sha0\test-tools manifests=1 声明=1 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a1_host_entry_missing_sha0\test-tools manifests=1 声明=1 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+_________________ test_a1_shared_entry_missing_sha256_raises __________________
+tests\unit\test_v1_tool_manifest.py:280: in test_a1_shared_entry_missing_sha256_raises
+    with pytest.raises(ToolManifestError) as excinfo:
+E   Failed: DID NOT RAISE <class 'app.services.tool_manifest.ToolManifestError'>
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,844 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a1_shared_entry_missing_s0\test-tools manifests=1 声明=2 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a1_shared_entry_missing_s0\test-tools manifests=1 声明=2 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+_______ test_a2_empty_tools_section_with_host_files_is_declaration_gap ________
+tests\unit\test_v1_tool_manifest.py:295: in test_a2_empty_tools_section_with_host_files_is_declaration_gap
+    assert result["ok"] is False
+E   assert True is False
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,852 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a2_empty_tools_section_wi0\test-tools manifests=1 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a2_empty_tools_section_wi0\test-tools manifests=1 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+______________ test_a3_undeclared_host_tool_reference_hard_fails ______________
+tests\unit\test_v1_tool_manifest.py:320: in test_a3_undeclared_host_tool_reference_hard_fails
+    with pytest.raises(ToolManifestError) as excinfo:
+E   Failed: DID NOT RAISE <class 'app.services.tool_manifest.ToolManifestError'>
+_______________ test_a4_illegal_path_raises_with_original_value _______________
+tests\unit\test_v1_tool_manifest.py:342: in test_a4_illegal_path_raises_with_original_value
+    with pytest.raises(ToolManifestError) as excinfo:
+E   Failed: DID NOT RAISE <class 'app.services.tool_manifest.ToolManifestError'>
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,867 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a4_illegal_path_raises_wi0\test-tools manifests=1 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a4_illegal_path_raises_wi0\test-tools manifests=1 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+___________ test_a5_tools_root_without_any_manifest_rejects_startup ___________
+tests\unit\test_v1_tool_manifest.py:366: in test_a5_tools_root_without_any_manifest_rejects_startup
+    assert result["ok"] is False
+E   assert True is False
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,873 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a5_tools_root_without_any0\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_a5_tools_root_without_any0\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+______________________ test_no_manifest_root_rejected_a5 ______________________
+tests\unit\test_tool_manifest.py:149: in test_no_manifest_root_rejected_a5
+    assert result["ok"] is False, "空工具目录不得静默通过"
+E   AssertionError: 空工具目录不得静默通过
+E   assert True is False
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 08:51:40,900 [INFO] app.services.tool_manifest: 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_no_manifest_root_rejected1\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:345 工具清单校验(V1-08 显式声明): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-186\test_no_manifest_root_rejected1\test-tools manifests=0 声明=0 缺失=0 哈希不符=0 闭包缺失=0 声明缺口=0 skip=0 ok=True
+=========================== short test summary info ===========================
+FAILED tests/unit/test_v1_tool_manifest.py::test_no_manifest_root_rejected_a5
+FAILED tests/unit/test_v1_tool_manifest.py::test_a1_host_entry_missing_sha256_raises
+FAILED tests/unit/test_v1_tool_manifest.py::test_a1_shared_entry_missing_sha256_raises
+FAILED tests/unit/test_v1_tool_manifest.py::test_a2_empty_tools_section_with_host_files_is_declaration_gap
+FAILED tests/unit/test_v1_tool_manifest.py::test_a3_undeclared_host_tool_reference_hard_fails
+FAILED tests/unit/test_v1_tool_manifest.py::test_a4_illegal_path_raises_with_original_value
+FAILED tests/unit/test_v1_tool_manifest.py::test_a5_tools_root_without_any_manifest_rejects_startup
+FAILED tests/unit/test_tool_manifest.py::test_no_manifest_root_rejected_a5 - ...
+======================== 8 failed, 15 passed in 0.53s =========================
+

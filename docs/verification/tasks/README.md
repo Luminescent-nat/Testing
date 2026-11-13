@@ -35,6 +35,10 @@
 - 前端：`npm test` 33 用例通过、`npm run lint` 0 error（既有 1037 warning 属 T-35）、`npm run build` exit 0。
 - 批次 G 整体结论：**验收不通过**，阻塞项为 T-02/R20 回滚数据保留与 T-17/R27 干净镜像运行时无法核验；详见 [RR-FINAL-batch-G](../reviews/RR-FINAL-batch-G.md) 与 [集成汇总](../integration-summary-20261112.md)。
 
+## 契约 v1.1 实施轮次（2026-11-13，已完成收口）
+
+依据 [RR-V1-REFINAL-20261112](../reviews/RR-V1-REFINAL-20261112.md)（tool_manifest F1~F4 fail-open、AI 授权顺序/收口、全量不稳定）与已确认契约 v1.1（scheduler §6.1 A1~A5、task-execution §10），四路并行实施完成并经独立评审收口（[RR-V11-PLAN](../reviews/RR-V11-PLAN-20261113.md)、RR-V11-FIX-A/B/C、[RR-V11-FINAL-20261113](../reviews/RR-V11-FINAL-20261113.md)）：A1~A5 红绿落地、F1~F4 销项 9/9 CLOSED、B1/B2 计数=0 + B3 差分、cancel/export 两类竞态根治（20 连跑+并发验证）。门禁基线：**全量连续 2 轮 467 passed / 0 failed**（T-14/v1.1-pytest-full-r1/r2.log）+ Lead 独立验证轮 467 passed（[V11-FINAL-STRICT-LEAD-20261113.log](V11-FINAL-STRICT-LEAD-20261113.log)）+ 前端沿用 56/0e/exit0。明细见 [v11-implementation-summary-20261113](../v11-implementation-summary-20261113.md)。总体上线结论仍为"不通过/受控开发基线"（R27 Docker、真实库对账、V1-11/12/13、U 项、配置导入门禁、未实施任务清单）。
+
 ## V1 readiness 修订轮次（2026-11-12，已完成收口）
 
 依据 [RR-V1-READINESS](../reviews/RR-V1-READINESS-20261112.md) 与用户测试记录，第三轮修订已完成并由独立评审收口（[RR-V1-FINAL-20261112](../reviews/RR-V1-FINAL-20261112.md)、逐项 [RR-V1-FIX-*](../reviews/README.md)）：审计 6 项动态反例以 v2 永久基线 7/7 通过（R6 基线语义随 V1-08 契约更新，待用户确认）；后端严格全量 **448 passed / 0 failed**（[V1-FINAL-STRICT-3-20261112.log](V1-FINAL-STRICT-3-20261112.log)），前端 56 用例 / lint 0 error（994w，T-35 未清）/ build exit 0。修复明细、逐缺陷闭环与仍阻塞项（V1-05 真实库对账、V1-08/R27 Docker、V1-11 mock/lint/浏览器、V1-12 画像、V1-13 文档 26 errors、T-09/T-11～T-16/T-21～T-38 未实施）见 [v1-remediation-summary-20261112](../v1-remediation-summary-20261112.md)。

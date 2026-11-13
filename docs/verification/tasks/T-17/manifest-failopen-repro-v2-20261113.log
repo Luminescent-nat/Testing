@@ -1,0 +1,18 @@
+﻿COMMAND: python docs/verification/tasks/T-17/manifest-failopen-repro-v2.py
+WORKDIR: D:\MCTEST
+START: 2026-11-13T08:56:38.3394965+08:00
+END: 2026-11-13T08:56:39.1172194+08:00
+EXITCODE: 0
+
+[CLOSED] F1 CLOSED host 缺 sha256 → ToolManifestError（指明条目）  (raised ok=True（needle='demo/host/run.py' in message=True）)
+[CLOSED] F1 CLOSED 启动门禁抛错并指明 manifest 路径  (raised ok=True（needle='C:\\Users\\MCTECH\\AppData\\Local\\Temp\\tmpvowkmre2\\test-tools\\demo\\manifest.yaml' in message=True）)
+[CLOSED] F2 CLOSED 空 tools:{} → declaration_gaps 非空  (gaps=1)
+[CLOSED] F2 CLOSED 启动门禁抛错  (raised ok=True（needle='demo' in message=True）)
+[CLOSED] F3 CLOSED {host_tool_dir} 未声明引用 → 加载抛错  (raised ok=True（needle='run.py' in message=True）)
+[CLOSED] F3 CLOSED 启动门禁抛错（含引用路径）  (raised ok=True（needle='{host_tool_dir}' in message=True）)
+[CLOSED] F3 CLOSED undeclared_reference 降级条目已废除  (加载即抛错，不存在可返回的降级条目)
+[CLOSED] F4 CLOSED 非法路径（../）→ 抛错且含原始声明值  (raised ok=True（needle='../../etc/passwd' in message=True）)
+[CLOSED] F4 CLOSED 启动门禁抛错（含原始声明值）  (raised ok=True（needle='../../etc/passwd' in message=True）)
+
+RESULT: ALL CLOSED (F1~F4 fail-open 已全部修复：契约 v1.1 §6.1 A1~A4)
+

@@ -1,0 +1,147 @@
+﻿COMMAND: python -m pytest tests -q -W error::pytest.PytestUnraisableExceptionWarning
+WORKDIR: D:\MCTEST\test-platform\backend
+START: 2026-11-13T09:04:46.6854472+08:00
+END: 2026-11-13T09:09:01.3144738+08:00
+EXITCODE: 1
+
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 460 items
+
+tests\e2e\test_full_workflow.py .                                        [  0%]
+tests\integration\test_ai_tasks_api.py ....                              [  1%]
+tests\integration\test_auth_api.py ..........                            [  3%]
+tests\integration\test_contract_errors.py ................               [  6%]
+tests\integration\test_devices_api.py ......                             [  8%]
+tests\integration\test_knowledge_api.py ..............                   [ 11%]
+tests\integration\test_memory_api.py ....                                [ 11%]
+tests\integration\test_modules_api.py ........                           [ 13%]
+tests\integration\test_reports_api.py ............                       [ 16%]
+tests\integration\test_reports_stats_api.py .....                        [ 17%]
+tests\integration\test_security_hardening.py ......                      [ 18%]
+tests\integration\test_tasks_api.py ..........                           [ 20%]
+tests\integration\test_tool_registry.py .......                          [ 22%]
+tests\integration\test_tools_api.py .....                                [ 23%]
+tests\integration\test_users_api.py .......                              [ 25%]
+tests\integration\test_v1_authorization.py .................             [ 28%]
+tests\integration\test_v1_device_admin.py ..............                 [ 31%]
+tests\integration\test_v1_export_stability.py ...                        [ 32%]
+tests\integration\test_v1_followup_audit.py .......F                     [ 34%]
+tests\integration\test_v1_idempotency.py .........                       [ 36%]
+tests\integration\test_v1_knowledge_rules.py .................           [ 39%]
+tests\integration\test_v1_statistics.py .........                        [ 41%]
+tests\integration\test_v1_task_delete.py ................                [ 45%]
+tests\integration\test_websocket.py ...                                  [ 45%]
+tests\unit\test_adb_runner.py .........................                  [ 51%]
+tests\unit\test_auth_service.py ......                                   [ 52%]
+tests\unit\test_device_exec_kill.py ...                                  [ 53%]
+tests\unit\test_device_heartbeat.py .....                                [ 54%]
+tests\unit\test_e2e_environment_guard.py ...                             [ 55%]
+tests\unit\test_execution_engine.py ............                         [ 57%]
+tests\unit\test_execution_failure_closed.py ............................ [ 63%]
+.................                                                        [ 67%]
+tests\unit\test_judgement_engine.py ............                         [ 70%]
+tests\unit\test_knowledge_converter.py ....                              [ 70%]
+tests\unit\test_log_stream.py ......                                     [ 72%]
+tests\unit\test_memory_engine.py ......                                  [ 73%]
+tests\unit\test_migration_contract.py .......                            [ 75%]
+tests\unit\test_parameter_renderer.py ........                           [ 76%]
+tests\unit\test_report_generation.py ..                                  [ 77%]
+tests\unit\test_scheduler.py .......                                     [ 78%]
+tests\unit\test_secret_strength.py .....................                 [ 83%]
+tests\unit\test_startup_recovery.py .                                    [ 83%]
+tests\unit\test_storage_isolation.py .                                   [ 83%]
+tests\unit\test_task_executor.py ...........                             [ 86%]
+tests\unit\test_tool_manifest.py .......                                 [ 87%]
+tests\unit\test_v1_judgement_stop.py ................................    [ 94%]
+tests\unit\test_v1_migration.py .........                                [ 96%]
+tests\unit\test_v1_tool_manifest.py ................                     [100%]
+
+================================== FAILURES ===================================
+____________________ test_b3_ai_and_manual_creation_parity ____________________
+tests\integration\test_v1_followup_audit.py:261: in test_b3_ai_and_manual_creation_parity
+    assert ai_first.status_code == 201 and ai_second.status_code == 201
+E   assert (409 == 201)
+E    +  where 409 = <Response [409 Conflict]>.status_code
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 09:07:16,298 [INFO] app.seed_data: 创建测试模块: DDR
+2026-11-13 09:07:16,300 [INFO] app.seed_data: 创建测试项: DDR / 容量校验
+2026-11-13 09:07:16,303 [INFO] app.seed_data: 创建测试模块: EMMC
+2026-11-13 09:07:16,304 [INFO] app.seed_data: 创建测试项: EMMC / 节点检测
+2026-11-13 09:07:16,305 [INFO] app.seed_data: 创建测试项: EMMC / EXT_CSD 寄存器读取
+2026-11-13 09:07:16,306 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读性能
+2026-11-13 09:07:16,306 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写性能
+2026-11-13 09:07:16,307 [INFO] app.seed_data: 创建测试项: EMMC / 随机读性能
+2026-11-13 09:07:16,308 [INFO] app.seed_data: 创建测试项: EMMC / 随机写性能
+2026-11-13 09:07:16,308 [INFO] app.seed_data: 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+2026-11-13 09:07:16,309 [INFO] app.seed_data: 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+2026-11-13 09:07:16,310 [INFO] app.seed_data: 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+2026-11-13 09:07:16,310 [INFO] app.seed_data: 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+2026-11-13 09:07:16,315 [INFO] app.seed_data: 创建测试模块: WIFI
+2026-11-13 09:07:16,316 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 开关状态
+2026-11-13 09:07:16,316 [INFO] app.seed_data: 创建测试项: WIFI / WIFI 信号强度
+2026-11-13 09:07:16,318 [INFO] app.seed_data: 创建测试模块: 蓝牙
+2026-11-13 09:07:16,319 [INFO] app.seed_data: 创建测试项: 蓝牙 / 蓝牙开关状态
+2026-11-13 09:07:16,320 [INFO] app.seed_data: 创建测试模块: 以太网
+2026-11-13 09:07:16,321 [INFO] app.seed_data: 创建测试项: 以太网 / 链路状态
+2026-11-13 09:07:16,322 [INFO] app.seed_data: 创建测试项: 以太网 / Ping 网关
+2026-11-13 09:07:16,324 [INFO] app.seed_data: 创建测试模块: CPU
+2026-11-13 09:07:16,325 [INFO] app.seed_data: 创建测试项: CPU / CPU 信息
+2026-11-13 09:07:16,336 [INFO] app.seed_data: 默认用例模板初始化完成
+2026-11-13 09:07:16,339 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备未找到
+2026-11-13 09:07:16,340 [INFO] app.services.memory_engine: 创建失败模式: ADB 设备离线
+2026-11-13 09:07:16,341 [INFO] app.services.memory_engine: 创建失败模式: 命令超时
+2026-11-13 09:07:16,342 [INFO] app.services.memory_engine: 创建失败模式: 权限不足
+2026-11-13 09:07:16,343 [INFO] app.services.memory_engine: 创建失败模式: 二进制缺失
+2026-11-13 09:07:16,344 [INFO] app.services.memory_engine: 创建失败模式: 兼容性不满足
+2026-11-13 09:07:16,758 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 创建测试模块: DDR
+INFO     app.seed_data:seed_data.py:455 创建测试项: DDR / 容量校验
+INFO     app.seed_data:seed_data.py:413 创建测试模块: EMMC
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 节点检测
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / EXT_CSD 寄存器读取
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写性能
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 顺序写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机读稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:455 创建测试项: EMMC / 随机写稳定性（BW/IOPS 曲线）
+INFO     app.seed_data:seed_data.py:413 创建测试模块: WIFI
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 开关状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: WIFI / WIFI 信号强度
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 蓝牙
+INFO     app.seed_data:seed_data.py:455 创建测试项: 蓝牙 / 蓝牙开关状态
+INFO     app.seed_data:seed_data.py:413 创建测试模块: 以太网
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / 链路状态
+INFO     app.seed_data:seed_data.py:455 创建测试项: 以太网 / Ping 网关
+INFO     app.seed_data:seed_data.py:413 创建测试模块: CPU
+INFO     app.seed_data:seed_data.py:455 创建测试项: CPU / CPU 信息
+INFO     app.seed_data:seed_data.py:458 默认用例模板初始化完成
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备未找到
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: ADB 设备离线
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 命令超时
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 权限不足
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 二进制缺失
+INFO     app.services.memory_engine:memory_engine.py:82 创建失败模式: 兼容性不满足
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:07:16,872 [INFO] httpx: HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 201 Created"
+2026-11-13 09:07:16,899 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+2026-11-13 09:07:16,907 [INFO] httpx: HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 409 Conflict"
+2026-11-13 09:07:16,912 [INFO] httpx: HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 409 Conflict"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 201 Created"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks "HTTP/1.1 201 Created"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 409 Conflict"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/ai/tasks/natural "HTTP/1.1 409 Conflict"
+=========================== short test summary info ===========================
+FAILED tests/integration/test_v1_followup_audit.py::test_b3_ai_and_manual_creation_parity
+================== 1 failed, 459 passed in 252.61s (0:04:12) ==================
+

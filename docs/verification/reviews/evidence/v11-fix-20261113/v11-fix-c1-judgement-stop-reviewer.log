@@ -1,0 +1,114 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 32 items
+
+tests\unit\test_v1_judgement_stop.py ................................    [100%]
+
+=================================== PASSES ====================================
+________ test_audit_stop_on_failure_completes_remaining_items_as_skip _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:05:00,694 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:279 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+_________ test_stop_on_failure_all_trigger_kinds_fill_skip[fail-fail] _________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:05:01,324 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:279 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+________ test_stop_on_failure_all_trigger_kinds_fill_skip[error-error] ________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:05:01,916 [ERROR] app.services.task_executor: ������ 2 ִ���쳣: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 501, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2302, in _execute_mock_call
+    result = await effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 282, in _shell
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-11-13 11:05:01,928 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.task_executor:task_executor.py:521 ������ 2 ִ���쳣: boom
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 501, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\unittest\mock.py", line 2302, in _execute_mock_call
+    result = await effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 282, in _shell
+    raise RuntimeError("boom")
+RuntimeError: boom
+INFO     app.services.task_executor:task_executor.py:279 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+______ test_stop_on_failure_all_trigger_kinds_fill_skip[timeout-timeout] ______
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:05:02,633 [INFO] app.services.task_executor: ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:279 ���� 1 �ڲ����� 2 ��ʧ��ֹͣ
+__________ test_real_adb_launch_failure_classified_internal_error_rc __________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:05:02,682 [ERROR] app.services.device: adb shell ִ�����ڲ��쳣
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\device.py", line 300, in execute_shell
+    process = await asyncio.create_subprocess_exec(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 371, in _boom
+    raise FileNotFoundError(canary)
+FileNotFoundError: SECRET-CANARY-ADB-LAUNCH-9876
+------------------------------ Captured log call ------------------------------
+ERROR    app.services.device:device.py:322 adb shell ִ�����ڲ��쳣
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\device.py", line 300, in execute_shell
+    process = await asyncio.create_subprocess_exec(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_judgement_stop.py", line 371, in _boom
+    raise FileNotFoundError(canary)
+FileNotFoundError: SECRET-CANARY-ADB-LAUNCH-9876
+=========================== short test summary info ===========================
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_falsy_invalid_rules_cannot_be_passed_by_pattern
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[bad_rules0]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[bad_rules1]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[conditions]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[5]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[5.0]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[True]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_rules_root_is_error_even_with_pass_pattern[None]
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_result_parse_root_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_empty_dict_rules_still_route_to_pattern_layer
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_approx_ratio_zero_target_cannot_pass
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[00]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[0.00]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[01]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[0.01]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_zero_target_runtime_error[spec:zero]
+PASSED tests/unit/test_v1_judgement_stop.py::test_approx_ratio_nonzero_target_still_works
+PASSED tests/unit/test_v1_judgement_stop.py::test_non_numeric_comparison_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_nan_target_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_illegal_regex_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_unknown_operator_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_extract_failure_is_error
+PASSED tests/unit/test_v1_judgement_stop.py::test_both_patterns_hit_is_fail
+PASSED tests/unit/test_v1_judgement_stop.py::test_audit_stop_on_failure_completes_remaining_items_as_skip
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[fail-fail]
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[error-error]
+PASSED tests/unit/test_v1_judgement_stop.py::test_stop_on_failure_all_trigger_kinds_fill_skip[timeout-timeout]
+PASSED tests/unit/test_v1_judgement_stop.py::test_real_adb_launch_failure_classified_internal_error_rc
+PASSED tests/unit/test_v1_judgement_stop.py::test_adb_shell_engine_internal_error_rc_is_error_not_fail
+PASSED tests/unit/test_v1_judgement_stop.py::test_host_exec_launch_failure_is_error_and_canary_absent
+PASSED tests/unit/test_v1_judgement_stop.py::test_platform_exception_record_fields_safe
+PASSED tests/unit/test_v1_judgement_stop.py::test_task_error_message_persists_safe_summary
+============================= 32 passed in 3.95s ==============================
+
+exit=0 11:04:59

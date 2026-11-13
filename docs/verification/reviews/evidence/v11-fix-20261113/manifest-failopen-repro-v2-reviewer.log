@@ -1,0 +1,12 @@
+﻿[CLOSED] F1 CLOSED host ȱ sha256 �� ToolManifestError��ָ����Ŀ��  (raised ok=True��needle='demo/host/run.py' in message=True��)
+[CLOSED] F1 CLOSED ����Ž��״��ָ�� manifest ·��  (raised ok=True��needle='C:\\Users\\MCTECH\\AppData\\Local\\Temp\\tmp4he9mbd9\\test-tools\\demo\\manifest.yaml' in message=True��)
+[CLOSED] F2 CLOSED �� tools:{} �� declaration_gaps �ǿ�  (gaps=1)
+[CLOSED] F2 CLOSED ����Ž��״�  (raised ok=True��needle='demo' in message=True��)
+[CLOSED] F3 CLOSED {host_tool_dir} δ�������� �� �����״�  (raised ok=True��needle='run.py' in message=True��)
+[CLOSED] F3 CLOSED ����Ž��״��������·����  (raised ok=True��needle='{host_tool_dir}' in message=True��)
+[CLOSED] F3 CLOSED undeclared_reference ������Ŀ�ѷϳ�  (���ؼ��״�������ڿɷ��صĽ�����Ŀ)
+[CLOSED] F4 CLOSED �Ƿ�·����../���� �״��Һ�ԭʼ����ֵ  (raised ok=True��needle='../../etc/passwd' in message=True��)
+[CLOSED] F4 CLOSED ����Ž��״����ԭʼ����ֵ��  (raised ok=True��needle='../../etc/passwd' in message=True��)
+
+RESULT: ALL CLOSED (F1~F4 fail-open ��ȫ���޸�����Լ v1.1 ��6.1 A1~A4)
+

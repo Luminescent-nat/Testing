@@ -1,0 +1,5 @@
+﻿REPORTS-STABILITY x3 (test_v1_export_stability.py + test_reports_api.py), exit codes 0
+RUN 1: 15 passed in 15.12s, EXIT=0
+RUN 2: 15 passed in 14.35s, EXIT=0
+RUN 3: 15 passed in 14.86s, EXIT=0
+命令: .venv\Scripts\python.exe -m pytest tests\integration\test_v1_export_stability.py tests\integration\test_reports_api.py -q -W error::pytest.PytestUnraisableExceptionWarning

@@ -1,0 +1,178 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 44 items
+
+tests\unit\test_v1_tool_manifest.py ................                     [ 36%]
+tests\unit\test_tool_manifest.py .......                                 [ 52%]
+tests\unit\test_secret_strength.py .....................                 [100%]
+
+=================================== PASSES ====================================
+__ test_deleting_declared_device_binary_keeps_requirement_and_fails_startup ___
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,486 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-13 09:13:46,487 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_deleting_declared_device_0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+_______________ test_legacy_manifest_without_tools_is_rejected ________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,491 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-13 09:13:46,492 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_legacy_manifest_without_t0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+_________________________ test_sha256_mismatch_fails __________________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,496 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-13 09:13:46,498 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-13 09:13:46,498 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=1 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_sha256_mismatch_fails0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+____________________ test_missing_shared_dependency_fails _____________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,503 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+2026-11-13 09:13:46,507 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+2026-11-13 09:13:46,510 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_shared_dependency0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+_____________ test_undeclared_common_import_is_closure_violation ______________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,515 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+2026-11-13 09:13:46,518 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_common_import_0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+_____________ test_undeclared_sibling_module_is_closure_violation _____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,522 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_sibling_module0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_undeclared_sibling_module0\test-tools manifests=1 ����=1 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=1 ����ȱ��=0 skip=0 ok=False
+__________________ test_extra_required_missing_binary_fails ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,525 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_extra_required_missing_bi0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_extra_required_missing_bi0\test-tools manifests=1 ����=1 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+______________________ test_no_manifest_root_rejected_a5 ______________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,527 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-13 09:13:46,527 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+___________ test_real_repo_manifests_are_explicit_and_hashes_match ____________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,624 [WARNING] app.services.tool_manifest: �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+2026-11-13 09:13:46,624 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.tool_manifest:tool_manifest.py:387 �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+_______ test_a2_empty_tools_section_with_host_files_is_declaration_gap ________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,635 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a2_empty_tools_section_wi0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-13 09:13:46,635 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a2_empty_tools_section_wi0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a2_empty_tools_section_wi0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a2_empty_tools_section_wi0\test-tools manifests=1 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+___________ test_a5_tools_root_without_any_manifest_rejects_startup ___________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,643 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a5_tools_root_without_any0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-13 09:13:46,643 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a5_tools_root_without_any0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a5_tools_root_without_any0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_a5_tools_root_without_any0\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+__________________ test_all_declared_required_tools_present ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,652 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_all_declared_required_too0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_all_declared_required_too0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+________________ test_missing_optional_apk_is_skip_not_failure ________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,661 [WARNING] app.services.tool_manifest: �����嵥 skip: mod/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+2026-11-13 09:13:46,661 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_optional_apk_is_s0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+2026-11-13 09:13:46,663 [WARNING] app.services.tool_manifest: �����嵥 skip: mod/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+2026-11-13 09:13:46,664 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_optional_apk_is_s0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.tool_manifest:tool_manifest.py:387 �����嵥 skip: mod/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_optional_apk_is_s0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+WARNING  app.services.tool_manifest:tool_manifest.py:387 �����嵥 skip: mod/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_optional_apk_is_s0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+___________________ test_missing_binary_is_required_failure ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,668 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_binary_is_require0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_missing_binary_is_require0\test-tools manifests=1 ����=2 ȱʧ=1 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=False
+______________________ test_no_manifest_root_rejected_a5 ______________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,671 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected1\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+2026-11-13 09:13:46,671 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected1\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected1\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_no_manifest_root_rejected1\test-tools manifests=0 ����=0 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=1 skip=0 ok=False
+___________________ test_real_repo_test_tools_is_consistent ___________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,762 [WARNING] app.services.tool_manifest: �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+2026-11-13 09:13:46,762 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.tool_manifest:tool_manifest.py:387 �����嵥 skip: upfm/assets/test_app.apk����ѡ������Դȱʧ���� R3 �� skip����α���Ѿ�������
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=D:\MCTEST\test-platform\test-tools manifests=2 ����=27 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=1 ok=True
+______________ test_main_startup_validation_accepts_legal_secret ______________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 09:13:46,805 [INFO] app.services.tool_manifest: �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_main_startup_validation_a0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+------------------------------ Captured log call ------------------------------
+INFO     app.services.tool_manifest:tool_manifest.py:401 �����嵥У��(V1-08 ��ʽ����): root=C:\Users\MCTECH\AppData\Local\Temp\pytest-of-MCTECH\pytest-217\test_main_startup_validation_a0\test-tools manifests=1 ����=2 ȱʧ=0 ��ϣ����=0 �հ�ȱʧ=0 ����ȱ��=0 skip=0 ok=True
+=========================== short test summary info ===========================
+PASSED tests/unit/test_v1_tool_manifest.py::test_deleting_declared_device_binary_keeps_requirement_and_fails_startup
+PASSED tests/unit/test_v1_tool_manifest.py::test_legacy_manifest_without_tools_is_rejected
+PASSED tests/unit/test_v1_tool_manifest.py::test_sha256_mismatch_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_missing_shared_dependency_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_undeclared_common_import_is_closure_violation
+PASSED tests/unit/test_v1_tool_manifest.py::test_undeclared_sibling_module_is_closure_violation
+PASSED tests/unit/test_v1_tool_manifest.py::test_extra_required_missing_binary_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_no_manifest_root_rejected_a5
+PASSED tests/unit/test_v1_tool_manifest.py::test_missing_tools_root_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_real_repo_manifests_are_explicit_and_hashes_match
+PASSED tests/unit/test_v1_tool_manifest.py::test_a1_host_entry_missing_sha256_raises
+PASSED tests/unit/test_v1_tool_manifest.py::test_a1_shared_entry_missing_sha256_raises
+PASSED tests/unit/test_v1_tool_manifest.py::test_a2_empty_tools_section_with_host_files_is_declaration_gap
+PASSED tests/unit/test_v1_tool_manifest.py::test_a3_undeclared_host_tool_reference_hard_fails
+PASSED tests/unit/test_v1_tool_manifest.py::test_a4_illegal_path_raises_with_original_value
+PASSED tests/unit/test_v1_tool_manifest.py::test_a5_tools_root_without_any_manifest_rejects_startup
+PASSED tests/unit/test_tool_manifest.py::test_all_declared_required_tools_present
+PASSED tests/unit/test_tool_manifest.py::test_missing_required_runner_fails_and_names_manifest
+PASSED tests/unit/test_tool_manifest.py::test_missing_optional_apk_is_skip_not_failure
+PASSED tests/unit/test_tool_manifest.py::test_missing_binary_is_required_failure
+PASSED tests/unit/test_tool_manifest.py::test_no_manifest_root_rejected_a5
+PASSED tests/unit/test_tool_manifest.py::test_missing_tools_root_fails
+PASSED tests/unit/test_tool_manifest.py::test_real_repo_test_tools_is_consistent
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[None]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[   ]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[secret]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[SECRET]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[change-me]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[changeme]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[your-secret-key]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[please-change-me-in-production]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[please-change-me-in-production-but-much-longer-than-32-chars]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
+PASSED tests/unit/test_secret_strength.py::test_weak_secret_keys_are_rejected[short]
+PASSED tests/unit/test_secret_strength.py::test_error_message_never_echoes_the_key_value[please-change-me-in-production-but-much-longer-than-32-chars]
+PASSED tests/unit/test_secret_strength.py::test_error_message_never_echoes_the_key_value[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
+PASSED tests/unit/test_secret_strength.py::test_legal_and_boundary_keys_accepted
+PASSED tests/unit/test_secret_strength.py::test_minimum_length_boundary
+PASSED tests/unit/test_secret_strength.py::test_compose_requires_explicit_secret_key
+PASSED tests/unit/test_secret_strength.py::test_env_example_documents_strength_rules
+PASSED tests/unit/test_secret_strength.py::test_main_startup_validation_rejects_weak_secret
+PASSED tests/unit/test_secret_strength.py::test_main_startup_validation_accepts_legal_secret
+============================= 44 passed in 0.37s ==============================
+
+exit=0 09:13:46

@@ -44,7 +44,7 @@
   - [ ] 合法管理员和普通用户路径均使用同一校验结果。
 - 验证：运行 `test_task_device_authorization.py`，手动/AI各覆盖允许与拒绝路径。
 - 回退：单独还原两个创建入口的授权接入。
-- 状态：已完成（2026-11-12 V1 轮；与 T-03 同轮实现，AI 自然语言创建写前授权且 offline/maintenance→409（[RR-V1-FIX-T22](../verification/reviews/RR-V1-FIX-T22.md) 收口），他人设备 403 且零任务写入。证据 [T-04](../verification/tasks/T-04/)）
+- 状态：已完成（2026-11-12 V1 轮 + 2026-11-13 契约 v1.1 增补：AI 入口改为「resolve_device→设备授权 403→状态 409→知识/LLM（plan_for_device）→统一创建服务」，授权拒绝/不可用时知识与 LLM 调用计数为 0（B1/B2 永久回归）；统一创建服务 [task_creation.py](../../test-platform/backend/app/services/task_creation.py) 手动/AI 共用、AI 独立幂等 operation、成功 201；B3 差分逐字段一致。[RR-V11-FIX-B](../verification/reviews/RR-V11-FIX-B.md) 通过。遗留：AI 缺失幂等键不强幂等（同手动，待 U-D1）、设备不存在仍 400。证据 [T-04](../verification/tasks/T-04/)）
 
 ## T-05 报告与 WS 统一用户状态及归属
 - 改动：在报告读取/导出和 WS 首消息订阅中复用 active+创建者/管理员校验。
@@ -84,7 +84,7 @@
   - [ ] Dashboard、趋势、模块、报告和导出同一数据结果一致。
 - 验证：运行 `test_unified_statistics.py`，STAT/DASH/ZERO场景及报告导出核对。
 - 回退：单独还原读模型，不改变T-07落库语义。
-- 状态：已完成（2026-11-12 V1 轮；单一 [statistics.py](../../test-platform/backend/app/services/statistics.py) 聚合供详情/列表/WS/Dashboard/报告/导出复用：running/pending 不计完成、未完成 result=null、skip 不进分母、零分母 null、Dashboard today 10 键完整分列；前端 reports/dashboard 改用后端口径（自算通过率 0 残留）。[RR-V1-FIX-T08](../verification/reviews/RR-V1-FIX-T08.md)、[RR-V1-FIX-T08B](../verification/reviews/RR-V1-FIX-T08B.md) 通过。遗留：浏览器级页面走查与真实联调未做。证据 [T-08](../verification/tasks/T-08/)）
+- 状态：已完成（2026-11-12 V1 轮 + 2026-11-13 契约 v1.1 增补：单一 [statistics.py](../../test-platform/backend/app/services/statistics.py) 聚合复用（running/pending 不计完成、skip 不进分母、零分母 null、Dashboard today 10 键分列、前端改后端口径）；**HTML 导出写读竞态治理**——根因写时截断+后台重写竞窗，临时文件+fsync+os.replace 原子替换、读侧重试、缓存契约 TC-RPT-011 未放宽，20 连跑+并发重写 20 轮通过。[RR-V1-FIX-T08](../verification/reviews/RR-V1-FIX-T08.md)、[RR-V1-FIX-T08B](../verification/reviews/RR-V1-FIX-T08B.md)、[RR-V11-FIX-C](../verification/reviews/RR-V11-FIX-C.md) 通过。遗留：浏览器级页面走查与真实联调未做。证据 [T-08](../verification/tasks/T-08/)）
 
 ## T-09 修复任务参数写前校验与渲染
 - 改动：按item_id嵌套标量结构统一创建校验、保存和目标项参数渲染。
@@ -144,7 +144,7 @@
   - [ ] 重启不动未到期pending，旧收尾不覆盖cancelled。
 - 验证：运行 `test_task_lifecycle.py` 各状态取消/删除/重启和越权路径。
 - 回退：单独还原生命周期逻辑，保留其他迁移。
-- 状态：已完成（2026-11-12 V1 轮；DELETE pending/running→409、终态软删除 deleted_at 幂等（引用 retained）、越权 403；创建与重跑 offline/maintenance 409；item_ids 空/非正/重复/不存在/禁用→400 details.field 精确；004_task_deleted_at 迁移含数据保护 downgrade。证据 [T-14](../verification/tasks/T-14/)、[RR-V1-FIX-T14](../verification/reviews/RR-V1-FIX-T14.md)）
+- 状态：已完成（2026-11-12 V1 轮 + 2026-11-13 契约 v1.1 增补：DELETE 软删除/409/幂等/越权、item_ids 400、004 迁移；**cancel 竞态治理**——状态推进全部条件更新（输掉竞态零写入、不调度报告/记忆体）、cancel 端点预检后条件更新+幂等语义保持、收尾移出异常作用域（根治 CancelledError 钉帧致收尾 BUSY）、cancel_task 单次投递、conftest WAL+busy_timeout（Lead 授权）；20 连跑双路径+并发 10 多轮全绿、全量连续 2 轮 467 passed。[RR-V11-FIX-C](../verification/reviews/RR-V11-FIX-C.md) 通过。证据 [T-14](../verification/tasks/T-14/)）
 
 ## T-15 统一知识转换条件规则结构
 - 改动：预览/转换/执行共用conditional_rules对象schema并在写前拒绝非法规则。
@@ -174,7 +174,7 @@
   - [ ] 必需工具缺失明确失败，范围内APK/外设缺失如实skip。
 - 验证：干净构建/启动并导出工具清单和镜像内路径，保存完整日志。
 - 回退：单独还原Docker与发现校验改动。
-- 状态：已完成/有条件（2026-11-12 V1 轮；manifest 显式 `tools:` 声明（host runner+共享依赖闭包+设备二进制 ABI/version/sha256），删除任何已声明文件→启动失败；无 tools 声明模块判 declaration_gaps 致命；check_image_tools 仅真实 docker build+compose up+/health+容器内发现才 verified，本机 UNVERIFIABLE；upfm/emmc manifest 哈希与 27 必需+1 skip 校验通过。[RR-V1-FIX-T17](../verification/reviews/RR-V1-FIX-T17.md)（含 V1-08 收口）。遗留：本机无 docker，干净构建/容器启动无法核验；ddr 无 manifest（arm64 是否属 V1 待确认）。证据 [T-17](../verification/tasks/T-17/)）
+- 状态：已完成（2026-11-13 契约 v1.1 轮：§6.1 A1~A5 五规则落地——host/shared sha256 必填、空 tools 段判缺口、`{host_tool_dir}` 引用必须显式声明（废除 undeclared 降级）、非法路径硬失败、空 TEST_TOOLS_PATH 拒绝启动；F1~F4 销项 9/9 CLOSED（[manifest-failopen-repro-v2](../verification/tasks/T-17/manifest-failopen-repro-v2.py)）；真实仓库 --validate ok=true；compose image 与 check_image_tools tag 对齐（task-D）。[RR-V11-FIX-A](../verification/reviews/RR-V11-FIX-A.md) 通过。遗留：本机无 docker 干净构建无法核验；ddr/ABI 矩阵待用户。证据 [T-17](../verification/tasks/T-17/)）
 
 ## T-18 拒绝弱默认密钥
 - 改动：启动校验拒绝空、短密钥和契约列出的占位值且不打印密钥。

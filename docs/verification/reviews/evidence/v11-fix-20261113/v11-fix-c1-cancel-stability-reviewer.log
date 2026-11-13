@@ -1,0 +1,917 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.4, pluggy-1.6.0
+rootdir: D:\MCTEST\test-platform\backend
+configfile: pytest.ini
+plugins: anyio-4.14.2, asyncio-0.23.3, cov-4.1.0
+asyncio: mode=Mode.AUTO
+collected 7 items
+
+tests\unit\test_v1_cancel_stability.py .......                           [100%]
+
+=================================== PASSES ====================================
+______ test_red_executor_completed_finalize_must_not_overwrite_cancelled ______
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:45,996 [WARNING] app.services.task_executor: ���� 1 �ѱ�����ȡ����β������ completed ��β/������/����
+------------------------------ Captured log call ------------------------------
+WARNING  app.services.task_executor:task_executor.py:295 ���� 1 �ѱ�����ȡ����β������ completed ��β/������/����
+________________ test_red_cancel_persisted_when_release_raises ________________
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:46,574 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ��
+2026-11-13 11:04:46,574 [ERROR] app.services.task_executor: ���� 1 ��β�ͷ��豸ʧ�ܣ��ع���������
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 270, in _execute_with_db
+    await cls._execute_item(task, device, item, record, db)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 501, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_cancel_stability.py", line 72, in _shell
+    await gate.wait()
+  File "C:\Program Files\Python312\Lib\asyncio\locks.py", line 212, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 320, in _execute_with_db
+    await cls._release_device(db, device, task_id)
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_cancel_stability.py", line 141, in flaky_release
+    raise RuntimeError("simulated broken session")
+RuntimeError: simulated broken session
+2026-11-13 11:04:46,581 [INFO] app.services.task_executor: ���� 1 ȡ���źŴ����ʼ
+2026-11-13 11:04:46,600 [INFO] app.services.task_executor: ���� 1 ȡ�������ޱ����������̬��
+2026-11-13 11:04:46,600 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:110 ���� 1 ȡ���ź���Ͷ��
+ERROR    app.services.task_executor:task_executor.py:322 ���� 1 ��β�ͷ��豸ʧ�ܣ��ع���������
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 270, in _execute_with_db
+    await cls._execute_item(task, device, item, record, db)
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 501, in _execute_item
+    exec_result = await engine.execute(device, item, item_custom_params, on_output=on_output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\execution_engine.py", line 389, in execute
+    stdout, stderr, returncode = await self.adb.execute_shell(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_cancel_stability.py", line 72, in _shell
+    await gate.wait()
+  File "C:\Program Files\Python312\Lib\asyncio\locks.py", line 212, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\MCTEST\test-platform\backend\tests\..\app\services\task_executor.py", line 320, in _execute_with_db
+    await cls._release_device(db, device, task_id)
+  File "D:\MCTEST\test-platform\backend\tests\unit\test_v1_cancel_stability.py", line 141, in flaky_release
+    raise RuntimeError("simulated broken session")
+RuntimeError: simulated broken session
+INFO     app.services.task_executor:task_executor.py:172 ���� 1 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 1 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 1 ��ȡ��
+______________ test_cancel_twenty_consecutive_cycles_legacy_api _______________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 11:04:47,131 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-13 11:04:47,132 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-13 11:04:47,133 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-13 11:04:47,134 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-13 11:04:47,134 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-13 11:04:47,135 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-13 11:04:47,135 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-13 11:04:47,136 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-13 11:04:47,136 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-13 11:04:47,137 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:47,137 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:47,138 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:47,138 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:47,142 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-13 11:04:47,142 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-13 11:04:47,143 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-13 11:04:47,144 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-13 11:04:47,145 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-13 11:04:47,146 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-13 11:04:47,146 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-13 11:04:47,147 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-13 11:04:47,148 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-13 11:04:47,149 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-13 11:04:47,161 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-13 11:04:47,163 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-13 11:04:47,164 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-13 11:04:47,164 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-13 11:04:47,165 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-13 11:04:47,166 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-13 11:04:47,166 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-13 11:04:47,375 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:47,518 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ��
+2026-11-13 11:04:47,525 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:47,538 [INFO] app.services.task_executor: ���� 1 ȡ���źŴ����ʼ
+2026-11-13 11:04:47,557 [INFO] app.services.task_executor: ���� 1 ȡ�������ޱ����������̬��
+2026-11-13 11:04:47,558 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+2026-11-13 11:04:47,656 [INFO] app.services.task_executor: ���� 2 ȡ���ź���Ͷ��
+2026-11-13 11:04:47,660 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/2/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:47,672 [INFO] app.services.task_executor: ���� 2 ȡ���źŴ����ʼ
+2026-11-13 11:04:47,693 [INFO] app.services.task_executor: ���� 2 ȡ�������ޱ����������̬��
+2026-11-13 11:04:47,693 [INFO] app.services.task_executor: ���� 2 ��ȡ��
+2026-11-13 11:04:47,815 [INFO] app.services.task_executor: ���� 3 ȡ���ź���Ͷ��
+2026-11-13 11:04:47,820 [INFO] app.services.task_executor: ���� 3 ȡ���źŴ����ʼ
+2026-11-13 11:04:47,841 [INFO] app.services.task_executor: ���� 3 ȡ�������ޱ����������̬��
+2026-11-13 11:04:47,841 [INFO] app.services.task_executor: ���� 3 ��ȡ��
+2026-11-13 11:04:47,857 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/3/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:47,993 [INFO] app.services.task_executor: ���� 4 ȡ���ź���Ͷ��
+2026-11-13 11:04:47,996 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/4/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,002 [INFO] app.services.task_executor: ���� 4 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,021 [INFO] app.services.task_executor: ���� 4 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,022 [INFO] app.services.task_executor: ���� 4 ��ȡ��
+2026-11-13 11:04:48,128 [INFO] app.services.task_executor: ���� 5 ȡ���ź���Ͷ��
+2026-11-13 11:04:48,133 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/5/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,143 [INFO] app.services.task_executor: ���� 5 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,157 [INFO] app.services.task_executor: ���� 5 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,157 [INFO] app.services.task_executor: ���� 5 ��ȡ��
+2026-11-13 11:04:48,249 [INFO] app.services.task_executor: ���� 6 ȡ���ź���Ͷ��
+2026-11-13 11:04:48,255 [INFO] app.services.task_executor: ���� 6 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,274 [INFO] app.services.task_executor: ���� 6 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,274 [INFO] app.services.task_executor: ���� 6 ��ȡ��
+2026-11-13 11:04:48,294 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/6/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,398 [INFO] app.services.task_executor: ���� 7 ȡ���ź���Ͷ��
+2026-11-13 11:04:48,403 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/7/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,414 [INFO] app.services.task_executor: ���� 7 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,430 [INFO] app.services.task_executor: ���� 7 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,430 [INFO] app.services.task_executor: ���� 7 ��ȡ��
+2026-11-13 11:04:48,696 [INFO] app.services.task_executor: ���� 8 ȡ���ź���Ͷ��
+2026-11-13 11:04:48,701 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/8/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,708 [INFO] app.services.task_executor: ���� 8 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,728 [INFO] app.services.task_executor: ���� 8 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,728 [INFO] app.services.task_executor: ���� 8 ��ȡ��
+2026-11-13 11:04:48,832 [INFO] app.services.task_executor: ���� 9 ȡ���ź���Ͷ��
+2026-11-13 11:04:48,837 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/9/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:48,849 [INFO] app.services.task_executor: ���� 9 ȡ���źŴ����ʼ
+2026-11-13 11:04:48,867 [INFO] app.services.task_executor: ���� 9 ȡ�������ޱ����������̬��
+2026-11-13 11:04:48,868 [INFO] app.services.task_executor: ���� 9 ��ȡ��
+2026-11-13 11:04:49,000 [INFO] app.services.task_executor: ���� 10 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,006 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/10/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,013 [INFO] app.services.task_executor: ���� 10 ȡ���źŴ����ʼ
+2026-11-13 11:04:49,030 [INFO] app.services.task_executor: ���� 10 ȡ�������ޱ����������̬��
+2026-11-13 11:04:49,031 [INFO] app.services.task_executor: ���� 10 ��ȡ��
+2026-11-13 11:04:49,149 [INFO] app.services.task_executor: ���� 11 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,154 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/11/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,163 [INFO] app.services.task_executor: ���� 11 ȡ���źŴ����ʼ
+2026-11-13 11:04:49,182 [INFO] app.services.task_executor: ���� 11 ȡ�������ޱ����������̬��
+2026-11-13 11:04:49,182 [INFO] app.services.task_executor: ���� 11 ��ȡ��
+2026-11-13 11:04:49,495 [INFO] app.services.task_executor: ���� 12 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,500 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/12/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,508 [INFO] app.services.task_executor: ���� 12 ȡ���źŴ����ʼ
+2026-11-13 11:04:49,527 [INFO] app.services.task_executor: ���� 12 ȡ�������ޱ����������̬��
+2026-11-13 11:04:49,528 [INFO] app.services.task_executor: ���� 12 ��ȡ��
+2026-11-13 11:04:49,649 [INFO] app.services.task_executor: ���� 13 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,653 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/13/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,666 [INFO] app.services.task_executor: ���� 13 ȡ���źŴ����ʼ
+2026-11-13 11:04:49,682 [INFO] app.services.task_executor: ���� 13 ȡ�������ޱ����������̬��
+2026-11-13 11:04:49,682 [INFO] app.services.task_executor: ���� 13 ��ȡ��
+2026-11-13 11:04:49,814 [INFO] app.services.task_executor: ���� 14 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,819 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/14/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,828 [INFO] app.services.task_executor: ���� 14 ȡ���źŴ����ʼ
+2026-11-13 11:04:49,845 [INFO] app.services.task_executor: ���� 14 ȡ�������ޱ����������̬��
+2026-11-13 11:04:49,845 [INFO] app.services.task_executor: ���� 14 ��ȡ��
+2026-11-13 11:04:49,966 [INFO] app.services.task_executor: ���� 15 ȡ���ź���Ͷ��
+2026-11-13 11:04:49,971 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/15/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:49,983 [INFO] app.services.task_executor: ���� 15 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,004 [INFO] app.services.task_executor: ���� 15 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,005 [INFO] app.services.task_executor: ���� 15 ��ȡ��
+2026-11-13 11:04:50,125 [INFO] app.services.task_executor: ���� 16 ȡ���ź���Ͷ��
+2026-11-13 11:04:50,132 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/16/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:50,141 [INFO] app.services.task_executor: ���� 16 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,160 [INFO] app.services.task_executor: ���� 16 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,160 [INFO] app.services.task_executor: ���� 16 ��ȡ��
+2026-11-13 11:04:50,295 [INFO] app.services.task_executor: ���� 17 ȡ���ź���Ͷ��
+2026-11-13 11:04:50,299 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/17/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:50,311 [INFO] app.services.task_executor: ���� 17 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,330 [INFO] app.services.task_executor: ���� 17 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,330 [INFO] app.services.task_executor: ���� 17 ��ȡ��
+2026-11-13 11:04:50,465 [INFO] app.services.task_executor: ���� 18 ȡ���ź���Ͷ��
+2026-11-13 11:04:50,470 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/18/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:50,478 [INFO] app.services.task_executor: ���� 18 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,496 [INFO] app.services.task_executor: ���� 18 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,496 [INFO] app.services.task_executor: ���� 18 ��ȡ��
+2026-11-13 11:04:50,617 [INFO] app.services.task_executor: ���� 19 ȡ���ź���Ͷ��
+2026-11-13 11:04:50,623 [INFO] app.services.task_executor: ���� 19 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,647 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/19/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:50,659 [INFO] app.services.task_executor: ���� 19 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,659 [INFO] app.services.task_executor: ���� 19 ��ȡ��
+2026-11-13 11:04:50,773 [INFO] app.services.task_executor: ���� 20 ȡ���ź���Ͷ��
+2026-11-13 11:04:50,779 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/20/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:50,788 [INFO] app.services.task_executor: ���� 20 ȡ���źŴ����ʼ
+2026-11-13 11:04:50,807 [INFO] app.services.task_executor: ���� 20 ȡ�������ޱ����������̬��
+2026-11-13 11:04:50,807 [INFO] app.services.task_executor: ���� 20 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:110 ���� 1 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 1 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 1 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 1 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 2 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/2/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 2 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 2 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 2 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 3 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 3 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 3 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 3 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/3/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:110 ���� 4 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/4/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 4 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 4 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 4 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 5 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/5/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 5 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 5 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 5 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 6 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 6 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 6 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 6 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/6/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:110 ���� 7 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/7/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 7 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 7 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 7 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 8 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/8/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 8 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 8 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 8 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 9 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/9/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 9 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 9 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 9 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 10 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/10/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 10 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 10 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 10 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 11 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/11/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 11 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 11 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 11 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 12 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/12/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 12 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 12 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 12 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 13 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/13/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 13 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 13 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 13 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 14 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/14/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 14 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 14 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 14 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 15 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/15/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 15 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 15 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 15 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 16 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/16/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 16 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 16 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 16 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 17 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/17/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 17 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 17 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 17 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 18 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/18/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 18 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 18 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 18 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 19 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 19 ȡ���źŴ����ʼ
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/19/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:601 ���� 19 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 19 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 20 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/20/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 20 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 20 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 20 ��ȡ��
+___________ test_cancel_twenty_consecutive_cycles_cancellations_api ___________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 11:04:51,414 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-13 11:04:51,415 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-13 11:04:51,417 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-13 11:04:51,418 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-13 11:04:51,419 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-13 11:04:51,419 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-13 11:04:51,420 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-13 11:04:51,420 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-13 11:04:51,421 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-13 11:04:51,421 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:51,422 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:51,423 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:51,423 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:51,429 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-13 11:04:51,429 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-13 11:04:51,430 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-13 11:04:51,432 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-13 11:04:51,432 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-13 11:04:51,434 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-13 11:04:51,435 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-13 11:04:51,435 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-13 11:04:51,438 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-13 11:04:51,438 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-13 11:04:51,449 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-13 11:04:51,452 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-13 11:04:51,453 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-13 11:04:51,453 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-13 11:04:51,454 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-13 11:04:51,454 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-13 11:04:51,455 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-13 11:04:51,683 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:51,834 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ��
+2026-11-13 11:04:51,839 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:51,850 [INFO] app.services.task_executor: ���� 1 ȡ���źŴ����ʼ
+2026-11-13 11:04:51,872 [INFO] app.services.task_executor: ���� 1 ȡ�������ޱ����������̬��
+2026-11-13 11:04:51,872 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+2026-11-13 11:04:52,019 [INFO] app.services.task_executor: ���� 2 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,024 [INFO] app.services.task_executor: ���� 2 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,045 [INFO] app.services.task_executor: ���� 2 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,046 [INFO] app.services.task_executor: ���� 2 ��ȡ��
+2026-11-13 11:04:52,050 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/2/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,162 [INFO] app.services.task_executor: ���� 3 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,167 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/3/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,176 [INFO] app.services.task_executor: ���� 3 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,196 [INFO] app.services.task_executor: ���� 3 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,196 [INFO] app.services.task_executor: ���� 3 ��ȡ��
+2026-11-13 11:04:52,317 [INFO] app.services.task_executor: ���� 4 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,322 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/4/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,331 [INFO] app.services.task_executor: ���� 4 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,347 [INFO] app.services.task_executor: ���� 4 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,347 [INFO] app.services.task_executor: ���� 4 ��ȡ��
+2026-11-13 11:04:52,469 [INFO] app.services.task_executor: ���� 5 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,473 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/5/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,485 [INFO] app.services.task_executor: ���� 5 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,501 [INFO] app.services.task_executor: ���� 5 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,502 [INFO] app.services.task_executor: ���� 5 ��ȡ��
+2026-11-13 11:04:52,625 [INFO] app.services.task_executor: ���� 6 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,634 [INFO] app.services.task_executor: ���� 6 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,641 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/6/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,668 [INFO] app.services.task_executor: ���� 6 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,668 [INFO] app.services.task_executor: ���� 6 ��ȡ��
+2026-11-13 11:04:52,796 [INFO] app.services.task_executor: ���� 7 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,800 [INFO] app.services.task_executor: ���� 7 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,826 [INFO] app.services.task_executor: ���� 7 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,826 [INFO] app.services.task_executor: ���� 7 ��ȡ��
+2026-11-13 11:04:52,827 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/7/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,946 [INFO] app.services.task_executor: ���� 8 ȡ���ź���Ͷ��
+2026-11-13 11:04:52,954 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/8/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:52,961 [INFO] app.services.task_executor: ���� 8 ȡ���źŴ����ʼ
+2026-11-13 11:04:52,976 [INFO] app.services.task_executor: ���� 8 ȡ�������ޱ����������̬��
+2026-11-13 11:04:52,976 [INFO] app.services.task_executor: ���� 8 ��ȡ��
+2026-11-13 11:04:53,086 [INFO] app.services.task_executor: ���� 9 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,091 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/9/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,101 [INFO] app.services.task_executor: ���� 9 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,119 [INFO] app.services.task_executor: ���� 9 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,120 [INFO] app.services.task_executor: ���� 9 ��ȡ��
+2026-11-13 11:04:53,227 [INFO] app.services.task_executor: ���� 10 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,233 [INFO] app.services.task_executor: ���� 10 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,249 [INFO] app.services.task_executor: ���� 10 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,249 [INFO] app.services.task_executor: ���� 10 ��ȡ��
+2026-11-13 11:04:53,257 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/10/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,361 [INFO] app.services.task_executor: ���� 11 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,365 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/11/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,376 [INFO] app.services.task_executor: ���� 11 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,395 [INFO] app.services.task_executor: ���� 11 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,396 [INFO] app.services.task_executor: ���� 11 ��ȡ��
+2026-11-13 11:04:53,528 [INFO] app.services.task_executor: ���� 12 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,535 [INFO] app.services.task_executor: ���� 12 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,541 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/12/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,565 [INFO] app.services.task_executor: ���� 12 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,566 [INFO] app.services.task_executor: ���� 12 ��ȡ��
+2026-11-13 11:04:53,682 [INFO] app.services.task_executor: ���� 13 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,687 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/13/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,700 [INFO] app.services.task_executor: ���� 13 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,715 [INFO] app.services.task_executor: ���� 13 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,715 [INFO] app.services.task_executor: ���� 13 ��ȡ��
+2026-11-13 11:04:53,827 [INFO] app.services.task_executor: ���� 14 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,831 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/14/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,841 [INFO] app.services.task_executor: ���� 14 ȡ���źŴ����ʼ
+2026-11-13 11:04:53,861 [INFO] app.services.task_executor: ���� 14 ȡ�������ޱ����������̬��
+2026-11-13 11:04:53,861 [INFO] app.services.task_executor: ���� 14 ��ȡ��
+2026-11-13 11:04:53,974 [INFO] app.services.task_executor: ���� 15 ȡ���ź���Ͷ��
+2026-11-13 11:04:53,978 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/15/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:53,991 [INFO] app.services.task_executor: ���� 15 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,013 [INFO] app.services.task_executor: ���� 15 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,013 [INFO] app.services.task_executor: ���� 15 ��ȡ��
+2026-11-13 11:04:54,127 [INFO] app.services.task_executor: ���� 16 ȡ���ź���Ͷ��
+2026-11-13 11:04:54,132 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/16/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:54,141 [INFO] app.services.task_executor: ���� 16 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,159 [INFO] app.services.task_executor: ���� 16 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,159 [INFO] app.services.task_executor: ���� 16 ��ȡ��
+2026-11-13 11:04:54,282 [INFO] app.services.task_executor: ���� 17 ȡ���ź���Ͷ��
+2026-11-13 11:04:54,286 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/17/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:54,291 [INFO] app.services.task_executor: ���� 17 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,310 [INFO] app.services.task_executor: ���� 17 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,310 [INFO] app.services.task_executor: ���� 17 ��ȡ��
+2026-11-13 11:04:54,422 [INFO] app.services.task_executor: ���� 18 ȡ���ź���Ͷ��
+2026-11-13 11:04:54,428 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/18/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:54,436 [INFO] app.services.task_executor: ���� 18 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,458 [INFO] app.services.task_executor: ���� 18 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,458 [INFO] app.services.task_executor: ���� 18 ��ȡ��
+2026-11-13 11:04:54,586 [INFO] app.services.task_executor: ���� 19 ȡ���ź���Ͷ��
+2026-11-13 11:04:54,591 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/19/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:54,599 [INFO] app.services.task_executor: ���� 19 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,617 [INFO] app.services.task_executor: ���� 19 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,618 [INFO] app.services.task_executor: ���� 19 ��ȡ��
+2026-11-13 11:04:54,735 [INFO] app.services.task_executor: ���� 20 ȡ���ź���Ͷ��
+2026-11-13 11:04:54,739 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/20/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:54,749 [INFO] app.services.task_executor: ���� 20 ȡ���źŴ����ʼ
+2026-11-13 11:04:54,761 [INFO] app.services.task_executor: ���� 20 ȡ�������ޱ����������̬��
+2026-11-13 11:04:54,761 [INFO] app.services.task_executor: ���� 20 ��ȡ��
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:110 ���� 1 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 1 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 1 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 1 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 2 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 2 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 2 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 2 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/2/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:110 ���� 3 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/3/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 3 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 3 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 3 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 4 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/4/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 4 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 4 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 4 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 5 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/5/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 5 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 5 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 5 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 6 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 6 ȡ���źŴ����ʼ
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/6/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:601 ���� 6 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 6 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 7 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 7 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 7 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 7 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/7/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:110 ���� 8 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/8/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 8 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 8 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 8 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 9 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/9/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 9 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 9 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 9 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 10 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 10 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 10 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 10 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/10/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:110 ���� 11 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/11/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 11 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 11 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 11 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 12 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 12 ȡ���źŴ����ʼ
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/12/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:601 ���� 12 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 12 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 13 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/13/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 13 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 13 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 13 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 14 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/14/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 14 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 14 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 14 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 15 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/15/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 15 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 15 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 15 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 16 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/16/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 16 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 16 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 16 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 17 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/17/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 17 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 17 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 17 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 18 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/18/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 18 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 18 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 18 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 19 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/19/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 19 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 19 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 19 ��ȡ��
+INFO     app.services.task_executor:task_executor.py:110 ���� 20 ȡ���ź���Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/20/cancellations "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 20 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 20 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 20 ��ȡ��
+__________________ test_concurrent_ten_cancels_legacy_no_500 __________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 11:04:55,281 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-13 11:04:55,281 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-13 11:04:55,285 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-13 11:04:55,285 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-13 11:04:55,285 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:55,289 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:55,293 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:55,293 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:55,297 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-13 11:04:55,297 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-13 11:04:55,297 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-13 11:04:55,302 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-13 11:04:55,302 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-13 11:04:55,306 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-13 11:04:55,306 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-13 11:04:55,306 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-13 11:04:55,310 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-13 11:04:55,311 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-13 11:04:55,331 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-13 11:04:55,335 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-13 11:04:55,336 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-13 11:04:55,337 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-13 11:04:55,337 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-13 11:04:55,338 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-13 11:04:55,339 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-13 11:04:55,566 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:55,703 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ��
+2026-11-13 11:04:55,707 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,707 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,711 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,771 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:55,778 [INFO] app.services.task_executor: ���� 1 ȡ���źŴ����ʼ
+2026-11-13 11:04:55,780 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,784 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,799 [INFO] app.services.task_executor: ���� 1 ȡ�������ޱ����������̬��
+2026-11-13 11:04:55,799 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+2026-11-13 11:04:55,812 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,829 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,846 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,862 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,874 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,887 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,905 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:55,965 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:110 ���� 1 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:172 ���� 1 ȡ���źŴ����ʼ
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:601 ���� 1 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 1 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+_______________ test_concurrent_ten_cancels_mixed_paths_no_500 ________________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 11:04:56,571 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-13 11:04:56,574 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-13 11:04:56,577 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-13 11:04:56,578 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-13 11:04:56,579 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-13 11:04:56,580 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-13 11:04:56,582 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-13 11:04:56,582 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-13 11:04:56,583 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-13 11:04:56,583 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:56,585 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:56,585 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:56,586 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:56,591 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-13 11:04:56,591 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-13 11:04:56,592 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-13 11:04:56,594 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-13 11:04:56,594 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-13 11:04:56,596 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-13 11:04:56,597 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-13 11:04:56,597 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-13 11:04:56,599 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-13 11:04:56,600 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-13 11:04:56,616 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-13 11:04:56,620 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-13 11:04:56,620 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-13 11:04:56,620 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-13 11:04:56,620 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-13 11:04:56,624 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-13 11:04:56,625 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-13 11:04:56,836 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:57,001 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ��
+2026-11-13 11:04:57,007 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,008 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,012 [INFO] app.services.task_executor: ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+2026-11-13 11:04:57,012 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,016 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,016 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,031 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,043 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,059 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,070 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,088 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,122 [INFO] app.services.task_executor: ���� 1 ȡ���źŴ����ʼ
+2026-11-13 11:04:57,149 [INFO] app.services.task_executor: ���� 1 ȡ�������ޱ����������̬��
+2026-11-13 11:04:57,149 [INFO] app.services.task_executor: ���� 1 ��ȡ��
+2026-11-13 11:04:57,182 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+2026-11-13 11:04:57,211 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     app.services.task_executor:task_executor.py:110 ���� 1 ȡ���ź���Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     app.services.task_executor:task_executor.py:112 ���� 1 ȡ���ź���Ͷ�ݹ��������ظ�Ͷ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+INFO     app.services.task_executor:task_executor.py:172 ���� 1 ȡ���źŴ����ʼ
+INFO     app.services.task_executor:task_executor.py:601 ���� 1 ȡ�������ޱ����������̬��
+INFO     app.services.task_executor:task_executor.py:90 ���� 1 ��ȡ��
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancellations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 200 OK"
+___________ test_cancel_terminal_task_returns_400_validation_error ____________
+---------------------------- Captured stderr setup ----------------------------
+2026-11-13 11:04:57,731 [INFO] app.seed_data: ��������ģ��: DDR
+2026-11-13 11:04:57,732 [INFO] app.seed_data: ����������: DDR / ����У��
+2026-11-13 11:04:57,735 [INFO] app.seed_data: ��������ģ��: EMMC
+2026-11-13 11:04:57,735 [INFO] app.seed_data: ����������: EMMC / �ڵ���
+2026-11-13 11:04:57,737 [INFO] app.seed_data: ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+2026-11-13 11:04:57,739 [INFO] app.seed_data: ����������: EMMC / ˳�������
+2026-11-13 11:04:57,739 [INFO] app.seed_data: ����������: EMMC / ˳��д����
+2026-11-13 11:04:57,739 [INFO] app.seed_data: ����������: EMMC / ���������
+2026-11-13 11:04:57,739 [INFO] app.seed_data: ����������: EMMC / ���д����
+2026-11-13 11:04:57,741 [INFO] app.seed_data: ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:57,742 [INFO] app.seed_data: ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:57,742 [INFO] app.seed_data: ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:57,743 [INFO] app.seed_data: ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+2026-11-13 11:04:57,747 [INFO] app.seed_data: ��������ģ��: WIFI
+2026-11-13 11:04:57,748 [INFO] app.seed_data: ����������: WIFI / WIFI ����״̬
+2026-11-13 11:04:57,749 [INFO] app.seed_data: ����������: WIFI / WIFI �ź�ǿ��
+2026-11-13 11:04:57,751 [INFO] app.seed_data: ��������ģ��: ����
+2026-11-13 11:04:57,752 [INFO] app.seed_data: ����������: ���� / ��������״̬
+2026-11-13 11:04:57,754 [INFO] app.seed_data: ��������ģ��: ��̫��
+2026-11-13 11:04:57,755 [INFO] app.seed_data: ����������: ��̫�� / ��·״̬
+2026-11-13 11:04:57,756 [INFO] app.seed_data: ����������: ��̫�� / Ping ����
+2026-11-13 11:04:57,757 [INFO] app.seed_data: ��������ģ��: CPU
+2026-11-13 11:04:57,758 [INFO] app.seed_data: ����������: CPU / CPU ��Ϣ
+2026-11-13 11:04:57,771 [INFO] app.seed_data: Ĭ������ģ���ʼ�����
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸δ�ҵ�
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ADB �豸����
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ���ʱ
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: Ȩ�޲���
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: ������ȱʧ
+2026-11-13 11:04:57,774 [INFO] app.services.memory_engine: ����ʧ��ģʽ: �����Բ�����
+2026-11-13 11:04:57,983 [INFO] httpx: HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+----------------------------- Captured log setup ------------------------------
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: DDR
+INFO     app.seed_data:seed_data.py:455 ����������: DDR / ����У��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: EMMC
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / �ڵ���
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / EXT_CSD �Ĵ�����ȡ
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳�������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���������
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д����
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳����ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ˳��д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ������ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:455 ����������: EMMC / ���д�ȶ��ԣ�BW/IOPS ���ߣ�
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: WIFI
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI ����״̬
+INFO     app.seed_data:seed_data.py:455 ����������: WIFI / WIFI �ź�ǿ��
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ����
+INFO     app.seed_data:seed_data.py:455 ����������: ���� / ��������״̬
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: ��̫��
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / ��·״̬
+INFO     app.seed_data:seed_data.py:455 ����������: ��̫�� / Ping ����
+INFO     app.seed_data:seed_data.py:413 ��������ģ��: CPU
+INFO     app.seed_data:seed_data.py:455 ����������: CPU / CPU ��Ϣ
+INFO     app.seed_data:seed_data.py:458 Ĭ������ģ���ʼ�����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸δ�ҵ�
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ADB �豸����
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ���ʱ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: Ȩ�޲���
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: ������ȱʧ
+INFO     app.services.memory_engine:memory_engine.py:82 ����ʧ��ģʽ: �����Բ�����
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/auth/login "HTTP/1.1 200 OK"
+---------------------------- Captured stderr call -----------------------------
+2026-11-13 11:04:58,088 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 400 Bad Request"
+2026-11-13 11:04:58,164 [INFO] httpx: HTTP Request: POST http://test/api/v1/tasks/2/cancellations "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/1/cancel "HTTP/1.1 400 Bad Request"
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/api/v1/tasks/2/cancellations "HTTP/1.1 400 Bad Request"
+=========================== short test summary info ===========================
+PASSED tests/unit/test_v1_cancel_stability.py::test_red_executor_completed_finalize_must_not_overwrite_cancelled
+PASSED tests/unit/test_v1_cancel_stability.py::test_red_cancel_persisted_when_release_raises
+PASSED tests/unit/test_v1_cancel_stability.py::test_cancel_twenty_consecutive_cycles_legacy_api
+PASSED tests/unit/test_v1_cancel_stability.py::test_cancel_twenty_consecutive_cycles_cancellations_api
+PASSED tests/unit/test_v1_cancel_stability.py::test_concurrent_ten_cancels_legacy_no_500
+PASSED tests/unit/test_v1_cancel_stability.py::test_concurrent_ten_cancels_mixed_paths_no_500
+PASSED tests/unit/test_v1_cancel_stability.py::test_cancel_terminal_task_returns_400_validation_error
+============================= 7 passed in 12.93s ==============================
+
+exit=0 11:04:59
