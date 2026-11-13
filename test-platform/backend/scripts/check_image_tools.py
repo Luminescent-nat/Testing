@@ -59,6 +59,24 @@ def check_dockerfile(dockerfile: Path, dockerignore: Path) -> list[tuple[str, bo
     return checks
 
 
+def check_compose_image_alignment(compose_path: Path, tag: str) -> list[tuple[str, bool, str]]:
+    """task-D：docker-compose.yml app 服务的 image 必须与 docker build --tag 一致。
+
+    RR-V1-REFINAL §3.5 指出的「验证分裂」：compose 无 image: 时 compose up 用项目名
+    自行命名镜像，与 docker build --tag 不是同一个镜像。
+    """
+    checks: list[tuple[str, bool, str]] = []
+    text = compose_path.read_text(encoding="utf-8") if compose_path.is_file() else ""
+    checks.append(("docker-compose.yml 存在", compose_path.is_file(), str(compose_path)))
+    import re as _re
+    image_lines = _re.findall(r"(?m)^\s*-\s*image:\s*(\S+)\s*$", text) + \
+        _re.findall(r"(?m)^\s*image:\s*(\S+)\s*$", text)
+    aligned = tag in image_lines
+    checks.append((f"compose app image 与 --tag 一致（{tag}）", aligned,
+                   f"image lines={sorted(set(image_lines))}"))
+    return checks
+
+
 def check_tool_manifest(tools_root: Path) -> tuple[list[tuple[str, bool, str]], dict]:
     checks: list[tuple[str, bool, str]] = []
     result = validate_tools(tools_root)
@@ -163,6 +181,9 @@ def main(argv=None) -> int:
     )
 
     checks = check_dockerfile(Path(args.dockerfile), Path(args.dockerignore))
+    checks += check_compose_image_alignment(
+        PLATFORM_DIR / "docker-compose.yml", args.tag
+    )
     manifest_result: dict = {}
     try:
         manifest_checks, manifest_result = check_tool_manifest(tools_root)

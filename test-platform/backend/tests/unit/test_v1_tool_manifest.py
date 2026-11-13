@@ -192,13 +192,19 @@ def test_extra_required_missing_binary_fails(tmp_path):
     assert any(i["name"] == "demo/binaries/x/y" for i in result["missing_required"])
 
 
-def test_no_manifest_root_warns_but_ok(tmp_path):
+def test_no_manifest_root_rejected_a5(tmp_path):
+    """A5：TEST_TOOLS_PATH 存在但无任何 manifest.yaml → 拒绝启动（指明路径）。
+
+    v1.0 语义（空根 ok=True 静默启动）按契约 v1.1 §6.1 A5 反转，属预期行为变更。
+    """
     root = tmp_path / "test-tools"
     root.mkdir()
     result = validate_tools(root)
-    assert result["ok"] is True
+    assert result["ok"] is False, "空工具目录不得静默通过"
     assert result["manifest_paths"] == []
-    assert result["requirements"] == []
+    with pytest.raises(ToolManifestError) as excinfo:
+        assert_required_tools(root)
+    assert str(root.resolve()) in str(excinfo.value) or str(root) in str(excinfo.value)
 
 
 def test_missing_tools_root_fails():
@@ -228,3 +234,136 @@ def test_real_repo_manifests_are_explicit_and_hashes_match():
             assert entry["abi"], entry
     # 缺失的测试 APK 仍按可选 skip 处理
     assert any(s["name"] == "upfm/assets/test_app.apk" for s in result["skipped"])
+
+
+# ==================================================================== 契约 v1.1 §6.1 A1~A5 反例（红测）
+# 依据：docs/design/scheduler-and-data.md §6.1 与 docs/contracts/CHANGES-DRAFT-v1.1-20261113.md
+# GWT A1~A7；对应 RR-V1-REFINAL-20261112 §3.1 F1~F4 fail-open 实证。
+
+
+def test_a1_host_entry_missing_sha256_raises(tmp_path):
+    """A1/GWT-A1：tools.host 条目缺 sha256 → 加载失败，错误指明 manifest 路径与条目。"""
+    root = tmp_path / "test-tools"
+    manifest = _manifest(
+        root,
+        "demo",
+        "module:\n  name: demo\nitems: []\n"
+        "tools:\n  host:\n"
+        "    - path: demo/host/run.py\n",  # 缺 sha256
+    )
+    _write(root / "demo" / "host" / "run.py", "print('tampered')\n")
+
+    with pytest.raises(ToolManifestError) as excinfo:
+        validate_tools(root)
+    message = str(excinfo.value)
+    assert str(manifest) in message
+    assert "demo/host/run.py" in message
+    with pytest.raises(ToolManifestError):
+        assert_required_tools(root)
+
+
+def test_a1_shared_entry_missing_sha256_raises(tmp_path):
+    """A1：tools.shared 条目缺 sha256 同样加载失败。"""
+    root = tmp_path / "test-tools"
+    runner = _write(root / "demo" / "host" / "run.py", "print('ok')\n")
+    shared = _write(root / "common" / "adb_runner.py", "X=1\n")
+    manifest = _manifest(
+        root,
+        "demo",
+        "module:\n  name: demo\nitems: []\n"
+        "tools:\n  host:\n"
+        "    - path: demo/host/run.py\n"
+        f"      sha256: \"{_sha(runner)}\"\n"
+        "  shared:\n"
+        "    - path: common/adb_runner.py\n",  # 缺 sha256
+    )
+    with pytest.raises(ToolManifestError) as excinfo:
+        validate_tools(root)
+    message = str(excinfo.value)
+    assert str(manifest) in message
+    assert "common/adb_runner.py" in message
+    assert _sha(shared)  # 对照组数据存在
+
+
+def test_a2_empty_tools_section_with_host_files_is_declaration_gap(tmp_path):
+    """A2/GWT-A2：tools:{} 四段全空且目录含 host/*.py → declaration_gaps + 启动失败。"""
+    root = tmp_path / "test-tools"
+    _write(root / "demo" / "host" / "run.py", "print('hi')\n")
+    _manifest(root, "demo", "module:\n  name: demo\nitems: []\ntools: {}\n")
+
+    result = validate_tools(root)
+    assert result["ok"] is False
+    assert result["declaration_gaps"], "空 tools 段必须记为声明缺口"
+    assert any("demo" in g["name"] for g in result["declaration_gaps"])
+    with pytest.raises(ToolManifestError) as excinfo:
+        assert_required_tools(root)
+    assert "demo" in str(excinfo.value)
+
+
+def test_a3_undeclared_host_tool_reference_hard_fails(tmp_path):
+    """A3/GWT-A3：exec_command 引用 {host_tool_dir}/x.py 但 tools.host 未声明 → 加载抛错，无 undeclared 降级条目。"""
+    root = tmp_path / "test-tools"
+    (root / "common").mkdir(parents=True)
+    _write(root / "common" / "adb_runner.py", "X=1\n")
+    _write(root / "run.py", "import common.adb_runner\nprint(common.adb_runner.X)\n")
+    manifest = _manifest(
+        root,
+        "demo",
+        "module:\n  name: demo\n"
+        "items:\n"
+        "- name: t1\n"
+        "  exec_type: host_exec\n"
+        "  exec_command: python {host_tool_dir}/run.py\n"
+        "tools: {}\n",
+    )
+
+    with pytest.raises(ToolManifestError) as excinfo:
+        discover_requirements(root)
+    message = str(excinfo.value)
+    assert "run.py" in message
+    assert str(manifest) in message
+
+    with pytest.raises(ToolManifestError):
+        validate_tools(root)
+    with pytest.raises(ToolManifestError):
+        assert_required_tools(root)
+
+
+def test_a4_illegal_path_raises_with_original_value(tmp_path):
+    """A4/GWT-A4：path 含 ../ 越界（或绝对路径）→ 加载抛错且信息含原始声明值。"""
+    root = tmp_path / "test-tools"
+    manifest = _manifest(
+        root,
+        "demo",
+        "module:\n  name: demo\nitems: []\n"
+        "tools:\n  host:\n"
+        "    - path: ../../etc/passwd\n",
+    )
+    with pytest.raises(ToolManifestError) as excinfo:
+        validate_tools(root)
+    message = str(excinfo.value)
+    assert "../../etc/passwd" in message, "错误信息必须包含原始声明值"
+    assert str(manifest) in message
+
+    # 绝对路径同样拒绝
+    _manifest(
+        root,
+        "demo",
+        "module:\n  name: demo\nitems: []\n"
+        "tools:\n  host:\n"
+        "    - path: C:/Windows/system32/x.py\n",
+    )
+    with pytest.raises(ToolManifestError) as excinfo_abs:
+        validate_tools(root)
+    assert "C:/Windows/system32/x.py" in str(excinfo_abs.value)
+
+
+def test_a5_tools_root_without_any_manifest_rejects_startup(tmp_path):
+    """A5/GWT-A5：TEST_TOOLS_PATH 存在但不含任何 manifest.yaml → 启动失败并指明路径。"""
+    root = tmp_path / "test-tools"
+    (root / "mod" / "host").mkdir(parents=True)  # 有目录结构但无 manifest
+    result = validate_tools(root)
+    assert result["ok"] is False
+    with pytest.raises(ToolManifestError) as excinfo:
+        assert_required_tools(root)
+    assert str(root.resolve()) in str(excinfo.value)

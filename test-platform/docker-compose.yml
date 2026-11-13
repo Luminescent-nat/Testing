@@ -12,6 +12,10 @@
 services:
   app:
     build: .
+    # 契约 v1.1 task-D：显式 image 名与 backend/scripts/check_image_tools.py 的
+    # docker build --tag 一致（v1.0 缺失时 compose 会用项目名自行命名镜像，
+    # 导致 docker build 与 compose up 验证的不是同一个镜像）。
+    image: test-platform:v1-08-check
     container_name: test-platform
     ports:
       - "8000:8000"

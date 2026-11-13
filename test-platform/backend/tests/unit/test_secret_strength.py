@@ -95,10 +95,35 @@ def test_main_startup_validation_rejects_weak_secret(monkeypatch):
 
 
 def test_main_startup_validation_accepts_legal_secret(monkeypatch, tmp_path):
+    """合法密钥 + 合法（A5 非空）工具清单 → 启动校验通过。
+
+    契约 v1.1 §6.1 A5 连带夹具适配（非放宽）：A5 废除了空 TEST_TOOLS_PATH 的静默
+    启动，因此此处必须提供最小合法 manifest（module + tools 四段声明），sha256
+    按实际文件计算。
+    """
+    import hashlib
+
     import app.main as main_module
 
     tools_root = tmp_path / "test-tools"
-    (tools_root / "mod").mkdir(parents=True)
+    runner = tools_root / "mod" / "host" / "run.py"
+    runner.parent.mkdir(parents=True)
+    runner.write_text("print('ok')\n", encoding="utf-8")
+    shared = tools_root / "common" / "logger.py"
+    shared.parent.mkdir(parents=True)
+    shared.write_text("def setup_logger(): pass\n", encoding="utf-8")
+    manifest = tools_root / "mod" / "manifest.yaml"
+    manifest.write_text(
+        "module:\n  name: mod\nitems: []\n"
+        "tools:\n"
+        "  host:\n"
+        "    - path: mod/host/run.py\n"
+        f'      sha256: "{hashlib.sha256(runner.read_bytes()).hexdigest()}"\n'
+        "  shared:\n"
+        "    - path: common/logger.py\n"
+        f'      sha256: "{hashlib.sha256(shared.read_bytes()).hexdigest()}"\n',
+        encoding="utf-8",
+    )
     monkeypatch.setattr(main_module.settings, "SECRET_KEY", LEGAL_KEY)
     monkeypatch.setattr(main_module.settings, "TEST_TOOLS_PATH", str(tools_root))
     assert main_module.validate_startup_config() is None

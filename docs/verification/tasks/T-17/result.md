@@ -175,3 +175,64 @@ sha = hashlib.sha256(binary.read_bytes()).hexdigest()
 ```
 
 **【待用户确认限制】** `test-tools/ddr/` 无 `manifest.yaml`，其 memtester / stress-ng / stressapptest 二进制未被启动门禁（镜像仍整体复制）；**arm64 是否属于 V1 尚未确定**——需用户确认 ABI 支持矩阵后，再决定是否新增 DDR manifest 与实测（在此之前如实列为无法核验/待确认，不记通过）。
+
+---
+
+## 10. 契约 v1.1 §6.1 A1~A5（task-23，2026-11-13）
+
+对应 `docs/design/scheduler-and-data.md` §6.1（A1~A5 正文，用户已确认）与
+`docs/contracts/CHANGES-DRAFT-v1.1-20261113.md` GWT A1~A7；修复
+`RR-V1-REFINAL-20261112.md` §3.1 的 F1~F4 fail-open 动态实证。
+
+### 10.1 变更（严格先红后绿）
+
+| 文件 | 变更 |
+|---|---|
+| `app/services/tool_manifest.py` | A1：`_declared_tools` 对 tools.host/shared 强制 sha256 必填（缺失即 ToolManifestError，指明 manifest 路径与条目）。A2：declaration_gaps 判定扩展为「无 tools 段 **或** tools 四段全空（tools:{} 等）且目录含 host/*.py 或 binaries/*/*」。A3：`discover_requirements` 对未声明的 `{host_tool_dir}/X` 引用**硬失败**（删除 undeclared_reference 降级分支与常量）。A4：`_add` 对非法 path（空/绝对/含 ..）抛 ToolManifestError 且信息含原始声明值（替换静默丢弃；Windows/POSIX 双判定）。A5：`validate_tools` 对零 manifest 根记 declaration_gaps（ok=False），`assert_required_tools` 抛错并指明根路径 |
+| `tests/unit/test_v1_tool_manifest.py` | 新增 A1 host/A1 shared/A2/A3/A4/A5 共 6 项反例；`test_no_manifest_root_warns_but_ok` 反转为 `test_no_manifest_root_rejected_a5`（断言抛错，预期行为变更） |
+| `tests/unit/test_tool_manifest.py` | `test_no_manifest_root_warns_but_ok` 同步反转；`test_missing_required_runner_fails_and_names_manifest` 按 A3 语义适配（validate 即抛错并指明 manifest+引用值，断言未放宽） |
+| `tests/unit/test_secret_strength.py`（lead 批准加入 scope） | `test_main_startup_validation_accepts_legal_secret` 夹具按 A5 适配：tools_root 补最小合法 manifest（host+shared，sha256 实算）——A5 连带夹具适配（非放宽） |
+| `test-platform/docker-compose.yml` | task-D：app 服务补 `image: test-platform:v1-08-check`（与 check_image_tools `--tag` 默认值一致），消除 RR-V1-REFINAL §3.5 指出的「docker build 与 compose up 验证不同镜像」验证分裂 |
+| `backend/scripts/check_image_tools.py` | 新增 `check_compose_image_alignment()` 静态核对 compose image 与 --tag 一致 |
+
+### 10.2 红/绿与销项证据
+
+| 项 | 结果 | 日志 |
+|---|---|---|
+| 红（先） | `pytest tests/unit/test_v1_tool_manifest.py tests/unit/test_tool_manifest.py -q` → **8 failed / 15 passed**（A1×2、A2、A3、A4、A5×2 + 反转用例×2，全部按预期失败） | `pytest-v1-1-A1-A5-red-20261113.log` |
+| 绿（后） | 同命令 → **23 passed / 0 failed** | `pytest-v1-1-A1-A5-green-20261113.log` |
+| F1~F4 销项 | `manifest-failopen-repro-v2.py`（原审计文件未动）→ **9/9 CLOSED，RESULT: ALL CLOSED**，EXIT=0 | `manifest-failopen-repro-v2-20261113.log`（脚本 `manifest-failopen-repro-v2.py`） |
+| 真实仓库回归 | `python -m app.services.tool_manifest --validate ../test-tools` → **ok=true**，declaration_gaps=[]，EXIT=0 | `tool-manifest-validate-repo-v1-1-20261113.log` |
+| 镜像静态+清单 | `check_image_tools.py` → static **15/15**（含 compose image 对齐 PASS），runtime=UNVERIFIABLE（主机无 docker，如实不伪造），EXIT=2 | `check-image-tools-v1-1-20261113.log` / `image-tools-summary-v1-1.json` |
+| 全量 pytest | `python -m pytest tests -q -W error::pytest.PytestUnraisableExceptionWarning` → **459 passed / 1 failed**，退出码 1 | `regression-full-v1-1-20261113.log` |
+
+### 10.3 GWT 逐条
+
+| GWT | 结果 | 证据 |
+|---|---|---|
+| A1 host 缺 sha256 → 抛错指明 manifest+条目；validate 不得 ok=True | ✅ | test_a1_host_entry_missing_sha256_raises |
+| A1 sha256 被篡改 → 哈希不匹配且门禁失败（v1.0 反例保持） | ✅ | test_sha256_mismatch_fails |
+| A2 tools:{} 四段全空 + host 文件 → gaps+启动失败 | ✅ | test_a2_empty_tools_section_with_host_files_is_declaration_gap |
+| A3 {host_tool_dir}/x.py 未声明 → 抛错，无 undeclared 条目 | ✅ | test_a3_undeclared_host_tool_reference_hard_fails + repro-v2 F3 |
+| A3 已声明 runner 引用未声明 common.y → closure 非空+启动失败 | ✅ | test_undeclared_common_import_is_closure_violation |
+| A4 path ../../etc/passwd → 抛错含原始值 | ✅ | test_a4_illegal_path_raises_with_original_value + repro-v2 F4 |
+| A5 空 TEST_TOOLS_PATH → 拒绝启动并指明路径 | ✅ | test_no_manifest_root_rejected_a5 / test_a5_tools_root_without_any_manifest_rejects_startup |
+| F1~F4 销项全 CLOSED | ✅ | manifest-failopen-repro-v2（9/9 CLOSED） |
+
+### 10.4 全量 pytest 与并发说明（如实）
+
+最终全量（`regression-full-v1-1-20261113.log`，2026-11-13 09:0x）为
+**459 passed / 1 failed**：唯一失败项
+`tests/integration/test_v1_followup_audit.py::test_b3_ai_and_manual_creation_parity`
+属**变更包 2（B1~B3 AI 入口授权顺序，另一队友在途实施）**的红测/中间态（AI 创建
+409 vs 期望 201），与 task-23 的 tool_manifest/compose 改动无关——task-23 全部
+新增/受影响用例（23 项 focused + test_secret_strength 21 项）均绿。期间共享树还出现
+过 tasks.py 暂缺 `BackgroundTasks` 导入的瞬态（已由对应队友修复）。
+待变更包 2 落地后全量应 0 failed；本任务范围内无未闭合项。
+
+### 10.5 task-D 与未验证项
+
+- task-D compose 镜像统一已完成并通过静态核对（`check_compose_image_alignment` PASS）；docker 运行时仍 UNVERIFIABLE（主机无 docker，如实记录，不伪造 verified）。
+- A5 行为变更：空 TEST_TOOLS_PATH 从静默启动改为拒绝启动（契约 v1.1 明确意图）；受影响的 3 处测试夹具均已适配且未放宽。
+- 未验证项：docker 运行时（build/up/health/容器内发现）；其余无。
+- 【Lead 裁决②存档】全量 459 passed / 1 failed，唯一失败 `test_b3_ai_and_manual_creation_parity` 归变更包 2（task-24）在途，最终全量由 Lead 连续 2 轮收口。（补记：交付后隔离复跑该项已由变更包 2 owner 修复并通过。）

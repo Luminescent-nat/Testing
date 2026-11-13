@@ -35,7 +35,7 @@ import hashlib
 import logging
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Optional, Union
 
 import yaml
@@ -46,12 +46,12 @@ logger = logging.getLogger(__name__)
 
 MANIFEST_FILENAME = "manifest.yaml"
 HOST_TOOL_REF = re.compile(r"\{host_tool_dir\}/([^\s\"'`]+)")
+TOOLS_SECTIONS = ("host", "shared", "device", "assets")
 
 KIND_HOST_RUNNER = "host_runner"
 KIND_SHARED = "shared_python_dep"
 KIND_DEVICE_BINARY = "device_binary"
 KIND_ASSET = "asset"
-KIND_UNDECLARED_REFERENCE = "undeclared_reference"
 
 _DEVICE_KEYS = ("path", "abi", "version", "sha256")
 _COMMON_IMPORT_FROM = re.compile(r"^\s*from\s+common\.(\w+)", re.MULTILINE)
@@ -85,12 +85,33 @@ def _load_manifest(path: Path) -> dict:
     return data
 
 
+def _illegal_path(value: str) -> bool:
+    """A4：规范化后不得为空、为绝对路径或含 ``..`` 越界（Windows/POSIX 双判定）。"""
+    if not value:
+        return True
+    normalized = value.replace("\\", "/").strip("/ ")
+    if not normalized:
+        return True
+    if ".." in normalized.split("/"):
+        return True
+    if PurePosixPath(normalized).is_absolute():
+        return True
+    if PureWindowsPath(value).is_absolute() or PureWindowsPath(normalized).is_absolute():
+        return True
+    return False
+
+
 def _add(req: dict, rel: str, kind: str, *, required: bool, manifest: str,
          source: str, sha256: Optional[str] = None, abi: Optional[str] = None,
          version: Optional[str] = None, optional: bool = False) -> None:
-    rel = (rel or "").replace("\\", "/").strip("/ ")
-    if not rel or ".." in rel.split("/"):
-        return
+    original = "" if rel is None else str(rel)
+    if _illegal_path(original):
+        # A4：替换 v1.0 的静默丢弃——非法声明必须使 manifest 加载失败且含原始值
+        raise ToolManifestError(
+            f"非法声明 path: {original!r}（来自 {manifest}）——"
+            "规范化后不得为空/绝对路径/包含 ..（契约 v1.1 §6.1 A4）"
+        )
+    rel = original.replace("\\", "/").strip("/ ")
     entry = req.setdefault(
         rel,
         {
@@ -139,11 +160,23 @@ def _declared_tools(data: dict, manifest_path: str, req: dict) -> set[str]:
             yield row
 
     for row in _rows("host"):
+        if not row.get("sha256"):
+            # A1：tools.host 条目 sha256 必填，缺失即 manifest 加载失败
+            raise ToolManifestError(
+                f"{manifest_path}: tools.host 条目 {row['path']!r} 缺少必填 sha256"
+                "（契约 v1.1 §6.1 A1）"
+            )
         rel = str(row["path"])
         _add(req, rel, KIND_HOST_RUNNER, required=True, manifest=manifest_path,
              source="tools.host", sha256=row.get("sha256"), version=row.get("version"))
         host_paths.add(rel.replace("\\", "/").strip("/ "))
     for row in _rows("shared"):
+        if not row.get("sha256"):
+            # A1：tools.shared 条目 sha256 必填，缺失即 manifest 加载失败
+            raise ToolManifestError(
+                f"{manifest_path}: tools.shared 条目 {row['path']!r} 缺少必填 sha256"
+                "（契约 v1.1 §6.1 A1）"
+            )
         _add(req, str(row["path"]), KIND_SHARED, required=True, manifest=manifest_path,
              source="tools.shared", sha256=row.get("sha256"), version=row.get("version"))
     for row in _rows("device"):
@@ -164,37 +197,42 @@ def _declared_tools(data: dict, manifest_path: str, req: dict) -> set[str]:
 def discover_requirements(tools_root: Union[str, Path]):
     """只读扫描 tools_root，返回 (requirements: dict[rel -> entry], manifest_paths)。
 
-    需求条目**仅来自 manifest 显式声明**（外加未声明引用的标记条目），
-    不再因为文件存在就自动生成必需项。
+    需求条目**仅来自 manifest 显式声明**，不再因为文件存在就自动生成必需项。
+    A3：items[].exec_command 中 ``{host_tool_dir}/X`` 引用的 X 未在任何 manifest 的
+    ``tools.host`` 显式声明 → 直接抛 ToolManifestError（v1.0 的 undeclared_reference
+    降级条目已废除，X 不再有"无 sha256、不参与闭包扫描"的旁路）。
     """
     root = Path(tools_root)
     manifest_paths = sorted(root.glob(f"*/{MANIFEST_FILENAME}"))
     requirements: dict[str, dict] = {}
     declared_host_anywhere: set[str] = set()
+    loaded: dict[str, dict] = {}
 
     for manifest_path in manifest_paths:
         try:
             data = _load_manifest(manifest_path)
         except (OSError, yaml.YAMLError, ValueError) as exc:
             raise ToolManifestError(f"manifest 解析失败: {manifest_path}: {exc}") from exc
+        loaded[str(manifest_path)] = data
         declared_host_anywhere |= _declared_tools(data, str(manifest_path), requirements)
 
-    # 未声明引用：manifest item 的 host_exec 命令引用了本地 runner，但 tools.host 未声明
+    # A3：未声明的 {host_tool_dir} 引用 → manifest 加载失败（硬失败，无降级）
     for manifest_path in manifest_paths:
-        try:
-            data = _load_manifest(manifest_path)
-        except (OSError, yaml.YAMLError, ValueError):
-            continue
+        data = loaded[str(manifest_path)]
         for item in data.get("items") or []:
             if not isinstance(item, dict) or item.get("exec_type") != "host_exec":
                 continue
             command = item.get("exec_command") or ""
-            for rel in HOST_TOOL_REF.findall(command):
-                clean = rel.replace("\\", "/").strip("/ ")
-                if clean.lower().endswith(".apk") or clean in declared_host_anywhere:
-                    continue
-                _add(requirements, clean, KIND_UNDECLARED_REFERENCE, required=True,
-                     manifest=str(manifest_path), source=str(item.get("name", "")))
+            for ref in HOST_TOOL_REF.findall(command):
+                clean = ref.replace("\\", "/").strip("/ ")
+                if clean.lower().endswith(".apk"):
+                    continue  # 可选测试资源（assets 语义），由 tools.assets 声明
+                if clean not in declared_host_anywhere:
+                    raise ToolManifestError(
+                        f"{manifest_path}: 测试项 {item.get('name', '')!r} 的 exec_command "
+                        f"引用 {{host_tool_dir}}/{ref} 未在任何 manifest 的 tools.host "
+                        f"声明（契约 v1.1 §6.1 A3，原始引用值: {ref!r}）"
+                    )
 
     return requirements, [str(p) for p in manifest_paths]
 
@@ -310,7 +348,7 @@ def validate_tools(tools_root: Optional[Union[str, Path]] = None,
                     "reason": "同目录兄弟模块未在 manifest tools.host 声明",
                 })
 
-    # 声明缺口：模块目录含 host/二进制但 manifest 未声明 tools（legacy manifest）
+    # 声明缺口：模块目录含 host/二进制但 manifest 未声明（或 tools 四段全空）
     for manifest_path in manifest_paths:
         try:
             data = _load_manifest(Path(manifest_path))
@@ -319,13 +357,31 @@ def validate_tools(tools_root: Optional[Union[str, Path]] = None,
         module_dir = Path(manifest_path).parent
         has_host = any((module_dir / "host").glob("*.py"))
         has_binaries = any((module_dir / "binaries").glob("*/*"))
-        if "tools" not in data and (has_host or has_binaries):
+        tools = data.get("tools")
+        tools_declared = isinstance(tools, dict) and any(
+            tools.get(k) for k in TOOLS_SECTIONS
+        )
+        if (not tools_declared) and (has_host or has_binaries):
+            if tools is None:
+                reason = "manifest 未显式声明 tools（契约 v1.1 §6.1 A2）"
+            else:
+                reason = "manifest tools 段四类条目全空而目录含 host/二进制（契约 v1.1 §6.1 A2）"
             declaration_gaps.append({
                 "name": str(manifest_path), "kind": "manifest", "required": True,
                 "manifests": [str(manifest_path)],
-                "sources": ["模块目录含 host/二进制但 manifest 无 tools 段"],
-                "reason": "manifest 未显式声明 tools（V1-08 要求显式工具清单）",
+                "sources": ["模块目录含 host/二进制但 tools 未声明任何条目"],
+                "reason": reason,
             })
+
+    # A5：TEST_TOOLS_PATH 存在但不含任何 manifest.yaml → 禁止空工具目录静默启动
+    if not manifest_paths:
+        declaration_gaps.append({
+            "name": str(root), "kind": "manifest_root", "required": True,
+            "manifests": [str(root)],
+            "sources": ["TEST_TOOLS_PATH 根目录"],
+            "reason": "TEST_TOOLS_PATH 下未发现任何 manifest.yaml（契约 v1.1 §6.1 A5，"
+                      "禁止空工具目录静默启动）",
+        })
 
     for item in skipped:
         logger.warning("工具清单 skip: %s（%s）", item["name"], item.get("reason", ""))
@@ -353,7 +409,7 @@ def validate_tools(tools_root: Optional[Union[str, Path]] = None,
 
 def assert_required_tools(tools_root: Optional[Union[str, Path]] = None,
                           extra_required: Optional[list[str]] = None) -> dict:
-    """启动门禁：任何声明缺失/哈希不符/闭包缺失/声明缺口都抛 ToolManifestError。"""
+    """启动门禁：任何声明缺失/哈希不符/闭包缺失/声明缺口（含 A5 空根）都抛 ToolManifestError。"""
     result = validate_tools(tools_root, extra_required)
     problems: list[str] = []
 

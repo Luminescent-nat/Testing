@@ -76,6 +76,7 @@ def test_all_declared_required_tools_present(tmp_path):
 
 
 def test_missing_required_runner_fails_and_names_manifest(tmp_path):
+    """A3（契约 v1.1）：未声明的 {host_tool_dir} 引用 → 加载硬失败，指明 manifest 与引用值。"""
     root = tmp_path / "test-tools"
     manifest = _write_manifest(
         root,
@@ -83,16 +84,16 @@ def test_missing_required_runner_fails_and_names_manifest(tmp_path):
         [{"name": "runner", "exec_type": "host_exec",
           "exec_command": 'python "{host_tool_dir}/mod/host/missing.py" --serial {serial}'}],
     )
-    result = validate_tools(root)
-    assert result["ok"] is False
-    missing_names = {item["name"] for item in result["missing_required"]}
-    assert "mod/host/missing.py" in missing_names
-
     with pytest.raises(ToolManifestError) as excinfo:
-        assert_required_tools(root)
+        validate_tools(root)
     message = str(excinfo.value)
     assert "mod/host/missing.py" in message
-    assert str(manifest) in message  # 必须指出 manifest 路径
+    assert str(manifest) in message
+
+    with pytest.raises(ToolManifestError) as excinfo2:
+        assert_required_tools(root)
+    assert "mod/host/missing.py" in str(excinfo2.value)
+    assert str(manifest) in str(excinfo2.value)
 
 
 def test_missing_optional_apk_is_skip_not_failure(tmp_path):
@@ -141,13 +142,16 @@ def test_missing_binary_is_required_failure(tmp_path):
     assert any(x["name"] == "mod/binaries/arm64-v8a/fio" for x in result["missing_required"])
 
 
-def test_no_manifest_root_warns_but_ok(tmp_path):
+def test_no_manifest_root_rejected_a5(tmp_path):
+    """A5（契约 v1.1）：TEST_TOOLS_PATH 存在但无 manifest.yaml → 拒绝启动（原 ok=True 语义反转）。"""
     root = tmp_path / "test-tools"
     root.mkdir()
     result = validate_tools(root)
-    assert result["ok"] is True
+    assert result["ok"] is False, "空工具目录不得静默通过"
     assert result["manifest_paths"] == []
-    assert result["requirements"] == []
+    with pytest.raises(ToolManifestError) as excinfo:
+        assert_required_tools(root)
+    assert str(root.resolve()) in str(excinfo.value) or str(root) in str(excinfo.value)
 
 
 def test_missing_tools_root_fails():
