@@ -39,10 +39,17 @@
         </el-button>
       </div>
 
-      <!-- 解析结果预览 -->
-      <div v-if="planResult" class="plan-preview">
+      <!-- 解析结果预览（产品决策：保留面板；数据来自任务详情 plan 快照） -->
+      <div
+        v-if="planResult"
+        class="plan-preview"
+      >
         <h4>解析结果</h4>
-        <el-descriptions :column="2" border>
+        <el-descriptions
+          v-if="planResult.hasPlan"
+          :column="2"
+          border
+        >
           <el-descriptions-item label="目标设备">
             {{ planResult.device_serial }}
           </el-descriptions-item>
@@ -66,6 +73,13 @@
             {{ planResult.plan.item_ids.length }} 项
           </el-descriptions-item>
         </el-descriptions>
+        <el-alert
+          v-else
+          :title="noPlanText"
+          type="info"
+          :closable="false"
+          show-icon
+        />
       </div>
     </el-card>
   </div>
@@ -77,12 +91,15 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { MagicStick } from '@element-plus/icons-vue'
 import { createNaturalTask } from '@/api/ai'
+import { getTaskDetail } from '@/api/task'
 import { isSuccessResponse } from '@/api/client'
+import { NO_PLAN_TEXT, buildPlanPreview, extractCreatedTaskId } from '@/utils/aiTask'
 
 const router = useRouter()
 const inputText = ref('')
 const parsing = ref(false)
 const planResult = ref(null)
+const noPlanText = NO_PLAN_TEXT
 
 const handleSubmit = async () => {
   const text = inputText.value.trim()
@@ -93,13 +110,33 @@ const handleSubmit = async () => {
 
   try {
     const res = await createNaturalTask(text)
-    if (isSuccessResponse(res)) {
-      ElMessage.success('AI 任务已创建')
-      planResult.value = res.data
-      setTimeout(() => {
-        router.push(`/tasks/monitor/${res.data.task_id}`)
-      }, 1500)
+    if (!isSuccessResponse(res)) return
+
+    // 契约 v1.1：创建响应 data 为 Task 对象，任务 ID 为正整数 id（legacy task_id 已废弃）
+    const taskId = extractCreatedTaskId(res.data)
+    if (taskId === null) {
+      ElMessage.error('任务创建成功但返回的任务 ID 非法，已取消跳转')
+      planResult.value = buildPlanPreview(res.data)
+      return
     }
+
+    ElMessage.success('AI 任务已创建')
+
+    // 预览面板（产品决策保留）：创建成功后经 getTaskDetail 拉取详情渲染 plan 快照；
+    // plan 为 null/缺失时显示「该任务无规划快照」；详情拉取失败时保留创建响应兜底，不阻塞跳转。
+    planResult.value = buildPlanPreview(res.data)
+    try {
+      const detailRes = await getTaskDetail(taskId)
+      if (isSuccessResponse(detailRes)) {
+        planResult.value = buildPlanPreview(detailRes.data)
+      }
+    } catch (detailError) {
+      console.error('获取任务详情失败:', detailError)
+    }
+
+    setTimeout(() => {
+      router.push(`/tasks/monitor/${taskId}`)
+    }, 1500)
   } catch (error) {
     console.error('创建 AI 任务失败:', error)
   } finally {
