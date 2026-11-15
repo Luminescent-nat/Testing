@@ -7,12 +7,29 @@ from app.database import get_db
 from app.api.auth import get_current_user, get_current_admin, get_pc_identifier
 from app.models import User
 from app.schemas import (
-    UserResponse, UserUpdate, ResponseModel, PaginationParams,
+    UserCreateByAdmin, UserPatch, ResetPasswordRequest,
+    UserResponse, ResponseModel, PaginationParams,
     UserRole, UserStatus
 )
-from app.services.auth import get_password_hash
+from app.services import user_admin
+
 
 router = APIRouter(prefix="/users", tags=["用户管理"])
+
+
+@router.post("", response_model=ResponseModel, status_code=201)
+async def create_user(
+    user_data: UserCreateByAdmin,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    """创建后续账号（契约 user-administration §4，唯一正常开通入口，仅 active 管理员）。"""
+    user = await user_admin.create_user_by_admin(db, data=user_data)
+    return ResponseModel(
+        code=201,
+        message="用户创建成功",
+        data=UserResponse.model_validate(user)
+    )
 
 
 @router.get("", response_model=ResponseModel)
@@ -71,32 +88,23 @@ async def get_user(
     return ResponseModel(code=200, data=UserResponse.model_validate(user))
 
 
+@router.patch("/{user_id}", response_model=ResponseModel)
 @router.put("/{user_id}", response_model=ResponseModel)
 async def update_user(
     user_id: int,
-    user_data: UserUpdate,
+    user_data: UserPatch,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
-    """更新用户信息（管理员）"""
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
-    
-    # 更新字段
-    if user_data.role is not None:
-        user.role = user_data.role
-    if user_data.status is not None:
-        user.status = user_data.status
-    
-    await db.commit()
-    await db.refresh(user)
-    
+    """局部更新用户角色/状态（契约 user-administration §6）。
+
+    PUT 为 legacy 兼容别名（前端存量调用），PATCH 为契约路径；两者同一服务，
+    含最后 active 管理员保护（409）与幂等语义。
+    """
+    user = await user_admin.patch_user(db, target_id=user_id, patch=user_data)
     return ResponseModel(
         code=200,
-        message="更新成功",
+        message="用户已更新",
         data=UserResponse.model_validate(user)
     )
 
@@ -104,20 +112,12 @@ async def update_user(
 @router.post("/{user_id}/reset-password", response_model=ResponseModel)
 async def reset_password(
     user_id: int,
-    new_password: str,
+    body: ResetPasswordRequest,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
-    """重置用户密码（管理员）"""
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
-    
-    user.password_hash = get_password_hash(new_password)
-    await db.commit()
-    
+    """重置用户密码（管理员）。密码必须走请求体（T-16：URL query 会进访问日志）。"""
+    await user_admin.reset_user_password(db, target_id=user_id, new_password=body.new_password)
     return ResponseModel(code=200, message="密码重置成功")
 
 
@@ -127,18 +127,11 @@ async def delete_user(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
-    """删除用户（管理员）"""
+    """删除用户（管理员）：软删除=禁用，受最后 active 管理员保护约束。"""
     if user_id == current_user.id:
         raise HTTPException(status_code=400, detail="不能删除自己")
-    
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
-    
-    # 软删除：将状态设为disabled
-    user.status = "disabled"
-    await db.commit()
-    
+    # 复用 §6 更新服务：禁用同样不允许落在最后一个 active 管理员上
+    await user_admin.patch_user(
+        db, target_id=user_id, patch=UserPatch(status=UserStatus.DISABLED)
+    )
     return ResponseModel(code=200, message="用户已禁用")

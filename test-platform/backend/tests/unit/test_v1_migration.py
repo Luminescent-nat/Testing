@@ -23,7 +23,7 @@ import app.models as models
 from app import database
 
 INITIAL_REVISION = "0817df993d8b"
-HEAD_REVISION = "004_task_deleted_at"
+HEAD_REVISION = "005_daily_task_templates"
 
 
 @pytest.fixture

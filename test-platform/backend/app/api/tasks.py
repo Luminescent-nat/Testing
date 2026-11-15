@@ -61,12 +61,17 @@ async def create_task(
 async def list_tasks(
     status: Optional[TaskStatus] = None,
     search: Optional[str] = None,
+    task_kind: str = "instance",
     page: int = 1,
     page_size: int = 20,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """获取任务列表（status 精确匹配、search 任务名模糊匹配，均在分页前生效）"""
+    """获取任务列表（status 精确匹配、search 任务名模糊匹配，均在分页前生效）。
+
+    task_kind（契约 task-execution §3）：instance/daily_template/all，默认 instance；
+    daily 模板不执行、不进入默认列表与执行统计。
+    """
     filters = []
 
     # 软删除排除（契约 task-execution §8）：默认列表不返回 deleted_at 非空的任务
@@ -75,6 +80,16 @@ async def list_tasks(
     # 权限控制
     if current_user.role != "admin":
         filters.append(TestTask.user_id == current_user.id)
+
+    # task_kind 过滤：all 不加过滤；其他精确匹配
+    if task_kind == "all":
+        pass
+    elif task_kind in ("instance", "daily_template"):
+        filters.append(TestTask.task_kind == task_kind)
+    else:
+        raise HTTPException(
+            status_code=400, detail="查询参数不合法：task_kind 仅支持 instance/daily_template/all"
+        )
 
     if status:
         filters.append(TestTask.status == status)

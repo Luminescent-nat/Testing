@@ -81,11 +81,11 @@ async def test_disable_self_forbidden(client: AsyncClient, admin_token: str, adm
 
 @pytest.mark.asyncio
 async def test_reset_password(client: AsyncClient, admin_token: str, normal_user: User):
-    """TC-USER-006: 管理员可重置用户密码。"""
+    """TC-USER-006: 管理员可重置用户密码（T-16 安全修复：密码走请求体不走 URL query）。"""
     response = await client.post(
         f"/api/v1/users/{normal_user.id}/reset-password",
         headers={"Authorization": f"Bearer {admin_token}"},
-        params={"new_password": "newpass123"},
+        json={"new_password": "newpass123"},
     )
     assert response.status_code == 200
 

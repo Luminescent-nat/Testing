@@ -1442,9 +1442,12 @@ async def get_summary_report(
     current_user: User = Depends(get_current_user)
 ):
     """获取当前用户所有任务的汇总总报告。"""
-    query = select(TestTask).where(TestTask.user_id == current_user.id).order_by(TestTask.id.desc())
+    # daily 模板不执行、不产生记录与报告，汇总仅统计执行实例（R16）
+    query = select(TestTask).where(
+        TestTask.user_id == current_user.id, TestTask.task_kind == "instance"
+    ).order_by(TestTask.id.desc())
     if current_user.role == "admin":
-        query = select(TestTask).order_by(TestTask.id.desc())
+        query = select(TestTask).where(TestTask.task_kind == "instance").order_by(TestTask.id.desc())
 
     result = await db.execute(query)
     tasks = result.scalars().all()

@@ -22,7 +22,10 @@ from app.models import Device, TestItem, TestTask
 from app.schemas import ResponseModel, TestTaskCreate, TestTaskResponse
 from app.services.authorization import ensure_can_create_task_on_device
 from app.services.device import DeviceService
-from app.services.execution_engine import validate_custom_param_value
+from app.services.param_contract import (
+    ParamValidationError,
+    validate_custom_parameters,
+)
 from app.services.idempotency import (
     OPERATION_TASK_CREATE,
     IdempotencyConflictError,
@@ -33,8 +36,9 @@ from app.services.idempotency import (
     validate_idempotency_key,
     wait_for_response,
 )
-from app.services.scheduler import SCHEDULE_IMMEDIATE, SCHEDULE_ONCE, compute_next_run
+from app.services.scheduler import SCHEDULE_DAILY, SCHEDULE_IMMEDIATE, SCHEDULE_ONCE, compute_next_run
 from app.services.task_executor import TaskExecutor
+from app.services.task_snapshot import build_item_snapshot
 
 logger = logging.getLogger(__name__)
 
@@ -65,14 +69,16 @@ def validation_error_response(
     )
 
 
-def resolve_idempotency_key(header_value: Optional[str]) -> Optional[str]:
-    """解析 Idempotency-Key 请求头（契约第 3 节：8～128 可打印 ASCII）。
+def resolve_idempotency_key(header_value: Optional[str]) -> str:
+    """解析 Idempotency-Key 请求头（契约 §2：必填，8～128 可打印 ASCII）。
 
-    缺失 → None（兼容策略：不强幂等，正常执行并记录偏差待确认）；
+    缺失 → 400 VALIDATION_ERROR（U-D1 已确认收紧为强制必填）；
     提供但不合法 → 400 VALIDATION_ERROR。
     """
     if header_value is None:
-        return None
+        raise HTTPException(
+            status_code=400, detail="缺少必填请求头 Idempotency-Key"
+        )
     try:
         return validate_idempotency_key(header_value)
     except IdempotencyKeyError as exc:
@@ -167,11 +173,14 @@ async def create_task_instance(
             if not item.enabled:
                 raise ItemValidationError(f"item_ids.{index}", "测试项已禁用")
 
-        # 自定义参数安全校验：值会拼入 shell 命令，拒绝 shell 元字符（防命令注入）
-        for key_, value in (request.custom_parameters or {}).items():
-            error = validate_custom_param_value(value)
-            if error:
-                raise HTTPException(status_code=400, detail=f"参数 {key_} 不合法: {error}")
+        # 自定义参数契约校验（R13/R14）：外层键=已选 item_id 十进制串，内层扁平白名单；
+        # 非法时走与 item_ids 相同的 ItemValidationError 通道（400，details.field 精确路径）
+        try:
+            validate_custom_parameters(
+                request.custom_parameters or {}, request.item_ids, existing_items
+            )
+        except ParamValidationError as exc:
+            raise ItemValidationError(exc.field, exc.reason)
 
         # 调度配置：immediate 创建后立即启动；once/daily 计算下次触发时间，
         # 任务保持 pending，由后台调度器到期启动
@@ -190,7 +199,9 @@ async def create_task_instance(
             if schedule_type == SCHEDULE_ONCE and next_run_at <= datetime.now(timezone.utc):
                 raise HTTPException(status_code=400, detail="定时时间已过，请重新选择")
 
-        # 创建设备任务（AI 附带 plan 快照）
+        # 创建设备任务（AI 附带 plan 快照；daily 创建模板行，实例由调度器生成）
+        snapshot = build_item_snapshot([existing_items[iid] for iid in request.item_ids])
+        is_daily_template = schedule_type == SCHEDULE_DAILY
         task = TestTask(
             user_id=user.id,
             device_id=device.id,
@@ -202,6 +213,9 @@ async def create_task_instance(
             scheduled_time=request.scheduled_time if schedule_type != SCHEDULE_IMMEDIATE else None,
             next_run_at=next_run_at,
             plan=plan,
+            task_kind="daily_template" if is_daily_template else "instance",
+            item_snapshot=snapshot,
+            item_snapshot_status="complete",
         )
 
         db.add(task)
@@ -225,13 +239,9 @@ async def create_task_instance(
 
         return ResponseModel(
             code=201,
-            message="任务创建成功",
+            message="daily 模板创建成功" if is_daily_template else "任务创建成功",
             data=response_data
         ).model_dump(mode="json")
-
-    if key is None:
-        # 兼容策略：缺失 Idempotency-Key = 不强幂等（正常创建，每次都执行）
-        return await _execute()
 
     try:
         response, _record = await run_idempotent(

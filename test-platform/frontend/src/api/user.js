@@ -10,11 +10,9 @@ export const updateUser = (id, data) => {
   return request.put(`/users/${id}`, data)
 }
 
-// 重置用户密码
+// 重置用户密码（T-16 安全修复：密码走请求体，不得走 URL query 防止落入访问日志）
 export const resetUserPassword = (id, newPassword) => {
-  return request.post(`/users/${id}/reset-password`, null, {
-    params: { new_password: newPassword }
-  })
+  return request.post(`/users/${id}/reset-password`, { new_password: newPassword })
 }
 
 // 删除用户（软删除）

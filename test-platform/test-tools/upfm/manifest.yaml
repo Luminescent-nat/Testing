@@ -661,29 +661,29 @@ tools:
     - path: upfm/host/apk_install_check.py
       sha256: f652187ef66015a8d305bee1065f018bd2733af0d73dda54cf55b461b09c44a5
     - path: upfm/host/board_detect.py
-      sha256: fb379b3eb2e1ac9cf6361eecd1a0c1b2175f108c21e4b691bc54a7bcae73231a
+      sha256: b4d0374b82157f9edd31fcacf161293791a4843bb4586dfe342537b5487c7c51
     - path: upfm/host/board_profiles.py
       sha256: 20dec8cb8c30047984f2f6288dda408676f3ba58bb927adde298c7fe21e94d4a
     - path: upfm/host/cpu_freq_check.py
-      sha256: 479e2384de21a50280a098192e2f62833d2aac34679b7a76de62f257f253b356
+      sha256: 8c664d96681e304ccda29c155ab8a22f154c8fcab99f070e651b92d89e9ee825
     - path: upfm/host/ddr_freq_check.py
-      sha256: 16208c8e8a909cab49c9ad4cdacb621810457aac1d080ce1ade64cf8147460f3
+      sha256: b92e3fc11acf2731f9b77578c11f9b554d0ad69354e533a8db56f1982d1a5c51
     - path: upfm/host/gpu_freq_check.py
-      sha256: 1aa1c9df41f3c9f12abe115b3f1df9dc994f28fa47c56b297ca132750727f41e
+      sha256: e8761468e6533529563476aab9f478c43b9c429ab45015928af2d0d8bfcbd4e7
     - path: upfm/host/mc_props_check.py
-      sha256: a681a880341b435b0158d9b154c988485c6ca778f90b8f31a4bd657809fea155
+      sha256: cdcbc66257f58d0a44bed9be643d585944bbc4ac072549c18e8f660236dd6dd4
     - path: upfm/host/mem_ratio_check.py
       sha256: 0d9195f191f6dd177518053242ea559673f029131bb47219fee8298d050fda73
     - path: upfm/host/rotation_check.py
-      sha256: 2b011e9bf407c244d78673a03336b4775b5a238c54922de49361b5fd4c25231e
+      sha256: 9ae2178218e46058776308f053dd77e410949be07d63f1cdc2b4f81e52152f37
     - path: upfm/host/sleep_check.py
       sha256: ad280a391612b6698cd3844e1633d7fdd690532d31c09209913e6fc37a499304
     - path: upfm/host/storage_rw_check.py
       sha256: 9b50394d3c5fe69d9e589ff2132fddf8841b8b12a817a9d904d0b88dbee214a2
     - path: upfm/host/toggle_check.py
-      sha256: 9ba45b5ec343816e0943316ba4f161b279c129881b0f90f2929828c9ec002429
+      sha256: b1002e8b03537c1dcaf16e786405d488d7df74ac31e686f5ce0b8496ccf4b7b3
     - path: upfm/host/touch_points.py
-      sha256: 0ff4beb127ce5e291836c52de2d93b5eef6d9c6c53efa4e871079032e18e4c58
+      sha256: 012f79f5e49c2d3485e980b8671c0a048632aeecd604a60a79893ff21fece3fe
   shared:
     - path: common/__init__.py
       sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855

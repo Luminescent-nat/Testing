@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from app.services.device import ADBService, stream_process_output, INTERNAL_ERROR_RC
 from app.services.parameter_renderer import ParameterRenderer
+from app.services.param_contract import validate_param_value
 from app.services.judgement_engine import (
     JudgementEngine,
     find_native_skip,
@@ -23,20 +24,6 @@ from app.models import TestItem, Device
 from app.config import get_settings
 
 settings = get_settings()
-
-# 自定义参数值中禁止出现的 shell 元字符（防命令注入）。
-# 用户在创建任务时提交的 custom_parameters 会被原样拼入 shell 命令串，
-# 允许字母数字与常见路径/URL字符，拒绝可改变命令结构的元字符。
-FORBIDDEN_PARAM_CHARS = set('`$&|;<>"\'\n\r')
-
-
-def validate_custom_param_value(value: Any) -> Optional[str]:
-    """校验用户提交的自定义参数值，含有 shell 元字符时返回错误信息，合法返回 None。"""
-    text = str(value)
-    bad = sorted(FORBIDDEN_PARAM_CHARS & set(text))
-    if bad:
-        return f"参数值包含非法字符 {' '.join(bad)}（为防止命令注入，禁止 shell 元字符）"
-    return None
 
 
 async def _emit_output(on_output: Optional[Callable[[str], Any]], text: str):
@@ -143,8 +130,9 @@ class ExecutionEngine(ABC):
             params["host_tool_dir"] = os.path.abspath(settings.TEST_TOOLS_PATH)
 
         if custom_params:
+            # 值级兜底校验（防历史脏数据绕过创建侧契约；item 级扁平参数）
             for key, value in custom_params.items():
-                error = validate_custom_param_value(value)
+                error = validate_param_value(key, value)
                 if error:
                     raise ValueError(f"自定义参数 {key} 校验失败: {error}")
 

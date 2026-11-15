@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from enum import Enum
@@ -32,6 +32,43 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     role: Optional[UserRole] = None
     status: Optional[UserStatus] = None
+
+
+class FirstAdminRegistration(BaseModel):
+    """契约 user-administration §2 首管理员初始化请求体（不接受 role/status 自助提权）。"""
+    model_config = ConfigDict(extra="forbid")
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=6, max_length=32)
+    pc_identifier: str = Field(..., min_length=1, max_length=255)
+
+
+class UserCreateByAdmin(BaseModel):
+    """契约 user-administration §4 管理员创建后续账号请求体。"""
+    model_config = ConfigDict(extra="forbid")
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=6, max_length=32)
+    role: UserRole = UserRole.USER
+    status: UserStatus = UserStatus.ACTIVE
+    pc_identifier: str = Field(..., min_length=1, max_length=255)
+
+
+class UserPatch(BaseModel):
+    """契约 user-administration §6 局部更新请求体：至少提供一个字段，禁止未知字段。"""
+    model_config = ConfigDict(extra="forbid")
+    role: Optional[UserRole] = None
+    status: Optional[UserStatus] = None
+
+    @model_validator(mode="after")
+    def _at_least_one_field(self):
+        if self.role is None and self.status is None:
+            raise ValueError("至少提供一个字段（role 或 status）")
+        return self
+
+
+class ResetPasswordRequest(BaseModel):
+    """重置密码请求体（T-16 安全修复：密码不得走 URL query，防止落入访问日志）。"""
+    model_config = ConfigDict(extra="forbid")
+    new_password: str = Field(..., min_length=6, max_length=32)
 
 
 class UserResponse(UserBase):
@@ -352,6 +389,10 @@ class TestTaskResponse(BaseModel):
     schedule_type: str = "immediate"
     scheduled_time: Optional[str] = None
     next_run_at: Optional[datetime] = None
+    task_kind: str = "instance"  # instance/daily_template（模板不进入执行统计）
+    template_id: Optional[int] = None  # daily 实例指向模板
+    scheduled_for: Optional[datetime] = None  # 实例对应的 UTC 计划时刻
+    item_snapshot_status: Optional[str] = None  # complete/legacy（历史无快照为 legacy）
     started_at: Optional[datetime]
     completed_at: Optional[datetime]
     created_at: datetime
@@ -424,6 +465,7 @@ class TestTaskResponse(BaseModel):
 class TestTaskDetail(TestTaskResponse):
     selected_items: List[int]
     custom_parameters: Dict[str, Any]
+    item_snapshot: Optional[Dict[str, Any]] = None  # R20：创建时测试项配置快照
     error_message: Optional[str]
     plan: Optional[Dict[str, Any]] = None
     device: Optional[DeviceResponse] = None

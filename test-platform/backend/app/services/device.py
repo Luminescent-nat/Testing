@@ -224,14 +224,38 @@ class ADBService:
     async def heartbeat_check(self, db: AsyncSession) -> Dict[str, int]:
         """设备心跳：对比 adb 在线设备与数据库 Device 表，同步 online/offline 状态。
 
-        - 库里有但 adb 列表没有、且非 maintenance 的设备 → offline（含 testing，
-          只改设备状态，不动其正在运行的任务）；
+        探测失败语义（契约 scheduler-and-data §4）：
+        - ADB 可执行失败、超时、非零退出属于「探测失败」，不是空设备列表：
+          保持所有设备现状并记录安全错误，绝不批量 offline；
+        - 只有成功且可信的 adb 扫描才可推进状态。
+
+        状态推进规则：
+        - 库里有但 adb 列表没有、且非 maintenance/testing 的设备 → offline；
+          testing 的离开由设备锁持有者收尾处理，心跳不得覆盖；
         - 库里 offline 但 adb 列表里有 → online；
         - adb 列表里新出现的设备自动登记入库：status="online"、pc_identifier=""
           表示未分配（普通用户不可见，由 admin 分配），并顺带采集一次基本信息。
         返回 {"offline": n, "online": n, "registered": n} 状态变更计数。
         """
-        adb_devices = await self.get_devices(timeout=10)
+        try:
+            result = await self.get_device_list(timeout=10)
+        except Exception as exc:
+            logger.error(
+                "设备心跳：adb 探测异常（%s），保持全部设备现状", type(exc).__name__
+            )
+            return {"offline": 0, "online": 0, "registered": 0}
+        if isinstance(result, tuple) and len(result) == 2:
+            adb_devices, error = result
+        else:
+            # 兼容旧 Mock/注入对象未按 (devices, error) 契约返回的场景
+            adb_devices, error = result if isinstance(result, list) else [], None
+        if error is not None:
+            logger.error(
+                "设备心跳：adb 探测失败（%s），保持全部设备现状，不批量 offline",
+                error,
+            )
+            return {"offline": 0, "online": 0, "registered": 0}
+
         online_serials = {d["serial"] for d in adb_devices if d.get("state") == "device"}
 
         result = await db.execute(select(Device))
@@ -240,7 +264,9 @@ class ADBService:
         changed = {"offline": 0, "online": 0, "registered": 0}
         now = datetime.now(timezone.utc)
         for device in devices:
-            if device.status == "maintenance":
+            if device.status in ("maintenance", "testing"):
+                # maintenance 由人工维护；testing 由设备锁持有者收尾推进，
+                # 心跳均不得覆盖（契约 §4）
                 continue
             if device.serial_number in online_serials:
                 if device.status == "offline":

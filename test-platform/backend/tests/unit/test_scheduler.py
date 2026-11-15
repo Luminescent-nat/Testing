@@ -64,19 +64,27 @@ async def test_once_task_triggered_when_due(test_db, admin_user, fake_start_task
 
 
 @pytest.mark.asyncio
-async def test_daily_task_rolls_to_next_day(test_db, admin_user, fake_start_task):
-    """TC-SCHED-002: daily 任务触发后 next_run_at 滚到下一天同一时刻。"""
+async def test_daily_template_spawns_instance_and_rolls(test_db, admin_user, fake_start_task):
+    """TC-SCHED-002: daily 模板到期生成独立实例并启动它，模板 next_run_at 滚到下一天同一时刻。"""
     device = await _make_device(test_db, admin_user)
     past = datetime.now(timezone.utc) - timedelta(minutes=1)
     task = _make_task(admin_user, device, "daily", "02:00", past)
+    task.task_kind = "daily_template"  # 005 后 daily 创建为模板行
     test_db.add(task)
     await test_db.commit()
     await test_db.refresh(task)
 
     triggered = await trigger_due_tasks(test_db)
 
-    assert triggered == [task.id]
-    assert fake_start_task == [task.id]
+    # 调度器启动的是新实例而非模板本身
+    assert len(triggered) == 1
+    assert triggered[0] != task.id
+    assert fake_start_task == triggered
+    instance = await test_db.get(TestTask, triggered[0])
+    assert instance.task_kind == "instance"
+    assert instance.template_id == task.id
+    assert instance.scheduled_for is not None
+
     await test_db.refresh(task)
     assert task.next_run_at is not None
     # 下次触发时间在将来，且本地时刻为 02:00

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, UniqueConstraint, Index
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime, timezone
@@ -171,9 +171,14 @@ class TestItem(Base):
 
 
 class TestTask(Base):
-    """测试任务表"""
+    """测试任务表
+
+    task_kind：instance（普通执行实例，含 immediate/once）/ daily_template
+    （每日定时模板，不直接执行，由调度器按 scheduled_for 生成实例）；
+    daily 实例通过 template_id + scheduled_for 回溯模板与计划时刻。
+    """
     __tablename__ = "test_tasks"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     device_id = Column(Integer, ForeignKey("devices.id"), nullable=False)
@@ -195,11 +200,35 @@ class TestTask(Base):
     # 软删除标记（契约 task-execution §8）：终态任务删除时写入 UTC 时间；
     # 默认列表排除非空值，记录/报告引用保留可追溯。由 004_task_deleted_at 迁移提供。
     deleted_at = Column(DateTime(timezone=True), nullable=True)
-    
+    # daily 模板/实例（R16/R17，005_daily_task_templates）：模板不执行、不进执行统计；
+    # 实例的 scheduled_for 为 UTC 计划时刻，唯一索引保证同模板同时刻至多一个实例。
+    task_kind = Column(
+        String(20), nullable=False, default="instance", server_default="instance"
+    )  # instance/daily_template（server_default 与 005 迁移 DDL 指纹对齐）
+    template_id = Column(Integer, ForeignKey("test_tasks.id"), nullable=True)
+    scheduled_for = Column(DateTime(timezone=True), nullable=True)
+    # 创建时测试项执行配置快照（R20）：历史无快照任务为 legacy，不得反填冒充
+    item_snapshot = Column(JSON, nullable=True)
+    item_snapshot_status = Column(String(20), nullable=True)  # complete/legacy
+
     # 关系
     user = relationship("User", back_populates="tasks")
     device = relationship("Device", back_populates="tasks")
     records = relationship("TestRecord", back_populates="task")
+    # daily 模板 → 实例（非外键硬约束的视图关系，实例侧 template_id 自引用）
+    template = relationship("TestTask", remote_side=[id], foreign_keys=[template_id])
+
+    # 与 005 迁移的 CREATE UNIQUE INDEX / 索引 DDL 指纹一致
+    # （SQLite 下唯一索引 ⇔ 表级唯一约束；ix_test_tasks_task_kind 为列表过滤索引）
+    __table_args__ = (
+        Index(
+            "uq_task_template_scheduled_for",
+            "template_id",
+            "scheduled_for",
+            unique=True,
+        ),
+        Index("ix_test_tasks_task_kind", "task_kind"),
+    )
     
     def __repr__(self):
         return f"<TestTask(id={self.id}, status={self.status})>"

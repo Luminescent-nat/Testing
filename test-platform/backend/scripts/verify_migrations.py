@@ -70,7 +70,7 @@ EXPECTED_TABLES = [
 ]
 COUNT_TABLES = ("test_tasks", "test_records")
 INITIAL_REVISION = "0817df993d8b"
-HEAD_REVISION = "004_task_deleted_at"
+HEAD_REVISION = "005_daily_task_templates"
 SOURCE_PATH: Path | None = None
 FP = None  # 由 load_fingerprint_helpers 注入 app.database 的结构指纹函数
 

@@ -3,18 +3,50 @@
 """
 import asyncio
 import os
+import re
 import shutil
 import sys
 import tempfile
+import uuid
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 import pytest_asyncio
-from httpx import ASGITransport, AsyncClient
+from httpx import ASGITransport, AsyncClient, Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import NullPool
+
+# 需要幂等键的 POST 路径（与前端 src/api/client.js 的 IDEMPOTENT_POST_PATTERNS 对齐）
+_IDEMPOTENT_POST_RE = re.compile(
+    r"^/api/v1/tasks$|^/api/v1/tasks/\d+/(reruns|rerun-failed)$|^/api/v1/ai/tasks/natural$"
+)
+# 测试专用：携带该头的请求不自动补幂等键（用于显式验证「缺键 400」用例）
+_NO_IDEMPOTENCY_MARK = "x-test-no-idempotency-key"
+
+
+class _IdempotencyTransport(ASGITransport):
+    """测试辅助传输层：对任务创建/重跑/AI 创建 POST 自动补 Idempotency-Key。
+
+    模拟前端 client.js 请求拦截器（契约 task-execution §2：幂等键必填），
+    使存量与新增用例无需逐处重复携带；显式带 X-Test-No-Idempotency-Key
+    标记的请求跳过补头，用于验证后端缺键 400 行为。
+    """
+
+    async def handle_async_request(self, request: Request) -> Response:
+        path = request.url.path
+        if (
+            request.method == "POST"
+            and _IDEMPOTENT_POST_RE.match(path)
+            and request.headers.get(_NO_IDEMPOTENCY_MARK) != "1"
+            and "idempotency-key" not in request.headers
+        ):
+            request.headers["Idempotency-Key"] = f"test-{uuid.uuid4().hex}"
+        if _NO_IDEMPOTENCY_MARK in request.headers:
+            del request.headers[_NO_IDEMPOTENCY_MARK]
+        return await super().handle_async_request(request)
+
 
 # 将 backend 根目录加入 Python 路径
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -209,7 +241,7 @@ async def client(test_db: AsyncSession, mock_adb) -> AsyncGenerator[AsyncClient,
     await seed_default_data(test_db)
     await test_db.commit()
 
-    transport = ASGITransport(app=app)
+    transport = _IdempotencyTransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
 
@@ -314,6 +346,13 @@ def mock_adb(monkeypatch) -> MagicMock:
                 "device": "rk3568",
             }
         ]
+    )
+    # T-13：心跳/发现走 (devices, error) 新契约；默认返回可信成功扫描
+    mock.get_device_list = AsyncMock(
+        return_value=(
+            [{"serial": "rk3568-test", "state": "device"}],
+            None,
+        )
     )
     mock.get_device_info = AsyncMock(
         return_value={
@@ -432,6 +471,41 @@ async def sample_item(
         exec_type="adb_shell",
         exec_command="echo ok",
         parameters={},
+        compatibility={},
+        judgement_type="assertion",
+        result_parse={"pass_pattern": "ok"},
+        timeout=30,
+        created_by=admin_user.id,
+    )
+    test_db.add(item)
+    await test_db.commit()
+    await test_db.refresh(item)
+    return item
+
+
+@pytest_asyncio.fixture(scope="function")
+async def schema_item(
+    test_db: AsyncSession, sample_module: TestModule, admin_user: User
+) -> TestItem:
+    """创建带 parameters_schema 的测试项（T-09 参数契约用例共用）。
+
+    properties 含 target/count/verbose，对应 exec_command 占位符。
+    """
+    item = TestItem(
+        module_id=sample_module.id,
+        name="Schema Item",
+        description="带参数 schema 的测试项",
+        exec_type="adb_shell",
+        exec_command="ping -c {count} {target}",
+        parameters={},
+        parameters_schema={
+            "type": "object",
+            "properties": {
+                "target": {"type": "string"},
+                "count": {"type": "number"},
+                "verbose": {"type": "boolean"},
+            },
+        },
         compatibility={},
         judgement_type="assertion",
         result_parse={"pass_pattern": "ok"},

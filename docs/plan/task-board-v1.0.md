@@ -94,7 +94,7 @@
   - [ ] 0/false/空串/合法URL保留，非法shell输入拒绝，参数只作用于目标项。
 - 验证：运行 `test_custom_parameters_contract.py`，每字段四组非法值并核对实际命令与无新增落库。
 - 回退：单独还原参数schema和渲染改动。
-- 状态：未开始
+- 状态：已完成（2026-11-14 P0 修复轮：新建 `param_contract.py` 契约校验服务（外层键=已选 item_id 十进制串、内层参数名∈parameters_schema.properties、值白名单 string/有限number/boolean 禁 object/array/null、参数名正则、≤1000 字符、禁 NUL/CR/LF、shell 控制符拒绝 + 合法 http/https URL 放行查询字符禁凭据）；`task_creation` 精确 field 路径 400；执行侧 `validate_param_value` 值级兜底；历史"合法分组必误拒"缺陷修复（`{"12":{"target":"8.8.8.8"}}` 201）；存量扁平结构安全测试改写为嵌套。证据 [test_param_contract_v1.py](../../test-platform/backend/tests/integration/test_param_contract_v1.py) 15 用例）
 
 ## T-10 实现任务创建与重跑幂等
 - 改动：增加用户范围Idempotency-Key、请求摘要唯一存储和原响应重放。
@@ -104,7 +104,7 @@
   - [ ] 并发10写无重复任务/执行，失败事务无部分落库。
 - 验证：运行 `test_task_idempotency.py`，重放对比和并发10写核对数据库。
 - 回退：还原幂等存储和入口接入，保留其他任务字段迁移。
-- 状态：已完成/有条件（2026-11-12 V1 轮；IdempotencyRecord+UNIQUE、POST /tasks、/tasks/{id}/reruns、legacy rerun-failed 均 201 且复用幂等；同键同体重放同 ID、不同体 409、并发 10 至多一次；审计反例 R2 fail→pass。[RR-V1-FIX-T10](../verification/reviews/RR-V1-FIX-T10.md) 有条件通过：**缺失 Idempotency-Key=不强幂等（待用户确认是否强制必填）**、TTL 清理未做；offline/maintenance 已按 D2 改 409。证据 [T-10](../verification/tasks/T-10/)）
+- 状态：已完成/有条件（2026-11-12 V1 轮；IdempotencyRecord+UNIQUE、POST /tasks、/tasks/{id}/reruns、legacy rerun-failed 均 201 且复用幂等；同键同体重放同 ID、不同体 409、并发 10 至多一次；审计反例 R2 fail→pass。[RR-V1-FIX-T10](../verification/reviews/RR-V1-FIX-T10.md) 有条件通过：**缺失 Idempotency-Key=不强幂等（待用户确认是否强制必填）**、TTL 清理未做；offline/maintenance 已按 D2 改 409。证据 [T-10](../verification/tasks/T-10/)）。**2026-11-14 U-D1 已确认强制必填**：缺键 400 VALIDATION_ERROR（零任务零幂等记录写入），`resolve_idempotency_key` 收紧；前端 client.js 拦截器已自动带键（T-20 既有），conftest `_IdempotencyTransport` 对齐补键 + `X-Test-No-Idempotency-Key` 标记验证缺键 400。遗留：TTL 清理未做。
 
 ## T-11 增加 daily 模板/实例数据模型
 - 改动：增量增加task_kind/template_id/scheduled_for/快照状态及计划时刻唯一约束。
@@ -114,7 +114,7 @@
   - [ ] 唯一约束由数据库执行，迁移前后历史行数一致。
 - 验证：运行 `test_daily_schema.py` 和存量副本迁移，重复计划插入被约束拒绝。
 - 回退：执行对应down迁移并核对原结构/数据。
-- 状态：未开始
+- 状态：已完成（2026-11-14 P0 修复轮：005 迁移原生 ALTER ADD COLUMN（task_kind server_default='instance'/template_id 自引用外键/scheduled_for/item_snapshot/item_snapshot_status）+ `uq_task_template_scheduled_for` 唯一索引（NULL 行不参与冲突，免表重建避开 004 已证 FK 失败）+ `ix_test_tasks_task_kind`；模型 Index/ForeignKey/server_default 与迁移 DDL 指纹逐项对齐；快照服务 `task_snapshot.py` 创建时固化测试项执行配置（历史无快照 legacy 不反填）。证据 [test_daily_templates_v1.py](../../test-platform/backend/tests/integration/test_daily_templates_v1.py)、[test_v1_migration.py](../../test-platform/backend/tests/unit/test_v1_migration.py) 10 用例）
 
 ## T-12 实现 daily 触发与重启恢复
 - 改动：调度器按最近计划时刻创建独立实例并处理并发、跨天和未到期恢复。
@@ -124,7 +124,7 @@
   - [ ] 并发10扫描至多一个实例，重启不重复、不逐日补跑。
 - 验证：运行 `test_daily_scheduler.py` 两个时刻、并发、重启、跨天及非法时间用例。
 - 回退：单独还原调度算法，保留T-11 additive字段。
-- 状态：未开始
+- 状态：已完成（2026-11-14 P0 修复轮：调度器按契约 §2 六步重写——事务内算"不晚于 now 的最近计划时刻"、查重+唯一索引双兜底（IntegrityError 回滚后重载模板仅推进 next_run_at）、跨天不补跑、取消/删除模板不再触发；Dashboard/报告汇总排除 daily_template；列表 task_kind 过滤（instance/daily_template/all，默认 instance，非法 400）；daily 创建响应 201 "daily 模板创建成功"。证据 [test_daily_templates_v1.py](../../test-platform/backend/tests/integration/test_daily_templates_v1.py) 8 用例含 10 连扫与跨天）
 
 ## T-13 修复设备锁持有者及探活状态推进
 - 改动：设备状态只由当前锁持有者或有效探活推进，ADB失败不再等同空列表。
@@ -134,7 +134,7 @@
   - [ ] ADB异常保持状态并返回真实错误，不批量offline。
 - 验证：运行 `test_device_state_ownership.py`，并发与故障注入后核对锁和数据库状态。
 - 回退：单独还原锁与状态推进逻辑。
-- 状态：未开始
+- 状态：已完成（2026-11-14 P0 修复轮：心跳链路 `heartbeat_check` 改走 `get_device_list` (devices, error) 契约——ADB 可执行失败/超时/非零退出/抛异常一律"探测失败"：保持全部设备现状（含 testing/online）零状态变更并记安全错误，绝不批量 offline；仅可信空扫描可推进非 testing/maintenance 状态；testing 心跳不再覆盖（TC-HEARTBEAT-001 断言反转 + 新增 TC-HEARTBEAT-006 故障注入）。证据 [test_device_heartbeat.py](../../test-platform/backend/tests/unit/test_device_heartbeat.py)）
 
 ## T-14 统一取消、软删除与启动恢复
 - 改动：实现取消等待收尾、终态软删除幂等及未到期调度恢复保护。
@@ -164,7 +164,7 @@
   - [ ] 禁用REST/WS生效，同名并发和最后管理员并发安全。
 - 验证：运行 `test_user_administration_contract.py`，核对实际落库、重放、并发10和禁用路径。
 - 回退：单独还原账号API及校验，不影响其他资源。
-- 状态：未开始
+- 状态：已完成（2026-11-14 P0 修复轮：新建 `user_admin.py` 服务——`POST /auth/registrations` 首管理员初始化（201 强制 admin、空库检查+IntegrityError→409 并发兜底、携带 role/status 400 extra=forbid）、`POST /users` 管理员建号（201/重名 409/非管理员与 disabled 403）、`PATCH /users/{id}` 与 legacy PUT 同函数（最后 active 管理员禁用/降级 409、事务内重查防并发、空对象/未知字段 400、幂等相同值 200；DELETE 软删除复用保护）、reset-password 改请求体（URL query 不再接受，前端 user.js 同步改 body）。证据 [test_user_administration_v1.py](../../test-platform/backend/tests/integration/test_user_administration_v1.py) 14 用例）
 
 ## T-17 让干净镜像包含声明工具
 - 改动：修正Docker构建上下文/镜像复制和启动工具清单校验。

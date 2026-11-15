@@ -13,7 +13,7 @@ from app.services.auth import (
 from app.models import User
 from app.schemas import (
     UserCreate, UserLogin, Token, UserResponse, ResponseModel,
-    UserUpdate, PaginationParams
+    UserUpdate, PaginationParams, FirstAdminRegistration
 )
 
 
@@ -86,6 +86,31 @@ async def get_current_admin(current_user: User = Depends(get_current_user)) -> U
             detail="需要管理员权限",
         )
     return current_user
+
+
+@router.post("/registrations", response_model=ResponseModel, status_code=201)
+async def register_first_admin(
+    data: FirstAdminRegistration,
+    db: AsyncSession = Depends(get_db)
+):
+    """首管理员初始化（契约 user-administration §2）。
+
+    仅数据库无任何用户时允许公开创建，服务端强制 role=admin；
+    已有用户后返回 403 系统已完成初始化，后续账号走 POST /users 由管理员创建。
+    """
+    from app.services.user_admin import register_first_admin as register_service
+
+    user = await register_service(
+        db,
+        username=data.username,
+        password=data.password,
+        pc_identifier=data.pc_identifier,
+    )
+    return ResponseModel(
+        code=201,
+        message="首管理员创建成功",
+        data=UserResponse.model_validate(user)
+    )
 
 
 @router.post("/register", response_model=ResponseModel)

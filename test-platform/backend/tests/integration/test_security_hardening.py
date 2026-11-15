@@ -50,27 +50,27 @@ async def test_login_binds_pc_identifier_from_header(
 
 @pytest.mark.asyncio
 async def test_custom_parameter_injection_rejected(
-    client: AsyncClient, admin_token: str, sample_device: Device, sample_item: TestItem
+    client: AsyncClient, admin_token: str, sample_device: Device, schema_item: TestItem
 ):
-    """任务自定义参数含 shell 元字符时被 400 拒绝（防命令注入）。"""
+    """任务自定义参数含 shell 元字符时被 400 拒绝（防命令注入，T-09 嵌套分组结构）。"""
     response = await client.post(
         "/api/v1/tasks",
         headers={"Authorization": f"Bearer {admin_token}"},
         json={
             "device_serial": sample_device.serial_number,
-            "item_ids": [sample_item.id],
-            "custom_parameters": {"target": "8.8.8.8; rm -rf /"},
+            "item_ids": [schema_item.id],
+            "custom_parameters": {str(schema_item.id): {"target": "8.8.8.8; rm -rf /"}},
         },
     )
     assert response.status_code == 400
     err = response.json()
     assert err["code"] == "VALIDATION_ERROR"
-    assert "非法字符" in err["message"]
+    assert "非法字符" in err["details"]["reason"]
 
 
 @pytest.mark.asyncio
 async def test_custom_parameter_legit_accepted(
-    client: AsyncClient, admin_token: str, sample_device: Device, sample_item: TestItem
+    client: AsyncClient, admin_token: str, sample_device: Device, schema_item: TestItem
 ):
     """合法参数值（字母数字、路径、URL 字符）正常通过校验。"""
     response = await client.post(
@@ -78,8 +78,8 @@ async def test_custom_parameter_legit_accepted(
         headers={"Authorization": f"Bearer {admin_token}"},
         json={
             "device_serial": sample_device.serial_number,
-            "item_ids": [sample_item.id],
-            "custom_parameters": {"target": "https://example.com/a-b_c.zip"},
+            "item_ids": [schema_item.id],
+            "custom_parameters": {str(schema_item.id): {"target": "https://example.com/a-b_c.zip"}},
         },
     )
     assert response.status_code == 201, response.text

@@ -32,10 +32,11 @@ async def get_dashboard_stats(
     today_start = datetime.combine(now.date(), datetime.min.time(), tzinfo=timezone.utc)
 
     # ---- 今日任务（含记录，用于按任务 status + result 统一聚合）----
+    # daily 模板（task_kind=daily_template）不执行、不进入执行统计（R16）
     stmt = (
         select(TestTask)
         .options(selectinload(TestTask.records))
-        .where(TestTask.created_at >= today_start)
+        .where(TestTask.created_at >= today_start, TestTask.task_kind == "instance")
     )
     if own_only:
         stmt = stmt.where(TestTask.user_id == current_user.id)
@@ -57,12 +58,12 @@ async def get_dashboard_stats(
     finished = today_passed + today_failed
     pass_rate = round(today_passed / finished * 100, 1) if finished else None
 
-    # ---- 运行中 / 排队中任务（跨全部任务，不限今日创建）----
+    # ---- 运行中 / 排队中任务（跨全部任务，不限今日创建；模板不计入）----
     running_stmt = select(func.count()).select_from(TestTask).where(
-        TestTask.status == "running"
+        TestTask.status == "running", TestTask.task_kind == "instance"
     )
     pending_stmt = select(func.count()).select_from(TestTask).where(
-        TestTask.status == "pending"
+        TestTask.status == "pending", TestTask.task_kind == "instance"
     )
     if own_only:
         running_stmt = running_stmt.where(TestTask.user_id == current_user.id)

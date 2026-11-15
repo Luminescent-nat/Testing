@@ -4,7 +4,7 @@
 - 同用户/同操作/同键/同请求体：重放返回首次响应与同一任务 ID，数据库仅 1 行任务；
 - 同键不同请求体：409 CONFLICT；
 - 并发 10 次：至多一次真实创建（DB 唯一约束兜底），全部返回同一任务 ID；
-- Idempotency-Key 缺失：兼容策略=不强幂等（每次创建新任务，记录偏差待确认）；
+- Idempotency-Key 缺失：400 VALIDATION_ERROR（U-D1 已确认收紧为强制必填，零写入）；
 - 非法键（过短/不可打印 ASCII）：400 VALIDATION_ERROR；
 - 重跑端点 POST /tasks/{id}/reruns 与 legacy /rerun-failed：201 且复用幂等。
 """
@@ -98,20 +98,20 @@ async def test_concurrent_same_key_creates_at_most_one_task(
 
 
 @pytest.mark.asyncio
-async def test_missing_key_is_not_idempotent_compat_policy(
+async def test_missing_key_rejected(
     client: AsyncClient, admin_token: str, sample_device: Device, sample_item: TestItem,
     test_db, monkeypatch,
 ):
-    """缺失 Idempotency-Key：兼容策略=不强幂等，两次请求各自创建（偏差待用户确认）。"""
+    """缺失 Idempotency-Key：400 VALIDATION_ERROR（强制必填），零任务零幂等记录写入。"""
     monkeypatch.setattr(TaskExecutor, "start_task", lambda task_id: True)
     payload = _payload(sample_device, sample_item, name="NoKeyTask")
+    headers = {**_auth(admin_token), "X-Test-No-Idempotency-Key": "1"}
 
-    first = await client.post("/api/v1/tasks", headers=_auth(admin_token), json=payload)
-    second = await client.post("/api/v1/tasks", headers=_auth(admin_token), json=payload)
+    first = await client.post("/api/v1/tasks", headers=headers, json=payload)
 
-    assert first.status_code == 201 and second.status_code == 201
-    assert first.json()["data"]["id"] != second.json()["data"]["id"]
-    assert await _count(test_db, TestTask) == 2
+    assert first.status_code == 400
+    assert first.json()["code"] == "VALIDATION_ERROR"
+    assert await _count(test_db, TestTask) == 0
     assert await _count(test_db, IdempotencyRecord) == 0
 
 
@@ -184,15 +184,16 @@ async def test_rerun_endpoints_return_201_and_reuse_idempotency(
 
 
 @pytest.mark.asyncio
-async def test_rerun_without_key_returns_201_and_creates_each_time(
+async def test_rerun_without_key_returns_400(
     client: AsyncClient, admin_token: str, admin_user, sample_device: Device, sample_item: TestItem,
     test_db, monkeypatch,
 ):
-    """重跑缺失键：兼容策略=不强幂等；200→201 契约收紧。"""
+    """重跑缺失 Idempotency-Key：400 VALIDATION_ERROR（强制必填），零写入。"""
     monkeypatch.setattr(TaskExecutor, "start_task", lambda task_id: True)
     src = await _make_completed_task_with_fail(test_db, admin_user, sample_device, sample_item)
 
-    first = await client.post(f"/api/v1/tasks/{src.id}/rerun-failed", headers=_auth(admin_token))
-    second = await client.post(f"/api/v1/tasks/{src.id}/rerun-failed", headers=_auth(admin_token))
-    assert first.status_code == 201 and second.status_code == 201
-    assert first.json()["data"]["id"] != second.json()["data"]["id"]
+    headers = {**_auth(admin_token), "X-Test-No-Idempotency-Key": "1"}
+    first = await client.post(f"/api/v1/tasks/{src.id}/rerun-failed", headers=headers)
+    assert first.status_code == 400
+    assert first.json()["code"] == "VALIDATION_ERROR"
+    assert await _count(test_db, TestTask) == 1  # 仅源任务，无重跑任务写入

@@ -10,10 +10,13 @@ from app.services.device import ADBService
 
 
 def make_adb_service(online_serials):
-    """构造 get_devices 返回指定在线序列号的 ADBService。"""
+    """构造 get_device_list 返回指定在线序列号的 ADBService（可信成功扫描）。"""
     adb = ADBService()
-    adb.get_devices = AsyncMock(
-        return_value=[{"serial": s, "state": "device"} for s in online_serials]
+    adb.get_device_list = AsyncMock(
+        return_value=(
+            [{"serial": s, "state": "device"} for s in online_serials],
+            None,
+        )
     )
     return adb
 
@@ -33,7 +36,10 @@ async def add_device(test_db, admin_user, serial, status):
 
 @pytest.mark.asyncio
 async def test_heartbeat_marks_missing_devices_offline(test_db, admin_user):
-    """TC-HEARTBEAT-001: adb 列表中消失的设备（含 testing 状态）被置 offline。"""
+    """TC-HEARTBEAT-001: adb 可信空扫描中消失的设备（非 testing）被置 offline。
+
+    testing 设备由设备锁持有者收尾推进，心跳不得覆盖（契约 scheduler-and-data §4）。
+    """
     device_online = await add_device(test_db, admin_user, "hb-online", "online")
     device_gone = await add_device(test_db, admin_user, "hb-gone", "online")
     device_testing = await add_device(test_db, admin_user, "hb-testing", "testing")
@@ -41,14 +47,14 @@ async def test_heartbeat_marks_missing_devices_offline(test_db, admin_user):
     adb = make_adb_service(["hb-online"])
     changed = await adb.heartbeat_check(test_db)
 
-    assert changed["offline"] == 2
+    assert changed["offline"] == 1
     await test_db.refresh(device_online)
     assert device_online.status == "online"
     await test_db.refresh(device_gone)
     assert device_gone.status == "offline"
-    # testing 设备掉线同样置 offline（其运行中任务不由心跳处理）
+    # testing 设备心跳不得覆盖（T-13：其状态由持有者收尾处理）
     await test_db.refresh(device_testing)
-    assert device_testing.status == "offline"
+    assert device_testing.status == "testing"
 
     # adb 列表中新出现的设备自动登记为未分配设备
     adb2 = make_adb_service(["hb-online", "hb-brand-new"])
@@ -59,6 +65,34 @@ async def test_heartbeat_marks_missing_devices_offline(test_db, admin_user):
         select(Device).where(Device.serial_number == "hb-brand-new")
     )
     assert result.scalar_one_or_none() is not None
+
+
+@pytest.mark.asyncio
+async def test_heartbeat_probe_failure_keeps_all_status(test_db, admin_user):
+    """TC-HEARTBEAT-006: ADB 探测失败（超时/非零退出/异常）不是空设备列表。
+
+    全部设备状态保持现状（含 testing/online），绝不批量 offline（契约 §4）。
+    """
+    device_online = await add_device(test_db, admin_user, "pf-online", "online")
+    device_testing = await add_device(test_db, admin_user, "pf-testing", "testing")
+
+    # 场景一：get_device_list 返回失败摘要
+    adb = ADBService()
+    adb.get_device_list = AsyncMock(return_value=([], "adb devices 返回码 -1（Command timeout）"))
+    changed = await adb.heartbeat_check(test_db)
+    assert changed == {"offline": 0, "online": 0, "registered": 0}
+    await test_db.refresh(device_online)
+    assert device_online.status == "online"
+    await test_db.refresh(device_testing)
+    assert device_testing.status == "testing"
+
+    # 场景二：探测抛异常（如 adb 可执行文件缺失）
+    adb2 = ADBService()
+    adb2.get_device_list = AsyncMock(side_effect=FileNotFoundError("adb"))
+    changed2 = await adb2.heartbeat_check(test_db)
+    assert changed2 == {"offline": 0, "online": 0, "registered": 0}
+    await test_db.refresh(device_online)
+    assert device_online.status == "online"
 
 
 @pytest.mark.asyncio

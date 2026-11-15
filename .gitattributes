@@ -1,2 +1,9 @@
 # shell 脚本强制 LF，避免 Windows 检出为 CRLF 后无法执行
 *.sh text eol=lf
+
+# test-tools 下文本文件强制 LF：manifest.yaml 以 sha256 校验这些文件，
+# Windows autocrlf 检出为 CRLF 会导致哈希不符、启动门禁失败
+test-platform/test-tools/**/*.py text eol=lf
+test-platform/test-tools/**/*.yaml text eol=lf
+test-platform/test-tools/**/*.md text eol=lf
+test-platform/test-tools/**/*.txt text eol=lf
